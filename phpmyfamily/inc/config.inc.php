@@ -45,6 +45,7 @@
 	if (!isset($_SESSION["id"])) $_SESSION["id"] = 0;					// non zero if logged in
 	if (!isset($_SESSION["name"])) $_SESSION["name"] = "nobody";		// actual login name
 	if (!isset($_SESSION["admin"])) $_SESSION["admin"] = 0;				// admin flag
+	if (!isset($_SESSION["lang"])) $_SESSION["lang"] = $lang;			// default language file
 
 //=====================================================================================================================
 // Database connection routines
@@ -59,12 +60,12 @@
 	// some definitions
 	$version = "1.2.4c";										// version string
 	$restrictdate = "1910-01-01";								// date for restricting people
-	
+
 //=====================================================================================================================
 // Language routines
 //=====================================================================================================================
 	// include the language file
-	include $lang;
+	include $_SESSION["lang"];
 
 	// eof
 ?>
