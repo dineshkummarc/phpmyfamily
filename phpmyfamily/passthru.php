@@ -155,8 +155,8 @@
 				}
 				@$remember = $_POST["pwdRemember"];
 				if ($remember != "") {
-					setcookie("fam_name", $_POST["pwdUser"], time() + 3600);
-					setcookie("fam_passwd", md5($_POST["pwdPassword"]), time() + 3600);
+					setcookie("fam_name", $_POST["pwdUser"], time() + 2592000);
+					setcookie("fam_passwd", md5($_POST["pwdPassword"]), time() + 2592000);
 				}
 			}
 			mysql_free_result($result);
@@ -169,8 +169,8 @@
 			$_SESSION["editable"] = "N";
 			$_SESSION["style"] = $defaultstyle;
 			$_SESSION["email"] = "";
-			setcookie("fam_name", "", time() - 3600);
-			setcookie("fam_passwd", "", time() - 3600);
+			setcookie("fam_name", "", time() - 36000);
+			setcookie("fam_passwd", "", time() - 36000);
 			echo "<meta http-equiv=refresh content='0; url=index.php' />\n";
 			break;
 		case "change":
