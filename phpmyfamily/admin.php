@@ -128,7 +128,7 @@
 				$class = "tbl_even";
 ?>
 			<tr>
-				<td class="<?php echo $class; ?>"><a href="admin.php?func=delete&amp;id=<?echo $row["id"]; ?>"><?php echo $strDelete; ?></a></td>
+				<td class="<?php echo $class; ?>"><a href="admin.php?func=delete&amp;id=<?php echo $row["id"]; ?>"><?php echo $strDelete; ?></a></td>
 				<td class="<?php echo $class; ?>"><?php echo $row["username"]; ?></td>
 				<td class="<?php echo $class; ?>"><?php echo $row["email"]; ?></td>
 				<td class="<?php echo $class; ?>"><?php echo $row["admin"]; ?></td>

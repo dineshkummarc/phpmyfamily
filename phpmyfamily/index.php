@@ -258,7 +258,7 @@
 							$class = "tbl_even";
 ?>
 					<tr>
-						<td class="<?php echo $class; ?>" align="left"><a href="people.php?person=<?php echo $row["person_id"]; ?>"><?echo $row["name"]." ".$row["suffix"]; ?></a></td>
+						<td class="<?php echo $class; ?>" align="left"><a href="people.php?person=<?php echo $row["person_id"]; ?>"><?php echo $row["name"]." ".$row["suffix"]; ?></a></td>
 						<td class="<?php echo $class; ?>"><?php echo $row["ddate"]; ?></td>
 					</tr>
 <?php
