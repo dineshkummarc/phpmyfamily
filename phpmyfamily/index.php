@@ -200,7 +200,7 @@
 		$mquery .= " WHERE (tbl_male.date_of_birth < '".$restrictdate."' AND tbl_female.date_of_birth < '".$restrictdate."') AND";
 	else
 		$mquery .= " WHERE";
-	$mquery .= " groom_id = tbl_male.person_id AND bride_id = tbl_female.person_id HAVING year_marriage >= now() AND year_marriage <= DATE_ADD(NOW(), INTERVAL 21 DAY) LIMIT 0,6";
+	$mquery .= " groom_id = tbl_male.person_id AND bride_id = tbl_female.person_id HAVING year_marriage >= now() AND year_marriage <= DATE_ADD(NOW(), INTERVAL 21 DAY) ORDER BY year_marriage LIMIT 0,6";
 	$mresult = mysql_query($mquery) or die($err_marriage);
 	$i = 0;
 	while ($mrow = mysql_fetch_array($mresult)) {
