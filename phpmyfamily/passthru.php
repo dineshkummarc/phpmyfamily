@@ -10,7 +10,7 @@
 	include "inc/db.inc.php";
 	include "inc/functions.inc.php";
 
-	if ($_SESSION["id"] == 0 && $_REQUEST["func"] != "jump")
+	if ($_SESSION["id"] == 0 && ($_REQUEST["func"] != "jump" && $_REQUEST["func"] != "login"))
 		die("Security Breach");
 
 	echo "<HEAD>\n";
@@ -87,6 +87,20 @@
 					break;
 			}
 			echo "<META HTTP-EQUIV=Refresh CONTENT='0; URL=people.php?person=".$person."'>\n";
+			break;
+		case "login":
+			@$query = "SELECT * FROM users WHERE username = '".$_POST["pwdUser"]."' AND password = '".md5($_POST["pwdPassword"])."'";
+			$result = mysql_query($query) or die("error logging on");
+			if (mysql_num_rows($result) == 1) {	
+				while ($row = mysql_fetch_array($result))
+					$_SESSION["id"] = $row["id"];
+			}
+			mysql_free_result($result);
+			echo "<META HTTP-EQUIV=Refresh CONTENT='0; URL=index.php'>\n";
+			break;
+		case "logout":
+			$_SESSION["id"] = 0;
+			echo "<META HTTP-EQUIV=Refresh CONTENT='0; URL=index.php'>\n";
 			break;
 		default:
 			echo "<META HTTP-EQUIV=Refresh CONTENT='0; URL=people.php?person=".$_POST["person"]."'>\n";
