@@ -1,5 +1,6 @@
 v 1.2.4
-	html cleaned up throughout app	
+	install.php ammended to correct issue with first image creation and zero-filled db column
+	html cleaned up throughout app
 	session.use_trans_id set to false to help spiders
 	Table prefix made ammendable (dafault "family")
 	Forbidden page added
