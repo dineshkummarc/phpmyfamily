@@ -35,9 +35,6 @@
  -->
 </script>
 
-</head>
-<body>
-
 <table class="header" width="100%">
 	<tbody>
 		<tr>
