@@ -177,13 +177,13 @@
 			$fcheck1 = "SELECT * FROM ".$tblprefix."users WHERE id = '".$_SESSION["id"]."' AND password = '".md5($_POST["pwdOld"])."'";
 			$rcheck1 = mysql_query($fcheck1) or die($err_change);
 			if (mysql_num_rows($rcheck1) == 0)
-				echo "<meta http-equiv=refresh content='0; url=index.php?reason=".$err_pwd_incorrect."' />\n";
+				echo "<meta http-equiv=refresh content='0; url=my.php?reason=".$err_pwd_incorrect."' />\n";
 			elseif ($_POST["pwdPwd1"] <> $_POST["pwdPwd2"])
-				echo "<meta http-equiv=refresh content='0; url=index.php?reason=".$err_pwd_match."' />\n";
+				echo "<meta http-equiv=refresh content='0; url=my.php?reason=".$err_pwd_match."' />\n";
 			else {
 				$fchange = "UPDATE ".$tblprefix."users SET password = '".md5($_POST["pwdPwd1"])."' WHERE id = '".$_SESSION["id"]."'";
 				$rchange = mysql_query($fchange) or die($err_update);
-				echo "<meta http-equiv=refresh content='0; url=index.php?reason=".$err_pwd_success."' />\n";
+				echo "<meta http-equiv=refresh content='0; url=my.php?reason=".$err_pwd_success."' />\n";
 			}
 			break;
 		case "delete":

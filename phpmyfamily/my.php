@@ -37,6 +37,12 @@
 		</td>
 	</tr>
 </table>
+<table width="100%">
+	<tr>
+		<td width="50%"><?php include "inc/passwdform.inc.php"; ?></td>
+		<td width="50%"></td>
+	</tr>
+</table>
 <?php
 	} else {
 		do_headers("Login to phpmyfamily");

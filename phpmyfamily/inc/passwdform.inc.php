@@ -15,10 +15,13 @@
 	//You should have received a copy of the GNU General Public License
 	//along with this program; if not, write to the Free Software
 	//Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+
+	@$error = $_POST["reason"];
 ?>
 	<!-- Warning Messages -->
 	<h4><?php echo $strPwdChange; ?></h4>
 	<p><?php echo $strPwdChangeMsg; ?></p>
+	<?php echo $error; ?>
 
 	<!-- Form proper -->
 	<form method="post" action="passthru.php?func=change">
