@@ -141,6 +141,25 @@
 			</td>
 			<td width="33%" valign="top">
 				<table width="100%">
+					<tr>
+						<th><?php echo $strRandomImage; ?></th>
+					</tr>
+					<tr>
+						<td	class="tbl_odd" align="center">
+<?php
+	$iquery = "SELECT ".$tblprefix."images.*, ".$tblprefix."people.name FROM ".$tblprefix."images, ".$tblprefix."people WHERE ".$tblprefix."images.person_id = ".$tblprefix."people.person_id	";
+	if ($_SESSION["id"] == 0)
+		$iquery .= " AND date_of_birth < '".$restrictdate."'";
+	$iquery .= " ORDER BY RAND() LIMIT 0,1";
+	$iresult = mysql_query($iquery) or die(mysql_error());
+	while($irow = mysql_fetch_array($iresult)) {
+		echo "\t\t\t\t\t\t\t<a href=\"people.php?person=".$irow["person_id"]."\"><img src=\"images/tn_".$irow["image_id"].".jpg\" width=\"100\" height=\"100\" border=\"0\" title=\"".$irow["description"]."\" alt=\"".$irow["description"]."\" /><br />".$irow["name"]."</a>";
+	}
+?>
+						</td>
+					</tr>
+				</table>
+				<table width="100%">
 					<thead>
 						<tr>
 							<th scope="col" colspan="3"><?php echo $strUpcoming; ?></th>
@@ -243,6 +262,7 @@
 ?>
 					</tbody>
 				</table>
+
 			</td>
 			<td width="33%" align="right">
 				<!--list of last 20 updated people-->

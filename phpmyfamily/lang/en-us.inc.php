@@ -186,6 +186,7 @@
 	$strCeaseRequest	= "Your request for ceasing monitoring this person is being processed.<br />A confirmation email has been sent to your address and you should follow the instructions therein.<br />";
 	$strAlreadyMon		= "You already seem to be monitoring this person.<br />No action is required.<br />";
 	$strNotMon			= "You do not seem to be monitoring this person.<br />No action is required.<br />";
+	$strRandomImage		= "Random Image";
 
 //=====================================================================================================================
 //  email definitions
