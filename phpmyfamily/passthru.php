@@ -23,7 +23,7 @@
 	ini_set("max_execution_time", 180);
 
 	// if you are not logged in then you shouldn't be here!
-	if ($_SESSION["editable"] == "N" && ($_REQUEST["func"] != "login" && $_REQUEST["func"] != "lang" && $_REQUEST["func"] != "logout"))
+	if ($_SESSION["editable"] == "N" && ($_REQUEST["func"] != "login" && $_REQUEST["func"] != "lang" && $_REQUEST["func"] != "logout" && $_REQUEST["func"] != "change"))
 		die(include "inc/forbidden.inc.php");
 
 	// build the page to be sent
