@@ -205,7 +205,7 @@
 			$class = "tbl_even";
 ?>
 						<tr>
-							<td class="<?php echo $class; ?>"><a href="people.php?person=<?php echo $mrow["groom"]; ?>"><?php echo $mrow["male"]; ?></a> & <a href="people.php?person=<?php echo $mrow["bride"]; ?>"><?php echo $mrow["female"]; ?></a></td>
+							<td class="<?php echo $class; ?>"><a href="people.php?person=<?php echo $mrow["groom"]; ?>"><?php echo $mrow["male"]; ?></a> &amp; <a href="people.php?person=<?php echo $mrow["bride"]; ?>"><?php echo $mrow["female"]; ?></a></td>
 							<td class="<?php echo $class; ?>"><?php echo $mrow["DOM"]; ?></td>
 							<td class="<?php echo $class; ?>"><?php echo $mrow["year_marriage"] - $mrow["marriage_date"]; ?> years</td>
 						</tr>
