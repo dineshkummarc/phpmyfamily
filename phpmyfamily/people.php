@@ -257,7 +257,7 @@
 			if ($_SESSION["id"] <> 0)
 				echo "<a href=\"edit.php?func=edit&amp;area=marriage&amp;person=".$_REQUEST["person"]."&amp;spouse=".$wrow["person_id"]."\">".$strEdit."</a>::<a href=\"JavaScript:confirm_delete('".$wrow["name"]."', '".strtolower($strMarriage)."', 'passthru.php?func=delete&amp;area=marriage&amp;person=".$_REQUEST["person"]."&amp;spouse=".$wrow["person_id"]."')\" class=\"delete\">".$strDelete."</a>";
 			if ($wrow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0)
-				echo $wrow["name"]." (<font class=\"restrict\">".$strRestricted."</font>)";
+				echo $wrow["name"]." (<font class=\"restrict\">".$strRestricted."</font>)</td>\n";
 			else
 				echo " <a href=\"people.php?person=".$wrow["person_id"]."\">".$wrow["name"]."</a> ".$strOn." ".formatdate($wrow["DOM"])." ".$strAt." ".$wrow["marriage_place"]."</td>\n";
 ?>
