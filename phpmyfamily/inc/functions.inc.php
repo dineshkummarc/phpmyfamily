@@ -554,7 +554,7 @@
 			if ($_SESSION["editable"] == "Y" && $person != 0)
 				echo " | ";
 			if ($person != 0) {
-				$query = "SELECT * FROM ".$tblprefix."tracking WHERE email = '".$_SESSION["email"]."'";
+				$query = "SELECT * FROM ".$tblprefix."tracking WHERE email = '".$_SESSION["email"]."' AND person_id = '".$person."'";
 				$result = mysql_query($query) or die(mysql_error());
 				if (mysql_num_rows($result) != 0) {
 					echo "stop tracking this person";
