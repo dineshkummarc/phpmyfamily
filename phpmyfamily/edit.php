@@ -1,6 +1,6 @@
 <?php
 	//phpmyfamily - opensource genealogy webbuilder
-	//Copyright (C) 2002 - 2003  Simon E Booth (simon.booth@giric.com)
+	//Copyright (C) 2002 - 2004  Simon E Booth (simon.booth@giric.com)
 
 	//This program is free software; you can redistribute it and/or
 	//modify it under the terms of the GNU General Public License
@@ -555,7 +555,7 @@
 	<table width="100%">
 		<tr>
 			<td width="15%" align="center" valign="middle"><a href="http://validator.w3.org/check/referer"><img border="0" src="images/valid-xhtml10.png" alt="Valid XHTML 1.0!" height="31" width="88" /></a></td>
-			<td width="70%" align="center" valign="middle"><h5><a href="http://www.giric.com/phpmyfamily">phpmyfamily v<?php echo $version; ?></a><br />Copyright 2002-2003 Simon E Booth<br />Email <a href="mailto:<?php echo $email; ?>">me</a> with any problems</h5></td>
+			<td width="70%" align="center" valign="middle"><h5><a href="http://www.giric.com/phpmyfamily">phpmyfamily v<?php echo $version; ?></a><br />Copyright 2002-2004 Simon E Booth<br />Email <a href="mailto:<?php echo $email; ?>">me</a> with any problems</h5></td>
 			<td width="15%" align="center" valign="middle"><a href="http://jigsaw.w3.org/css-validator/"><img style="border:0;width:88px;height:31px" src="images/vcss.png" alt="Valid CSS!" /></a></td>
 		</tr>
 	</table>

@@ -1,6 +1,6 @@
 <?php
 	//phpmyfamily - opensource genealogy webbuilder
-	//Copyright (C) 2002 - 2003  Simon E Booth (simon.booth@giric.com)
+	//Copyright (C) 2002 - 2004  Simon E Booth (simon.booth@giric.com)
 
 	//This program is free software; you can redistribute it and/or
 	//modify it under the terms of the GNU General Public License
@@ -477,7 +477,7 @@
 	<table width="100%">
 		<tr>
 			<td width="15%" align="center" valign="middle"><a href="http://validator.w3.org/check/referer"><img border="0" src="images/valid-xhtml10.png" alt="Valid XHTML 1.0!" height="31" width="88" /></a></td>
-			<td width="70%" align="center" valign="middle"><h5><a href="http://www.giric.com/phpmyfamily">phpmyfamily v<?php echo $version; ?></a><br />Copyright 2002-2003 Simon E Booth<br />Last updated: <?php echo date('H:i \o\n \t\h\e d/m/Y', convertstamp($prow["updated"])); ?><br /><?php
+			<td width="70%" align="center" valign="middle"><h5><a href="http://www.giric.com/phpmyfamily">phpmyfamily v<?php echo $version; ?></a><br />Copyright 2002-2004 Simon E Booth<br />Last updated: <?php echo date('H:i \o\n \t\h\e d/m/Y', convertstamp($prow["updated"])); ?><br /><?php
 				if ($_SESSION["id"] <> 0) {
 					echo "Missing people? <a href=\"edit.php?func=add&amp;area=detail\">Add</a> a new person to the database<br />";
 				}

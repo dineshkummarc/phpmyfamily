@@ -1,6 +1,6 @@
 <?php
 	//phpmyfamily - opensource genealogy webbuilder
-	//Copyright (C) 2002 - 2003  name of author
+	//Copyright (C) 2002 - 2004  name of author
 
 	//This program is free software; you can redistribute it and/or
 	//modify it under the terms of the GNU General Public License
