@@ -397,7 +397,7 @@
 <?php
 	}
 ?>
-			<td class="<?php echo $class; ?>"><a href="document.php?id=<?php echo $drow["id"]; ?>"><?php echo $drow["doc_title"]; ?></a></td>
+			<td class="<?php echo $class; ?>"><a href="document.php?docid=<?php echo $drow["id"]; ?>"><?php echo $drow["doc_title"]; ?></a></td>
 			<td class="<?php echo $class; ?>"><?php echo $drow["doc_description"]; ?></td>
 			<td class="<?php echo $class; ?>"><?php echo formatdate($drow["ddate"]); ?></td>
 		</tr>

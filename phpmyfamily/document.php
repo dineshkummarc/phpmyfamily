@@ -20,11 +20,11 @@
 	include "inc/config.inc.php";
 
 	// get the passed id and set it to 0 if nothing passed
-	@$id = $_REQUEST["id"];
-	if (!isset($id))
-		$id = 0;
+	@$docid = $_REQUEST["docid"];
+	if (!isset($docid))
+		$docid = 0;
 
-	$dquery = "SELECT * FROM ".$tblprefix."documents WHERE id = '".$id."'";
+	$dquery = "SELECT * FROM ".$tblprefix."documents WHERE id = '".$docid."'";
 	$dresult = mysql_query($dquery);
 
 	while ($drow = mysql_fetch_array($dresult)) {
