@@ -54,11 +54,11 @@
 	$query = "SELECT ".$tblprefix."people.* FROM ".$tblprefix."people, ".$tblprefix."images WHERE ".$tblprefix."people.person_id = ".$tblprefix."images.person_id";
 	if ($_SESSION["id"] == 0)
 		$query .= " AND ".$tblprefix."people.date_of_birth < '".$restrictdate."'";
-	$query .= " GROUP BY ".$tblprefix."people.person_id";
+	$query .= " GROUP BY ".$tblprefix."people.person_id ORDER BY ".$tblprefix."people.date_of_birth";
 	$result = mysql_query($query) or die(mysql_error());
 	//die($err_person);
 	while ($row = mysql_fetch_array($result)) {
-		echo "<h4>".$row["name"]."</h4>\n";
+		echo "<h4><a href=\"people.php?person=".$row["person_id"]."\">".$row["name"]."</a></h4>\n";
 		show_gallery($row["person_id"], "gallery");
 	}
 	mysql_free_result($result);
