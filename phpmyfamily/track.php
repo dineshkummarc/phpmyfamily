@@ -49,6 +49,17 @@
 
 ?>
 
+<script language="JavaScript" type="text/javascript">
+ <!--
+ function check_email() {
+ 	if (document.trackform.email.value == '') {
+		alert(<?php echo $strNoEmail; ?>);
+		return false
+ 	}
+ }
+ -->
+</script>
+
 <table class="header" width="100%">
 	<tbody>
 		<tr>
@@ -86,22 +97,22 @@
 			echo "<h3>".$prow["name"]."</h3>\n";
 			echo $strTrackSpeel."<br /><br />\n";
 ?>
-	<form action="track.php" method="POST">
+	<form action="track.php" method="post" name="trackform" onsubmit="return check_email();">
 		<input type="hidden" name="person" value="<?php echo $person; ?>" />
 		<input type="hidden" name="name" value="<?php echo $prow["name"]; ?>" />
 		<table>
 			<tbody>
 				<tr>
-					<td><?php echo $strEmail; ?>  </td>
-					<td><input type="text" name="email" size="30" maxlength="128" />  </td>
+					<td class="tbl_odd"><?php echo $strEmail; ?>  </td>
+					<td class="tbl_even"><input type="text" name="email" size="30" maxlength="128" />  </td>
 				</tr>
 				<tr>
-					<td>  </td>
-					<td><input type="radio" name="action" value="sub" checked="checked"  /><?php echo $strSubscribe; ?><input type="radio" name="action" value="unsub" /><?php echo $strUnSubscribe; ?></td>
+					<td class="tbl_odd">  </td>
+					<td class="tbl_even"><input type="radio" name="action" value="sub" checked="checked"  /><?php echo $strSubscribe; ?><input type="radio" name="action" value="unsub" /><?php echo $strUnSubscribe; ?></td>
 				</tr>
 				<tr>
-					<td><input type="submit" name="submit" value="<?php echo $strSubmit; ?>" />  </td>
-					<td>  </td>
+					<td class="tbl_odd"><input type="submit" name="submit" value="<?php echo $strSubmit; ?>" />  </td>
+					<td class="tbl_odd">  </td>
 				</tr>
 			</tbody>
 		</table>
