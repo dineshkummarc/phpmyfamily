@@ -56,7 +56,7 @@
 		global $strUnknown;
 
 		// create the query based on the parameters
-		$query = "SELECT person_id, SUBSTRING_INDEX(name, ' ', -1) AS surname, name, YEAR(date_of_birth) AS year FROM ".$tblprefix."people WHERE person_id <> '".$omit."'";
+		$query = "SELECT person_id, SUBSTRING_INDEX(name, ' ', -1) AS surname, TRIM(TRAILING SUBSTRING_INDEX(name, ' ', -1 ) FROM name) AS forenames, name, YEAR(date_of_birth) AS year FROM ".$tblprefix."people WHERE person_id <> '".$omit."'";
 
 		// if the user is not logged in, only show people pre $restrictdate
 		if ($_SESSION["id"] == 0)
@@ -101,7 +101,7 @@
 			echo "<option value=\"".$row["person_id"]."\"";
 			if ($row["person_id"] == $default)
 				echo " selected=\"selected\"";
-			echo ">".$row["surname"].", ".str_replace(" ".$row["surname"], "", $row["name"])." (b. ".$year.")</option>\n";
+			echo ">".$row["surname"].", ".$row["forenames"]." (b. ".$year.")</option>\n";
 		}
 		echo "</select>";
 
