@@ -87,3 +87,21 @@ td.tbl_odd   {
 .restrict {
 	color: red;
 }
+.vert {
+	background: url('../images/vert.png') no-repeat center;
+}
+.outer {
+	background: url('../images/outer.png') no-repeat center;
+}
+.br {
+	background: url('../images/br.png') no-repeat center;
+}
+.tr	{
+	background: url('../images/tr.png') no-repeat center;
+}
+.rb {
+	background: url('../images/rb.png') no-repeat center;
+}
+.rt	{
+	background: url('../images/rt.png') no-repeat center;
+}

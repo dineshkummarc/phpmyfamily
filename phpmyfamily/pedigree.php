@@ -36,14 +36,50 @@
 
 		// if trying to access a restriced person
 		if ($restricted)
-			die(include "inc/forbidden.in.php");
+			die(include "inc/forbidden.inc.php");
 
-		// pickout father and mother for use in queries
-		// set to -1 to avoid too many siblings!!! :-)
-		$father = $prow["father_id"];
-		if ($father == 0) $father = -1;
-		$mother = $prow["mother_id"];
-		if ($mother == 0) $mother = -1;
+		// Use an array to get people references
+		$ids = array_fill(1, 15, 0);
+		$ids[1] = $_GET["person"];
+		$ids[2] = $prow["father_id"];
+		$ids[3] = $prow["mother_id"];
+
+		for ($i = 2; $i < 8; $i++) {
+			$tquery = "SELECT * FROM ".$tblprefix."people WHERE person_id = '".$ids[$i]."'";
+			$tresult = mysql_query($tquery) or die($err_person);
+			while ($trow = mysql_fetch_array($tresult)) {
+				$ids[($i * 2)] 		= $trow["father_id"];
+				$ids[($i * 2 + 1)] 	= $trow["mother_id"];
+			}
+			mysql_free_result($tresult);
+		}
+
+	function person_disp($dip) {
+		global $datefmt;
+		global $tblprefix;
+		global $err_person;
+		global $strBorn;
+		global $strDied;
+
+		$dquery = "SELECT *, DATE_FORMAT(date_of_birth, ".$datefmt.") AS DOB, DATE_FORMAT(date_of_death, ".$datefmt.") AS DOD FROM ".$tblprefix."people WHERE person_id = '".$dip."'";
+		$dresult = mysql_query($dquery) or die($err_person);
+
+		while ($drow = mysql_fetch_array($dresult)) {
+			if ($drow["gender"] == "M")
+				$class = "tbl_odd";
+			else
+				$class = "tbl_even";
+
+			echo "<td bgcolor=\"#FFFFFF\" width=\"22%\" class=\"".$class."\">";
+			echo "<a href=\"pedigree.php?person=".$dip."\">".$drow["name"]."</a><br />";
+			echo formatdate($drow["DOB"])." - ".formatdate($drow["DOD"])."<br />";
+			echo $strBorn.": ".$drow["birth_place"]."<br />";
+			echo $strDied.": ".$drow["death_reason"]."<br />";
+			echo "</td>\n";
+		}
+
+		mysql_free_result($dresult);
+	}
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -77,17 +113,17 @@
 					else
 						echo "(".formatdate($prow["DOB"])." - ".formatdate($prow["DOD"]).")";?></h3>
 			</td>
-			<td width="35%" valign="top">
+			<td width="35%" valign="top" align="right">
 				<form method="get" action="pedigree.php">
 				<?php listpeeps("person", 0, "A", $_REQUEST["person"]); ?>
 				</form>
 <?php
 			if ($_SESSION["id"] <> 0) { ?>
-				<?php echo $strLoggedIn; ?><a href="index.php" class="hd_link"><?php echo $_SESSION["name"]; ?></a>: (<a href="passthru.php?func=logout" class="hd_link"><?php echo $strLogout; ?></a><?php if ($_SESSION["admin"] == 1) echo ", <a href=\"admin.php\" class=\"hd_link\">".$strAdmin."</a>"; ?>)
+				<?php echo $strLoggedIn; ?><a href="index.php" class="hd_link"><?php echo $_SESSION["name"]; ?></a>: (<a href="passthru.php?func=logout" class="hd_link"><?php echo $strLogout; ?></a><?php if ($_SESSION["admin"] == 1) echo ", <a href=\"admin.php\" class=\"hd_link\">".$strAdmin."</a>"; ?>)<br /><?php echo "<a href=\"people.php?person=".$_REQUEST["person"]."\">".strtolower($strBack)."</a> ".$strToDetails; ?>
 <?php 		}
 			else {
 ?>
-				<?php echo $strLoggedOut; ?><a href="index.php" class="hd_link"><?php echo $strHome; ?></a>
+				<?php echo $strLoggedOut; ?><a href="index.php" class="hd_link"><?php echo $strHome; ?></a><br /><?php echo "<a href=\"people.php?person=".$_REQUEST["person"]."\">".strtolower($strBack)."</a> ".$strToDetails; ?>
 <?php
 			} ?>
 			</td>
@@ -98,14 +134,266 @@
 
 <!--Main body-->
 
-<table width="100%">
+<table width="100%" cellspacing="0">
   <tbody>
-    <tr>
-      <td width="50%" align="left" bgcolor="#FFFFFF"><?php echo $prow["name"]; ?><br />Born: <?php echo formatdate($prow["DOB"]); ?> </td>
+    <tr> <!--row 1-->
+      <td width="22%">  </td>
+      <td width="4%">  </td>
+      <td width="22%">  </td>
+      <td width="4%">  </td>
+      <td width="22%">  </td>
+      <td width="4%"<?php if($ids[8] != 0) echo " class=\"tr\""; ?>> </td>
+<?php
+	if ($ids[8] == 0)
+		echo "\t<td></td>\n";
+	else
+		person_disp($ids[8]);
+?>
+    </tr>
+    <tr> <!--row 2-->
+      <td>  </td>
+      <td>  </td>
+      <td>  </td>
+      <td<?php if($ids[4] != 0) echo " class=\"tr\""; ?>></td>
+<?php
+	if ($ids[4] == 0)
+		echo "\t<td></td>\n";
+	else
+		person_disp($ids[4]);
+?>
+      <td<?php
+		if ($ids[8] != 0 && $ids[9] != 0)
+			echo " class=\"outer\"";
+		elseif ($ids[8] != 0)
+			echo " class=\"rt\"";
+		elseif ($ids[9] != 0)
+			echo " class=\"rb\"";
+?>>  </td>
+      <td>  </td>
+    </tr>
+    <tr> <!--row 3-->
+      <td>  </td>
+      <td>  </td>
+      <td>  </td>
+      <td<?php if($ids[4] != 0) echo " class=\"vert\""; ?>>  </td>
+      <td>  </td>
+      <td<?php if($ids[9] != 0) echo " class=\"br\""; ?>></td>
+<?php
+	if ($ids[9] == 0)
+		echo "\t<td></td>\n";
+	else
+		person_disp($ids[9]);
+?>
+    </tr>
+    <tr> <!--row 4-->
+      <td>  </td>
+      <td<?php if($ids[2] != 0) echo " class=\"tr\""; ?>></td>
+<?php
+	if ($ids[2] == 0)
+		echo "\t<td></td>\n";
+	else
+		person_disp($ids[2]);
+?>
+      <td<?php
+		if ($ids[4] != 0 && $ids[5] != 0)
+			echo " class=\"outer\"";
+		elseif ($ids[4] != 0)
+			echo " class=\"rt\"";
+		elseif ($ids[5] != 0)
+			echo " class=\"rb\"";
+?>> </td>
+      <td>  </td>
+      <td>  </td>
+      <td>  </td>
+    </tr>
+    <tr> <!--row 5-->
+      <td>  </td>
+      <td<?php if($ids[2] != 0) echo " class=\"vert\""; ?>></td>
+      <td>  </td>
+      <td<?php if($ids[5] != 0) echo " class=\"vert\""; ?>>  </td>
+      <td>  </td>
+      <td<?php if($ids[10] != 0) echo " class=\"tr\""; ?>></td>
+<?php
+	if ($ids[10] == 0)
+		echo "\t<td></td>\n";
+	else
+		person_disp($ids[10]);
+?>
+    </tr>
+    <tr> <!--row 6-->
+      <td>  </td>
+      <td<?php if($ids[2] != 0) echo " class=\"vert\""; ?>></td>
+      <td>  </td>
+      <td<?php if($ids[5] != 0) echo " class=\"br\""; ?>></td>
+<?php
+	if ($ids[5] == 0)
+		echo "\t<td></td>\n";
+	else
+		person_disp($ids[5]);
+?>
+      <td<?php
+		if ($ids[10] != 0 && $ids[11] != 0)
+			echo " class=\"outer\"";
+		elseif ($ids[10] != 0)
+			echo " class=\"rt\"";
+		elseif ($ids[11] != 0)
+			echo " class=\"rb\"";
+?>>  </td>
+      <td>  </td>
+    </tr>
+    <tr> <!--row 7-->
+      <td>  </td>
+      <td<?php if($ids[2] != 0) echo " class=\"vert\""; ?>></td>
+      <td>  </td>
+      <td>  </td>
+      <td>  </td>
+      <td<?php if($ids[11] != 0) echo " class=\"br\""; ?>> </td>
+<?php
+	if ($ids[11] == 0)
+		echo "\t<td></td>\n";
+	else
+		person_disp($ids[11]);
+?>
+    </tr>
+    <tr> <!--row 8-->
+      <?php person_disp($ids[1]); ?>
+      <td<?php
+		if ($ids[2] != 0 && $ids[3] != 0)
+			echo " class=\"outer\"";
+		elseif ($ids[2] != 0)
+			echo " class=\"rt\"";
+		elseif ($ids[3] != 0)
+			echo " class=\"rb\"";
+?>> </td>
+      <td>  </td>
+      <td>  </td>
+      <td>  </td>
+      <td>  </td>
+      <td>  </td>
+    </tr>
+    <tr> <!--row 9-->
+      <td>  </td>
+      <td<?php if($ids[3] != 0) echo " class=\"vert\""; ?>> </td>
+      <td>  </td>
+      <td>  </td>
+      <td>  </td>
+      <td<?php if($ids[12] != 0) echo " class=\"tr\""; ?>></td>
+<?php
+	if ($ids[12] == 0)
+		echo "\t<td></td>\n";
+	else
+		person_disp($ids[12]);
+?>
+    </tr>
+    <tr> <!--row 10-->
+      <td>  </td>
+      <td<?php if($ids[3] != 0) echo " class=\"vert\""; ?>></td>
+      <td>  </td>
+      <td<?php if($ids[6] != 0) echo " class=\"tr\""; ?>></td>
+<?php
+	if ($ids[6] == 0)
+		echo "\t<td></td>\n";
+	else
+		person_disp($ids[6]);
+?>
+      <td<?php
+		if ($ids[12] != 0 && $ids[13] != 0)
+			echo " class=\"outer\"";
+		elseif ($ids[12] != 0)
+			echo " class=\"rt\"";
+		elseif ($ids[13] != 0)
+			echo " class=\"rb\"";
+?>></td>
+      <td>  </td>
+    </tr>
+    <tr> <!--row 11-->
+      <td>  </td>
+      <td<?php if($ids[3] != 0) echo " class=\"vert\""; ?>></td>
+      <td>  </td>
+      <td<?php if($ids[6] != 0) echo " class=\"vert\""; ?>>  </td>
+      <td>  </td>
+      <td<?php if($ids[13] != 0) echo " class=\"br\""; ?>></td>
+<?php
+	if ($ids[13] == 0)
+		echo "\t<td></td>\n";
+	else
+		person_disp($ids[13]);
+?>
+    </tr>
+    <tr> <!--row 12-->
+      <td>  </td>
+      <td<?php if($ids[3] != 0) echo " class=\"br\""; ?>> </td>
+<?php
+	if ($ids[3] == 0)
+		echo "\t<td></td>\n";
+	else
+		person_disp($ids[3]);
+?>
+      <td<?php
+		if ($ids[6] != 0 && $ids[7] != 0)
+			echo " class=\"outer\"";
+		elseif ($ids[6] != 0)
+			echo " class=\"rt\"";
+		elseif ($ids[7] != 0)
+			echo " class=\"rb\"";
+?>></td>
+      <td>  </td>
+      <td>  </td>
+      <td>  </td>
+    </tr>
+    <tr> <!--row 13-->
+      <td>  </td>
+      <td>  </td>
+      <td>  </td>
+      <td<?php if($ids[7] != 0) echo " class=\"vert\""; ?>>  </td>
+      <td>  </td>
+      <td<?php if($ids[14] != 0) echo " class=\"tr\""; ?>></td>
+<?php
+	if ($ids[14] == 0)
+		echo "\t<td></td>\n";
+	else
+		person_disp($ids[14]);
+?>
+    </tr>
+    <tr> <!--row 14-->
+      <td>  </td>
+      <td>  </td>
+      <td>  </td>
+      <td<?php if($ids[7] != 0) echo " class=\"br\""; ?>></td>
+<?php
+	if ($ids[7] == 0)
+		echo "\t<td></td>\n";
+	else
+		person_disp($ids[7]);
+?>
+      <td<?php
+		if ($ids[14] != 0 && $ids[15] != 0)
+			echo " class=\"outer\"";
+		elseif ($ids[14] != 0)
+			echo " class=\"rt\"";
+		elseif ($ids[15] != 0)
+			echo " class=\"rb\"";
+?>> </td>
+      <td>  </td>
+    </tr>
+    <tr> <!--row 15-->
+      <td>  </td>
+      <td>  </td>
+      <td>  </td>
+      <td>  </td>
+      <td>  </td>
+      <td<?php if($ids[15] != 0) echo " class=\"br\""; ?>></td>
+<?php
+	if ($ids[15] == 0)
+		echo "\t<td></td>\n";
+	else
+		person_disp($ids[15]);
+?>
     </tr>
   </tbody>
 </table>
 
+<!--End of main body-->
 <?php
 	}
 

@@ -132,11 +132,11 @@
 <!--links to relations table-->
 	<table width="100%">
 		<tr>
-			<th width="90%"><h4><?php echo $strDetails; ?></h4></th>
-			<td width="10%" class="tbl_odd" align="center"><?php
+			<th width="85%"><h4><?php echo $strDetails; ?></h4></th>
+			<td width="15%" class="tbl_odd" align="center"><?php
 				if ($_SESSION["id"] <> 0) {
-?><a href="edit.php?func=edit&amp;area=detail&amp;person=<?php echo $prow["person_id"]; ?>"><?php echo $strEdit; ?></a>::<a href="JavaScript:confirm_delete('<?php echo $prow["name"]; ?>', '<?php echo strtolower($strPerson); ?>', 'passthru.php?func=delete&amp;area=person&amp;person=<?php echo $_REQUEST["person"]; ?>')" class="delete"><?php echo $strDelete; ?></a></td>
-<?php } else echo "</td>"; ?>
+?><a href="pedigree.php?person=<?php echo $prow["person_id"]; ?>"><?php echo $strPedigree; ?></a>::<a href="edit.php?func=edit&amp;area=detail&amp;person=<?php echo $prow["person_id"]; ?>"><?php echo $strEdit; ?></a>::<a href="JavaScript:confirm_delete('<?php echo $prow["name"]; ?>', '<?php echo strtolower($strPerson); ?>', 'passthru.php?func=delete&amp;area=person&amp;person=<?php echo $_REQUEST["person"]; ?>')" class="delete"><?php echo $strDelete; ?></a></td>
+<?php } else echo "<a href=\"pedigree.php?person=".$prow["person_id"]."\">".$strPedigree."</a></td>"; ?>
 		</tr>
 	</table>
 
