@@ -390,11 +390,12 @@
 
 <!--Fill out the form-->
 <form enctype="multipart/form-data" method="post" action="passthru.php?func=insert&amp;area=image&amp;person=<?php echo $_REQUEST["person"]; ?>">
+<input type="hidden" name="MAX_FILE_SIZE" value="1048576">
 	<table>
 		<tr>
 			<td class="tbl_odd">Image to Upload</td>
 			<td class="tbl_even"><input type="file" name="userfile"></td>
-			<td>JPEG only.</td>
+			<td>JPEG only. (max size 1M)</td>
 		</tr>
 		<tr>
 			<td class="tbl_odd">Image Title</td>

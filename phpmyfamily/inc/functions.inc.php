@@ -115,24 +115,44 @@
 
 	// function: processimage
 	// process an uploaded image
-	function processimage($image) {
+	function processimage() {
 		// define globals used within
 		global $tblprefix;
 
+		// image creation needs masses of memory
+		// this is set too large! but needs to be to process a 1MB jpg!
+		// if left as standard 8M, image creation fails and you get error messages and blank thumbnails
+		ini_set("memory_limit", "32M");
+
 		$size = getimagesize($_FILES["userfile"]["tmp_name"]);
 
-		// error with image creation so fail and back out
+		// get the image resource from the uploaded file
 		switch ($size[2]) {
+			case 1:
+				// it's a gif
+				$incoming = imagecreatefromgif($_FILES["userfile"]["tmp_name"]);
+				break;
 			case 2:
-				// get the image resource from the uploaded file
+				// it's a jpeg
 				$incoming = imagecreatefromjpeg($_FILES["userfile"]["tmp_name"]);
 				break;
+			case 3:
+				// it's a png
+				$incoming = imagecreatefrompng($_FILES["userfile"]["tmp_name"]);
+				break;
 			default:
-				$query = "DELETE FROM ".$tblprefix."images WHERE image_id = '".$image."'";
-				$result = mysql_query($query);
+				// don't know what it is so just bail-out
 				return false;
 				break;
 		}
+
+		if (!$incoming) {
+			return false;
+		}
+
+		$iquery = "INSERT INTO ".$tblprefix."images (person_id, title, date, description) VALUES ('".$_REQUEST["person"]."', '".$_POST["frmTitle"]."', '".$_POST["frmDate"]."', '".$_POST["frmDesc"]."')";;
+		$iresult = mysql_query($iquery) or die("Image insert failed");
+		$image = mysql_insert_id();
 
 		// work out the ratio of width to height
 		$ratio = $size[0] / $size[1];

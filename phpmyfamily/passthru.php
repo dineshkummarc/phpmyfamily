@@ -19,6 +19,7 @@
 	// include the configuration parameters and functions
 	include "inc/config.inc.php";
 	include "inc/functions.inc.php";
+	ini_set("max_execution_time", 180);
 
 	// if you are not logged in then you shouldn't be here!
 	if ($_SESSION["id"] == 0 && $_REQUEST["func"] != "login")
@@ -75,11 +76,8 @@
 					stamppeeps($person);
 					break;
 				case "image":
-					$iquery = "INSERT INTO ".$tblprefix."images (person_id, title, date, description) VALUES ('".$_REQUEST["person"]."', '".$_POST["frmTitle"]."', '".$_POST["frmDate"]."', '".$_POST["frmDesc"]."')";;
-					$iresult = mysql_query($iquery) or die("Image insert failed");
-					$image = mysql_insert_id();
 					$person = $_REQUEST["person"];
-					if (processimage($image))
+					if (processimage())
 						stamppeeps($person);
 					break;
 				case "detail":

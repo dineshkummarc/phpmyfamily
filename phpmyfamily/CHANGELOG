@@ -1,4 +1,5 @@
 v 1.2.4
+	better control over failed uploaded images.
 	styles sheets much cleaned up
 	shortened keywords on index and people to be more "search engine friendly"
 	install.php ammended to correct issue with first image creation and zero-filled db column
