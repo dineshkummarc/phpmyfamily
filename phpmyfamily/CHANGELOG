@@ -1,3 +1,4 @@
+	Added Dutch (Belgian) translation (Thanks Dirk)
 	Username added to password recovery email
 	Improvements to installation scripts to avoid warnings
 	Implemented RFE # 1068906 (dynamic date restriction)
