@@ -69,6 +69,7 @@
 	$result = mysql_query($query) or die(mysql_error());
 	//die($err_person);
 	while ($row = mysql_fetch_array($result)) {
+		echo "<hr />\n";
 		echo "<h4><a href=\"people.php?person=".$row["person_id"]."\">".$row["name"]."</a> (".formatdate($row["DOB"])." - ".formatdate($row["DOD"]).")</h4>\n";
 		show_gallery($row["person_id"], "gallery");
 	}
