@@ -159,7 +159,7 @@
 
 		$iquery = "INSERT INTO ".$tblprefix."images (person_id, title, date, description) VALUES ('".$_REQUEST["person"]."', '".htmlspecialchars($_POST["frmTitle"], ENT_QUOTES)."', '".$_POST["frmDate"]."', '".htmlspecialchars($_POST["frmDesc"], ENT_QUOTES)."')";;
 		$iresult = mysql_query($iquery) or die($err_image_insert);
-		$image = mysql_insert_id();
+		$image = str_pad(mysql_insert_id(), 5, 0, STR_PAD_LEFT);
 
 		// work out the ratio of width to height
 		$ratio = $size[0] / $size[1];
