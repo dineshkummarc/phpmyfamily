@@ -45,18 +45,23 @@
 		</td>
 	</tr>
 </table>
+<hr />
 <br /><br />
 <table width="100%">
 	<tr>
 		<td width="50%" valign="top"><?php include "inc/passwdform.inc.php"; ?></td>
 		<td width="50%" align="right" valign="top">
 <?php
-	$query = "SELECT ".$tblprefix."people.* FROM ".$tblprefix."people, ".$tblprefix."tracking WHERE ".$tblprefix."people.person_id = ".$tblprefix."tracking.person_id AND ".$tblprefix."tracking.email = '".$_SESSION["email"]."'";
+	$query = "SELECT ".$tblprefix."people.*, DATE_FORMAT(updated, ".$datefmt.") AS ddate FROM ".$tblprefix."people, ".$tblprefix."tracking WHERE ".$tblprefix."people.person_id = ".$tblprefix."tracking.person_id AND ".$tblprefix."tracking.email = '".$_SESSION["email"]."'";
 	$result = mysql_query($query) or die(mysql_error());
 ?>		
 			<table width="70%">
 				<tr>
 					<th colspan="2">People you are monitoring</th>
+				</tr>
+				<tr>
+					<th><?php echo $strPerson; ?></th>
+					<th><?php echo $strUpdated; ?></th>
 				</tr>
 <?php
 		$i = 0;
@@ -65,7 +70,7 @@
 				$class = "tbl_odd";
 			else
 				$class = "tbl_even";
-			echo "<tr><td class=\"".$class."\">".$row["name"]." ".$row["suffix"]."</td></tr>\n";
+			echo "<tr><td class=\"".$class."\"><a href=\"people.php?person=".$row["person_id"]."\">".$row["name"]." ".$row["suffix"]."</a></td><td class=\"".$class."\">".$row["ddate"]."</td></tr>\n";
 			$i++;
 		}
 ?>
@@ -108,6 +113,7 @@
 		</td>
 	</tr>
 </table>
+<hr />
 <?php
 
 		//find out the state
