@@ -385,7 +385,7 @@
 <?php
 	if ($_SESSION["id"] <> 0) {
 ?>
-			<td class="<?php echo $class; ?>"><a href="JavaScript:confirm_delete('<?php echo $drow["doc_title"]; ?>', '<?php echo strtolower($strTranscript); ?>', 'passthru.php?func=delete&amp;area=transcript&amp;person=<?php echo $_REQUEST["person"]; ?>&amp;transcript=<?php echo $drow["file_name"]; ?>')" class="delete"><?php echo $strDelete; ?></a></td>
+			<td class="<?php echo $class; ?>"><a href="JavaScript:confirm_delete('<?php echo $drow["doc_title"]; ?>', '<?php echo strtolower($strTranscript); ?>', 'passthru.php?func=delete&amp;area=transcript&amp;person=<?php echo $_REQUEST["person"]; ?>&amp;transcript=<?php echo $drow["id"]; ?>')" class="delete"><?php echo $strDelete; ?></a></td>
 <?php
 	} else {
 ?>
@@ -393,7 +393,7 @@
 <?php
 	}
 ?>
-			<td class="<?php echo $class; ?>"><a href="<?php echo $drow["file_name"]; ?>"><?php echo $drow["doc_title"]; ?></a></td>
+			<td class="<?php echo $class; ?>"><a href="document.php?id=<?php echo $drow["id"]; ?>"><?php echo $drow["doc_title"]; ?></a></td>
 			<td class="<?php echo $class; ?>"><?php echo $drow["doc_description"]; ?></td>
 			<td class="<?php echo $class; ?>"><?php echo formatdate($drow["ddate"]); ?></td>
 		</tr>

@@ -137,11 +137,13 @@
 
 	// install ".$tblprefix."documents
 	$fdocs = "CREATE TABLE `".$tblprefix."documents` (
+  `id` smallint(5) unsigned zerofill NOT NULL auto_increment,
   `person_id` smallint(5) unsigned zerofill NOT NULL default '00000',
   `doc_date` date NOT NULL default '0000-00-00',
   `doc_title` varchar(30) NOT NULL default '',
   `doc_description` varchar(60) NOT NULL default '',
   `file_name` varchar(128) NOT NULL default '',
+  PRIMARY KEY  (`id`),
   KEY `person_id` (`person_id`)
 )";
 	$rdocs = mysql_query($fdocs) or die("phpmyfamily: Error creating documents table!!!");

@@ -84,9 +84,10 @@
 					$person = $_REQUEST["person"];
 					break;
 				case "transcript":
-					$iquery = "INSERT INTO ".$tblprefix."documents (person_id, doc_date, doc_title, doc_description, file_name) VALUES ('".$_REQUEST["person"]."', '".$_POST["frmDate"]."', '".htmlspecialchars($_POST["frmTitle"], ENT_QUOTES)."', '".htmlspecialchars($_POST["frmDesc"], ENT_QUOTES)."', 'docs/".$_FILES["userfile"]["name"]."')";
+					$iquery = "INSERT INTO ".$tblprefix."documents (person_id, doc_date, doc_title, doc_description, file_name) VALUES ('".$_REQUEST["person"]."', '".$_POST["frmDate"]."', '".htmlspecialchars($_POST["frmTitle"], ENT_QUOTES)."', '".htmlspecialchars($_POST["frmDesc"], ENT_QUOTES)."', '".$_FILES["userfile"]["name"]."')";
 					$iresult = mysql_query($iquery) or die($err_transcript);
-					move_uploaded_file($_FILES["userfile"]["tmp_name"], "docs/".$_FILES["userfile"]["name"]);
+					$id = str_pad(mysql_insert_id(), 5, 0, STR_PAD_LEFT);
+					move_uploaded_file($_FILES["userfile"]["tmp_name"], "docs/".$id);
 					$person = $_REQUEST["person"];
 					stamppeeps($person);
 					break;
@@ -182,8 +183,8 @@
 					echo "<meta http-equiv=refresh content='0; url=people.php?person=".$_REQUEST["person"]."' />\n";
 					break;
 				case "transcript":
-					if (@unlink($_REQUEST["transcript"])) {
-						$dquery = "DELETE FROM ".$tblprefix."documents WHERE person_id = '".$_REQUEST["person"]."' AND file_name = '".$_REQUEST["transcript"]."'";
+					if (@unlink("docs/".$_REQUEST["transcript"])) {
+						$dquery = "DELETE FROM ".$tblprefix."documents WHERE id = '".$_REQUEST["transcript"]."'";
 						$dresult = mysql_query($dquery) or die($err_trans_delete);
 						stamppeeps($_REQUEST["person"]);
 					}
@@ -195,8 +196,8 @@
 					$squery = "SELECT * FROM ".$tblprefix."documents WHERE person_id = '".$_REQUEST["person"]."'";
 					$sresult = mysql_query($squery) or die($err_trans);
 					while ($srow = mysql_fetch_array($sresult)) {
-						if (@unlink($srow["file_name"])) {
-							$dquery = "DELETE FROM ".$tblprefix."documents WHERE person_id = '".$srow["person_id"]."' AND file_name = '".$srow["file_name"]."'";
+						if (@unlink("docs/".$srow["id"])) {
+							$dquery = "DELETE FROM ".$tblprefix."documents WHERE id = '".$srow["id"]."'";
 							$dresult = mysql_query($dquery) or die($err_trans_delete);
 						} else die($err_trans_file);
 					}
