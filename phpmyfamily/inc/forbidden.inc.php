@@ -24,11 +24,18 @@
 
 <html>
 <head>
-<?php css_site(); ?>
+<link rel="stylesheet" href="styles/metal.css" type="text/css">
 <title>phpmyfamily: Forbidden</title>
 </head>
 <body>
-<h2>Forbidden</h2>
+<table class="header" width="100%">
+  <tbody>
+    <tr>
+      <td><h2>Forbidden</h2>  </td>
+    </tr>
+  </tbody>
+</table>
+
 <hr>
 <p>The page that you have requested has reported that you do not have sufficient rights to view it.  Do not repeat this request.  Please click <a href="index.php">here</a> to continue.  </p>
 </body>
