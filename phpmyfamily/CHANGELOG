@@ -1,3 +1,7 @@
+v 1.2.0
+	Index page rearranged to allow login form
+	Support added to passthru.php for login and logout
+	Login form added
 	Links removed to restricted people.
 	Restrictions added to edit, people, image & passthru based on session and person age
 	Added session.inc.php

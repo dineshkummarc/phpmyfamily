@@ -36,33 +36,117 @@
 			echo "</td>\n";
 		echo "</tr>\n";
 	echo "</table>\n";
+	
+	echo "<hr>\n";
 
-	echo "<p>For everybody in the family.  Please feel free to update any records with any missing information.  Contact <a href=mailto:simon.booth@giric.com>me</a> if you have any problems or if you have any pictures you would like to include.</p>\n";
+	echo "<table width=100%%>\n";
+		echo "<tr>\n";
+			echo "<td width=70% valign=top>";
 
-	echo "<TABLE>\n";
-		echo "<TR>\n";
-			echo "<TH COLSPAN=2>Last 20 People Updated</TH>\n";
-		echo "</TR>\n";
-		echo "<TR>\n";
-			echo "<TH>Person</TH>\n";
-			echo "<TH>Updated</TH>\n";
-		echo "</TR>\n";
-		$query = "SELECT person_id, name, updated FROM people ORDER BY updated DESC LIMIT 0,20";
-		$result = mysql_query($query) or die(mysql_error($result));
-		$i = 0;
-		while ($row = mysql_fetch_array($result)) {
-			if ($i == 0 || $i == 2 || $i == 4 || $i == 6 || $i == 8 || $i == 10 || $i == 12 || $i == 14 || $i == 16 || $i == 18 || $i == 20)
-				$bgcolor = "#CCCCCC";
-			else
-				$bgcolor = "#DDDDDD";
-			echo "<TR>\n";
-				echo "<TD bgcolor=".$bgcolor."><A HREF=people.php?person=".$row["person_id"].">".$row["name"]."</A></TD>\n";
-				echo "<TD bgcolor=".$bgcolor.">".date('H:i d/m/Y', convertstamp($row["updated"]))."</TD>\n";
-			echo "</TR>\n";
-			$i++;
-		}
-		mysql_free_result($result);
-	echo "</TABLE>\n";
+			// include login form if not logged in
+			if ($_SESSION["id"] == 0)
+				include "inc/loginform.inc.php";
+
+			echo "<br><br>\n";
+			echo "<table>\n";
+				echo "<tr>\n";
+					echo "<th colspan=2>Site Statistics</th>\n";
+				echo "</tr>\n";
+				echo "<tr>\n";
+					echo "<th width=200>Area</th>\n";
+					echo "<th width=50>No</th>\n";
+				echo "</tr>\n";
+				echo "<tr>\n";
+					echo "<td bgcolor=#CCCCCC>People on file</td>\n";
+					echo "<td bgcolor=#CCCCCC align=right>";
+					$query = "SELECT count(*) as number FROM people";
+					$result = mysql_query($query);
+					while ($row = mysql_fetch_array($result))
+						echo $row["number"];
+					mysql_free_result($result);
+					echo "</td>\n";
+				echo "</th>\n";
+				echo "<tr>\n";
+					echo "<td bgcolor=#DDDDDD>Census Records</td>\n";
+					echo "<td bgcolor=#DDDDDD align=right>";
+					$query = "SELECT count(*) as number FROM census";
+					$result = mysql_query($query);
+					while ($row = mysql_fetch_array($result))
+						echo $row["number"];
+					mysql_free_result($result);
+					echo "</td>\n";
+				echo "</th>\n";
+				echo "<tr>\n";
+					echo "<td bgcolor=#CCCCCC>Images</td>\n";
+					echo "<td bgcolor=#CCCCCC align=right>";
+					$query = "SELECT count(*) as number FROM images";
+					$result = mysql_query($query);
+					while ($row = mysql_fetch_array($result))
+						echo $row["number"];
+					mysql_free_result($result);
+					echo "</td>\n";
+				echo "</th>\n";
+				echo "<tr>\n";
+					echo "<td bgcolor=#DDDDDD>Document Transcripts</td>\n";
+					echo "<td bgcolor=#DDDDDD align=right>";
+					$query = "SELECT count(*) as number FROM documents";
+					$result = mysql_query($query);
+					while ($row = mysql_fetch_array($result))
+						echo $row["number"];
+					mysql_free_result($result);
+					echo "</td>\n";
+				echo "</th>\n";
+				echo "<tr>\n";
+					echo "<td bgcolor=#CCCCCC>Page Requests</td>\n";
+					echo "<td bgcolor=#CCCCCC align=right>";
+					$query = "SELECT count(*) as number FROM pphl_97075_mpdl";
+					$result = mysql_query($query);
+					while ($row = mysql_fetch_array($result))
+						echo $row["number"];
+					mysql_free_result($result);
+					echo "</td>\n";
+				echo "</th>\n";
+			echo "</table>\n";
+
+			echo "</td>\n";
+			echo "<td width=30% align=right>";
+				// list of last updated people
+				echo "<TABLE>\n";
+					echo "<TR>\n";
+						echo "<TH COLSPAN=2>Last 20 People Updated</TH>\n";
+					echo "</TR>\n";
+					echo "<TR>\n";
+						echo "<TH>Person</TH>\n";
+						echo "<TH>Updated</TH>\n";
+					echo "</TR>\n";
+					$query = "SELECT person_id, name, updated FROM people"; 
+					if ($_SESSION["id"] == 0)
+						$query .= " WHERE date_of_birth < '".$restrictdate."'";
+					$query .= " ORDER BY updated DESC LIMIT 0,20";
+					$result = mysql_query($query) or die(mysql_error($result));
+					$i = 0;
+					while ($row = mysql_fetch_array($result)) {
+						if ($i == 0 || $i == 2 || $i == 4 || $i == 6 || $i == 8 || $i == 10 || $i == 12 || $i == 14 || $i == 16 || $i == 18 || $i == 20)
+							$bgcolor = "#CCCCCC";
+						else
+							$bgcolor = "#DDDDDD";
+						echo "<TR>\n";
+							echo "<TD bgcolor=".$bgcolor."><A HREF=people.php?person=".$row["person_id"].">".$row["name"]."</A></TD>\n";
+							echo "<TD bgcolor=".$bgcolor.">".date('H:i d/m/Y', convertstamp($row["updated"]))."</TD>\n";
+						echo "</TR>\n";
+						$i++;
+					}
+					mysql_free_result($result);
+				echo "</TABLE>\n";
+				
+			echo "</td>\n";
+		echo "</tr>\n";
+	echo "</table>\n";
+
+	// insert footer and copyright here
+	echo "<HR>\n";
+	echo "<center><h5>Version: ".$version." Copyright 2002-2003 Simon E Booth<br>\n";
+	echo "Email <a href=mailto:simon.booth@giric.com>me</a> with any problems</center>\n";
 ?>
 
 <script language="JavaScript" type="text/javascript" src="pphlogger.js"></script>

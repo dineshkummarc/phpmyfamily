@@ -5,7 +5,7 @@
 	// functions.inc.php
 
 	// some definitions
-	$version = "1.1.2";
+	$version = "1.2.0";
 	$restrictdate = "1910-01-01";
 	$restrictmsg = "<FONT COLOR=RED>Restricted</FONT>";
 
