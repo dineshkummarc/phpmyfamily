@@ -58,8 +58,8 @@
 		global $datefmt;
 		global $tblprefix;
 		global $err_person;
-		global $strBorn;
-		global $strDied;
+		global $strBorn, $strOf;
+		global $strDied, $strAt;
 
 		$dquery = "SELECT *, DATE_FORMAT(date_of_birth, ".$datefmt.") AS DOB, DATE_FORMAT(date_of_death, ".$datefmt.") AS DOD FROM ".$tblprefix."people WHERE person_id = '".$dip."'";
 		$dresult = mysql_query($dquery) or die($err_person);
@@ -72,9 +72,24 @@
 
 			echo "<td bgcolor=\"#FFFFFF\" width=\"22%\" class=\"".$class."\">";
 			echo "<a href=\"pedigree.php?person=".$dip."\">".$drow["name"]."</a><br />";
-			echo formatdate($drow["DOB"])." - ".formatdate($drow["DOD"])."<br />";
-			echo $strBorn.": ".$drow["birth_place"]."<br />";
-			echo $strDied.": ".$drow["death_reason"]."<br />";
+
+			// display birth details
+			if ($drow["date_of_birth"] != "0000-00-00" && $drow["birth_place"] != "") {
+				echo $strBorn.": ".$drow["DOB"]." ".$strAt." ".$drow["birth_place"]."<br />\n";
+			} elseif ($drow["date_of_birth"] != "0000-00-00") {
+				echo $strBorn.": ".$drow["DOB"]."<br />\n";
+			} elseif ($drow["birth_place"] != "") {
+				echo $strBorn.": ".$strAt." ".$drow["birth_place"]."<br />\n";
+			}
+
+			// display death details
+			if ($drow["date_of_death"] != "0000-00-00" && $drow["death_reason"] != "") {
+				echo $strDied.": ".$drow["DOD"]." ".$strOf." ".$drow["death_reason"]."<br />\n";
+			} elseif ($drow["date_of_death"] != "0000-00-00") {
+				echo $strDied.": ".$drow["DOD"]."<br />\n";
+			} elseif ($drow["death_reason"] != "") {
+				echo $strDied.": ".$strOf." ".$drow["death_reason"]."<br />\n";
+			}
 			echo "</td>\n";
 		}
 

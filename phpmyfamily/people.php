@@ -74,10 +74,14 @@
 			<td width="65%" align="center" valign="top">
 				<h2><?php echo $prow["name"] ?></h2>
 				<h3><?php
-					if ($restricted)
-						echo "(".$restrictmsg." - ".$restrictmsg.")";
-					else
-						echo "(".formatdate($prow["DOB"])." - ".formatdate($prow["DOD"]).")";?></h3>
+					if ($prow["date_of_birth"] != "0000-00-00" && $prow["date_of_death"] != "0000-00-00") {
+						echo "(".$prow["DOB"]." - ".$prow["DOD"].")";
+					} elseif ($prow["date_of_birth"] != "0000-00-00") {
+						echo "(".$strBorn." ".$prow["DOB"].")";
+					} elseif ($prow["date_of_death"] != "0000-00-00") {
+						echo "(".$strDied." ".$prow["DOD"].")";
+					}
+				?></h3>
 			</td>
 			<td width="35%" valign="top" align="right">
 				<form method="get" action="people.php">
@@ -106,10 +110,13 @@
 		<tr>
 			<th width="5%" valign="top"><?php echo $strBorn; ?>:</th>
 			<td width="38%" class="tbl_odd" valign="top"><?php
-				if ($restricted)
-					echo $restrictmsg;
+				if ($prow["date_of_birth"] != "0000-00-00" && $prow["birth_place"] != "")
+					echo $prow["DOB"]." ".$strAt." ".$prow["birth_place"];
+				elseif ($prow["date_of_birth"] != "0000-00-00")
+					echo $prow["DOB"];
 				else
-					echo formatdate($prow["DOB"])." ".$strAt." ".$prow["birth_place"]; ?></td>
+					echo $prow["birth_place"];
+			?></td>
 			<td class="tbl_odd" valign="top"><?php echo $strCertified; ?><input type="checkbox" name="birthcert" disabled="disabled"<?php if ($prow["birth_cert"] == "Y") echo " checked=\"checked\"" ?> /></td>
 			<th width="5%" valign="top"><?php echo $strFather; ?>:</th>
 			<td width="40%" class="tbl_odd" valign="top"><?php
@@ -122,8 +129,16 @@
 					// if anybody gets here they are hacking
 					// or someones made a mistake with peoples parents
 					echo $frow["name"]." (<font class=\"restrict\">".$strRestricted."</font>)<br />\n";
-				else
-					echo "<a href=\"people.php?person=".$frow["person_id"]."\">".$frow["name"]."</a> (".formatdate($frow["DOB"])." - ".formatdate($frow["DOD"]).")";
+				else {
+					echo "<a href=\"people.php?person=".$frow["person_id"]."\">".$frow["name"]."</a> ";
+					if ($frow["date_of_birth"] != "0000-00-00" && $frow["date_of_death"] != "0000-00-00") {
+						echo "(".$frow["DOB"]." - ".$frow["DOD"].")";
+					} elseif ($prow["date_of_birth"] != "0000-00-00") {
+						echo "(".$strBorn." ".$frow["DOB"].")";
+					} elseif ($prow["date_of_death"] != "0000-00-00") {
+						echo "(".$strDied." ".$frow["DOD"].")";
+					}
+				}
 			}
 			mysql_free_result($fresult);
 		}
@@ -132,10 +147,13 @@
 		<tr>
 			<th width="5%" valign="top"><?php echo $strDied; ?>:</th>
 			<td width="20%" class="tbl_odd" valign="top"><?php
-			if ($restricted)
-				echo $restrictmsg;
-			else
-				echo formatdate($prow["DOD"])." ".$strOf." ".$prow["death_reason"]; ?></td>
+				if ($prow["date_of_death"] != "0000-00-00" && $prow["death_reason"] != "")
+					echo $prow["DOD"]." ".$strOf." ".$prow["death_reason"];
+				elseif ($prow["date_of_death"] != "0000-00-00")
+					echo $prow["DOD"];
+				else
+					echo $prow["death_reason"];
+			?></td>
 			<td class="tbl_odd" valign="top"><?php echo $strCertified; ?><input type="checkbox" name="deathcert" disabled="disabled"<?php if ($prow["death_cert"] == "Y") echo " checked=\"checked\""; ?> /></td>
 			<th valign="top"><?php echo $strMother; ?>:</th>
 			<td class="tbl_odd" valign="top"><?php
@@ -148,8 +166,16 @@
 				// if anybody gets here they are hacking
 				// or someones made a mistake with peoples parents
 				echo $mrow["name"]." (<font class=\"restrict\">".$strRestricted."</font>)<br />\n";
-			else
-				echo "<a href=\"people.php?person=".$mrow["person_id"]."\">".$mrow["name"]."</a> (".formatdate($mrow["DOB"])." - ".formatdate($mrow["DOD"]).")";
+			else {
+				echo "<a href=\"people.php?person=".$mrow["person_id"]."\">".$mrow["name"]."</a> ";
+				if ($mrow["date_of_birth"] != "0000-00-00" && $mrow["date_of_death"] != "0000-00-00") {
+						echo "(".$mrow["DOB"]." - ".$mrow["DOD"].")";
+					} elseif ($mrow["date_of_birth"] != "0000-00-00") {
+						echo "(".$strBorn." ".$mrow["DOB"].")";
+					} elseif ($mrow["date_of_death"] != "0000-00-00") {
+						echo "(".$strDied." ".$mrow["DOD"].")";
+					}
+				}
 			}
 			mysql_free_result($mresult);
 		}
@@ -170,9 +196,15 @@
 <?php
 			}
 			else {
-?>
-				<a href="people.php?person=<?php echo $crow["person_id"]; ?>"><?php echo $crow["name"]; ?></a> <?php echo "(".formatdate($crow["DOB"])." - ".formatdate($crow["DOD"]).")"; ?><br />
-<?php
+				echo "<a href=\"people.php?person=".$crow["person_id"]."\">".$crow["name"]."</a> ";
+				if ($crow["date_of_birth"] != "0000-00-00" && $crow["date_of_death"] != "0000-00-00") {
+					echo "(".$crow["DOB"]." - ".$crow["DOD"].")";
+				} elseif ($crow["date_of_birth"] != "0000-00-00") {
+					echo "(".$strBorn." ".$crow["DOB"].")";
+				} elseif ($crow["date_of_death"] != "0000-00-00") {
+					echo "(".$strDied." ".$crow["DOD"].")";
+				}
+				echo "<br>\n";
 			}
 		}
 		mysql_free_result($cresult);
@@ -192,9 +224,15 @@
 <?php
 			}
 			else {
-?>
-				<a href="people.php?person=<?php echo $srow["person_id"]; ?>"><?php echo $srow["name"]; ?></a> <?php echo "(".formatdate($srow["DOB"])." - ".formatdate($srow["DOD"]).")"; ?><br />
-<?php
+				echo "<a href=\"people.php?person=".$srow["person_id"]."\">".$srow["name"]."</a> ";
+				if ($srow["date_of_birth"] != "0000-00-00" && $srow["date_of_death"] != "0000-00-00") {
+					echo "(".$srow["DOB"]." - ".$srow["DOD"].")";
+				} elseif ($srow["date_of_birth"] != "0000-00-00") {
+					echo "(".$strBorn." ".$srow["DOB"].")";
+				} elseif ($srow["date_of_death"] != "0000-00-00") {
+					echo "(".$strDied." ".$srow["DOD"].")";
+				}
+				echo "<br>\n";
 			}
 		}
 		mysql_free_result($sresult);
@@ -211,7 +249,7 @@
 			<td valign="top" width="80%" class="tbl_even">
 <?php
 		// query for weddings
-		$wquery = "SELECT person_id, name, date_of_birth, marriage_place, marriage_cert, DATE_FORMAT(marriage_date, ".$datefmt.") AS DOM FROM ".$tblprefix."people, ".$tblprefix."spouses WHERE (bride_id = person_id AND groom_id = '".$_REQUEST["person"]."') OR (groom_id = person_id AND bride_id = '".$_REQUEST["person"]."') ORDER BY marriage_date";
+		$wquery = "SELECT person_id, name, date_of_birth, marriage_place, marriage_cert, marriage_date, DATE_FORMAT(marriage_date, ".$datefmt.") AS DOM FROM ".$tblprefix."people, ".$tblprefix."spouses WHERE (bride_id = person_id AND groom_id = '".$_REQUEST["person"]."') OR (groom_id = person_id AND bride_id = '".$_REQUEST["person"]."') ORDER BY marriage_date";
 		$wresult = mysql_query($wquery) or die($err_marriage);
 ?>
 				<table width="100%" cellspacing="0">
@@ -224,8 +262,14 @@
 				echo "<a href=\"edit.php?func=edit&amp;area=marriage&amp;person=".$_REQUEST["person"]."&amp;spouse=".$wrow["person_id"]."\">".$strEdit."</a>::<a href=\"JavaScript:confirm_delete('".$wrow["name"]."', '".strtolower($strMarriage)."', 'passthru.php?func=delete&amp;area=marriage&amp;person=".$_REQUEST["person"]."&amp;spouse=".$wrow["person_id"]."')\" class=\"delete\">".$strDelete."</a>";
 			if ($wrow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0)
 				echo $wrow["name"]." (<font class=\"restrict\">".$strRestricted."</font>)</td>\n";
-			else
-				echo " <a href=\"people.php?person=".$wrow["person_id"]."\">".$wrow["name"]."</a> ".$strOn." ".formatdate($wrow["DOM"])." ".$strAt." ".$wrow["marriage_place"]."</td>\n";
+			else {
+				echo " <a href=\"people.php?person=".$wrow["person_id"]."\">".$wrow["name"]."</a>";
+				if ($wrow["marriage_date"] != "0000-00-00")
+					echo " ".$strOn." ".$wrow["DOM"];
+				if ($wrow["marriage_place"] != "")
+					echo " ".$strAt." ".$wrow["marriage_place"];
+				echo "</td>\n";
+			}
 ?>
 						<td valign="top" class="tbl_even" width="15%" align="right"><?php echo $strCertified; ?><input type="checkbox" name="marriagecert" disabled="disabled"<?php
 			if ($wrow["marriage_cert"] == "Y")
