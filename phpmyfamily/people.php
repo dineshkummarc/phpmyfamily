@@ -239,7 +239,7 @@
 		while ($wrow = mysql_fetch_array($wresult)) {
 ?>
 					<tr>
-						<td width="80%"><?php
+						<td width="80%" class="tbl_even"><?php
 			if ($_SESSION["id"] <> 0)
 				echo "<a href=\"edit.php?func=edit&amp;area=marriage&amp;person=".$_REQUEST["person"]."&amp;spouse=".$wrow["person_id"]."\">".$strEdit."</a>";
 			if ($wrow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0)
