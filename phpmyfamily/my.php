@@ -19,6 +19,14 @@
 	// include the configuration parameters and functions
 	include "inc/config.inc.php";
 
+	// wortk out if we have to do anything
+	@$work = $_REQUEST["func"];
+	if ($work == "style") {
+		$query = "UPDATE ".$tblprefix."users SET style = '".$_POST["pwdStyle"].".css.php' WHERE id = '".$_SESSION["id"]."'";
+		$result = mysql_query($query) or die(mysql_error());
+		$_SESSION["style"] = $_POST["pwdStyle"].".css.php";
+	}
+
 	// do different things for those not logged in
 	if ($_SESSION["id"] != 0) {
 		do_headers("Logged in to phpmyfamily");
@@ -37,10 +45,48 @@
 		</td>
 	</tr>
 </table>
+<br /><br />
 <table width="100%">
 	<tr>
-		<td width="50%"><?php include "inc/passwdform.inc.php"; ?></td>
-		<td width="50%"></td>
+		<td width="50%" valign="top"><?php include "inc/passwdform.inc.php"; ?></td>
+		<td width="50%" align="right" valign="top">
+<?php
+	$query = "SELECT ".$tblprefix."people.* FROM ".$tblprefix."people, ".$tblprefix."tracking WHERE ".$tblprefix."people.person_id = ".$tblprefix."tracking.person_id AND ".$tblprefix."tracking.email = '".$_SESSION["email"]."'";
+	$result = mysql_query($query) or die(mysql_error());
+?>		
+			<table width="70%">
+				<tr>
+					<th colspan="2">People you are monitoring</th>
+				</tr>
+<?php
+		$i = 0;
+		while ($row = mysql_fetch_array($result)) {
+			if ($i == 0 || fmod($i, 2) == 0)
+				$class = "tbl_odd";
+			else
+				$class = "tbl_even";
+			echo "<tr><td class=\"".$class."\">".$row["name"]."</td></tr>\n";
+			$i++;
+		}
+?>
+			</table>
+			<form method="post" action="my.php?func=style">
+			<table>
+				<tr>
+					<td><h3>Change your style</h3></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><?php echo $strStyle; ?></td>
+					<td><?php liststyles("pwdStyle", $_SESSION["style"]); ?></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><input type="submit" name="submit2" value="<?php echo $strChange; ?>" /></td>
+				</tr>
+			</table>
+			</form>
+		</td>
 	</tr>
 </table>
 <?php
