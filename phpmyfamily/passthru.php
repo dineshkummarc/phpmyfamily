@@ -20,8 +20,12 @@
 	include "inc/config.inc.php";
 	include "inc/functions.inc.php";
 
+	// include the browser
+	include "inc/browser.inc.php";
+	include "inc/css.inc.php";
+
 	if ($_SESSION["id"] == 0 && $_REQUEST["func"] != "login")
-		die("Security Breach");
+		die(include "inc/forbidden.inc.php");
 
 	echo "<HEAD>\n";
 	switch ($_REQUEST["func"]) {

@@ -26,7 +26,7 @@
 	include "inc/css.inc.php";
 
 	if ($_SESSION["id"] == 0)
-		die(header("HTTP/1.0 403 Forbidden"));
+		die(include "inc/forbidden.inc.php");
 
 	// fill out the header
 	echo "<HTML>\n";

@@ -31,7 +31,7 @@
 
 	// die if user not autorized
 	if ($_SESSION["id"] == 0 || $_SESSION["admin"] == 0)
-		die(header("Status: 403 Forbidden"));
+		die(include "inc/forbidden.inc.php");
 
 	// process requests sent by self
 	@$func = $_REQUEST["func"];

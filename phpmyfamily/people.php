@@ -52,7 +52,7 @@
 
 		// if trying to access a restriced person
 		if ($restricted)
-			die(header("Status: 403 Forbidden"));
+			die(include "inc/forbidden.inc.php");
 
 		// fill out the header
 		header('Content-Type: text/html; charset=ISO-8859-1');
