@@ -42,7 +42,7 @@
 
 	// do different things for those not logged in
 	if ($_SESSION["id"] != 0) {
-		do_headers("Logged in to phpmyfamily");
+		do_headers($strMyLoggedIn);
 ?>
 <table width="100%" class="header">
 	<tr>
@@ -62,7 +62,7 @@
 <br /><br />
 <?php
 	if ($_SESSION["admin"] == 1) {
-		echo "You are an <a href=\"admin.php\">admin</a> user<br>\n";
+		echo $strAdminUser."<br>\n";
 	}
 ?>
 <table width="100%">
@@ -75,7 +75,7 @@
 ?>		
 			<table width="70%">
 				<tr>
-					<th colspan="2">People you are monitoring</th>
+					<th colspan="2"><?php echo $strMonitoring; ?></th>
 				</tr>
 				<tr>
 					<th><?php echo $strPerson; ?></th>
@@ -100,7 +100,7 @@
 			<form method="post" action="my.php?func=style">
 			<table>
 				<tr>
-					<td><h4>Change your style</h4></td>
+					<td><h4><?php echo $strChangeStyle; ?></h4></td>
 					<td></td>
 				</tr>
 				<tr>
@@ -121,7 +121,7 @@
 			<form method="post" action="my.php?func=email">
 			<table>
 				<tr>
-					<td><h4>Change your email</h4></td>
+					<td><h4><?php echo $strChangeEmail; ?></h4></td>
 					<td></td>
 				</tr>
 				<tr>
@@ -140,7 +140,7 @@
 </table>
 <?php
 	} else {
-		do_headers("Login to phpmyfamily");
+		do_headers($strLogin);
 
 ?>
 <table width="100%" class="header">
@@ -165,12 +165,12 @@
 
 		switch ($state) {
 			case "lost":
-				echo "You have lost your password<br>\n";
+				echo $strLost."<br>\n";
 				include "inc/lostpasswdform.inc.php";
 				break;
 			case "sent":
 				send_password($_REQUEST["pwdEmail"]);
-				echo "A New password has been sent";
+				echo $strSent;
 			default:
 				include "inc/loginform.inc.php";
 		}

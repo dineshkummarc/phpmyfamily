@@ -199,6 +199,13 @@
 	$strStop			= "stop";
 	$strRememberMe		= "Remember me";
 	$strSuffix			= "Suffix";
+	$strLost			= "You have lost your password";
+	$strSent			= "A New password has been sent";
+	$strMyLoggedIn		= "Logged in to phpmyfamily";
+	$strAdminUser		= "You are an <a href=\"admin.php\">admin</a> user";
+	$strMonitoring		= "People you are monitoring";
+	$strChangeStyle		= "Change your style";
+	$strChangeEmail		= "Change your email";
 
 //=====================================================================================================================
 //  email definitions
