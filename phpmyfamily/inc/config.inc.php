@@ -28,7 +28,7 @@
 	$email 		= "simesb@giric.com";	// Contact email address
 	$desc  		= "My Family";
 	$tblprefix 	= "family_";
-	$style		= "styles/default.css";
+	$style		= "styles/default.css.php";
 	$lang		= "lang/en-uk.inc.php";
 
 //=====================================================================================================================
@@ -57,7 +57,7 @@
 // Some general variables
 //=====================================================================================================================
 	// some definitions
-	$version = "1.2.4b";										// version string
+	$version = "1.2.4c";										// version string
 	$restrictdate = "1910-01-01";								// date for restricting people
 	
 //=====================================================================================================================

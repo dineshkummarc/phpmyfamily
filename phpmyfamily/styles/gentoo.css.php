@@ -1,45 +1,55 @@
+<?php
+	header("Content-type: text/css");
+	$font_size = "small";
+	if (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE'))
+		$font_size = "x-small";
+	if (strpos($_SERVER['HTTP_USER_AGENT'], 'Opera'))
+		$font_size = "small";
+	if (strpos($_SERVER['HTTP_USER_AGENT'], 'Mac'))
+		$font_size = "medium";
+?>
 td.tbl_even   {
 	font-family: verdana, arial, helvetica, sans-serif;
-	font-size: small;
-	background-color: #CCE6FF;
+	font-size: <?php echo $font_size; ?>;
+	background-color: #C6F9FF;
 }
 td.tbl_odd   {
 	font-family: verdana, arial, helvetica, sans-serif;
-	font-size: small;
-	background-color: #eeeeff;
+	font-size: <?php echo $font_size; ?>;
+	background-color: #ddddff;
 }
 table.header    {
-    background-color: #6AA1D1;
+    background-color: #45347b;
 	color: #FFFFFF;
 }
 a.hd_link {
-	color: #CCE6FF;
+	color: #00ff00;
 }
 a.hd_link:hover {
-	color: #CCE6FF;
+	color: #00ff00;
 }
 a.copyright:hover {
 	text-decoration: underline;
 }
 input,select,textarea     {
-	background-color: #AFDFFF;
+	background-color: #bbffbb;
 }
 th   {
 	font-family: verdana, arial, helvetica, sans-serif;
-	font-size: small;
-	background-color: #2078a8;
+	font-size: <?php echo $font_size; ?>;
+	background-color: #7a5ada;
 }
 body   {
 	font-family: verdana, arial, helvetica, sans-serif;
-	font-size: small;
-	background-color: #6098C8;
+	font-size: <?php echo $font_size; ?>;
+	background-color: #FFFFFF;
 }
 a:hover   {
-	color: #000000;
+	color: #0000a0;
 	text-decoration: none;
 }
 a   {
-	color: #000000;
+	color: #7a5ada;
 	text-decoration: none;
 }
 h5 {
@@ -48,7 +58,7 @@ h5 {
 }
 td {
 	font-family: verdana, arial, helvetica, sans-serif;
-	font-size: small;
+	font-size: <?php echo $font_size; ?>;
 }
 h4 {
 	font-family: verdana, arial, helvetica, sans-serif;

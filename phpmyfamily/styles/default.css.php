@@ -1,3 +1,13 @@
+<?php
+	header("Content-type: text/css");
+	$font_size = "small";
+	if (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE'))
+		$font_size = "x-small";
+	if (strpos($_SERVER['HTTP_USER_AGENT'], 'Opera'))
+		$font_size = "small";
+	if (strpos($_SERVER['HTTP_USER_AGENT'], 'Mac'))
+		$font_size = "medium";
+?>
 h1 {
 	font-family: verdana, arial, helvetica, sans-serif;
 	font-size: 175%;
@@ -22,9 +32,9 @@ h6 {
 	font-family: verdana, arial, helvetica, sans-serif;
 	font-size: 50%;
 }
-body   {
+body, table   {
 	font-family: verdana, arial, helvetica, sans-serif;
-	font-size: small;
+	font-size: <?php echo $font_size; ?>;
 	background-color: #F5F5F5;
 }
 a   {
@@ -54,21 +64,21 @@ table.header    {
 }
 th   {
 	font-family: verdana, arial, helvetica, sans-serif;
-	font-size: small;
+	font-size: <?php echo $font_size; ?>;
 	background-color: #D3DCE3;
 }
 td {
 	font-family: verdana, arial, helvetica, sans-serif;
-	font-size: small;
+	font-size: <?php echo $font_size; ?>;
 }
 td.tbl_even   {
 	font-family: verdana, arial, helvetica, sans-serif;
-	font-size: small;
+	font-size: <?php echo $font_size; ?>;
 	background-color: #DDDDDD;
 }
 td.tbl_odd   {
 	font-family: verdana, arial, helvetica, sans-serif;
-	font-size: small;
+	font-size: <?php echo $font_size; ?>;
 	background-color: #CCCCCC;
 }
 .restrict {
