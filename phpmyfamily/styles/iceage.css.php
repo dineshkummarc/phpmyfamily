@@ -31,6 +31,9 @@ a.hd_link:hover {
 a.copyright:hover {
 	text-decoration: underline;
 }
+a.delete:hover {
+	color: red;
+}
 input,select,textarea     {
 	background-color: #AFDFFF;
 }
