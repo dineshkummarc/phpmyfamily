@@ -1,5 +1,5 @@
-	copyright updated to 2004
-v 1.2.4a
+	footers standardised
+	internationalisation files created
 	converted to xhtml
 v 1.2.4
 	better control over failed uploaded images.
@@ -8,7 +8,7 @@ v 1.2.4
 	install.php ammended to correct issue with first image creation and zero-filled db column
 	html cleaned up throughout app
 	session.use_trans_id set to false to help spiders
-	Table prefix made ammendable (dafault "family")
+	Table prefix made ammendable (default "family")
 	Forbidden page added
 v 1.2.3
 	Added installation instructions.

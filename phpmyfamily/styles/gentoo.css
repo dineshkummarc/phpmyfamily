@@ -18,6 +18,9 @@ a.hd_link {
 a.hd_link:hover {
 	color: #00ff00;
 }
+a.copyright:hover {
+	text-decoration: underline;
+}
 input,select,textarea     {
 	background-color: #bbffbb;
 }

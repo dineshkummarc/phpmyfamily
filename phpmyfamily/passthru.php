@@ -53,7 +53,7 @@
 					break;
 			}
 			$result = mysql_query($query);
-			echo "<META HTTP-EQUIV=Refresh CONTENT='0; URL=people.php?person=".$_REQUEST["person"]."'>\n";
+			echo "<meta http-equiv=refresh content='0; url=people.php?person=".$_REQUEST["person"]."' />\n";
 			break;
 		case "insert";
 			switch ($_REQUEST["area"]) {
@@ -70,7 +70,7 @@
 					break;
 				case "transcript":
 					$iquery = "INSERT INTO ".$tblprefix."documents (person_id, doc_date, doc_title, doc_description, file_name) VALUES ('".$_REQUEST["person"]."', '".$_POST["frmDate"]."', '".$_POST["frmTitle"]."', '".$_POST["frmDesc"]."', 'docs/".$_FILES["userfile"]["name"]."')";
-					$iresult = mysql_query($iquery) or die("Transcript insertion failed");
+					$iresult = mysql_query($iquery) or die($err_transcript);
 					move_uploaded_file($_FILES["userfile"]["tmp_name"], "docs/".$_FILES["userfile"]["name"]);
 					$person = $_REQUEST["person"];
 					stamppeeps($person);
@@ -82,25 +82,25 @@
 					break;
 				case "detail":
 					$iquery = "INSERT INTO ".$tblprefix."people (person_id, name, date_of_birth, birth_place, date_of_death, death_reason, gender, mother_id, father_id, narrative, updated) VALUES ('', '".$_POST["frmName"]."', '".$_POST["frmDOB"]."', '".$_POST["frmBirthPlace"]."', '".$_POST["frmDOD"]."', '".$_POST["frmDeathReason"]."', '".$_POST["frmGender"]."', '".$_POST["frmMother"]."', '".$_POST["frmFather"]."', '".$_POST["frmNarrative"]."', NOW())";
-					$iresult = mysql_query($iquery) or die("Detail nsert query failed");
+					$iresult = mysql_query($iquery) or die($err_detail);
 					$person = mysql_insert_id();
 					break;
 				case "census":
 					stamppeeps($_REQUEST["person"]);
 
 					$iquery = "INSERT INTO ".$tblprefix."census (person_id, year, schedule, address, condition, age, profession, where_born) VALUES ('".$_REQUEST["person"]."', '".$_POST["frmYear"]."', '".$_POST["frmSchedule"]."', '".$_POST["frmAddress"]."', '".$_POST["frmCondition"]."', '".$_POST["frmAge"]."', '".$_POST["frmProfession"]."', '".$_POST["frmWhereBorn"]."')";
-					$iresult = mysql_query($iquery) or die("Census insert query failed");
+					$iresult = mysql_query($iquery) or die($err_census);
 
 					$person = $_REQUEST["person"];
 					break;
 				default:
 					break;
 			}
-			echo "<META HTTP-EQUIV=Refresh CONTENT='0; URL=people.php?person=".$person."'>\n";
+			echo "<meta http-equiv=refresh content='0; url=people.php?person=".$person."' />\n";
 			break;
 		case "login":
 			@$query = "SELECT * FROM ".$tblprefix."users WHERE username = '".$_POST["pwdUser"]."' AND password = '".md5($_POST["pwdPassword"])."'";
-			$result = mysql_query($query) or die("error logging on");
+			$result = mysql_query($query) or die($err_logon);
 			if (mysql_num_rows($result) == 1) {
 				while ($row = mysql_fetch_array($result)) {
 					$_SESSION["id"] = $row["id"];
@@ -112,32 +112,32 @@
 				}
 			}
 			mysql_free_result($result);
-			echo "<META HTTP-EQUIV=Refresh CONTENT='0; URL=index.php'>\n";
+			echo "<meta http-equiv=refresh content='0; url=index.php' />\n";
 			break;
 		case "logout":
 			$_SESSION["id"] = 0;
 			$_SESSION["name"] = "nobody";
 			$_SESSION["admin"] = 0;
-			echo "<META HTTP-EQUIV=Refresh CONTENT='0; URL=index.php'>\n";
+			echo "<meta http-equiv=refresh content='0; url=index.php' />\n";
 			break;
 		case "change":
 			$fcheck1 = "SELECT * FROM ".$tblprefix."users WHERE id = '".$_SESSION["id"]."' AND password = '".md5($_POST["pwdOld"])."'";
-			$rcheck1 = mysql_query($fcheck1) or die("Error checking password change 1");
+			$rcheck1 = mysql_query($fcheck1) or die($err_change);
 			if (mysql_num_rows($rcheck1) == 0)
-				echo "<META HTTP-EQUIV=Refresh CONTENT='0; URL=index.php?reason=Incorrect Password Supplied'>\n";
+				echo "<meta http-equiv=refresh content='0; url=index.php?reason=".$err_pwd_incorrect."' />\n";
 			elseif ($_POST["pwdPwd1"] <> $_POST["pwdPwd2"])
-				echo "<META HTTP-EQUIV=Refresh CONTENT='0; URL=index.php?reason=New passwords do not match'>\n";
+				echo "<meta http-equiv=refresh content='0; url=index.php?reason=".$err_pwd_match."' />\n";
 			else {
 				$fchange = "UPDATE ".$tblprefix."users SET password = '".md5($_POST["pwdPwd1"])."' WHERE id = '".$_SESSION["id"]."'";
-				$rchange = mysql_query($fchange) or die("Error trying to change password");
-				echo "<META HTTP-EQUIV=Refresh CONTENT='0; URL=index.php?reason=Password successfully changed'>\n";
+				$rchange = mysql_query($fchange) or die($err_update);
+				echo "<meta http-equiv=refresh content='0; url=index.php?reason=".$err_pwd_success."' />\n";
 			}
 			break;
 		default:
-			echo "<META HTTP-EQUIV=Refresh CONTENT='0; URL=people.php?person=".$_POST["person"]."'>\n";
+			echo "<meta http-equiv=refresh content='0; url=people.php?person=".$_POST["person"]."' />\n";
 			break;
 	}
-	echo "</HEAD>\n";
+	echo "</head>\n";
 
 	// eof
 ?>

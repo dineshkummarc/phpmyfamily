@@ -29,8 +29,8 @@
 	@$person = $_REQUEST["person"];
 
 	// the query for the database
-	$pquery = "SELECT * FROM ".$tblprefix."people WHERE person_id = '".$_REQUEST["person"]."'";
-	$presult = mysql_query($pquery) or die("Person query failed");
+	$pquery = "SELECT *, DATE_FORMAT(date_of_birth, ".$datefmt.") AS DOB, DATE_FORMAT(date_of_death, ".$datefmt.") AS DOD FROM ".$tblprefix."people WHERE person_id = '".$_REQUEST["person"]."'";
+	$presult = mysql_query($pquery) or die($err_person);
 	while ($prow = mysql_fetch_array($presult)) {
 
 		// set security for living people (born after 01/01/1910)
@@ -52,15 +52,15 @@
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
+<html dir="<?php echo $dir; ?>">
 <head>
 <link rel="stylesheet" href="<?php echo $style; ?>" type="text/css" />
-<link rel="SHORTCUT ICON" href="images/favicon.ico" />
+<link rel="shortcut icon" href="images/favicon.ico" />
 <meta name="author" content="Simon E Booth" />
 <meta name="publisher" content="Giric" />
 <meta name="copyright" content="2002-2003 Simon E Booth" />
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-<meta http-equiv="content-language" content="en" />
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $charset; ?>" />
+<meta http-equiv="content-language" content="<?php echo $clang; ?>" />
 <meta name="keywords" content="Genealogy <?php echo $prow["name"]; ?><?php
 	$fname = "SELECT SUBSTRING_INDEX(name, ' ', -1) AS surname FROM ".$tblprefix."people";
 	if ($_SESSION["id"] == 0)
@@ -68,7 +68,7 @@
 	else
 		$fname .= " WHERE person_id <> '".$_REQUEST["person"]."'";
 	$fname .= " GROUP BY surname LIMIT 0,16";
-	$rname = mysql_query($fname) or die("Error getting names!");
+	$rname = mysql_query($fname) or die($err_keywords);
 	if (mysql_num_rows($rname) <> 0) {
 		while ($row = mysql_fetch_array($rname))
 			echo " ".$row["surname"];
@@ -93,7 +93,7 @@
 					if ($restricted)
 						echo "(".$restrictmsg." - ".$restrictmsg.")";
 					else
-						echo "(".formatdbdate($prow["date_of_birth"])." - ".formatdbdate($prow["date_of_death"]).")";?></h3>
+						echo "(".formatdate($prow["DOB"])." - ".formatdate($prow["DOD"]).")";?></h3>
 			</td>
 			<td width="20%">
 				<form method="get" action="people.php">
@@ -101,11 +101,11 @@
 				</form>
 <?php
 			if ($_SESSION["id"] <> 0) { ?>
-				<br />You are logged in as <a href="index.php" class="hd_link"><?php echo $_SESSION["name"]; ?></a>: (<a href="passthru.php?func=logout" class="hd_link">logout</a><?php if ($_SESSION["admin"] == 1) echo ", <a href=\"admin.php\" class=\"hd_link\">admin</a>"; ?>)
+				<br /><?php echo $strLoggedIn; ?><a href="index.php" class="hd_link"><?php echo $_SESSION["name"]; ?></a>: (<a href="passthru.php?func=logout" class="hd_link"><?php echo $strLogout; ?></a><?php if ($_SESSION["admin"] == 1) echo ", <a href=\"admin.php\" class=\"hd_link\">".$strAdmin."</a>"; ?>)
 <?php 		}
 			else {
 ?>
-				<br />You are not logged in: <a href="index.php" class="hd_link">home</a>
+				<br /><?php echo $strLoggedOut; ?><a href="index.php" class="hd_link"><?php echo $strHome; ?></a>
 <?php
 			} ?>
 			</td>
@@ -117,80 +117,81 @@
 <!--links to relations table-->
 	<table width="100%">
 		<tr>
-			<th width="95%"><h4>Details</h4></th>
-			<td width="5%" class="tbl_odd"><?php
-				if ($_SESSION["id"] <> 0)
-					echo "<a href=\"edit.php?func=edit&amp;area=detail&amp;person=".$prow["person_id"]."\">edit</a>"; ?></td>
+			<th width="92%"><h4><?php echo $strDetails; ?></h4></th>
+			<td width="8%" class="tbl_odd" align="center"><?php
+				if ($_SESSION["id"] <> 0) {
+?><a href="edit.php?func=edit&amp;area=detail&amp;person=<?php echo $prow["person_id"]; ?>"><?php echo $strEdit; ?></a> | <a href="edit.php?func=add&amp;area=detail"><?php echo $strAdd; ?></a></td>
+<?php } ?>
 		</tr>
 	</table>
 
 <!--BDM-->
 	<table>
 		<tr>
-			<th width="5%" valign="top">Born:</th>
+			<th width="5%" valign="top"><?php echo $strBorn; ?>:</th>
 			<td width="38%" class="tbl_odd" valign="top"><?php
 				if ($restricted)
 					echo $restrictmsg;
 				else
-					echo formatdbdate($prow["date_of_birth"])." at ".$prow["birth_place"]; ?></td>
-			<td class="tbl_odd" valign="top">Certified <input type="checkbox" name="birthcert" disabled="disabled"<?php if ($prow["birth_cert"] == "Y") echo " checked=\"checked\"" ?> /></td>
-			<th width="5%" valign="top">Father:</th>
+					echo formatdate($prow["DOB"])." ".$strAt." ".$prow["birth_place"]; ?></td>
+			<td class="tbl_odd" valign="top"><?php echo $strCertified; ?><input type="checkbox" name="birthcert" disabled="disabled"<?php if ($prow["birth_cert"] == "Y") echo " checked=\"checked\"" ?> /></td>
+			<th width="5%" valign="top"><?php echo $strFather; ?>:</th>
 			<td width="40%" class="tbl_odd" valign="top"><?php
 		// the query for father
-		$fquery = "SELECT * FROM ".$tblprefix."people WHERE person_id = '".$father."'";
-		$fresult = mysql_query($fquery) or die("Father query failed");
+		$fquery = "SELECT *, DATE_FORMAT(date_of_birth, ".$datefmt.") AS DOB, DATE_FORMAT(date_of_death, ".$datefmt.") AS DOD FROM ".$tblprefix."people WHERE person_id = '".$father."'";
+		$fresult = mysql_query($fquery) or die($err_father);
 		while ($frow = mysql_fetch_array($fresult)) {
 			if ($frow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0)
 				// if anybody gets here they are hacking
 				// or someones made a mistake with peoples parents
-				echo $frow["name"]." (<font class=\"restrict\">Restricted</font>)<br />\n";
+				echo $frow["name"]." (<font class=\"restrict\">".$strRestricted."</font>)<br />\n";
 			else
-				echo "<a href=\"people.php?person=".$frow["person_id"]."\">".$frow["name"]."</a>(".formatdbdate($frow["date_of_birth"])." - ".formatdbdate($frow["date_of_death"]).")";
+				echo "<a href=\"people.php?person=".$frow["person_id"]."\">".$frow["name"]."</a>(".formatdate($frow["DOB"])." - ".formatdate($frow["DOD"]).")";
 		}
 		mysql_free_result($fresult);
 ?></td>
 		</tr>
 		<tr>
-			<th width="5%" valign="top">Died:</th>
+			<th width="5%" valign="top"><?php echo $strDied; ?>:</th>
 			<td width="20%" class="tbl_odd" valign="top"><?php
 			if ($restricted)
 				echo $restrictmsg;
 			else
-				echo formatdbdate($prow["date_of_death"])." of ".$prow["death_reason"]; ?></td>
-			<td class="tbl_odd" valign="top">Certified <input type="checkbox" name="deathcert" disabled="disabled"<?php if ($prow["death_cert"] == "Y") echo " checked=\"checked\""; ?> /></td>
-			<th valign="top">Mother:</th>
+				echo formatdate($prow["DOD"])." ".$strOf." ".$prow["death_reason"]; ?></td>
+			<td class="tbl_odd" valign="top"><?php echo $strCertified; ?><input type="checkbox" name="deathcert" disabled="disabled"<?php if ($prow["death_cert"] == "Y") echo " checked=\"checked\""; ?> /></td>
+			<th valign="top"><?php echo $strMother; ?>:</th>
 			<td class="tbl_odd" valign="top"><?php
 		// the query for mother
-		$mquery = "SELECT * FROM ".$tblprefix."people WHERE person_id = '".$mother."'";
-		$mresult = mysql_query($mquery) or die("Mother query failed");
+		$mquery = "SELECT *, DATE_FORMAT(date_of_birth, ".$datefmt.") AS DOB, DATE_FORMAT(date_of_death, ".$datefmt.") AS DOD FROM ".$tblprefix."people WHERE person_id = '".$mother."'";
+		$mresult = mysql_query($mquery) or die($err_mother);
 		while ($mrow = mysql_fetch_array($mresult)) {
 			if ($mrow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0)
 			// if anybody gets here they are hacking
 			// or someones made a mistake with peoples parents
-			echo $mrow["name"]." (<font class=\"restrict\">Restricted</font>)<br />\n";
+			echo $mrow["name"]." (<font class=\"restrict\">".$strRestricted."</font>)<br />\n";
 		else
-			echo "<a href=\"people.php?person=".$mrow["person_id"]."\">".$mrow["name"]."</a>(".formatdbdate($mrow["date_of_birth"])." - ".formatdbdate($mrow["date_of_death"]).")";
+			echo "<a href=\"people.php?person=".$mrow["person_id"]."\">".$mrow["name"]."</a>(".formatdate($mrow["DOB"])." - ".formatdate($mrow["DOD"]).")";
 		}
 		mysql_free_result($mresult);
 ?></td>
 		</tr>
 		<tr>
 			<!--Children-->
-			<th valign="top">Children:</th>
+			<th valign="top"><?php echo $strChildren; ?>:</th>
 			<td valign="top" class="tbl_even" colspan="2">
 <?php
 		// query for children
-		$cquery = "SELECT * FROM ".$tblprefix."people WHERE (father_id = '".$_REQUEST["person"]."' OR mother_id = '".$_REQUEST["person"]."') ORDER BY date_of_birth";
-		$cresult = mysql_query($cquery) or die("Children query failed");
+		$cquery = "SELECT *, DATE_FORMAT(date_of_birth, ".$datefmt.") AS DOB, DATE_FORMAT(date_of_death, ".$datefmt.") AS DOD FROM ".$tblprefix."people WHERE (father_id = '".$_REQUEST["person"]."' OR mother_id = '".$_REQUEST["person"]."') ORDER BY date_of_birth";
+		$cresult = mysql_query($cquery) or die($err_children);
 		while ($crow = mysql_fetch_array($cresult)) {
 			if ($crow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0) {
 ?>
-				<?php echo $crow["name"]; ?>(<font class="restrict">Restricted</font>)<br />
+				<?php echo $crow["name"]; ?>(<font class="restrict"><?php echo $strRestricted; ?></font>)<br />
 <?php
 			}
 			else {
 ?>
-				<a href="people.php?person=<?php echo $crow["person_id"]; ?>"><?php echo $crow["name"]; ?> </a><?php echo "(".formatdbdate($crow["date_of_birth"])." - ".formatdbdate($crow["date_of_death"]).")"; ?><br />
+				<a href="people.php?person=<?php echo $crow["person_id"]; ?>"><?php echo $crow["name"]; ?> </a><?php echo "(".formatdate($crow["DOB"])." - ".formatdate($crow["DOD"]).")"; ?><br />
 <?php
 			}
 		}
@@ -198,21 +199,21 @@
 ?>
 			</td>
 			<!--Siblings-->
-			<th valign="top">Siblings:</th>
+			<th valign="top"><?php echo $strSiblings; ?>:</th>
 			<td valign="top" class="tbl_even">
 <?php
 		// the query for siblings
-		$squery = "SELECT * FROM ".$tblprefix."people WHERE (father_id = '".$father."' OR mother_id = '".$mother."') AND person_id <> '".$_REQUEST["person"]."' ORDER BY date_of_birth";
-		$sresult = mysql_query($squery) or die("Siblings query failed");
+		$squery = "SELECT *, DATE_FORMAT(date_of_birth, ".$datefmt.") AS DOB, DATE_FORMAT(date_of_death, ".$datefmt.") AS DOD FROM ".$tblprefix."people WHERE (father_id = '".$father."' OR mother_id = '".$mother."') AND person_id <> '".$_REQUEST["person"]."' ORDER BY date_of_birth";
+		$sresult = mysql_query($squery) or die($err_siblings);
 		while ($srow = mysql_fetch_array($sresult)) {
 			if ($srow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0) {
 ?>
-				<?php echo $srow["name"]; ?>(<font class="restrict">Restricted</font>)<br />
+				<?php echo $srow["name"]; ?>(<font class="restrict"><?php echo $strRestricted; ?></font>)<br />
 <?php
 			}
 			else {
 ?>
-				<a href="people.php?person=<?php echo $srow["person_id"]; ?>"><?php echo $srow["name"]; ?></a><?php echo "(".formatdbdate($srow["date_of_birth"])." - ".formatdbdate($srow["date_of_death"]).")"; ?><br />
+				<a href="people.php?person=<?php echo $srow["person_id"]; ?>"><?php echo $srow["name"]; ?></a><?php echo "(".formatdate($srow["DOB"])." - ".formatdate($srow["DOD"]).")"; ?><br />
 <?php
 			}
 		}
@@ -226,12 +227,12 @@
 <hr />
 	<table>
 		<tr>
-			<th valign="top" width="5%">Married:</th>
+			<th valign="top" width="5%"><?php echo $strMarried; ?>:</th>
 			<td valign="top" width="71%" class="tbl_even">
 <?php
 		// query for weddings
-		$wquery = "SELECT * FROM ".$tblprefix."people, ".$tblprefix."spouses WHERE (bride_id = person_id OR groom_id = person_id) AND (groom_id = '".$_REQUEST["person"]."' OR bride_id = '".$_REQUEST["person"]."') AND person_id <> '".$_REQUEST["person"]."' ORDER BY marriage_date";
-		$wresult = mysql_query($wquery) or die("Marriage query failed");
+		$wquery = "SELECT *, DATE_FORMAT(marriage_date, ".$datefmt.") AS DOM FROM ".$tblprefix."people, ".$tblprefix."spouses WHERE (bride_id = person_id OR groom_id = person_id) AND (groom_id = '".$_REQUEST["person"]."' OR bride_id = '".$_REQUEST["person"]."') AND person_id <> '".$_REQUEST["person"]."' ORDER BY marriage_date";
+		$wresult = mysql_query($wquery) or die($err_marriage);
 ?>
 				<table width="100%">
 <?php
@@ -240,13 +241,13 @@
 					<tr>
 						<td width="80%"><?php
 			if ($_SESSION["id"] <> 0)
-				echo "<a href=\"edit.php?func=edit&amp;area=marriage&amp;person=".$_REQUEST["person"]."&amp;spouse=".$wrow["person_id"]."\">edit</a>";
+				echo "<a href=\"edit.php?func=edit&amp;area=marriage&amp;person=".$_REQUEST["person"]."&amp;spouse=".$wrow["person_id"]."\">".$strEdit."</a>";
 			if ($wrow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0)
-				echo $wrow["name"]." (<font class=\"restrict\">Restricted</font>)";
+				echo $wrow["name"]." (<font class=\"restrict\">".$strRestricted."</font>)";
 			else
-				echo " <a href=\"people.php?person=".$wrow["person_id"]."\">".$wrow["name"]."</a> on ".formatdbdate($wrow["marriage_date"])." at ".$wrow["marriage_place"]."</td>\n";
+				echo " <a href=\"people.php?person=".$wrow["person_id"]."\">".$wrow["name"]."</a> ".$strOn." ".formatdate($wrow["DOM"])." ".$strAt." ".$wrow["marriage_place"]."</td>\n";
 ?>
-						<td valign="top" class="tbl_even" width="15%" align="right">Certified <input type="checkbox" name="marriagecert" disabled="disabled"<?php
+						<td valign="top" class="tbl_even" width="15%" align="right"><?php echo $strCertified; ?><input type="checkbox" name="marriagecert" disabled="disabled"<?php
 			if ($wrow["marriage_cert"] == "Y")
 				echo " checked=\"checked\"";
 ?> /></td>
@@ -259,7 +260,7 @@
 			</td>
 			<td align="right" class="tbl_odd" valign="top"><?php
 		if ($_SESSION["id"] <> 0)
-			echo "<a href=\"edit.php?func=add&amp;person=".$_REQUEST["person"]."&amp;area=marriage\">insert</a> new marriage"; ?></td>
+			echo "<a href=\"edit.php?func=add&amp;person=".$_REQUEST["person"]."&amp;area=marriage\">".$strInsert."</a> ".$strNewMarriage; ?></td>
 		</tr>
 	</table>
 
@@ -267,7 +268,7 @@
 <hr />
 	<table width="100%">
 		<tr>
-			<td width="95%"><h4>Notes</h4></td>
+			<td width="95%"><h4><?php echo $strNotes; ?></h4></td>
 			<td width="5%"></td>
 		</tr>
 	</table>
@@ -283,10 +284,10 @@
 <hr />
 	<table width="100%">
 		<tr>
-			<td width="80%"><h4>Image Gallery</h4></td>
+			<td width="80%"><h4><?php echo $strGallery; ?></h4></td>
 			<td align="right"><?php
 		if ($_SESSION["id"] <> 0)
-			echo "<a href=\"edit.php?func=add&amp;area=image&amp;person=".$_REQUEST["person"]."\">upload</a> new image";
+			echo "<a href=\"edit.php?func=add&amp;area=image&amp;person=".$_REQUEST["person"]."\">".$strUpload."</a> ".$strNewImage;
 ?></td>
 		</tr>
 	</table>
@@ -296,11 +297,9 @@
 			echo $restrictmsg."\n";
 		else {
 			$iquery = "SELECT * FROM ".$tblprefix."images WHERE person_id = '".$_REQUEST["person"]."' ORDER BY date";
-			$iresult = mysql_query($iquery) or die("image fetch failed");
+			$iresult = mysql_query($iquery) or die($err_images);
 			if (mysql_num_rows($iresult) == 0) {
-?>
-	No images available
-<?php
+				echo "\t".$strNoImages;
 			}
 			else {
 ?>
@@ -359,10 +358,10 @@
 <hr />
 	<table width="100%">
 		<tr>
-			<td width="80%"><h4>Census Details</h4></td>
+			<td width="80%"><h4><?php echo $strCensusDetails; ?></h4></td>
 			<td width="20%" valign="top" align="right"><?php
 				if ($_SESSION["id"] <> 0)
-					echo "<a href=\"edit.php?func=add&amp;area=census&amp;person=".$_REQUEST["person"]."\">insert</a> new census"; ?></td>
+					echo "<a href=\"edit.php?func=add&amp;area=census&amp;person=".$_REQUEST["person"]."\">".$strInsert."</a> ".$strNewCensus; ?></td>
 		</tr>
 	</table>
 
@@ -370,21 +369,22 @@
 		if ($restricted)
 			echo $restrictmsg."\n";
 		else {
-			$cquery = "SELECT * FROM ".$tblprefix."census WHERE person_id = '".$_REQUEST["person"]."' ORDER BY year";					$cresult = mysql_query($cquery) or die("Census query failed");
-				if (mysql_num_rows($cresult) == 0)
-					echo "No information available\n";
-				else {
+			$cquery = "SELECT * FROM ".$tblprefix."census WHERE person_id = '".$_REQUEST["person"]."' ORDER BY year";
+			$cresult = mysql_query($cquery) or die($err_census_ret);
+			if (mysql_num_rows($cresult) == 0)
+				echo $strNoInfo."\n";
+			else {
 ?>
 	<table width="100%">
 		<tr>
 			<th></th>
-			<th>Year</th>
-			<th>Reference</th>
-			<th>Address</th>
-			<th>Condition</th>
-			<th>Age</th>
-			<th>Profession</th>
-			<th>Birth Place</th>
+			<th><?php echo $strYear; ?></th>
+			<th><?php echo $strSchedule; ?></th>
+			<th><?php echo $strAddress; ?></th>
+			<th><?php echo $strCondition; ?></th>
+			<th><?php echo $strAge; ?></th>
+			<th><?php echo $strProfession; ?></th>
+			<th><?php echo $strBirthPlace; ?></th>
 		</tr>
 <?php
 		$i = 0;
@@ -397,7 +397,7 @@
 		<tr>
 			<td class="<?php echo $class; ?>"><?php
 							if ($_SESSION["id"] <> 0)
-								echo "<a href=\"edit.php?func=edit&amp;area=census&amp;person=".$_REQUEST["person"]."&amp;year=".$crow["year"]."\">edit</a>";
+								echo "<a href=\"edit.php?func=edit&amp;area=census&amp;person=".$_REQUEST["person"]."&amp;year=".$crow["year"]."\">".$strEdit."</a>";
 ?></td>
 			<td class="<?php echo $class; ?>"><?php echo $crow["year"]; ?></td>
 			<td class="<?php echo $class; ?>"><?php echo $crow["schedule"]; ?></td>
@@ -418,34 +418,34 @@
 		}
 ?>
 
-<!--documnet transcripts-->
+<!--document transcripts-->
 <hr />
 	<table width="100%">
 		<tr>
-			<td width="80%"><h4>Document Transcripts</h4></td>
+			<td width="80%"><h4><?php echo $strDocTrans; ?></h4></td>
 			<td width="20%" valign="top" align="right"><?php
 				if ($_SESSION["id"] <> 0)
-					echo "<a href=\"edit.php?func=add&amp;area=transcript&amp;person=".$_REQUEST["person"]."\">upload</a> new transcript"; ?></td>
+					echo "<a href=\"edit.php?func=add&amp;area=transcript&amp;person=".$_REQUEST["person"]."\">".$strUpload."</a> ".$strNewTrans; ?></td>
 		</tr>
 	</table>
 <?php
 		if ($restricted)
 			echo $restrictmsg."\n";
 		else {
-			$dquery = "SELECT * FROM ".$tblprefix."documents WHERE person_id = '".$_REQUEST["person"]."'";
-			$dresult = mysql_query($dquery) or die("Document query failed");
+			$dquery = "SELECT *, DATE_FORMAT(doc_date, $datefmt) AS ddate FROM ".$tblprefix."documents WHERE person_id = '".$_REQUEST["person"]."'";
+			$dresult = mysql_query($dquery) or die($err_trans);
 			if (mysql_num_rows($dresult) == 0) {
 ?>
-	No documents available<br />
+	<?php echo $strNoInfo; ?><br />
 <?php
 			}
 			else {
 ?>
 	<table>
 		<tr>
-			<th width="30%">Title</th>
-			<th width="50%">Description</th>
-			<th width="10%">Date</th>
+			<th width="30%"><?php echo $strTitle; ?></th>
+			<th width="50%"><?php echo $strDesc; ?></th>
+			<th width="10%"><?php echo $strDate; ?></th>
 		</tr>
 <?php
 					$i = 0;
@@ -458,45 +458,23 @@
 		<tr>
 			<td class="<?php echo $class; ?>"><a href="<?php echo $drow["file_name"]; ?>"><?php echo $drow["doc_title"]; ?></a></td>
 			<td class="<?php echo $class; ?>"><?php echo $drow["doc_description"]; ?></td>
-			<td class="<?php echo $class; ?>"><?php echo formatdbdate($drow["doc_date"]); ?></td>
+			<td class="<?php echo $class; ?>"><?php echo formatdate($drow["ddate"]); ?></td>
 		</tr>
 <?php
 					$i++;
 					}
 ?>
 	</table>
-<br />Click the document title to download. (Might need to right click&amp; Save Target As.. in Internet Explorer)<br />
+<br /><?php echo $strRightClick; ?><br />
 <?php
 			}
 			mysql_free_result($dresult);
 		}
-?>
-
-<!--footer-->
-<hr />
-	<table width="100%">
-		<tr>
-			<td width="15%" align="center" valign="middle"><a href="http://validator.w3.org/check/referer"><img border="0" src="images/valid-xhtml10.png" alt="Valid XHTML 1.0!" height="31" width="88" /></a></td>
-			<td width="70%" align="center" valign="middle"><h5><a href="http://www.giric.com/phpmyfamily">phpmyfamily v<?php echo $version; ?></a><br />Copyright 2002-2004 Simon E Booth<br />Last updated: <?php echo date('H:i \o\n \t\h\e d/m/Y', convertstamp($prow["updated"])); ?><br /><?php
-				if ($_SESSION["id"] <> 0) {
-					echo "Missing people? <a href=\"edit.php?func=add&amp;area=detail\">Add</a> a new person to the database<br />";
-				}
-?>Problems<?php
-			if ($_SESSION["id"] == 0)
-				echo " or anything to add";
-?>? Let <a href="mailto:<?php echo $email; ?>?subject=<?php echo $prow["name"]; ?>">me</a> know</h5></td>
-			<td width="15%" align="center" valign="middle"><a href="http://jigsaw.w3.org/css-validator/"><img style="border:0;width:88px;height:31px" src="images/vcss.png" alt="Valid CSS!" /></a></td>
-		</tr>
-	</table>
-<?php
 	}
 
 	mysql_free_result($presult);
-?>
 
-</body>
-</html>
-
-<?php
+	include "inc/footer.inc.php";
+	
 	// eof
 ?>

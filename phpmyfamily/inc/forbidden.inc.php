@@ -22,21 +22,28 @@
 
 ?>
 
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html dir="<?php echo $dir; ?>">
 <head>
-<link rel="stylesheet" href="styles/metal.css" type="text/css">
-<title>phpmyfamily: Forbidden</title>
+<link rel="stylesheet" href="<?php echo $style; ?>" type="text/css" />
+<link rel="SHORTCUT ICON" href="images/favicon.ico" />
+<meta name="author" content="Simon E Booth" />
+<meta name="publisher" content="Giric" />
+<meta name="copyright" content="2002-2003 Simon E Booth" />
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $charset; ?>" />
+<meta http-equiv="content-language" content="<?php echo $clang; ?>" />
+<title>phpmyfamily: <?php echo $strForbidden; ?></title>
 </head>
 <body>
 <table class="header" width="100%">
   <tbody>
     <tr>
-      <td><h2>Forbidden</h2>  </td>
+      <td><h2><?php echo $strForbidden; ?></h2>  </td>
     </tr>
   </tbody>
 </table>
 
-<hr>
-<p>The page that you have requested has reported that you do not have sufficient rights to view it.  Do not repeat this request.  Please click <a href="index.php">here</a> to continue.  </p>
+<hr />
+<p><?php echo $strForbiddenMsg; ?></p>
 </body>
 </html>

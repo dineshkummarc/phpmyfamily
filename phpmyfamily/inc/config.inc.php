@@ -29,6 +29,7 @@
 	$desc  		= "My Family";
 	$tblprefix 	= "family_";
 	$style		= "styles/default.css";
+	$lang		= "lang/en-uk.inc.php";
 
 //=====================================================================================================================
 // Nothing should need changing beneath this line
@@ -56,8 +57,14 @@
 // Some general variables
 //=====================================================================================================================
 	// some definitions
-	$version = "1.2.4";											// version string
+	$version = "1.2.4b";										// version string
 	$restrictdate = "1910-01-01";								// date for restricting people
+	
+//=====================================================================================================================
+// Language routines
+//=====================================================================================================================
+	// include the language file
+	include $lang;
 
 	// eof
 ?>

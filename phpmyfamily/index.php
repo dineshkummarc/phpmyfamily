@@ -25,21 +25,21 @@
 	include "inc/functions.inc.php";
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
+<html dir="<?php echo $dir; ?>">
 <head>
 <link rel="stylesheet" href="<?php echo $style; ?>" type="text/css" />
-<link rel="SHORTCUT ICON" href="images/favicon.ico" />
+<link rel="shortcut icon" href="images/favicon.ico" />
 <meta name="author" content="Simon E Booth" />
 <meta name="publisher" content="Giric" />
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-<meta http-equiv="content-language" content="en" />
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $charset; ?>" />
+<meta http-equiv="content-language" content="<?php echo $clang; ?>" />
 <meta name="copyright" content="2002-2003 Simon E Booth" />
 <meta name="keywords" content="Genealogy phpmyfamily<?php
 	$fname = "SELECT SUBSTRING_INDEX(name, ' ', -1) AS surname FROM ".$tblprefix."people";
 	if ($_SESSION["id"] == 0)
 		$fname .= " WHERE date_of_birth < '".$restrictdate."'";
 	$fname .= " GROUP BY surname LIMIT 0,18";
-	$rname = mysql_query($fname) or die("Error getting names!");
+	$rname = mysql_query($fname) or die($err_keywords);
 	if (mysql_num_rows($rname) <> 0) {
 		while ($row = mysql_fetch_array($rname))
 			echo " ".$row["surname"];
@@ -66,7 +66,7 @@
 				<?php listpeeps("person"); ?>
 			</form>
 <?php if ($_SESSION["id"] <> 0) { ?>
-			<br />You are logged in as <?php echo $_SESSION["name"]; ?>: (<a href="passthru.php?func=logout" class="hd_link">logout</a><?php if ($_SESSION["admin"] == 1) echo ", <a href=\"admin.php\" class=\"hd_link\">admin</a>"; ?>)
+			<br /><?php echo $strLoggedIn; ?><?php echo $_SESSION["name"]; ?>: (<a href="passthru.php?func=logout" class="hd_link"><?php echo $strLogout; ?></a><?php if ($_SESSION["admin"] == 1) echo ", <a href=\"admin.php\" class=\"hd_link\">".$strAdmin."</a>"; ?>)
 <?php } ?>
 		</td>
 	</tr>
@@ -88,14 +88,14 @@
 			<br /><br />
 				<table>
 					<tr>
-						<th colspan="2">Site Statistics</th>
+						<th colspan="2"><?php echo $strStats; ?></th>
 					</tr>
 					<tr>
-						<th width="200">Area</th>
-						<th width="50">No</th>
+						<th width="200"><?php echo $strArea; ?></th>
+						<th width="50"><?php echo $strNo; ?></th>
 					</tr>
 					<tr>
-						<td class="tbl_odd">People on file</td>
+						<td class="tbl_odd"><?php echo ucwords($strOnFile); ?></td>
 						<td class="tbl_odd" align="right">
 <?php
 					$query = "SELECT count(*) as number FROM ".$tblprefix."people";
@@ -107,7 +107,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td class="tbl_even">Census Records</td>
+						<td class="tbl_even"><?php echo $strCensusRecs; ?></td>
 						<td class="tbl_even" align="right">
 <?php
 					$query = "SELECT count(*) as number FROM ".$tblprefix."census";
@@ -119,7 +119,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td class="tbl_odd">Images</td>
+						<td class="tbl_odd"><?php echo $strImages; ?></td>
 						<td class="tbl_odd" align="right">
 <?php
 					$query = "SELECT count(*) as number FROM ".$tblprefix."images WHERE image_id <> '10000'";
@@ -131,7 +131,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td class="tbl_even">Document Transcripts</td>
+						<td class="tbl_even"><?php echo $strDocTrans; ?></td>
 						<td class="tbl_even" align="right">
 <?php
 					$query = "SELECT count(*) as number FROM ".$tblprefix."documents";
@@ -149,18 +149,18 @@
 				<!--list of last 20 updated people-->
 				<table>
 					<tr>
-						<th colspan="2">Last 20 People Updated</th>
+						<th colspan="2"><?php echo $strLast20; ?></th></th>
 					</tr>
 					<tr>
-						<th>Person</th>
-						<th>Updated</th>
+						<th><?php echo $strPerson; ?></th>
+						<th><?php echo $strUpdated; ?></th>
 					</tr>
 <?php
-					$query = "SELECT person_id, name, updated FROM ".$tblprefix."people";
+					$query = "SELECT person_id, name, DATE_FORMAT(updated, ".$datefmt.") AS ddate FROM ".$tblprefix."people";
 					if ($_SESSION["id"] == 0)
 						$query .= " WHERE date_of_birth < '".$restrictdate."'";
 					$query .= " ORDER BY updated DESC LIMIT 0,20";
-					$result = mysql_query($query) or die(mysql_error($result));
+					$result = mysql_query($query) or die($err_changed);
 					$i = 0;
 					while ($row = mysql_fetch_array($result)) {
 						if ($i == 0 || fmod($i, 2) == 0)
@@ -170,31 +170,26 @@
 ?>
 					<tr>
 						<td class="<?php echo $class; ?>"><a href="people.php?person=<?php echo $row["person_id"]; ?>"><?echo $row["name"]; ?></a></td>
-						<td class="<?php echo $class; ?>"><?php echo date('H:i d/m/Y', convertstamp($row["updated"])); ?></td>
+						<td class="<?php echo $class; ?>"><?php echo $row["ddate"]; ?></td>
 					</tr>
 <?php
 						$i++;
 					}
 					mysql_free_result($result);
+
+					if ($_SESSION["id"] <> 0) {
 ?>
+					<tr><td colspan="2"><a href="edit.php?func=add&amp;area=detail">Add</a> a new person</td></tr>
+					<?php } ?>
 				</table>
 
 			</td>
 		</tr>
 	</table>
 
-<hr />
-	<table width="100%">
-		<tr>
-			<td width="15%" align="center" valign="middle"><a href="http://validator.w3.org/check/referer"><img border="0" src="images/valid-xhtml10.png" alt="Valid XHTML 1.0!" height="31" width="88" /></a></td>
-			<td width="70%" align="center" valign="middle"><h5><a href="http://www.giric.com/phpmyfamily">phpmyfamily v<?php echo $version; ?></a><br />Copyright 2002-2004 Simon E Booth<br />Email <a href="mailto:<?php echo $email; ?>">me</a> with any problems</h5></td>
-			<td width="15%" align="center" valign="middle"><a href="http://jigsaw.w3.org/css-validator/"><img style="border:0;width:88px;height:31px" src="images/vcss.png" alt="Valid CSS!" /></a></td>
-		</tr>
-	</table>
-
-</body>
-</html>
-
 <?php
+
+	include "inc/footer.inc.php";
+	
 	//eof
 ?>

@@ -25,13 +25,13 @@
 	include "inc/functions.inc.php";
 
 	//get the details for the image
-	$iquery = "SELECT * FROM ".$tblprefix."images WHERE image_id = '".$_REQUEST["image"]."'";
-	$iresult = mysql_query($iquery) or die("Image retreival query failed");
+	$iquery = "SELECT *, DATE_FORMAT(date, ".$datefmt.") AS ddate FROM ".$tblprefix."images WHERE image_id = '".$_REQUEST["image"]."'";
+	$iresult = mysql_query($iquery) or die($err_image);
 
 	// when we have an image, get the associated person details
 	while ($irow = mysql_fetch_array($iresult)) {
 		$pquery = "SELECT name, date_of_birth FROM ".$tblprefix."people WHERE person_id = '".$irow["person_id"]."'";
-		$presult = mysql_query($pquery) or die("Person fetch failed");
+		$presult = mysql_query($pquery) or die($err_person);
 		while ($prow = mysql_fetch_array($presult)) {
 
 			// check security
@@ -43,12 +43,12 @@
 			// fill out the header
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
+<html dir="<?php echo $dir; ?>">
 <head>
 <link rel="stylesheet" href="<?php echo $style; ?>" type="text/css" />
-<link rel="SHORTCUT ICON" href="images/favicon.ico" />
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-<meta http-equiv="content-language" content="en" />
+<link rel="shortcut icon" href="images/favicon.ico" />
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $charset; ?>" />
+<meta http-equiv="content-language" content="<?php echo $clang; ?>" />
 <title><?php echo $irow["title"]." (".$prow["name"].")"; ?></title>
 </head>
 <body>
@@ -74,7 +74,7 @@
 	<p><?php if ($restricted)
 		echo $restrictmsg;
 	else
-		echo formatdbdate($irow["date"]); ?></p>
+		echo formatdate($irow["ddate"]); ?></p>
 	<p><?php echo $irow["description"]; ?></p>
 </div>
 
@@ -82,20 +82,8 @@
 <?php
 	}
 	mysql_free_result($iresult);
-?>
 
-<hr />
-	<table width="100%">
-		<tr>
-			<td width="15%" align="center" valign="middle"><a href="http://validator.w3.org/check/referer"><img border="0" src="images/valid-xhtml10.png" alt="Valid XHTML 1.0!" height="31" width="88" /></a></td>
-			<td width="70%" align="center" valign="middle"><h5><a href="http://www.giric.com/phpmyfamily">phpmyfamily v<?php echo $version; ?></a><br />Copyright 2002-2004 Simon E Booth<br />Email <a href="mailto:<?php echo $email; ?>">me</a> with any problems</h5></td>
-			<td width="15%" align="center" valign="middle"><a href="http://jigsaw.w3.org/css-validator/"><img style="border:0;width:88px;height:31px" src="images/vcss.png" alt="Valid CSS!" /></a></td>
-		</tr>
-	</table>
-
-</body>
-</html>
-
-<?php
+	include "inc/footer.inc.php";
+	
 	// eof
 ?>

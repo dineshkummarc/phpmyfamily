@@ -29,17 +29,19 @@
 		return $stamp;
 	}	// end of convertstamp()
 
-	// function: formatdbdate
-	// format a MySQL date as
-	function formatdbdate($origdate) {
-		$year = substr($origdate, 0, 4);
-		$month = substr($origdate, 5, 2);
-		$day = substr($origdate, -2);
-		$retval = $day."/".$month."/".$year;
-		if ($year == 0)
-			$retval = "unknown";
-		return $retval;
-	}	// end of formatdbdate()
+	// function formatdate
+	// allows unknown to be displayed when no details kknown
+	function formatdate($origdate) {
+		global $strUnknown;
+		global $nulldate;
+
+		// if there are any non-zero numbers, then display as is
+		if ($origdate == $nulldate)
+			return $strUnknown;
+		// else return unknown
+		else
+			return $origdate;
+	} // end of formatdate()
 
 	// function: listpeeps
 	// list all people in database that current request has access to
@@ -48,6 +50,10 @@
 		// declare global variables used within
 		global $restrictdate;
 		global $tblprefix;
+		global $err_listpeeps;
+		global $strOnFile;
+		global $strSelect;
+		global $strUnknown;
 
 		// create the query based on the parameters
 		$query = "SELECT person_id, SUBSTRING_INDEX(name, ' ', -1) AS surname, name, YEAR(date_of_birth) AS year FROM ".$tblprefix."people WHERE person_id <> '".$omit."'";
@@ -70,13 +76,13 @@
 
 		// and sort the query
 		$query .= " ORDER BY surname, name";
-		$result = mysql_query($query) or die(mysql_error($result));
+		$result = mysql_query($query) or die($err_listpeeps);
 
 		// show the number of people in the list
 		if ($gender == "A" && $omit == 0)
-			echo mysql_num_rows($result)." people on file<br />\n";
+			echo mysql_num_rows($result)." ".$strOnFile."<br />\n";
 		if ($gender == "A" && $omit <> 0)
-			echo (mysql_num_rows($result) + 1)." people on file<br />\n";
+			echo (mysql_num_rows($result) + 1)." ".$strOnFile."<br />\n";
 
 		// start building the select list
 		echo "<select name=\"".$form."\" size=\"1\"";
@@ -86,12 +92,12 @@
 		echo ">\n";
 		// if no person selected, show generic at top of list
 		if ($default == 0)
-			echo "<option value=\"0\">Select person</option>\n";
+			echo "<option value=\"0\">".$strSelect."</option>\n";
 		//
 		while ($row = mysql_fetch_array($result)) {
 			$year = $row["year"];
 			if ($year == 0)
-				$year = "unknown";
+				$year = $strUnknown;
 			echo "<option value=\"".$row["person_id"]."\"";
 			if ($row["person_id"] == $default)
 				echo " selected=\"selected\"";
@@ -118,6 +124,7 @@
 	function processimage() {
 		// define globals used within
 		global $tblprefix;
+		global $err_image_insert;
 
 		// image creation needs masses of memory
 		// this is set too large! but needs to be to process a 1MB jpg!
@@ -151,7 +158,7 @@
 		}
 
 		$iquery = "INSERT INTO ".$tblprefix."images (person_id, title, date, description) VALUES ('".$_REQUEST["person"]."', '".$_POST["frmTitle"]."', '".$_POST["frmDate"]."', '".$_POST["frmDesc"]."')";;
-		$iresult = mysql_query($iquery) or die("Image insert failed");
+		$iresult = mysql_query($iquery) or die($err_image_insert);
 		$image = mysql_insert_id();
 
 		// work out the ratio of width to height
@@ -200,10 +207,11 @@
 	// function: list_enums
 	// Produce a select list of an enum column
 	function list_enums($table, $col, $name, $value = 0) {
+		global $err_list_enums;
 
 		// get an array of the values in the column
 		$query = "SHOW COLUMNS FROM ".$table." LIKE '".$col."'";
-		$result = mysql_query($query) or die(mysql_error($result));
+		$result = mysql_query($query) or die($err_list_enums);
 
 		// do some processing ?
 		while ($row = mysql_fetch_array($result)) {

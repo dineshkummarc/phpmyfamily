@@ -17,22 +17,22 @@
 	//Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ?>
 	<!-- Warning Messages -->
-	<h4>Password Change</h4>
-	<p>Please use this form if you wish to change your password.</p>
+	<h4><?php echo $strPwdChange; ?></h4>
+	<p><?php echo $strPwdChangeMsg; ?></p>
 
 	<!-- Form proper -->
 	<form method="post" action="passthru.php?func=change">
 		<table width="100%">
 			<tr>
-				<td>Old Password</td>
+				<td><?php echo $strOldPassword; ?></td>
 				<td><input type="password" name="pwdOld" size="20" maxlength="30" /></td>
 			</tr>
 			<tr>
-				<td>New Password</td>
+				<td><?php echo $strNewPassword; ?></td>
 				<td><input type="password" name="pwdPwd1" size="20" maxlength="30" /></td>
 			</tr>
 			<tr>
-				<td>Re-enter New Password</td>
+				<td><?php echo $strRePassword; ?></td>
 				<td><input type="password" name="pwdPwd2" size="20" maxlength="30" /></td>
 			</tr>
 			<tr>
@@ -40,7 +40,7 @@
 					@$reason = $_REQUEST["reason"];
 					echo "<font color=\"red\">".$reason."</font>";
 				?></td>
-				<td width="145"><input type="submit" name="Submit1" value="Change" /></td>
+				<td width="145"><input type="submit" name="Submit1" value="<?php echo $strChange; ?>" /></td>
 			</tr>
 		</table>
 	</form>

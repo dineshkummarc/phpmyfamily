@@ -30,10 +30,12 @@
 	// fill out the header
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
+<html dir="<?php echo $dir; ?>">
 <head>
 <link rel="stylesheet" href="<?php echo $style; ?>" type="text/css" />
-<link rel="SHORTCUT ICON" href="images/favicon.ico" />
+<link rel="shortcut icon" href="images/favicon.ico" />
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $charset; ?>" />
+<meta http-equiv="content-language" content="<?php echo $clang; ?>" />
 <?php
 
 	switch ($_REQUEST["func"]) {
@@ -44,18 +46,18 @@
 				case "detail":
 					// get the person to edit
 					$edquery = "SELECT * FROM ".$tblprefix."people WHERE person_id = '".$_REQUEST["person"]."'";
-					$edresult = mysql_query($edquery) or die("Editing query failed");
+					$edresult = mysql_query($edquery) or die($err_person);
 
 					// fill out the form with retrieved data
 					while ($edrow = mysql_fetch_array($edresult)) {
 ?>
-<title>Editing: <?php echo $edrow["name"]; ?></title>
+<title><?php echo $strEditing.": ".$edrow["name"]; ?></title>
 </head>
 <body>
 <table class="header" width="100%">
   <tbody>
     <tr>
-      <td><h2>Editing: <?php echo $edrow["name"]; ?></h2>  </td>
+      <td><h2><?php echo $strEditing.": ".$edrow["name"]; ?></h2>  </td>
     </tr>
   </tbody>
 </table>
@@ -66,42 +68,42 @@
 <form method="post" action="passthru.php?func=update&amp;area=detail&amp;person=<?php echo $_REQUEST["person"]; ?>">
 	<table>
 		<tr>
-			<td class="tbl_odd">Name</td>
+			<td class="tbl_odd"><?php echo $strName; ?></td>
 			<td class="tbl_even"><input type="text" name="frmName" value="<?php echo $edrow["name"]; ?>" size="30" maxlength="50" /></td>
 		</tr>
 		<tr>
-			<td class="tbl_odd">Date of Birth</td>
+			<td class="tbl_odd"><?php echo $strDOB; ?></td>
 			<td class="tbl_even"><input type="text" name="frmDOB" value="<?php echo $edrow["date_of_birth"]; ?>" size="30" /></td>
-			<td>Please use format YYYY-MM-DD</td>
+			<td><?php echo $strDateFmt; ?></td>
 		</tr>
 		<tr>
-			<td class="tbl_odd">Birth Place</td>
+			<td class="tbl_odd"><?php echo $strBirthPlace; ?></td>
 			<td class="tbl_even"><input type="text" name="frmBirthPlace" value="<?php echo $edrow["birth_place"]; ?>" size="30" maxlength="50" /></td>
 		</tr>
 		<tr>
-			<td class="tbl_odd">Date of Death</td>
+			<td class="tbl_odd"><?php echo $strDOD; ?></td>
 			<td class="tbl_even"><input type="text" name="frmDOD" value="<?php echo $edrow["date_of_death"]; ?>" size="30" /></td>
-			<td>Please use format YYYY-MM-DD</td>
+			<td><?php echo $strDateFmt; ?></td>
 		</tr>
 		<tr>
-			<td class="tbl_odd">Cause of Death</td>
+			<td class="tbl_odd"><?php echo $strCauseDeath; ?></td>
 			<td class="tbl_even"><input type="text" name="frmDeathReason" value="<?php echo $edrow["death_reason"]; ?>" size="30" maxlength="50" /></td>
 		</tr>
 		<tr>
-			<td class="tbl_odd">Mother</td>
+			<td class="tbl_odd"><?php echo $strMother; ?></td>
 			<td class="tbl_even"><?php listpeeps("frmMother", $_REQUEST["person"], "F", $edrow["mother_id"], 0); ?></td>
 		</tr>
 		<tr>
-			<td class="tbl_odd">Father</td>
+			<td class="tbl_odd"><?php echo $strFather; ?></td>
 			<td class="tbl_even"><?php listpeeps("frmFather", $_REQUEST["person"], "M", $edrow["father_id"], 0); ?></td>
 		</tr>
 		<tr>
-			<td class="tbl_odd" valign="top">Narrative</td>
+			<td class="tbl_odd" valign="top"><?php echo $strNotes; ?></td>
 			<td colspan="2" class="tbl_even"><textarea name="frmNarrative" rows="10" cols="80"><?php echo $edrow["narrative"]; ?></textarea></td>
 		</tr>
 		<tr>
-			<td class="tbl_even"><input type="submit" name="Submit1" value="Submit" /></td>
-			<td class="tbl_even"><input type="RESET" name="Reset1" value="Reset" /></td>
+			<td class="tbl_even"><input type="submit" name="Submit1" value="<?php echo $strSubmit; ?>" /></td>
+			<td class="tbl_even"><input type="RESET" name="Reset1" value="<?php echo $strReset; ?>" /></td>
 		</tr>
 	</table>
 </form>
@@ -112,10 +114,10 @@
 				case "marriage":
 					// get the person to edit
 					$pquery = "SELECT * FROM ".$tblprefix."people WHERE person_id = '".$_REQUEST["person"]."'";
-					$presult = mysql_query($pquery) or die("Editing query failed");
+					$presult = mysql_query($pquery) or die($err_person);
 
 					$squery = "SELECT name FROM ".$tblprefix."people WHERE person_id = '".$_REQUEST["spouse"]."'";
-					$sresult = mysql_query($squery) or die("Spouse name query failed");
+					$sresult = mysql_query($squery) or die($err_spouse);
 					while ($srow = mysql_fetch_array($sresult)) {
 						$spousename = $srow["name"];
 					}
@@ -129,18 +131,18 @@
 						else
 							$edquery = "SELECT * FROM ".$tblprefix."spouses WHERE bride_id = '".$_REQUEST["person"]."' AND groom_id = '".$_REQUEST["spouse"]."'";
 
-						$edresult = mysql_query($edquery) or die("Spouse query failed");
+						$edresult = mysql_query($edquery) or die($err_marriage);
 
 						while ($edrow = mysql_fetch_array($edresult)) {
 ?>
 
-<title>Editing Marriage: <?php echo $prow["name"]; ?> & <?php echo $spousename; ?></title>
+<title><?php echo $strEditing." ".$strMarriage.": ".$prow["name"]; ?> & <?php echo $spousename; ?></title>
 </head>
 <body>
 <table class="header" width="100%">
   <tbody>
     <tr>
-      <td><h2>Marriage: <?php echo $prow["name"]; ?> & <?php echo $spousename; ?></h2>  </td>
+      <td><h2><?php echo $strMarriage.": ".$prow["name"]; ?> & <?php echo $spousename; ?></h2>  </td>
     </tr>
   </tbody>
 </table>
@@ -151,7 +153,7 @@
 <form method="post" action="passthru.php?func=update&amp;area=marriage&amp;person=<?php echo $_REQUEST["person"]; ?>&amp;oldspouse=<?php echo $_REQUEST["spouse"]; ?>&amp;gender=<?php echo $prow["gender"]; ?>">
 	<table>
 		<tr>
-			<td class="tbl_odd">Spouse</td>
+			<td class="tbl_odd"><?php echo $strSpouse; ?></td>
 			<td class="tbl_even"><?php
 				if ($prow["gender"] == "M")
 					listpeeps("frmSpouse", $_REQUEST["person"], "F", $_REQUEST["spouse"], 0);
@@ -160,17 +162,17 @@
 ?></td>
 		</tr>
 		<tr>
-			<td class="tbl_odd">Date of marriage</td>
+			<td class="tbl_odd"><?php echo $strDOM; ?></td>
 			<td class="tbl_even"><input type="text" name="frmDate" value="<?php echo $edrow["marriage_date"]; ?>" size="15" maxlength="10" /></td>
-			<td>Please use format YYYY-MM-DD</td>
+			<td><?php echo $strDateFmt; ?></td>
 		</tr>
 		<tr>
-			<td class="tbl_odd">Marriage Place</td>
+			<td class="tbl_odd"><?php echo $strMarriagePlace; ?></td>
 			<td class="tbl_even"><input type="text" name="frmPlace" value="<?php echo $edrow["marriage_place"]; ?>" size="30" maxlength="50" /></td>
 		</tr>
 		<tr>
-			<td class="tbl_even"><input type="submit" name="Submit1" value="Submit" /></td>
-			<td class="tbl_even"><input type="reset" name="Reset1" value="Reset" /></td>
+			<td class="tbl_even"><input type="submit" name="Submit1" value="<?php echo $strSubmit; ?>" /></td>
+			<td class="tbl_even"><input type="reset" name="Reset1" value="<?php echo $strReset; ?>" /></td>
 		</tr>
 	</table>
 </form>
@@ -184,19 +186,19 @@
 				case "census":
 					// get the person to edit
 					$edquery = "SELECT * FROM ".$tblprefix."people, ".$tblprefix."census WHERE ".$tblprefix."people.person_id = '".$_REQUEST["person"]."' AND ".$tblprefix."census.year = '".$_REQUEST["year"]."' AND ".$tblprefix."people.person_id = ".$tblprefix."census.person_id";
-					$edresult = mysql_query($edquery) or die("Editing query failed");
+					$edresult = mysql_query($edquery) or die($err_census_ret);
 
 					// fill out the form with retrieved data
 					while ($edrow = mysql_fetch_array($edresult)) {
 ?>
 
-<title>Editing Census: <?php echo $edrow["name"]; ?> (<?php echo $edrow["year"]; ?>)</title>
+<title><?php echo $strEditing." ".$strCensus.": ".$edrow["name"]; ?> (<?php echo $edrow["year"]; ?>)</title>
 </head>
 <body>
 <table class="header" width="100%">
   <tbody>
     <tr>
-      <td><h2> Census: <?php echo $edrow["name"]; ?> (<?php echo $edrow["year"]; ?>)</h2>  </td>
+      <td><h2><?php echo $strCensus.": ".$edrow["name"]; ?> (<?php echo $edrow["year"]; ?>)</h2>  </td>
     </tr>
   </tbody>
 </table>
@@ -207,32 +209,32 @@
 <form method="post" action="passthru.php?func=update&amp;area=census&amp;person=<?php echo $_REQUEST["person"]; ?>&amp;year=<?php echo $_REQUEST["year"]; ?>">
 	<table>
 		<tr>
-			<td class="tbl_odd">Schedule</td>
+			<td class="tbl_odd"><?php echo $strSchedule; ?></td>
 			<td class="tbl_even"><input type="text" name="frmSchedule" value="<?php echo $edrow["schedule"]; ?>" size="30" maxlength="20" /></td>
 		</tr>
 		<tr>
-			<td class="tbl_odd">Address</td>
+			<td class="tbl_odd"><?php echo $strAddress; ?></td>
 			<td class="tbl_even"><input type="text" name="frmAddress" value="<?php echo $edrow["address"]; ?>" size="50" maxlength="70" /></td>
 		</tr>
 		<tr>
-			<td class="tbl_odd">Condition</td>
+			<td class="tbl_odd"><?php echo $strCondition; ?></td>
 			<td class="tbl_even"><?php list_enums("".$tblprefix."census", "condition", "frmCondition", $edrow["condition"]); ?></td>
 		</tr>
 		<tr>
-			<td class="tbl_odd">Age</td>
+			<td class="tbl_odd"><?php echo $strAge; ?></td>
 			<td class="tbl_even"><input type="text" name="frmAge" value="<?php echo $edrow["age"]; ?>" size="30" maxlength="3" /></td>
 		</tr>
 		<tr>
-			<td class="tbl_odd">Profession</td>
+			<td class="tbl_odd"><?php echo $strProfession; ?></td>
 			<td class="tbl_even"><input type="text" name="frmProfession" value="<?php echo $edrow["profession"]; ?>" size="30" maxlength="40" /></td>
 		</tr>
 		<tr>
-			<td class="tbl_odd">Place of Birth</td>
+			<td class="tbl_odd"><?php echo $strBirthPlace; ?></td>
 			<td class="tbl_even"><input type="text" name="frmBirthPlace" value="<?php echo $edrow["where_born"]; ?>" size="30" maxlength="40" /></td>
 		</tr>
 		<tr>
-			<td class="tbl_even"><input type="submit" name="Submit1" value="Submit" /></td>
-			<td class="tbl_even"><input type="reset" name="Reset1" value="Reset" /></td>
+			<td class="tbl_even"><input type="submit" name="Submit1" value="<?php echo $strSubmit; ?>" /></td>
+			<td class="tbl_even"><input type="reset" name="Reset1" value="<?php echo $strReset; ?>" /></td>
 		</tr>
 	</table>
 </form>
@@ -241,7 +243,7 @@
 					break;
 
 				default:
-					echo "Here be editing area dragons";
+					echo $strDragons;
 					break;
 			}
 
@@ -266,51 +268,51 @@
 <!--Create a blank form-->
 
 <hr />
-<b>Please make sure person doesn't exist before creating!!!</b><br />
+<b><?php echo $strNewMsg; ?></b><br />
 
 <form method="post" action="passthru.php?func=insert&amp;area=detail">
 	<table>
 		<tr>
-			<td class="tbl_odd">Name</td>
+			<td class="tbl_odd"><?php echo $strName; ?></td>
 			<td class="tbl_even"><input type="text" name="frmName" size="30" maxlength="50" /></td>
 		</tr>
 		<tr>
-			<td class="tbl_odd">Date of Birth</td>
+			<td class="tbl_odd"><?php echo $strDOB; ?></td>
 			<td class="tbl_even"><input type="text" name="frmDOB" size="30" maxlength="10" value="0000-00-00" /></td>
-			<td>Please use format YYYY-MM-DD</td>
+			<td><?php echo $strDateFmt; ?></td>
 		</tr>
 		<tr>
-			<td class="tbl_odd">Birth Place</td>
+			<td class="tbl_odd"><?php echo $strBirthPlace; ?></td>
 			<td class="tbl_even"><input type="text" name="frmBirthPlace" size="30" maxlength="50" /></td>
 		</tr>
 		<tr>
-			<td class="tbl_odd">Date of Death</td>
+			<td class="tbl_odd"><?php echo $strDOD; ?></td>
 			<td class="tbl_even"><input type="text" name="frmDOD" size="30" maxlength="10" value="0000-00-00" /></td>
-			<td>Please use format YYYY-MM-DD</td>
+			<td><?php echo $strDateFmt; ?></td>
 		</tr>
 		<tr>
-			<td class="tbl_odd">Cause of Death</td>
+			<td class="tbl_odd"><?php echo $strCauseDeath; ?></td>
 			<td class="tbl_even"><input type="text" name="frmDeathReason" size="30" maxlength="50" /></td>
 		</tr>
 		<tr>
-			<td class="tbl_odd">Gender</td>
-			<td class="tbl_even"><input type="radio" name="frmGender" value="M" checked="checked" />M<input type="radio" name="frmGender" value="F" />F</td>
+			<td class="tbl_odd"><?php echo $strGender; ?></td>
+			<td class="tbl_even"><input type="radio" name="frmGender" value="M" checked="checked" /><?php echo $strMale; ?><input type="radio" name="frmGender" value="F" /><?php echo $strFemale; ?></td>
 		</tr>
 		<tr>
-			<td class="tbl_odd">Mother</td>
+			<td class="tbl_odd"><?php echo $strMother; ?></td>
 			<td class="tbl_even"><?php listpeeps("frmMother", 0, "F", 0, 0); ?></td>
 		</tr>
 		<tr>
-			<td class="tbl_odd">Father</td>
+			<td class="tbl_odd"><?php echo $strFather; ?></td>
 			<td class="tbl_even"><?php listpeeps("frmFather", 0, "M", 0, 0); ?></td>
 		</tr>
 		<tr>
-			<td class="tbl_odd">Narrative</td>
+			<td class="tbl_odd"><?php echo $strNotes; ?></td>
 			<td colspan="2" class="tbl_even"><textarea name="frmNarrative" rows="10" cols="80"></textarea></td>
 		</tr>
 		<tr>
-			<td class="tbl_even"><input type="submit" name="Submit1" value="Submit" /></td>
-			<td class="tbl_even"><input type="reset" name="Reset1" value="Reset" /></td>
+			<td class="tbl_even"><input type="submit" name="Submit1" value="<?php echo $strSubmit; ?>" /></td>
+			<td class="tbl_even"><input type="reset" name="Reset1" value="<?php echo $strReset; ?>" /></td>
 		</tr>
 	</table>
 </form>
@@ -320,18 +322,18 @@
 				case "transcript":
 					// get the person to insert marriage for
 					$edquery = "SELECT * FROM ".$tblprefix."people WHERE person_id = '".$_REQUEST["person"]."'";
-					$edresult = mysql_query($edquery) or die("New marriage person query failed");
+					$edresult = mysql_query($edquery) or die($err_person);
 
 					// fill out the form with retrieved data
 					while ($edrow = mysql_fetch_array($edresult)) {
 ?>
-<title>New Transcript: <?php echo $edrow["name"]; ?></title>
+<title><?php echo ucwords($strNewTrans).": ".$edrow["name"]; ?></title>
 </head>
 <body>
 <table class="header" width="100%">
   <tbody>
     <tr>
-      <td><h2> New Transcript: <?php echo $edrow["name"]; ?></h2>  </td>
+      <td><h2><?php echo ucwords($strNewTrans).": ".$edrow["name"]; ?></h2>  </td>
     </tr>
   </tbody>
 </table>
@@ -342,24 +344,24 @@
 <form enctype="multipart/form-data" method="post" action="passthru.php?func=insert&amp;area=transcript&amp;person=<?php echo $_REQUEST["person"]; ?>">
 	<table>
 		<tr>
-			<td class="tbl_odd">File to Upload</td>
+			<td class="tbl_odd"><?php echo $strFUpload; ?></td>
 			<td class="tbl_even"><input type="file" name="userfile" /></td>
 		</tr>
 		<tr>
-			<td class="tbl_odd">File Title</td>
+			<td class="tbl_odd"><?php echo $strFTitle; ?></td>
 			<td class="tbl_even"><input type="text" name="frmTitle" size="30" maxlength="30" /></td>
 		</tr>
 		<tr>
-			<td class="tbl_odd">File Description</td>
+			<td class="tbl_odd"><?php echo $strFDesc; ?></td>
 			<td class="tbl_even"><input type="text" name="frmDesc" size="60" maxlength="60" /></td>
 		</tr>
 		<tr>
-			<td class="tbl_odd">File Date</td>
+			<td class="tbl_odd"><?php echo $strFDate; ?></td>
 			<td class="tbl_even"><input type="text" name="frmDate" maxlength="10" value="0000-00-00" /></td>
-			<td>Please use format YYYY-MM-DD</td>
+			<td><?php echo $strDateFmt; ?></td>
 		</tr>
 		<tr>
-			<td class="tbl_even"><input type="submit" name="Submit1" value="Submit" /></td>
+			<td class="tbl_even"><input type="submit" name="Submit1" value="<?php echo $strSubmit; ?>" /></td>
 			<td class="tbl_even"></td>
 		</tr>
 	</table>
@@ -371,18 +373,18 @@
 				case "image":
 					// get the person to insert marriage for
 					$edquery = "SELECT * FROM ".$tblprefix."people WHERE person_id = '".$_REQUEST["person"]."'";
-					$edresult = mysql_query($edquery) or die("New marriage person query failed");
+					$edresult = mysql_query($edquery) or die($err_person);
 
 					// fill out the form with retrieved data
 					while ($edrow = mysql_fetch_array($edresult)) {
 ?>
-<title>New Image: <?php echo $edrow["name"]; ?></title>
+<title><?php echo ucwords($strNewImage).": ".$edrow["name"]; ?></title>
 </head>
 <body>
 <table class="header" width="100%">
   <tbody>
     <tr>
-      <td><h2> New Image: <?php echo $edrow["name"]; ?></h2>  </td>
+      <td><h2><?php echo ucwords($strNewImage).": ".$edrow["name"]; ?></h2>  </td>
     </tr>
   </tbody>
 </table>
@@ -394,25 +396,25 @@
 <input type="hidden" name="MAX_FILE_SIZE" value="1048576">
 	<table>
 		<tr>
-			<td class="tbl_odd">Image to Upload</td>
+			<td class="tbl_odd"><?php echo $strIUpload; ?></td>
 			<td class="tbl_even"><input type="file" name="userfile" /></td>
-			<td>JPEG only. (max size 1M)</td>
+			<td><?php echo $strISize; ?></td>
 		</tr>
 		<tr>
-			<td class="tbl_odd">Image Title</td>
+			<td class="tbl_odd"><?php echo $strITitle; ?></td>
 			<td class="tbl_even"><input type="text" name="frmTitle" size="30" maxlength="30" /></td>
 		</tr>
 		<tr>
-			<td class="tbl_odd">Image Description</td>
+			<td class="tbl_odd"><?php echo $strIDesc; ?></td>
 			<td class="tbl_even"><input type="text" name="frmDesc" size="60" maxlength="60" /></td>
 		</tr>
 		<tr>
-			<td class="tbl_odd">Image Date</td>
+			<td class="tbl_odd"><?php echo $strIDate; ?></td>
 			<td class="tbl_even"><input type="text" name="frmDate" maxlength="10" value="0000-00-00" /></td>
-			<td>Please use format YYYY-MM-DD</td>
+			<td><?php echo $strDateFmt; ?></td>
 		</tr>
 		<tr>
-			<td class="tbl_even"><input type="submit" name="Submit1" value="Submit" /></td>
+			<td class="tbl_even"><input type="submit" name="Submit1" value="<?php echo $strSubmit; ?>" /></td>
 			<td class="tbl_even"></td>
 		<tr>
 	</table>
@@ -424,18 +426,18 @@
 				case "marriage":
 					// get the person to insert marriage for
 					$edquery = "SELECT * FROM ".$tblprefix."people WHERE person_id = '".$_REQUEST["person"]."'";
-					$edresult = mysql_query($edquery) or die("New marriage person query failed");
+					$edresult = mysql_query($edquery) or die($err_person);
 
 					// fill out the form with retrieved data
 					while ($edrow = mysql_fetch_array($edresult)) {
 ?>
-<title>New Marriage: <?php echo $edrow["name"]; ?></title>
+<title><?php echo ucwords($strNewMarriage).": ".$edrow["name"]; ?></title>
 </head>
 <body>
 <table class="header" width="100%">
   <tbody>
     <tr>
-      <td><h2> New Marriage: <?php echo $edrow["name"]; ?></h2>  </td>
+      <td><h2><?php echo ucwords($strNewMarriage).": ".$edrow["name"]; ?></h2>  </td>
     </tr>
   </tbody>
 </table>
@@ -446,7 +448,7 @@
 <form method="post" action="passthru.php?func=insert&amp;area=marriage&amp;person=<?php echo $_REQUEST["person"]; ?>&amp;gender=<?php echo $edrow["gender"]; ?>">
 	<table>
 		<tr>
-			<td class="tbl_odd">Spouse</td>
+			<td class="tbl_odd"><?php echo $strSpouse; ?></td>
 			<td class="tbl_even"><?php
 				if ($edrow["gender"] == "M")
 					listpeeps("frmSpouse", 0, "F", 0, 0);
@@ -455,16 +457,16 @@
 ?></td>
 		</tr>
 		<tr>
-			<td class="tbl_odd">Date of marriage</td>
+			<td class="tbl_odd"><?php echo $strDOM; ?></td>
 			<td class="tbl_even"><input type="text" name="frmDate" size="15" maxlength="10" value="0000-00-00" /></td>
-			<td>Please use format YYYY-MM-DD</td>
+			<td><?php echo $strDateFmt; ?></td>
 		</tr>
 		<tr>
-			<td class="tbl_odd">Marriage Place</td>
+			<td class="tbl_odd"><?php echo $strMarriagePlace; ?></td>
 			<td class="tbl_even"><input type="text" name="frmPlace" size="30" maxlength="50" /></td>
 		</tr>
 		<tr>
-			<td class="tbl_even"><input type="submit" name="Submit1" value="Submit" /></td>
+			<td class="tbl_even"><input type="submit" name="Submit1" value="<?php echo $strSubmit; ?>" /></td>
 			<td class="tbl_even"></td>
 		</tr>
 	</table>
@@ -477,18 +479,18 @@
 				case "census":
 					// get the person to insert census for
 					$edquery = "SELECT * FROM ".$tblprefix."people WHERE person_id = '".$_REQUEST["person"]."'";
-					$edresult = mysql_query($edquery) or die("New census person query failed");
+					$edresult = mysql_query($edquery) or die($err_person);
 
 					// fill out the form with retrieved data
 					while ($edrow = mysql_fetch_array($edresult)) {
 ?>
-<title>New Census: <?php echo $edrow["name"]; ?></title>
+<title><?php echo ucwords($strNewCensus).": ".$edrow["name"]; ?></title>
 </head>
 <body>
 <table class="header" width="100%">
   <tbody>
     <tr>
-      <td><h2> New Census: <?php echo $edrow["name"]; ?></h2>  </td>
+      <td><h2><?php echo ucwords($strNewCensus).": ".$edrow["name"]; ?></h2>  </td>
     </tr>
   </tbody>
 </table>
@@ -499,35 +501,35 @@
 <form method="post" action="passthru.php?func=insert&amp;area=census&amp;person=<?php echo $_REQUEST["person"]; ?>">
 	<table>
 		<tr>
-			<td class="tbl_odd">Year</td>
+			<td class="tbl_odd"><?php echo $strYear; ?></td>
 			<td class="tbl_even"><?php list_enums("".$tblprefix."census", "year", "frmYear"); ?></td>
 		</tr>
 		<tr>
-			<td class="tbl_odd">Schedule</td>
+			<td class="tbl_odd"><?php echo $strSchedule; ?></td>
 			<td class="tbl_even"><input type="text" name="frmSchedule" size="30" maxlength="20" /></td>
 		</tr>
 		<tr>
-			<td class="tbl_odd">Address</td>
+			<td class="tbl_odd"><?php echo $strAddress; ?></td>
 			<td class="tbl_even"><input type="text2"name="frmAddress" size="50" maxlength="70" /></td>
 		</tr>
 		<tr>
-			<td class="tbl_odd">Condition</td>
+			<td class="tbl_odd"><?php echo $strCondition; ?></td>
 			<td class="tbl_even"><?php list_enums("".$tblprefix."census", "condition", "frmCondition"); ?></td>
 		</tr>
 		<tr>
-			<td class="tbl_odd">Age</td>
+			<td class="tbl_odd"><?php echo $strAge; ?></td>
 			<td class="tbl_even"><input type="text" name="frmAge" size="10" maxlength="3" /></td>
 		</tr>
 		<tr>
-			<td class="tbl_odd">Profession</td>
+			<td class="tbl_odd"><?php echo $strProfession; ?></td>
 			<td class="tbl_even"><input type="text" name="frmProfession" size="30" maxlength="40" /></td>
 		</tr>
 		<tr>
-			<td class="tbl_odd">Place of Birth</td>
+			<td class="tbl_odd"><?php echo $strBirthPlace; ?></td>
 			<td class="tbl_even"><input type="text" name="frmWhereBorn" size="30" maxlength="40" /></td>
 		</tr>
 		<tr>
-			<td class="tbl_even"><input type="submit" name="Submit1" value="Submit" /></td>
+			<td class="tbl_even"><input type="submit" name="Submit1" value="<?php echo $strSubmit; ?>" /></td>
 			<td class="tbl_even"></td>
 		</tr>
 	</table>
@@ -538,31 +540,18 @@
 					break;
 
 				default:
-					echo "Here be adding area dragons";
+					echo $strDragons;
 					break;
 			}
 		break;
 
 		// don't know what else to do
 		default:
-			echo "Here be function dragons";
+			echo $strDragons;
 			break;
 	}
 
-?>
+	include "inc/footer.inc.php";
 
-<hr />
-	<table width="100%">
-		<tr>
-			<td width="15%" align="center" valign="middle"><a href="http://validator.w3.org/check/referer"><img border="0" src="images/valid-xhtml10.png" alt="Valid XHTML 1.0!" height="31" width="88" /></a></td>
-			<td width="70%" align="center" valign="middle"><h5><a href="http://www.giric.com/phpmyfamily">phpmyfamily v<?php echo $version; ?></a><br />Copyright 2002-2004 Simon E Booth<br />Email <a href="mailto:<?php echo $email; ?>">me</a> with any problems</h5></td>
-			<td width="15%" align="center" valign="middle"><a href="http://jigsaw.w3.org/css-validator/"><img style="border:0;width:88px;height:31px" src="images/vcss.png" alt="Valid CSS!" /></a></td>
-		</tr>
-	</table>
-
-</body>
-</html>
-
-<?php
 	// eof
 ?>

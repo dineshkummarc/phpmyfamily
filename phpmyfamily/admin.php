@@ -39,22 +39,22 @@
 		case "add":
 			// carry out some simple checks to see if user already exists and if passwords match
 			$check1 = "SELECT * FROM ".$tblprefix."users WHERE username = '".$_POST["pwdUser"]."'";
-			$result1 = mysql_query($check1) or die("Error running new user check 1");
+			$result1 = mysql_query($check1) or die($err_pwd);
 			if (mysql_num_rows($result1) == 0) {
 				if ($_POST["pwdPwd1"] == $_POST["pwdPwd2"]) {
 					$query = "INSERT INTO ".$tblprefix."users (username, password) VALUES ('".$_POST["pwdUser"]."', '".md5($_POST["pwdPwd1"])."')";
-					$result = mysql_query($query) or die("Error adding new user");
+					$result = mysql_query($query) or die($err_new_user);
 				}
 				else
-					$err = "Passwords do not match";
+					$err = $err_pwd_match;
 			}
 			else
-				$err = "User already exists";
+				$err = $err_user_exist;
 			break;
 		// delete an existing user
 		case "delete":
 			$query = "DELETE FROM ".$tblprefix."users WHERE id = '".$_REQUEST["id"]."'";
-			$result = mysql_query($query) or die("Error deleting user");
+			$result = mysql_query($query) or die($err_delete_user);
 			break;
 		// bail out if we don't know what else to do
 		default:
@@ -65,19 +65,19 @@
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
+<html dir="<?php echo $dir; ?>">
 <head>
 <link rel="stylesheet" href="<?php echo $style; ?>" type="text/css" />
-<link rel="SHORTCUT ICON" href="images/favicon.ico" />
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-<meta http-equiv="content-language" content="en" />
+<link rel="shortcut icon" href="images/favicon.ico" />
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $charset; ?>" />
+<meta http-equiv="content-language" content="<?php echo $clang; ?>" />
 <title>phpmyfamily Admin</title>
 </head>
 <body>
 <table class="header" width="100%">
   <tbody>
     <tr>
-      <td><h3>Admin Functions</h3>  </td>
+      <td><h3><?php echo $strAdminFuncs; ?></h3>  </td>
     </tr>
   </tbody>
 </table>
@@ -89,13 +89,13 @@
       <td width="50%" valign="top">
 	  	<table width="80%">
 			<tr>
-				<th>action</th>
-				<th>Username</th>
-				<th>Admin</th>
+				<th><?php echo $strAction; ?></th>
+				<th><?php echo $strUsername; ?></th>
+				<th><?php echo ucwords($strAdmin); ?></th>
 			</tr>
 <?php
 		$query = "SELECT * FROM ".$tblprefix."users WHERE id <> '".$_SESSION["id"]."' ORDER BY username";
-		$result = mysql_query($query) or die("Error running list users query");
+		$result = mysql_query($query) or die($err_users);
 		$i = 0;
 		while ($row = mysql_fetch_array($result)) {
 			if ($i == 0 || fmod($i, 2) == 0)
@@ -104,7 +104,7 @@
 				$class = "tbl_even";
 ?>
 			<tr>
-				<td class="<?php echo $class; ?>"><a href="admin.php?func=delete&amp;id=<?echo $row["id"]; ?>">delete</a></td>
+				<td class="<?php echo $class; ?>"><a href="admin.php?func=delete&amp;id=<?echo $row["id"]; ?>"><?php echo $strDelete; ?></a></td>
 				<td class="<?php echo $class; ?>"><?php echo $row["username"]; ?></td>
 				<td class="<?php echo $class; ?>"><?php echo $row["admin"]; ?></td>
 			</tr>
@@ -116,12 +116,12 @@
 	  </td>
       <td width="50%" valign="top">
 			<table>
-				<tr><h4>Create new user</h4></tr>
+				<tr><h4><?php echo $strUserCreate; ?></h4></tr>
 				<form method="POST" action="admin.php?func=add">
-					<tr><td>Username</td><td><input type="text" name="pwdUser" size="20" maxlength="20" /></td></tr>
-					<tr><td>Password</td><td><input type="password" name="pwdPwd1" size="20" maxlength="30" /></td></tr>
-					<tr><td>Re-enter Password</td><td><input type="password" name="pwdPwd2" size="20" maxlength="30" /></td></tr>
-					<tr><td></td><td><input type="submit" name="Create" /></td></tr>
+					<tr><td><?php echo $strUsername; ?></td><td><input type="text" name="pwdUser" size="20" maxlength="20" /></td></tr>
+					<tr><td><?php echo $strPassword; ?></td><td><input type="password" name="pwdPwd1" size="20" maxlength="30" /></td></tr>
+					<tr><td><?php echo $strRePassword; ?></td><td><input type="password" name="pwdPwd2" size="20" maxlength="30" /></td></tr>
+					<tr><td></td><td><input type="submit" name="<?php echo $strCreate; ?>" /></td></tr>
 					<tr><td><font color="red"><?php echo $err; ?></font></td></tr>
 				</form>
 			</table>
@@ -131,7 +131,7 @@
 </table>
 
 <hr />
-<a href="index.php">Back</a> to the homepage.
+<a href="index.php"><?php echo $strBack; ?></a> <?php echo $strToHome; ?>
 </body>
 </html>
 
