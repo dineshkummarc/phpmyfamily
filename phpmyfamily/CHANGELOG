@@ -1,3 +1,4 @@
+	Per individual export to GEDCOM added
 	Users able to change email addresses
 	Password recovery added
 	Implemented RFE #1065770 (Surname suffix field)

@@ -206,6 +206,7 @@
 	$strMonitoring		= "People you are monitoring";
 	$strChangeStyle		= "Change your style";
 	$strChangeEmail		= "Change your email";
+	$strGedCom			= "gedcom";
 
 //=====================================================================================================================
 //  email definitions

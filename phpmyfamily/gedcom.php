@@ -19,7 +19,6 @@
 
 	// include the configuration parameters and function
 	include "inc/config.inc.php";
-	ini_set("auto_detect_line_endings", TRUE);
 
 	//convert date from yyyy-mm-dd database format to dd MMM yyyy gedcom format
 	function ged_date($incoming) {
@@ -70,7 +69,8 @@
 2 VERS 5.5
 2 FORM Lineage-Linked
 1 CHAR ASCII
-1 FILE $filename\n";//end of header
+1 FILE $filename
+";//end of header
 
 	}	// end of ged_header()
 
@@ -97,7 +97,7 @@
 				$ged_name = ereg_replace($row['surname'], $repname, $row['name']);
 				$givn_name = ereg_replace($row['surname'], "", $row['name']);
 			}
-			echo "0 @".$row["person_id"]."@ INDI\n";
+			echo "0 @".$row["person_id"]."@ INDI\r";
 			echo "1 NAME ".$ged_name."\n";
 			echo "2 GIVN ".$givn_name."\n";
 			echo "2 SURN ".$row["surname"]."\n";
@@ -307,6 +307,18 @@
 
 	$person = $_REQUEST["person"];
 	$filename = "gedcom.ged";
+
+
+	// set security 
+	if ($gedcom == false || ($_SESSION["id"] == 0 && $gedcom == true))
+		$restricted = true;
+	else
+		$restricted = false;
+
+	// if trying to access a restriced person
+	if ($restricted)
+		die(include "inc/forbidden.inc.php");
+	
 
 	header("Content-Location: ".$filename);
 	header("Content-Type: application/unknown");

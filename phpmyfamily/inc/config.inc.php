@@ -32,7 +32,8 @@
 	$styledir		= "styles/";							// See styles directory for options
 	$defaultstyle	= "default.css.php"	;					// default style sheet
 	$lang			= "lang/en-uk.inc.php";					// Translations welcome!
-	$timing			= true;									// Wether we want execution time
+	$timing			= true;									// Whether we want execution time
+	$gedcom			= true;									// Whether we want to allow gedcom export
 
 //=====================================================================================================================
 // Change tracking details
