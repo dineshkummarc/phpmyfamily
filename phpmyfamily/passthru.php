@@ -35,14 +35,24 @@
 					stamppeeps($_REQUEST["person"]);
 					stamppeeps($_POST["frmSpouse"]);
 					stamppeeps($_REQUEST["oldspouse"]);
+					@$frmMCert = $_POST["frmMCert"];
+					if ($frmMCert == "")
+						$frmMCert = "N";
 
 					if ($_REQUEST["gender"] == "M")
-						$query = "UPDATE ".$tblprefix."spouses SET bride_id = '".$_POST["frmSpouse"]."', marriage_date = '".$_POST["frmDate"]."', marriage_place = '".$_POST["frmPlace"]."' WHERE groom_id = '".$_REQUEST["person"]."' AND bride_id = '".$_REQUEST["oldspouse"]."'";
+						$query = "UPDATE ".$tblprefix."spouses SET bride_id = '".$_POST["frmSpouse"]."', marriage_date = '".$_POST["frmDate"]."', marriage_cert = '".$frmMCert."', marriage_place = '".$_POST["frmPlace"]."' WHERE groom_id = '".$_REQUEST["person"]."' AND bride_id = '".$_REQUEST["oldspouse"]."'";
 					else
-						$query = "UPDATE ".$tblprefix."spouses SET groom_id = '".$_POST["frmSpouse"]."', marriage_date = '".$_POST["frmDate"]."', marriage_place = '".$_POST["frmPlace"]."' WHERE bride_id = '".$_REQUEST["person"]."' AND groom_id = '".$_REQUEST["oldspouse"]."'";
+						$query = "UPDATE ".$tblprefix."spouses SET groom_id = '".$_POST["frmSpouse"]."', marriage_date = '".$_POST["frmDate"]."', marriage_cert = '".$frmMCert."', marriage_place = '".$_POST["frmPlace"]."' WHERE bride_id = '".$_REQUEST["person"]."' AND groom_id = '".$_REQUEST["oldspouse"]."'";
 					break;
 				case "detail":
-					$query = "UPDATE ".$tblprefix."people SET name = '".$_POST["frmName"]."', date_of_birth = '".$_POST["frmDOB"]."', birth_place = '".$_POST["frmBirthPlace"]."', date_of_death = '".$_POST["frmDOD"]."', death_reason = '".$_POST["frmDeathReason"]."', mother_id = '".$_POST["frmMother"]."', father_id = '".$_POST["frmFather"]."', narrative = '".$_POST["frmNarrative"]."' WHERE person_id = '".$_REQUEST["person"]."'";
+					// get the certificate status
+					@$frmBCert = $_POST["frmBCert"];
+					if ($frmBCert == "")
+						$frmBCert = "N";
+					@$frmDCert = $_POST["frmDCert"];
+					if ($frmDCert == "")
+						$frmDCert = "N";
+					$query = "UPDATE ".$tblprefix."people SET name = '".$_POST["frmName"]."', date_of_birth = '".$_POST["frmDOB"]."', birth_cert = '".$frmBCert."', birth_place = '".$_POST["frmBirthPlace"]."', date_of_death = '".$_POST["frmDOD"]."', death_cert = '".$frmDCert."', death_reason = '".$_POST["frmDeathReason"]."', gender = '".$_POST["frmGender"]."', mother_id = '".$_POST["frmMother"]."', father_id = '".$_POST["frmFather"]."', narrative = '".$_POST["frmNarrative"]."' WHERE person_id = '".$_REQUEST["person"]."'";
 					break;
 				case "census":
 					stamppeeps($_REQUEST["person"]);
@@ -52,7 +62,7 @@
 				default:
 					break;
 			}
-			$result = mysql_query($query);
+			$result = mysql_query($query) or die($err_person_update);
 			echo "<meta http-equiv=refresh content='0; url=people.php?person=".$_REQUEST["person"]."' />\n";
 			break;
 		case "insert";
@@ -60,11 +70,13 @@
 				case "marriage":
 					stamppeeps($_REQUEST["person"]);
 					stamppeeps($_POST["frmSpouse"]);
-
+					@$frmMCert = $_POST["frmMCert"];
+					if ($frmMCert == "")
+						$frmMCert = "N";
 					if ($_REQUEST["gender"] == "M")
-						$iquery = "INSERT INTO ".$tblprefix."spouses (groom_id, bride_id, marriage_date, marriage_place) VALUES ('".$_REQUEST["person"]."', '".$_POST["frmSpouse"]."', '".$_POST["frmDate"]."', '".$_POST["frmPlace"]."')";
+						$iquery = "INSERT INTO ".$tblprefix."spouses (groom_id, bride_id, marriage_date, marriage_cert, marriage_place) VALUES ('".$_REQUEST["person"]."', '".$_POST["frmSpouse"]."', '".$_POST["frmDate"]."', '".$frmMCert."', '".$_POST["frmPlace"]."')";
 					else
-						$iquery = "INSERT INTO ".$tblprefix."spouses (groom_id, bride_id, marriage_date, marriage_place) VALUES ('".$_POST["frmSpouse"]."', '".$_REQUEST["person"]."', '".$_POST["frmDate"]."', '".$_POST["frmPlace"]."')";
+						$iquery = "INSERT INTO ".$tblprefix."spouses (groom_id, bride_id, marriage_date, marriage_place) VALUES ('".$_POST["frmSpouse"]."', '".$_REQUEST["person"]."', '".$_POST["frmDate"]."', '".$frmMCert."', '".$_POST["frmPlace"]."')";
 					$iresult = mysql_query($iquery);
 					$person = $_REQUEST["person"];
 					break;
@@ -81,7 +93,14 @@
 						stamppeeps($person);
 					break;
 				case "detail":
-					$iquery = "INSERT INTO ".$tblprefix."people (person_id, name, date_of_birth, birth_place, date_of_death, death_reason, gender, mother_id, father_id, narrative, updated) VALUES ('', '".$_POST["frmName"]."', '".$_POST["frmDOB"]."', '".$_POST["frmBirthPlace"]."', '".$_POST["frmDOD"]."', '".$_POST["frmDeathReason"]."', '".$_POST["frmGender"]."', '".$_POST["frmMother"]."', '".$_POST["frmFather"]."', '".$_POST["frmNarrative"]."', NOW())";
+					// get the certificate status
+					@$frmBCert = $_POST["frmBCert"];
+					if ($frmBCert == "")
+						$frmBCert = "N";
+					@$frmDCert = $_POST["frmDCert"];
+					if ($frmDCert == "")
+						$frmDCert = "N";
+					$iquery = "INSERT INTO ".$tblprefix."people (person_id, name, date_of_birth, birth_cert, birth_place, date_of_death, death_cert, death_reason, gender, mother_id, father_id, narrative, updated) VALUES ('', '".$_POST["frmName"]."', '".$_POST["frmDOB"]."', '".$frmBCert."', '".$_POST["frmBirthPlace"]."', '".$_POST["frmDOD"]."', '".$frmDCert."', '".$_POST["frmDeathReason"]."', '".$_POST["frmGender"]."', '".$_POST["frmMother"]."', '".$_POST["frmFather"]."', '".$_POST["frmNarrative"]."', NOW())";
 					$iresult = mysql_query($iquery) or die($err_detail);
 					$person = mysql_insert_id();
 					break;

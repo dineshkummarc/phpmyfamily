@@ -118,8 +118,8 @@
 	$strSchedule 		= "Schedule";
 	$strDragons			= "Here be dragons!";
 	$strGender			= "Gender";
-	$strMale			= "M";
-	$strFemale			= "F";
+	$strMale			= "Male";
+	$strFemale			= "Female";
 	$strNewPassword		= "New Password";
 	$strOldPassword		= "Old Password";
 	$strReOldPassword	= "Re-enter Old Password";
@@ -165,6 +165,9 @@
 	$strTranscript		= "transcript";
 	$strImage			= "image";
 	$strDoubleDelete	= "\"Are you really sure you wish to DELETE this person\\nThis process is IRREVERSABLE!!\"";
+	$strBirthCert		= "Birth Certified?";
+	$strDeathCert		= "Death Certified?";
+	$strMarriageCert	= "Marriage Certified?";
 
 //=====================================================================================================================
 //  error definitions
@@ -208,6 +211,7 @@
 	$err_trans_file		= "Error deleting transcript file";
 	$err_image_file		= "Error deleting image file";
 	$err_child_update	= "Error updating childrens records";
+	$err_person_update	= "Error updating person details";
 
 	// eof
 ?>

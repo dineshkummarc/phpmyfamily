@@ -77,6 +77,10 @@
 			<td><?php echo $strDateFmt; ?></td>
 		</tr>
 		<tr>
+			<td class="tbl_odd"><?php echo $strBirthCert; ?></td>
+			<td class="tbl_even"><?php if ($edrow["birth_cert"] == "Y") echo "<input type=\"checkbox\" checked name=\"frmBCert\" value=\"Y\" />"; else echo "<input type=\"checkbox\" name=\"frmBCert\" value=\"Y\" />"; ?></td>
+		</tr>
+		<tr>
 			<td class="tbl_odd"><?php echo $strBirthPlace; ?></td>
 			<td class="tbl_even"><input type="text" name="frmBirthPlace" value="<?php echo $edrow["birth_place"]; ?>" size="30" maxlength="50" /></td>
 		</tr>
@@ -86,8 +90,16 @@
 			<td><?php echo $strDateFmt; ?></td>
 		</tr>
 		<tr>
+			<td class="tbl_odd"><?php echo $strDeathCert; ?></td>
+			<td class="tbl_even"><?php if ($edrow["death_cert"] == "Y") echo "<input type=\"checkbox\" checked name=\"frmDCert\" value=\"Y\" />"; else echo "<input type=\"checkbox\" name=\"frmDCert\" value=\"Y\" />"; ?></td>
+		</tr>
+		<tr>
 			<td class="tbl_odd"><?php echo $strCauseDeath; ?></td>
 			<td class="tbl_even"><input type="text" name="frmDeathReason" value="<?php echo $edrow["death_reason"]; ?>" size="30" maxlength="50" /></td>
+		</tr>
+		<tr>
+			<td class="tbl_odd"><?php echo $strGender; ?></td>
+			<td class="tbl_even"><?php if ($edrow["gender"] == "M") echo "<input type=\"radio\" checked name=\"frmGender\" value=\"M\" /> ".$strMale." <input type=\"radio\" name=\"frmGender\" value=\"F\" /> ".$strFemale; else echo "<input type=\"radio\" name=\"frmGender\" value=\"M\" /> ".$strMale." <input type=\"radio\" checked name=\"frmGender\" value=\"F\" /> ".$strFemale; ?></td>
 		</tr>
 		<tr>
 			<td class="tbl_odd"><?php echo $strMother; ?></td>
@@ -165,6 +177,10 @@
 			<td class="tbl_odd"><?php echo $strDOM; ?></td>
 			<td class="tbl_even"><input type="text" name="frmDate" value="<?php echo $edrow["marriage_date"]; ?>" size="15" maxlength="10" /></td>
 			<td><?php echo $strDateFmt; ?></td>
+		</tr>
+		<tr>
+			<td class="tbl_odd"><?php echo $strMarriageCert; ?></td>
+			<td class="tbl_even"><?php if ($edrow["marriage_cert"] == "Y") echo "<input type=\"checkbox\" checked name=\"frmMCert\" value=\"Y\" />"; else echo "<input type=\"checkbox\" name=\"frmMCert\" value=\"Y\" />"; ?></td>
 		</tr>
 		<tr>
 			<td class="tbl_odd"><?php echo $strMarriagePlace; ?></td>
@@ -285,6 +301,10 @@
 			<td><?php echo $strDateFmt; ?></td>
 		</tr>
 		<tr>
+			<td class="tbl_odd"><?php echo $strBirthCert; ?></td>
+			<td class="tbl_even"><input type="checkbox" name="frmBCert" value="Y" /></td>
+		</tr>
+		<tr>
 			<td class="tbl_odd"><?php echo $strBirthPlace; ?></td>
 			<td class="tbl_even"><input type="text" name="frmBirthPlace" size="30" maxlength="50" /></td>
 		</tr>
@@ -292,6 +312,10 @@
 			<td class="tbl_odd"><?php echo $strDOD; ?></td>
 			<td class="tbl_even"><input type="text" name="frmDOD" size="30" maxlength="10" value="0000-00-00" /></td>
 			<td><?php echo $strDateFmt; ?></td>
+		</tr>
+		<tr>
+			<td class="tbl_odd"><?php echo $strDeathCert; ?></td>
+			<td class="tbl_even"><input type="checkbox" name="frmDCert" value="Y" /></td>
 		</tr>
 		<tr>
 			<td class="tbl_odd"><?php echo $strCauseDeath; ?></td>
@@ -463,6 +487,10 @@
 			<td class="tbl_odd"><?php echo $strDOM; ?></td>
 			<td class="tbl_even"><input type="text" name="frmDate" size="15" maxlength="10" value="0000-00-00" /></td>
 			<td><?php echo $strDateFmt; ?></td>
+		</tr>
+		<tr>
+			<td class="tbl_odd"><?php echo $strMarriageCert; ?></td>
+			<td class="tbl_even"><input type="checkbox" name="frmMCert" value="Y" /></td>
 		</tr>
 		<tr>
 			<td class="tbl_odd"><?php echo $strMarriagePlace; ?></td>
