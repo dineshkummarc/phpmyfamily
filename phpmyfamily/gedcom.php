@@ -19,6 +19,38 @@
 
 	// include the configuration parameters and function
 	include "inc/config.inc.php";
+	ini_set("auto_detect_line_endings", TRUE);
+
+	//convert date from yyyy-mm-dd database format to dd MMM yyyy gedcom format
+	function ged_date($incoming) {
+		// define the months
+		$months = array ("00" => "00", "01" => "JAN", "02" => "FEB", "03" => "MAR", "04" => "APR", "05" => "MAY", "06" => "JUN", "07" => "JUL", "08" => "AUG", "09" => "SEP", "10" => "OCT", "11" => "NOV", "12" => "DEC");
+		// explode date
+		$work = explode("-", $incoming);
+		// if  month or day unknown, just return year
+		if ($work[1] == "00" OR $work[2] == "00") {
+			$retval = "$work[0]";
+		} else {
+			// reformat whole date to dd MMM yyyy
+			$replacemonth = strtr($work[1], $months);
+			$retval = "$work[2] $replacemonth $work[0]";
+		}
+		// return the string for gedcom DATE
+		return $retval;
+	}	// end of ged_date()
+
+	//this one is from www.php.net
+	function unique_multi_array($array, $sub_key) {
+		$target = array ();
+		$existing_sub_key_values = array ();
+		foreach ($array as $key => $sub_array) {
+			if (!in_array($sub_array[$sub_key], $existing_sub_key_values)) {
+				$existing_sub_key_values[] = $sub_array[$sub_key];
+				$target[$key] = $sub_array;
+			}
+		}
+		return $target;
+	}	// end of unique_multi_array()
 
 	function ged_header($filename) {
 		global $version;
@@ -219,5 +251,58 @@
 		}
 
 	}	// end of ged_fam()
+
+	// function: ged_photos
+	function ged_photos() {
+		$pquery = "SELECT * FROM ".$tblprefix."images";
+		$presult = mysql_query($pquery) or die(mysql_error());
+		$pnumber = mysql_num_rows($presult);
+		$p = 0;
+		while ($p < $pnumber) {
+			$prow = mysql_fetch_array($presult);
+			echo "0 @img".$prow["image_id"]."@ OBJE\n";
+			//insertion of binary data would be here in gedcom < 5.5.1
+			//echo "1 FILE $absurl"."images/".$prow["image_id"].".jpg\n";
+			//echo "2 FORM jpg\n";
+			//echo "2 TITL ".$prow["title"]."\n";
+			//the above three lines are for 5.5.1, for now just fill the title
+			echo "1 TITL ".$prow["title"]."\n";
+			$p ++;
+		}
+	}	// end of ged_photos()
+
+	// function: ged_docs
+	function ged_docs() {
+		//find documents
+		$pquery = "SELECT * FROM ".$tblprefix."documents";
+		$presult = mysql_query($pquery) or die(mysql_error());
+		$pnumber = mysql_num_rows($presult);
+		$p = 0;
+		while ($p < $pnumber) {
+			$prow = mysql_fetch_array($presult);
+			echo "0 @doc".$prow["id"]."@ SOUR\n";
+			echo "1 TITL ".$prow["doc_title"]."\n";
+			echo "1 TEXT ".$prow["doc_description"]."\n";
+			echo "1 OBJE\n";
+			echo "2 FILE $absurl"."documents/".$prow["file_name"]."\n";
+			$p ++;
+		}
+		//find documents
+	}	// end of ged_docs()
+
+	// function: ged_trailer
+	function ged_trailer() {
+		//Standard submitter, as the data is stored in the database an comes from one source
+		//EMAIL and WWW are new in gedcom 5.5.1, for now disabled
+		echo "0 @phpmyfamily@ SUBM\n";
+		echo "1 NAME phpmyfamily /$desc/\n";
+		echo "1 ADDR phpmyfamily\n";//required by specification to have a valid ADDR
+		echo "2 CONT phpmyfamily\n"; //required by specification to have a valid ADDR
+		//echo "1 EMAIL $email\n";
+		//echo "1 WWW $absurl\n";
+
+		// End of Gedcom File	
+		echo "0 TRLR\n";
+	}	// end of ged_trailer()
 
 ?>
