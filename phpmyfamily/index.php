@@ -34,9 +34,7 @@
 			<form method="get" action="people.php">
 				<?php listpeeps("person"); ?>
 			</form>
-<?php if ($_SESSION["id"] <> 0) { ?>
-			<?php echo $strLoggedIn; ?><?php echo $_SESSION["name"]; ?>: (<a href="passthru.php?func=logout" class="hd_link"><?php echo $strLogout; ?></a><?php if ($_SESSION["admin"] == 1) echo ", <a href=\"admin.php\" class=\"hd_link\">".$strAdmin."</a>"; ?>)<?php if ($_SESSION["editable"] == "Y") {?><br /><a href="edit.php?func=add&amp;area=detail"><?php echo $strAdd; ?></a> <?php echo $strNewPerson; }?>
-<?php } else { echo "<a href=\"my.php\" class=\"hd_link\">login</a> <<<br>\n<a href=\"my.php?state=lost\" class=\"hd_link\">recover password</a> <<"; } ?>
+<?php user_opts(); ?>
 		</td>
 	</tr>
 </table>
