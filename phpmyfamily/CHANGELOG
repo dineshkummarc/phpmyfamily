@@ -1,3 +1,4 @@
+	Fixed bug #1104819 (Big Brother Emails)
 	Added Dutch (Belgian) translation (Thanks Dirk)
 	Username added to password recovery email
 	Improvements to installation scripts to avoid warnings

@@ -452,7 +452,7 @@
 	// function: bb_person($person)
 	// send a big brother email on all changes
 	function bb_person($person, $action = "updated") {
-		global $email;
+		global $email, $trackemail;
 		global $tblprefix;
 		global $absurl;
 		global $err_person;
@@ -473,10 +473,10 @@
 			$subject = str_replace("$1", $row["name"], $eBBSubject);
 
 			// Flesh out the body
-			$body = str_replace("$1", $trow["name"], $eTrackBodyTop);
+			$body = str_replace("$1", $row["name"], $eTrackBodyTop);
 			$body = str_replace("$2", $absurl, $body);
 			$body = str_replace("$3", $_SESSION["name"], $body);
-			$body .= $absurl."people.php?person=".$trow["person_id"]."\n\n";
+			$body .= $absurl."people.php?person=".$row["person_id"]."\n\n";
 			$body .= $eBBBottom;
 		}
 
