@@ -52,12 +52,12 @@
 					@$frmDCert = $_POST["frmDCert"];
 					if ($frmDCert == "")
 						$frmDCert = "N";
-					$query = "UPDATE ".$tblprefix."people SET name = '".htmlspecialchars($_POST["frmName"], ENT_QUOTES)."', date_of_birth = '".$_POST["frmDOB"]."', birth_cert = '".$frmBCert."', birth_place = '".htmlspecialchars($_POST["frmBirthPlace"], ENT_QUOTES)."', date_of_death = '".$_POST["frmDOD"]."', death_cert = '".$frmDCert."', death_reason = '".htmlspecialchars($_POST["frmDeathReason"], ENT_QUOTES)."', gender = '".$_POST["frmGender"]."', mother_id = '".$_POST["frmMother"]."', father_id = '".$_POST["frmFather"]."', narrative = '".$_POST["frmNarrative"]."' WHERE person_id = '".$_REQUEST["person"]."'";
+					$query = "UPDATE ".$tblprefix."people SET name = '".htmlspecialchars($_POST["frmName"], ENT_QUOTES)."', date_of_birth = '".$_POST["frmDOB"]."', birth_cert = '".$frmBCert."', birth_place = '".htmlspecialchars($_POST["frmBirthPlace"], ENT_QUOTES)."', date_of_death = '".$_POST["frmDOD"]."', death_cert = '".$frmDCert."', death_reason = '".htmlspecialchars($_POST["frmDeathReason"], ENT_QUOTES)."', gender = '".$_POST["frmGender"]."', mother_id = '".$_POST["frmMother"]."', father_id = '".$_POST["frmFather"]."', narrative = '".add_quotes($_POST["frmNarrative"])."' WHERE person_id = '".$_REQUEST["person"]."'";
 					break;
 				case "census":
 					stamppeeps($_REQUEST["person"]);
 
-					$query = "UPDATE ".$tblprefix."census SET schedule = '".htmlspecialchars($_POST["frmSchedule"], ENT_QUOTES)."', address = '".htmlspecialchars($_POST["frmAddress"], ENT_QUOTES)."', condition = '".$_POST["frmCondition"]."', age = '".$_POST["frmAge"]."', profession = '".htmlspecialchars($_POST["frmProfession"], ENT_QUOTES)."', where_born = '".htmlspecialchars($_POST["frmBirthPlace"], ENT_QUOTES)."', other_details = '".$_POST["frmDetails"]."' WHERE person_id = '".$_REQUEST["person"]."' AND census = '".$_REQUEST["census"]."'";
+					$query = "UPDATE ".$tblprefix."census SET schedule = '".htmlspecialchars($_POST["frmSchedule"], ENT_QUOTES)."', address = '".htmlspecialchars($_POST["frmAddress"], ENT_QUOTES)."', condition = '".$_POST["frmCondition"]."', age = '".$_POST["frmAge"]."', profession = '".htmlspecialchars($_POST["frmProfession"], ENT_QUOTES)."', where_born = '".htmlspecialchars($_POST["frmBirthPlace"], ENT_QUOTES)."', other_details = '".add_quotes($_POST["frmDetails"])."' WHERE person_id = '".$_REQUEST["person"]."' AND census = '".$_REQUEST["census"]."'";
 					break;
 				default:
 					break;
@@ -100,14 +100,14 @@
 					@$frmDCert = $_POST["frmDCert"];
 					if ($frmDCert == "")
 						$frmDCert = "N";
-					$iquery = "INSERT INTO ".$tblprefix."people (person_id, name, date_of_birth, birth_cert, birth_place, date_of_death, death_cert, death_reason, gender, mother_id, father_id, narrative, updated) VALUES ('', '".htmlspecialchars($_POST["frmName"], ENT_QUOTES)."', '".$_POST["frmDOB"]."', '".$frmBCert."', '".htmlspecialchars($_POST["frmBirthPlace"], ENT_QUOTES)."', '".$_POST["frmDOD"]."', '".$frmDCert."', '".htmlspecialchars($_POST["frmDeathReason"], ENT_QUOTES)."', '".$_POST["frmGender"]."', '".$_POST["frmMother"]."', '".$_POST["frmFather"]."', '".$_POST["frmNarrative"]."', NOW())";
+					$iquery = "INSERT INTO ".$tblprefix."people (person_id, name, date_of_birth, birth_cert, birth_place, date_of_death, death_cert, death_reason, gender, mother_id, father_id, narrative, updated) VALUES ('', '".htmlspecialchars($_POST["frmName"], ENT_QUOTES)."', '".$_POST["frmDOB"]."', '".$frmBCert."', '".htmlspecialchars($_POST["frmBirthPlace"], ENT_QUOTES)."', '".$_POST["frmDOD"]."', '".$frmDCert."', '".htmlspecialchars($_POST["frmDeathReason"], ENT_QUOTES)."', '".$_POST["frmGender"]."', '".$_POST["frmMother"]."', '".$_POST["frmFather"]."', '".add_quotes($_POST["frmNarrative"])."', NOW())";
 					$iresult = mysql_query($iquery) or die($err_detail);
 					$person = mysql_insert_id();
 					break;
 				case "census":
 					stamppeeps($_REQUEST["person"]);
 
-					$iquery = "INSERT INTO ".$tblprefix."census (person_id, census, schedule, address, condition, age, profession, where_born, other_details) VALUES ('".$_REQUEST["person"]."', '".$_POST["frmYear"]."', '".htmlspecialchars($_POST["frmSchedule"], ENT_QUOTES)."', '".htmlspecialchars($_POST["frmAddress"], ENT_QUOTES)."', '".$_POST["frmCondition"]."', '".$_POST["frmAge"]."', '".htmlspecialchars($_POST["frmProfession"], ENT_QUOTES)."', '".htmlspecialchars($_POST["frmWhereBorn"], ENT_QUOTES)."', '".$_POST["frmDetails"]."')";
+					$iquery = "INSERT INTO ".$tblprefix."census (person_id, census, schedule, address, condition, age, profession, where_born, other_details) VALUES ('".$_REQUEST["person"]."', '".$_POST["frmYear"]."', '".htmlspecialchars($_POST["frmSchedule"], ENT_QUOTES)."', '".htmlspecialchars($_POST["frmAddress"], ENT_QUOTES)."', '".$_POST["frmCondition"]."', '".$_POST["frmAge"]."', '".htmlspecialchars($_POST["frmProfession"], ENT_QUOTES)."', '".htmlspecialchars($_POST["frmWhereBorn"], ENT_QUOTES)."', '".add_quotes($_POST["frmDetails"])."')";
 					$iresult = mysql_query($iquery) or die($err_census);
 
 					$person = $_REQUEST["person"];

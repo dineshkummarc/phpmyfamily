@@ -261,5 +261,15 @@
 		mysql_free_result($cresult);
 	}	// end of list_censuses()
 
+	// function: add_quotes
+	// detect if magic_quotes is off, and quote a string if needed
+	function add_quotes($str) {
+
+		if (get_magic_quotes_gpc())
+			return $str;
+		else
+			return addslashes($str);
+	}	// end of add_quotes()
+
 	// eof
 ?>
