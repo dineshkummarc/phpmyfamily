@@ -100,6 +100,7 @@ Checking uploaded file is valid:
 		echo " NO!<br>\n";
 		die("Error with gedcom file");
 	}
+	flush();
 ?>
 
 <!--Read the file into an array-->
@@ -180,6 +181,7 @@ Reading in file:<br>
 	echo ".....read ".$repos." REPOS<br>\n";
 	echo ".....read ".$trlrs." TRLRS<br>\n";
 	if ($unkno > 0) echo ".....read ".$unkno." UNKNOWS<br>\n";
+	flush();
 ?>
 
 <!--parse the array-->
@@ -191,6 +193,7 @@ Verifying GedCom data:
 		print_r($gedarray[1]);
 		die ("Doesn't seem to be a valid GedCom file!");
 	}
+	flush();
 ?>
 
 <!--parse the notes first-->
@@ -221,6 +224,7 @@ Parsing notes data:
 		}
 	}
 	echo " OK<br>\n";
+	flush();
 ?>
 
 <!--parse the individual arrays-->
@@ -283,6 +287,7 @@ Parsing individual data:
 	}
 
 	echo " OK<br>\n";
+	flush();
 ?>
 
 <!--Parsing family data-->
@@ -325,6 +330,7 @@ Parsing marriage data:
 	}
 
 	echo " OK<br>\n";
+	flush();
 ?>
 
 <!--parentage-->
@@ -364,6 +370,7 @@ Parsing parentage data:
 		}
 	}
 	echo " OK<br>\n";
+	flush();
 ?>
 <!--Sort and insert person data-->
 Inserting person data:
@@ -393,6 +400,7 @@ Inserting person data:
 		$result = mysql_query($query) or die("Error inserting person");
 	}
 	echo " OK<br>\n";
+	flush();
 ?>
 
 <!--sort and insert marriages-->
