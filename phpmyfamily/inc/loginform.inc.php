@@ -25,15 +25,15 @@
 		<table width="20%">
 			<tr>
 				<td width="102">Username</td>
-				<td width="145"><input type="text" name="pwdUser"></td>
+				<td width="145"><input type="text" name="pwdUser" /></td>
 			</tr>
 			<tr>
 				<td width="102">Password</td>
-				<td width="145"><input type="password" name="pwdPassword"></td>
+				<td width="145"><input type="password" name="pwdPassword" /></td>
 			</tr>
 			<tr>
 				<td width="102"></td>
-				<td width="145"><input type="submit" name="Submit1" value="Login"></td>
+				<td width="145"><input type="submit" name="Submit1" value="Login" /></td>
 			</tr>
 		</table>
 	</form>

@@ -64,14 +64,13 @@
 	// fill out the header
 ?>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-	"http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
-<link rel="stylesheet" href="<?php echo $style; ?>" type="text/css">
-<link rel="SHORTCUT ICON" href="images/favicon.ico">
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<meta http-equiv="content-language" content="en">
+<link rel="stylesheet" href="<?php echo $style; ?>" type="text/css" />
+<link rel="SHORTCUT ICON" href="images/favicon.ico" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<meta http-equiv="content-language" content="en" />
 <title>phpmyfamily Admin</title>
 </head>
 <body>
@@ -83,7 +82,7 @@
   </tbody>
 </table>
 
-<hr>
+<hr />
 <table width="100%">
   <tbody>
     <tr>
@@ -119,10 +118,10 @@
 			<table>
 				<tr><h4>Create new user</h4></tr>
 				<form method="POST" action="admin.php?func=add">
-					<tr><td>Username</td><td><input type="text" name="pwdUser" size=20 maxlength=20></td></tr>
-					<tr><td>Password</td><td><input type="password" name="pwdPwd1" size=20 maxlength=30></td></tr>
-					<tr><td>Re-enter Password</td><td><input type="password" name="pwdPwd2" size=20 maxlength=30></td></tr>
-					<tr><td></td><td><input type="submit" name="Create"></td></tr>
+					<tr><td>Username</td><td><input type="text" name="pwdUser" size="20" maxlength="20" /></td></tr>
+					<tr><td>Password</td><td><input type="password" name="pwdPwd1" size="20" maxlength="30" /></td></tr>
+					<tr><td>Re-enter Password</td><td><input type="password" name="pwdPwd2" size="20" maxlength="30" /></td></tr>
+					<tr><td></td><td><input type="submit" name="Create" /></td></tr>
 					<tr><td><font color="red"><?php echo $err; ?></font></td></tr>
 				</form>
 			</table>
@@ -131,7 +130,7 @@
   </tbody>
 </table>
 
-<hr>
+<hr />
 <a href="index.php">Back</a> to the homepage.
 </body>
 </html>

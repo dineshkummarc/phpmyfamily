@@ -74,9 +74,9 @@
 
 		// show the number of people in the list
 		if ($gender == "A" && $omit == 0)
-			echo mysql_num_rows($result)." people on file<BR>\n";
+			echo mysql_num_rows($result)." people on file<br />\n";
 		if ($gender == "A" && $omit <> 0)
-			echo (mysql_num_rows($result) + 1)." people on file<BR>\n";
+			echo (mysql_num_rows($result) + 1)." people on file<br />\n";
 
 		// start building the select list
 		echo "<select name=\"".$form."\" size=\"1\"";

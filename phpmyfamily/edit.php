@@ -29,10 +29,11 @@
 
 	// fill out the header
 ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
-<link rel="stylesheet" href="<?php echo $style; ?>" type="text/css">
-<link rel="SHORTCUT ICON" href="images/favicon.ico">
+<link rel="stylesheet" href="<?php echo $style; ?>" type="text/css" />
+<link rel="SHORTCUT ICON" href="images/favicon.ico" />
 <?php
 
 	switch ($_REQUEST["func"]) {
@@ -59,32 +60,32 @@
   </tbody>
 </table>
 
-<hr>
+<hr />
 
 <!--Form populated with details-->
 <form method="post" action="passthru.php?func=update&amp;area=detail&amp;person=<?php echo $_REQUEST["person"]; ?>">
 	<table>
 		<tr>
 			<td class="tbl_odd">Name</td>
-			<td class="tbl_even"><input type="text" name="frmName" value="<?php echo $edrow["name"]; ?>" size="30" maxlength="50"></td>
+			<td class="tbl_even"><input type="text" name="frmName" value="<?php echo $edrow["name"]; ?>" size="30" maxlength="50" /></td>
 		</tr>
 		<tr>
 			<td class="tbl_odd">Date of Birth</td>
-			<td class="tbl_even"><input type="text" name="frmDOB" value="<?php echo $edrow["date_of_birth"]; ?>" size="30"></td>
+			<td class="tbl_even"><input type="text" name="frmDOB" value="<?php echo $edrow["date_of_birth"]; ?>" size="30" /></td>
 			<td>Please use format YYYY-MM-DD</td>
 		</tr>
 		<tr>
 			<td class="tbl_odd">Birth Place</td>
-			<td class="tbl_even"><input type="text" name="frmBirthPlace" value="<?php echo $edrow["birth_place"]; ?>" size="30" maxlength="50"></td>
+			<td class="tbl_even"><input type="text" name="frmBirthPlace" value="<?php echo $edrow["birth_place"]; ?>" size="30" maxlength="50" /></td>
 		</tr>
 		<tr>
 			<td class="tbl_odd">Date of Death</td>
-			<td class="tbl_even"><input type="text" name="frmDOD" value="<?php echo $edrow["date_of_death"]; ?>" size="30"></td>
+			<td class="tbl_even"><input type="text" name="frmDOD" value="<?php echo $edrow["date_of_death"]; ?>" size="30" /></td>
 			<td>Please use format YYYY-MM-DD</td>
 		</tr>
 		<tr>
 			<td class="tbl_odd">Cause of Death</td>
-			<td class="tbl_even"><input type="text" name="frmDeathReason" value="<?php echo $edrow["death_reason"]; ?>" size="30" maxlength="50"></td>
+			<td class="tbl_even"><input type="text" name="frmDeathReason" value="<?php echo $edrow["death_reason"]; ?>" size="30" maxlength="50" /></td>
 		</tr>
 		<tr>
 			<td class="tbl_odd">Mother</td>
@@ -99,8 +100,8 @@
 			<td colspan="2" class="tbl_even"><textarea name="frmNarrative" rows="10" cols="80"><?php echo $edrow["narrative"]; ?></textarea></td>
 		</tr>
 		<tr>
-			<td class="tbl_even"><input type="submit" name="Submit1" value="Submit"></td>
-			<td class="tbl_even"><input type="RESET" name="Reset1" value="Reset"></td>
+			<td class="tbl_even"><input type="submit" name="Submit1" value="Submit" /></td>
+			<td class="tbl_even"><input type="RESET" name="Reset1" value="Reset" /></td>
 		</tr>
 	</table>
 </form>
@@ -135,7 +136,7 @@
 
 <title>Editing Marriage: <?php echo $prow["name"]; ?> & <?php echo $spousename; ?></title>
 </head>
-<BODY>
+<body>
 <table class="header" width="100%">
   <tbody>
     <tr>
@@ -144,7 +145,7 @@
   </tbody>
 </table>
 
-<hr>
+<hr />
 
 <!--Fill out form -->
 <form method="post" action="passthru.php?func=update&amp;area=marriage&amp;person=<?php echo $_REQUEST["person"]; ?>&amp;oldspouse=<?php echo $_REQUEST["spouse"]; ?>&amp;gender=<?php echo $prow["gender"]; ?>">
@@ -160,16 +161,16 @@
 		</tr>
 		<tr>
 			<td class="tbl_odd">Date of marriage</td>
-			<td class="tbl_even"><input type="text" name="frmDate" value="<?php echo $edrow["marriage_date"]; ?>" size="15" maxlength="10"></td>
+			<td class="tbl_even"><input type="text" name="frmDate" value="<?php echo $edrow["marriage_date"]; ?>" size="15" maxlength="10" /></td>
 			<td>Please use format YYYY-MM-DD</td>
 		</tr>
 		<tr>
 			<td class="tbl_odd">Marriage Place</td>
-			<td class="tbl_even"><input type="text" name="frmPlace" value="<?php echo $edrow["marriage_place"]; ?>" size="30" maxlength="50"></td>
+			<td class="tbl_even"><input type="text" name="frmPlace" value="<?php echo $edrow["marriage_place"]; ?>" size="30" maxlength="50" /></td>
 		</tr>
 		<tr>
-			<td class="tbl_even"><input type="submit" name="Submit1" value="Submit"></td>
-			<td class="tbl_even"><input type="reset" name="Reset1" value="Reset"></td>
+			<td class="tbl_even"><input type="submit" name="Submit1" value="Submit" /></td>
+			<td class="tbl_even"><input type="reset" name="Reset1" value="Reset" /></td>
 		</tr>
 	</table>
 </form>
@@ -200,18 +201,18 @@
   </tbody>
 </table>
 
-<hr>
+<hr />
 
 <!--Fill out the form-->
 <form method="post" action="passthru.php?func=update&amp;area=census&amp;person=<?php echo $_REQUEST["person"]; ?>&amp;year=<?php echo $_REQUEST["year"]; ?>">
 	<table>
 		<tr>
 			<td class="tbl_odd">Schedule</td>
-			<td class="tbl_even"><input type="text" name="frmSchedule" value="<?php echo $edrow["schedule"]; ?>" size="30" maxlength="20"></td>
+			<td class="tbl_even"><input type="text" name="frmSchedule" value="<?php echo $edrow["schedule"]; ?>" size="30" maxlength="20" /></td>
 		</tr>
 		<tr>
 			<td class="tbl_odd">Address</td>
-			<td class="tbl_even"><input type="text" name="frmAddress" value="<?php echo $edrow["address"]; ?>" size="50" maxlength="70"></td>
+			<td class="tbl_even"><input type="text" name="frmAddress" value="<?php echo $edrow["address"]; ?>" size="50" maxlength="70" /></td>
 		</tr>
 		<tr>
 			<td class="tbl_odd">Condition</td>
@@ -219,19 +220,19 @@
 		</tr>
 		<tr>
 			<td class="tbl_odd">Age</td>
-			<td class="tbl_even"><input type="text" name="frmAge" value="<?php echo $edrow["age"]; ?>" size="30" maxlength="3"></td>
+			<td class="tbl_even"><input type="text" name="frmAge" value="<?php echo $edrow["age"]; ?>" size="30" maxlength="3" /></td>
 		</tr>
 		<tr>
 			<td class="tbl_odd">Profession</td>
-			<td class="tbl_even"><input type="text" name="frmProfession" value="<?php echo $edrow["profession"]; ?>" size="30" maxlength="40"></td>
+			<td class="tbl_even"><input type="text" name="frmProfession" value="<?php echo $edrow["profession"]; ?>" size="30" maxlength="40" /></td>
 		</tr>
 		<tr>
 			<td class="tbl_odd">Place of Birth</td>
-			<td class="tbl_even"><input type="text" name="frmBirthPlace" value="<?php echo $edrow["where_born"]; ?>" size="30" maxlength="40"></td>
+			<td class="tbl_even"><input type="text" name="frmBirthPlace" value="<?php echo $edrow["where_born"]; ?>" size="30" maxlength="40" /></td>
 		</tr>
 		<tr>
-			<td class="tbl_even"><input type="submit" name="Submit1" value="Submit"></td>
-			<td class="tbl_even"><input type="reset" name="Reset1" value="Reset"></td>
+			<td class="tbl_even"><input type="submit" name="Submit1" value="Submit" /></td>
+			<td class="tbl_even"><input type="reset" name="Reset1" value="Reset" /></td>
 		</tr>
 	</table>
 </form>
@@ -264,36 +265,36 @@
 </table>
 <!--Create a blank form-->
 
-<hr>
-<b>Please make sure person doesn't exist before creating!!!</b><br>
+<hr />
+<b>Please make sure person doesn't exist before creating!!!</b><br />
 
 <form method="post" action="passthru.php?func=insert&amp;area=detail">
 	<table>
 		<tr>
 			<td class="tbl_odd">Name</td>
-			<td class="tbl_even"><input type="text" name="frmName" size="30" maxlength="50"></td>
+			<td class="tbl_even"><input type="text" name="frmName" size="30" maxlength="50" /></td>
 		</tr>
 		<tr>
 			<td class="tbl_odd">Date of Birth</td>
-			<td class="tbl_even"><input type="text" name="frmDOB" size="30" maxlength="10" value="0000-00-00"></td>
+			<td class="tbl_even"><input type="text" name="frmDOB" size="30" maxlength="10" value="0000-00-00" /></td>
 			<td>Please use format YYYY-MM-DD</td>
 		</tr>
 		<tr>
 			<td class="tbl_odd">Birth Place</td>
-			<td class="tbl_even"><input type="text" name="frmBirthPlace" size="30" maxlength="50"></td>
+			<td class="tbl_even"><input type="text" name="frmBirthPlace" size="30" maxlength="50" /></td>
 		</tr>
 		<tr>
 			<td class="tbl_odd">Date of Death</td>
-			<td class="tbl_even"><input type="text" name="frmDOD" size="30" maxlength="10" value="0000-00-00"></td>
+			<td class="tbl_even"><input type="text" name="frmDOD" size="30" maxlength="10" value="0000-00-00" /></td>
 			<td>Please use format YYYY-MM-DD</td>
 		</tr>
 		<tr>
 			<td class="tbl_odd">Cause of Death</td>
-			<td class="tbl_even"><input type="text" name="frmDeathReason" size="30" maxlength="50"></td>
+			<td class="tbl_even"><input type="text" name="frmDeathReason" size="30" maxlength="50" /></td>
 		</tr>
 		<tr>
 			<td class="tbl_odd">Gender</td>
-			<td class="tbl_even"><input type="radio" name="frmGender" value="M" checked="checked">M<input type="radio" name="frmGender" value="F">F</td>
+			<td class="tbl_even"><input type="radio" name="frmGender" value="M" checked="checked" />M<input type="radio" name="frmGender" value="F" />F</td>
 		</tr>
 		<tr>
 			<td class="tbl_odd">Mother</td>
@@ -308,8 +309,8 @@
 			<td colspan="2" class="tbl_even"><textarea name="frmNarrative" rows="10" cols="80"></textarea></td>
 		</tr>
 		<tr>
-			<td class="tbl_even"><input type="submit" name="Submit1" value="Submit"></td>
-			<td class="tbl_even"><input type="reset" name="Reset1" value="Reset"></td>
+			<td class="tbl_even"><input type="submit" name="Submit1" value="Submit" /></td>
+			<td class="tbl_even"><input type="reset" name="Reset1" value="Reset" /></td>
 		</tr>
 	</table>
 </form>
@@ -335,30 +336,30 @@
   </tbody>
 </table>
 
-<hr>
+<hr />
 
 <!--Fill out the form-->
 <form enctype="multipart/form-data" method="post" action="passthru.php?func=insert&amp;area=transcript&amp;person=<?php echo $_REQUEST["person"]; ?>">
 	<table>
 		<tr>
 			<td class="tbl_odd">File to Upload</td>
-			<td class="tbl_even"><input type="file" name="userfile"></td>
+			<td class="tbl_even"><input type="file" name="userfile" /></td>
 		</tr>
 		<tr>
 			<td class="tbl_odd">File Title</td>
-			<td class="tbl_even"><input type="text" name="frmTitle" size="30" maxlength="30"></td>
+			<td class="tbl_even"><input type="text" name="frmTitle" size="30" maxlength="30" /></td>
 		</tr>
 		<tr>
 			<td class="tbl_odd">File Description</td>
-			<td class="tbl_even"><input type="text" name="frmDesc" size="60" maxlength="60"></td>
+			<td class="tbl_even"><input type="text" name="frmDesc" size="60" maxlength="60" /></td>
 		</tr>
 		<tr>
 			<td class="tbl_odd">File Date</td>
-			<td class="tbl_even"><input type="text" name="frmDate" maxlength="10" value="0000-00-00"></td>
+			<td class="tbl_even"><input type="text" name="frmDate" maxlength="10" value="0000-00-00" /></td>
 			<td>Please use format YYYY-MM-DD</td>
 		</tr>
 		<tr>
-			<td class="tbl_even"><input type="submit" name="Submit1" value="Submit"></td>
+			<td class="tbl_even"><input type="submit" name="Submit1" value="Submit" /></td>
 			<td class="tbl_even"></td>
 		</tr>
 	</table>
@@ -386,7 +387,7 @@
   </tbody>
 </table>
 
-<hr>
+<hr />
 
 <!--Fill out the form-->
 <form enctype="multipart/form-data" method="post" action="passthru.php?func=insert&amp;area=image&amp;person=<?php echo $_REQUEST["person"]; ?>">
@@ -394,24 +395,24 @@
 	<table>
 		<tr>
 			<td class="tbl_odd">Image to Upload</td>
-			<td class="tbl_even"><input type="file" name="userfile"></td>
+			<td class="tbl_even"><input type="file" name="userfile" /></td>
 			<td>JPEG only. (max size 1M)</td>
 		</tr>
 		<tr>
 			<td class="tbl_odd">Image Title</td>
-			<td class="tbl_even"><input type="text" name="frmTitle" size="30" maxlength="30"></td>
+			<td class="tbl_even"><input type="text" name="frmTitle" size="30" maxlength="30" /></td>
 		</tr>
 		<tr>
 			<td class="tbl_odd">Image Description</td>
-			<td class="tbl_even"><input type="text" name="frmDesc" size="60" maxlength="60"></td>
+			<td class="tbl_even"><input type="text" name="frmDesc" size="60" maxlength="60" /></td>
 		</tr>
 		<tr>
 			<td class="tbl_odd">Image Date</td>
-			<td class="tbl_even"><input type="text" name="frmDate" maxlength="10" value="0000-00-00"></td>
+			<td class="tbl_even"><input type="text" name="frmDate" maxlength="10" value="0000-00-00" /></td>
 			<td>Please use format YYYY-MM-DD</td>
 		</tr>
 		<tr>
-			<td class="tbl_even"><input type="submit" name="Submit1" value="Submit"></td>
+			<td class="tbl_even"><input type="submit" name="Submit1" value="Submit" /></td>
 			<td class="tbl_even"></td>
 		<tr>
 	</table>
@@ -439,7 +440,7 @@
   </tbody>
 </table>
 
-<hr>
+<hr />
 
 <!--fill out the form-->
 <form method="post" action="passthru.php?func=insert&amp;area=marriage&amp;person=<?php echo $_REQUEST["person"]; ?>&amp;gender=<?php echo $edrow["gender"]; ?>">
@@ -455,15 +456,15 @@
 		</tr>
 		<tr>
 			<td class="tbl_odd">Date of marriage</td>
-			<td class="tbl_even"><input type="text" name="frmDate" size="15" maxlength="10" value="0000-00-00"></td>
+			<td class="tbl_even"><input type="text" name="frmDate" size="15" maxlength="10" value="0000-00-00" /></td>
 			<td>Please use format YYYY-MM-DD</td>
 		</tr>
 		<tr>
 			<td class="tbl_odd">Marriage Place</td>
-			<td class="tbl_even"><input type="text" name="frmPlace" size="30" maxlength="50"></td>
+			<td class="tbl_even"><input type="text" name="frmPlace" size="30" maxlength="50" /></td>
 		</tr>
 		<tr>
-			<td class="tbl_even"><input type="submit" name="Submit1" value="Submit"></td>
+			<td class="tbl_even"><input type="submit" name="Submit1" value="Submit" /></td>
 			<td class="tbl_even"></td>
 		</tr>
 	</table>
@@ -492,7 +493,7 @@
   </tbody>
 </table>
 
-<hr>
+<hr />
 
 <!--Fil out the form-->
 <form method="post" action="passthru.php?func=insert&amp;area=census&amp;person=<?php echo $_REQUEST["person"]; ?>">
@@ -503,11 +504,11 @@
 		</tr>
 		<tr>
 			<td class="tbl_odd">Schedule</td>
-			<td class="tbl_even"><input type="text" name="frmSchedule" size="30" maxlength="20"></td>
+			<td class="tbl_even"><input type="text" name="frmSchedule" size="30" maxlength="20" /></td>
 		</tr>
 		<tr>
 			<td class="tbl_odd">Address</td>
-			<td class="tbl_even"><input type="text2"name="frmAddress" size="50" maxlength="70"></td>
+			<td class="tbl_even"><input type="text2"name="frmAddress" size="50" maxlength="70" /></td>
 		</tr>
 		<tr>
 			<td class="tbl_odd">Condition</td>
@@ -515,18 +516,18 @@
 		</tr>
 		<tr>
 			<td class="tbl_odd">Age</td>
-			<td class="tbl_even"><input type="text" name="frmAge" size="10" maxlength="3"></td>
+			<td class="tbl_even"><input type="text" name="frmAge" size="10" maxlength="3" /></td>
 		</tr>
 		<tr>
 			<td class="tbl_odd">Profession</td>
-			<td class="tbl_even"><input type="text" name="frmProfession" size="30" maxlength="40"></td>
+			<td class="tbl_even"><input type="text" name="frmProfession" size="30" maxlength="40" /></td>
 		</tr>
 		<tr>
 			<td class="tbl_odd">Place of Birth</td>
-			<td class="tbl_even"><input type="text" name="frmWhereBorn" size="30" maxlength="40"></td>
+			<td class="tbl_even"><input type="text" name="frmWhereBorn" size="30" maxlength="40" /></td>
 		</tr>
 		<tr>
-			<td class="tbl_even"><input type="submit" name="Submit1" value="Submit"></td>
+			<td class="tbl_even"><input type="submit" name="Submit1" value="Submit" /></td>
 			<td class="tbl_even"></td>
 		</tr>
 	</table>
@@ -550,12 +551,12 @@
 
 ?>
 
-<hr>
+<hr />
 	<table width="100%">
 		<tr>
-			<td width="15%" align="center" valign="middle"><a href="http://validator.w3.org/check/referer"><img border="0" src="images/valid-html401.png" alt="Valid HTML 4.01!" height="31" width="88"></a></td>
-			<td width="70%" align="center" valign="middle"><h5><a href="http://www.giric.com/phpmyfamily">phpmyfamily v<?php echo $version; ?></a><br>Copyright 2002-2003 Simon E Booth<br>Email <a href="mailto:<?php echo $email; ?>">me</a> with any problems</h5></td>
-			<td width="15%" align="center" valign="middle"><a href="http://jigsaw.w3.org/css-validator/"><img style="border:0;width:88px;height:31px" src="images/vcss.png" alt="Valid CSS!"></a></td>
+			<td width="15%" align="center" valign="middle"><a href="http://validator.w3.org/check/referer"><img border="0" src="images/valid-xhtml10.png" alt="Valid XHTML 1.0!" height="31" width="88" /></a></td>
+			<td width="70%" align="center" valign="middle"><h5><a href="http://www.giric.com/phpmyfamily">phpmyfamily v<?php echo $version; ?></a><br />Copyright 2002-2003 Simon E Booth<br />Email <a href="mailto:<?php echo $email; ?>">me</a> with any problems</h5></td>
+			<td width="15%" align="center" valign="middle"><a href="http://jigsaw.w3.org/css-validator/"><img style="border:0;width:88px;height:31px" src="images/vcss.png" alt="Valid CSS!" /></a></td>
 		</tr>
 	</table>
 

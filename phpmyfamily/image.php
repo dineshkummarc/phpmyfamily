@@ -42,13 +42,13 @@
 
 			// fill out the header
 ?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
-<link rel="stylesheet" href="<?php echo $style; ?>" type="text/css">
-<link rel="SHORTCUT ICON" href="images/favicon.ico">
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<meta http-equiv="content-language" content="en">
+<link rel="stylesheet" href="<?php echo $style; ?>" type="text/css" />
+<link rel="SHORTCUT ICON" href="images/favicon.ico" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<meta http-equiv="content-language" content="en" />
 <title><?php echo $irow["title"]." (".$prow["name"].")"; ?></title>
 </head>
 <body>
@@ -62,13 +62,13 @@
 </table>
 
 
-<hr>
+<hr />
 
 <?php
 		}
 		mysql_free_result($presult);
 ?>
-<div align="center"><img src="<?php echo "images/".$irow["image_id"].".jpg"; ?>" alt="<?php echo $irow["description"]; ?>"></div>
+<div align="center"><img src="<?php echo "images/".$irow["image_id"].".jpg"; ?>" alt="<?php echo $irow["description"]; ?>" /></div>
 
 <div align="center">
 	<p><?php if ($restricted)
@@ -78,18 +78,18 @@
 	<p><?php echo $irow["description"]; ?></p>
 </div>
 
-<br><br>
+<br /><br />
 <?php
 	}
 	mysql_free_result($iresult);
 ?>
 
-<hr>
+<hr />
 	<table width="100%">
 		<tr>
-			<td width="15%" align="center" valign="middle"><a href="http://validator.w3.org/check/referer"><img border="0" src="images/valid-html401.png" alt="Valid HTML 4.01!" height="31" width="88"></a></td>
-			<td width="70%" align="center" valign="middle"><h5><a href="http://www.giric.com/phpmyfamily">phpmyfamily v<?php echo $version; ?></a><br>Copyright 2002-2003 Simon E Booth<br>Email <a href="mailto:<?php echo $email; ?>">me</a> with any problems</h5></td>
-			<td width="15%" align="center" valign="middle"><a href="http://jigsaw.w3.org/css-validator/"><img style="border:0;width:88px;height:31px" src="images/vcss.png" alt="Valid CSS!"></a></td>
+			<td width="15%" align="center" valign="middle"><a href="http://validator.w3.org/check/referer"><img border="0" src="images/valid-xhtml10.png" alt="Valid XHTML 1.0!" height="31" width="88" /></a></td>
+			<td width="70%" align="center" valign="middle"><h5><a href="http://www.giric.com/phpmyfamily">phpmyfamily v<?php echo $version; ?></a><br />Copyright 2002-2003 Simon E Booth<br />Email <a href="mailto:<?php echo $email; ?>">me</a> with any problems</h5></td>
+			<td width="15%" align="center" valign="middle"><a href="http://jigsaw.w3.org/css-validator/"><img style="border:0;width:88px;height:31px" src="images/vcss.png" alt="Valid CSS!" /></a></td>
 		</tr>
 	</table>
 

@@ -24,17 +24,16 @@
 	include "inc/config.inc.php";
 	include "inc/functions.inc.php";
 ?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-	"http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
-<link rel="stylesheet" href="<?php echo $style; ?>" type="text/css">
-<link rel="SHORTCUT ICON" href="images/favicon.ico">
-<meta name="author" content="Simon E Booth">
-<meta name="publisher" content="Giric">
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<meta http-equiv="content-language" content="en">
-<meta name="copyright" content="2002-2003 Simon E Booth">
+<link rel="stylesheet" href="<?php echo $style; ?>" type="text/css" />
+<link rel="SHORTCUT ICON" href="images/favicon.ico" />
+<meta name="author" content="Simon E Booth" />
+<meta name="publisher" content="Giric" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<meta http-equiv="content-language" content="en" />
+<meta name="copyright" content="2002-2003 Simon E Booth" />
 <meta name="keywords" content="Genealogy phpmyfamily<?php
 	$fname = "SELECT SUBSTRING_INDEX(name, ' ', -1) AS surname FROM ".$tblprefix."people";
 	if ($_SESSION["id"] == 0)
@@ -45,13 +44,13 @@
 		while ($row = mysql_fetch_array($rname))
 			echo " ".$row["surname"];
 	}
-?>">
-<meta name="description" content="<?php echo $desc; ?>">
-<meta name="page-topic" content="Genealogy">
-<meta name="audience" content="All">
-<meta name="expires" content="0">
-<meta name="page-type" content="Private homepage">
-<meta name="robots" content="INDEX,FOLLOW">
+?>" />
+<meta name="description" content="<?php echo $desc; ?>" />
+<meta name="page-topic" content="Genealogy" />
+<meta name="audience" content="All" />
+<meta name="expires" content="0" />
+<meta name="page-type" content="Private homepage" />
+<meta name="robots" content="INDEX,FOLLOW" />
 <title>phpmyfamily: <?php echo $desc; ?></title>
 </head>
 <body>
@@ -67,13 +66,13 @@
 				<?php listpeeps("person"); ?>
 			</form>
 <?php if ($_SESSION["id"] <> 0) { ?>
-			<br>You are logged in as <?php echo $_SESSION["name"]; ?>: (<a href="passthru.php?func=logout" class="hd_link">logout</a><?php if ($_SESSION["admin"] == 1) echo ", <a href=\"admin.php\" class=\"hd_link\">admin</a>"; ?>)
+			<br />You are logged in as <?php echo $_SESSION["name"]; ?>: (<a href="passthru.php?func=logout" class="hd_link">logout</a><?php if ($_SESSION["admin"] == 1) echo ", <a href=\"admin.php\" class=\"hd_link\">admin</a>"; ?>)
 <?php } ?>
 		</td>
 	</tr>
 </table>
 
-<hr>
+<hr />
 
 <table width="100%">
 	<tr>
@@ -86,7 +85,7 @@
 				include "inc/passwdform.inc.php";
 ?>
 
-			<br><br>
+			<br /><br />
 				<table>
 					<tr>
 						<th colspan="2">Site Statistics</th>
@@ -184,12 +183,12 @@
 		</tr>
 	</table>
 
-<hr>
+<hr />
 	<table width="100%">
 		<tr>
-			<td width="15%" align="center" valign="middle"><a href="http://validator.w3.org/check/referer"><img border="0" src="images/valid-html401.png" alt="Valid HTML 4.01!" height="31" width="88"></a></td>
-			<td width="70%" align="center" valign="middle"><h5><a href="http://www.giric.com/phpmyfamily">phpmyfamily v<?php echo $version; ?></a><br>Copyright 2002-2003 Simon E Booth<br>Email <a href="mailto:<?php echo $email; ?>">me</a> with any problems</h5></td>
-			<td width="15%" align="center" valign="middle"><a href="http://jigsaw.w3.org/css-validator/"><img style="border:0;width:88px;height:31px" src="images/vcss.png" alt="Valid CSS!"></a></td>
+			<td width="15%" align="center" valign="middle"><a href="http://validator.w3.org/check/referer"><img border="0" src="images/valid-xhtml10.png" alt="Valid XHTML 1.0!" height="31" width="88" /></a></td>
+			<td width="70%" align="center" valign="middle"><h5><a href="http://www.giric.com/phpmyfamily">phpmyfamily v<?php echo $version; ?></a><br />Copyright 2002-2004 Simon E Booth<br />Email <a href="mailto:<?php echo $email; ?>">me</a> with any problems</h5></td>
+			<td width="15%" align="center" valign="middle"><a href="http://jigsaw.w3.org/css-validator/"><img style="border:0;width:88px;height:31px" src="images/vcss.png" alt="Valid CSS!" /></a></td>
 		</tr>
 	</table>
 

@@ -25,22 +25,22 @@
 		<table width="100%">
 			<tr>
 				<td>Old Password</td>
-				<td><input type="password" name="pwdOld" size=20 maxlength=30></td>
+				<td><input type="password" name="pwdOld" size="20" maxlength="30" /></td>
 			</tr>
 			<tr>
 				<td>New Password</td>
-				<td><input type="password" name="pwdPwd1" size=20 maxlength=30></td>
+				<td><input type="password" name="pwdPwd1" size="20" maxlength="30" /></td>
 			</tr>
 			<tr>
 				<td>Re-enter New Password</td>
-				<td><input type="password" name="pwdPwd2" size=20 maxlength=30></td>
+				<td><input type="password" name="pwdPwd2" size="20" maxlength="30" /></td>
 			</tr>
 			<tr>
 				<td width="182"><?php
 					@$reason = $_REQUEST["reason"];
 					echo "<font color=\"red\">".$reason."</font>";
 				?></td>
-				<td width="145"><input type="submit" name="Submit1" value="Change"></td>
+				<td width="145"><input type="submit" name="Submit1" value="Change" /></td>
 			</tr>
 		</table>
 	</form>
