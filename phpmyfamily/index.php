@@ -168,7 +168,7 @@
 	mysql_free_result($nresult);
 
 	// get the births in the next n days
-	$bquery = "SELECT *, CONCAT_WS('-', YEAR(NOW()), LPAD(MONTH(date_of_birth), 2, '0'), LPAD(DAYOFMONTH(date_of_birth), 2, '0')) AS year_birth, DATE_FORMAT(date_of_birth, ".$datefmt.") AS DOB FROM family_people";
+	$bquery = "SELECT *, CONCAT_WS('-', YEAR(NOW()), LPAD(MONTH(date_of_birth), 2, '0'), LPAD(DAYOFMONTH(date_of_birth), 2, '0')) AS year_birth, DATE_FORMAT(date_of_birth, ".$datefmt.") AS DOB FROM ".$tblprefix."people";
 	if ($_SESSION["id"] == 0)
 		$bquery .= " WHERE date_of_birth < '".$restrictdate."'";
 	$bquery .= " HAVING year_birth >= NOW() AND year_birth <= date_add(NOW(), INTERVAL 21 DAY) ORDER BY year_birth LIMIT 0,6";
@@ -195,12 +195,12 @@
 						</tr>
 <?php
 	// get the marriages in the next n days
-	$mquery = "SELECT concat_ws('-', year(now()), lpad(month(marriage_date), 2, '0'), lpad(dayofmonth(marriage_date), 2, '0')) AS year_marriage, DATE_FORMAT(marriage_date, ".$datefmt.") AS DOM, marriage_date, tbl_male.name AS male, tbl_female.name AS female, tbl_male.person_id AS groom, tbl_female.person_id AS bride FROM family_spouses, family_people AS tbl_male, family_people AS tbl_female";
+	$mquery = "SELECT CONCAT_WS('-', YEAR(NOW()), LPAD(MONTH(marriage_date), 2, '0'), LPAD(DAYOFMONTH(marriage_date), 2, '0')) AS year_marriage, DATE_FORMAT(marriage_date, ".$datefmt.") AS DOM, marriage_date, tbl_male.name AS male, tbl_female.name AS female, tbl_male.person_id AS groom, tbl_female.person_id AS bride FROM ".$tblprefix."spouses, ".$tblprefix."people AS tbl_male, ".$tblprefix."people AS tbl_female";
 	if ($_SESSION["id"] == 0)
 		$mquery .= " WHERE (tbl_male.date_of_birth < '".$restrictdate."' AND tbl_female.date_of_birth < '".$restrictdate."') AND";
 	else
 		$mquery .= " WHERE";
-	$mquery .= " groom_id = tbl_male.person_id AND bride_id = tbl_female.person_id HAVING year_marriage >= now() AND year_marriage <= date_add(now(), INTERVAL 21 DAY) LIMIT 0,6";
+	$mquery .= " groom_id = tbl_male.person_id AND bride_id = tbl_female.person_id HAVING year_marriage >= now() AND year_marriage <= DATE_ADD(NOW(), INTERVAL 21 DAY) LIMIT 0,6";
 	$mresult = mysql_query($mquery) or die($err_marriage);
 	$i = 0;
 	while ($mrow = mysql_fetch_array($mresult)) {
@@ -224,10 +224,10 @@
 						</tr>
 <?php
 	// get the deaths in the next n days
-	$dquery = "SELECT *, concat_ws('-', year(now()), lpad(month(date_of_death), 2, '0'), lpad(dayofmonth(date_of_death), 2, '0')) AS year_death, DATE_FORMAT(date_of_death, ".$datefmt.") AS DOD FROM family_people";
+	$dquery = "SELECT *, CONCAT_WS('-', YEAR(NOW()), LPAD(MONTH(date_of_death), 2, '0'), LPAD(DAYOFMONTH(date_of_death), 2, '0')) AS year_death, DATE_FORMAT(date_of_death, ".$datefmt.") AS DOD FROM ".$tblprefix."people";
 	if ($_SESSION["id"] == 0)
 		$dquery .= " WHERE date_of_birth < '".$restrictdate."'";
-	$dquery .= " HAVING year_death >= now() AND year_death <= date_add(now(), INTERVAL 21 DAY) ORDER BY year_death LIMIT 0,6";
+	$dquery .= " HAVING year_death >= NOW() AND year_death <= DATE_ADD(NOW(), INTERVAL 21 DAY) ORDER BY year_death LIMIT 0,6";
 	$dresult = mysql_query($dquery) or die($err_person);
 	$i = 0;
 	while ($drow = mysql_fetch_array($dresult)) {
