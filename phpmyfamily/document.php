@@ -24,7 +24,7 @@
 	if (!isset($docid))
 		$docid = 0;
 
-	$dquery = "SELECT * FROM ".$tblprefix."documents WHERE id = '".$docid."'";
+	$dquery = "SELECT * FROM ".$tblprefix."documents WHERE id = ".quote_smart($docid);
 	$dresult = mysql_query($dquery);
 
 	while ($drow = mysql_fetch_array($dresult)) {

@@ -57,7 +57,7 @@
 		global $strUnknown;
 
 		// create the query based on the parameters
-		$query = "SELECT person_id, surname, TRIM(TRAILING surname FROM name) AS forenames, YEAR(date_of_birth) AS year, suffix FROM ".$tblprefix."people WHERE person_id <> '".$omit."'";
+		$query = "SELECT person_id, surname, TRIM(TRAILING surname FROM name) AS forenames, YEAR(date_of_birth) AS year, suffix FROM ".$tblprefix."people WHERE person_id <> ".quote_smart($omit);
 
 		// if the user is not logged in, only show people pre $restrictdate
 		if ($_SESSION["id"] == 0)
@@ -123,6 +123,7 @@
 		// declare globals used within
 		global $tblprefix;
 		global $tracking;
+		global $bbtracking;
 
 		// update the updated column
 		$query = "UPDATE ".$tblprefix."people SET updated = NOW() WHERE person_id = '".$person."'";
@@ -361,7 +362,7 @@
 		global $strNoImages;
 
 		// only run query if user permitted
-		$iquery = "SELECT * FROM ".$tblprefix."images WHERE person_id = '".$person."' ORDER BY date";
+		$iquery = "SELECT * FROM ".$tblprefix."images WHERE person_id = ".quote_smart($person)." ORDER BY date";
 		$iresult = mysql_query($iquery) or die($err_images);
 		if (mysql_num_rows($iresult) == 0) {
 			echo "\t".$strNoImages;
@@ -431,7 +432,7 @@
 		global $eTrackBodyBottom;
 		global $absurl;
 
-		$tquery = "SELECT ".$tblprefix."people.person_id, name, email FROM ".$tblprefix."people, ".$tblprefix."tracking WHERE ".$tblprefix."people.person_id = ".$tblprefix."tracking.person_id AND ".$tblprefix."people.person_id = '".$person."' AND `key` = '' AND expires = '0000-00-00 00:00:00'";
+		$tquery = "SELECT ".$tblprefix."people.person_id, name, email FROM ".$tblprefix."people, ".$tblprefix."tracking WHERE ".$tblprefix."people.person_id = ".$tblprefix."tracking.person_id AND ".$tblprefix."people.person_id = ".quote_smart($person)." AND `key` = '' AND expires = '0000-00-00 00:00:00'";
 		$tresult = mysql_query($tquery) or die($err_person);
 		while ($trow = mysql_fetch_array($tresult)) {
 			$headers = "Content-type: text/plain; charset=iso-8859-1\r\n";
@@ -461,7 +462,7 @@
 		global $eBBBottom;
 
 		// Get the details of the person changed from the db
-		$query = "SELECT * FROM ".$tblprefix."people WHERE person_id = '".$person."'";
+		$query = "SELECT * FROM ".$tblprefix."people WHERE person_id = ".quote_smart($person);
 		$result = mysql_query($query) or die($err_person);
 		while ($row = mysql_fetch_array($result)) {
 			// Set up the headers to be meaningful
@@ -586,7 +587,7 @@
 			if ($_SESSION["editable"] == "Y" && $person != 0)
 				echo " | ";
 			if ($person != 0) {
-				$query = "SELECT * FROM ".$tblprefix."tracking WHERE email = '".$_SESSION["email"]."' AND person_id = '".$person."'";
+				$query = "SELECT * FROM ".$tblprefix."tracking WHERE email = '".$_SESSION["email"]."' AND person_id = ".quote_smart($person);
 				$result = mysql_query($query) or die(mysql_error());
 				if (mysql_num_rows($result) != 0) {
 					echo "<a href=\"passthru.php?func=track&amp;action=dont&amp;person=".$person."\" class=\"hd_link\">".$strStop." ".strtolower($strTracking)." ".$strThisPerson."</a>";
@@ -642,7 +643,7 @@
 
 		// check we have a valid email address
 		// just drop out if we don't
-		$query = "SELECT * FROM ".$tblprefix."users WHERE email = '".$email."'";
+		$query = "SELECT * FROM ".$tblprefix."users WHERE email = ".quote_smart($email);
 		$result = mysql_query($query) or die(mysql_error());
 		if (mysql_num_rows($result) != 1)
 			return 0;
@@ -672,6 +673,22 @@
 		// fire off the email
 		mail($email, $subject, $body, $headers);
 	}	// end of send_password()
+
+
+	// function: quote_smart
+	// Quote a variable to make is smart
+	function quote_smart($value) {
+
+    // Stripslashes
+    if (get_magic_quotes_gpc()) {
+        $value = stripslashes($value);
+    }
+    // Quote if not integer
+    if (!is_numeric($value)) {
+        $value = "'" . mysql_real_escape_string($value) . "'";
+    }
+    return $value;
+	}	// end of quote_smart
 
 	// function: fmod
 	// return the modulus of two numbers

@@ -31,7 +31,7 @@
 		$referer = "index.php";
 
 	$caption = "";
-	$tquery = "SELECT * FROM ".$tblprefix."census_years WHERE census_id = '".$census."'";
+	$tquery = "SELECT * FROM ".$tblprefix."census_years WHERE census_id = ".quote_smart($census);
 	$tresult = mysql_query($tquery);
 	while ($trow = mysql_fetch_array($tresult)) {
 		$caption = $trow["country"]." (".$trow["year"].")";
@@ -67,7 +67,7 @@
 
 <?php
 
-	$cquery = "SELECT ".$tblprefix."census.*, ".$tblprefix."people.name, ".$tblprefix."people.suffix FROM ".$tblprefix."census, ".$tblprefix."people WHERE ".$tblprefix."census.person_id = ".$tblprefix."people.person_id AND ".$tblprefix."census.schedule = '".$ref."' AND ".$tblprefix."census.census = '".$census."'";
+	$cquery = "SELECT ".$tblprefix."census.*, ".$tblprefix."people.name, ".$tblprefix."people.suffix FROM ".$tblprefix."census, ".$tblprefix."people WHERE ".$tblprefix."census.person_id = ".$tblprefix."people.person_id AND ".$tblprefix."census.schedule = ".quote_smart($ref)." AND ".$tblprefix."census.census = ".quote_smart($census);
 	if ($_SESSION["id"] == 0)
 		$cquery .= " AND ".$tblprefix."people.date_of_birth < '".$restrictdate."'";
 	$cquery .= " ORDER BY ".$tblprefix."census.address, ".$tblprefix."census.age DESC";

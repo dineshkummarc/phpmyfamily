@@ -24,8 +24,8 @@
 	@$person = $_REQUEST["person"];
 
 	// the query for the database
-	$pquery = "SELECT *, DATE_FORMAT(date_of_birth, ".$datefmt.") AS DOB, DATE_FORMAT(date_of_death, ".$datefmt.") AS DOD FROM ".$tblprefix."people WHERE person_id = '".$_REQUEST["person"]."'";
-	$presult = mysql_query($pquery) or die($err_person);
+	$pquery = "SELECT *, DATE_FORMAT(date_of_birth, ".$datefmt.") AS DOB, DATE_FORMAT(date_of_death, ".$datefmt.") AS DOD FROM ".$tblprefix."people WHERE person_id = ".quote_smart($_REQUEST["person"]);
+	$presult = mysql_query($pquery) or die(mysql_error());
 	while ($prow = mysql_fetch_array($presult)) {
 
 		// set security for living people (born after 01/01/1910)
@@ -193,7 +193,7 @@
 			<td valign="top" class="tbl_even" colspan="2">
 <?php
 		// query for children
-		$cquery = "SELECT person_id, name, suffix, date_of_birth, date_of_death, DATE_FORMAT(date_of_birth, ".$datefmt.") AS DOB, DATE_FORMAT(date_of_death, ".$datefmt.") AS DOD FROM ".$tblprefix."people WHERE (mother_id = '".$_REQUEST["person"]."' OR father_id = '".$_REQUEST["person"]."') ORDER BY date_of_birth";
+		$cquery = "SELECT person_id, name, suffix, date_of_birth, date_of_death, DATE_FORMAT(date_of_birth, ".$datefmt.") AS DOB, DATE_FORMAT(date_of_death, ".$datefmt.") AS DOD FROM ".$tblprefix."people WHERE (mother_id = ".quote_smart($_REQUEST["person"])." OR father_id = ".quote_smart($_REQUEST["person"]).") ORDER BY date_of_birth";
 		$cresult = mysql_query($cquery) or die($err_children);
 		while ($crow = mysql_fetch_array($cresult)) {
 			if ($crow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0) {
@@ -221,7 +221,7 @@
 			<td valign="top" class="tbl_even">
 <?php
 		// the query for siblings
-		$squery = "SELECT person_id, name, suffix, date_of_birth, date_of_death, DATE_FORMAT(date_of_birth, ".$datefmt.") AS DOB, DATE_FORMAT(date_of_death, ".$datefmt.") AS DOD FROM ".$tblprefix."people WHERE (mother_id = '".$mother."' OR father_id = '".$father."') AND person_id != '".$_REQUEST["person"]."' ORDER BY date_of_birth";
+		$squery = "SELECT person_id, name, suffix, date_of_birth, date_of_death, DATE_FORMAT(date_of_birth, ".$datefmt.") AS DOB, DATE_FORMAT(date_of_death, ".$datefmt.") AS DOD FROM ".$tblprefix."people WHERE (mother_id = '".$mother."' OR father_id = '".$father."') AND person_id != ".quote_smart($_REQUEST["person"])." ORDER BY date_of_birth";
 		$sresult = mysql_query($squery) or die($err_siblings);
 		while ($srow = mysql_fetch_array($sresult)) {
 			if ($srow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0) {
@@ -255,7 +255,7 @@
 			<td valign="top" width="80%" class="tbl_even">
 <?php
 		// query for weddings
-		$wquery = "SELECT person_id, name, suffix, date_of_birth, marriage_place, marriage_cert, marriage_date, DATE_FORMAT(marriage_date, ".$datefmt.") AS DOM FROM ".$tblprefix."people, ".$tblprefix."spouses WHERE (bride_id = person_id AND groom_id = '".$_REQUEST["person"]."') OR (groom_id = person_id AND bride_id = '".$_REQUEST["person"]."') ORDER BY marriage_date";
+		$wquery = "SELECT person_id, name, suffix, date_of_birth, marriage_place, marriage_cert, marriage_date, DATE_FORMAT(marriage_date, ".$datefmt.") AS DOM FROM ".$tblprefix."people, ".$tblprefix."spouses WHERE (bride_id = person_id AND groom_id = ".quote_smart($_REQUEST["person"]).") OR (groom_id = person_id AND bride_id = ".quote_smart($_REQUEST["person"]).") ORDER BY marriage_date";
 		$wresult = mysql_query($wquery) or die($err_marriage);
 ?>
 				<table width="100%" cellspacing="0">
@@ -338,7 +338,7 @@
 		if ($restricted)
 			echo $restrictmsg."\n";
 		else {
-			$cquery = "SELECT * FROM ".$tblprefix."census, ".$tblprefix."census_years WHERE person_id = '".$_REQUEST["person"]."' AND census = census_id ORDER BY year";
+			$cquery = "SELECT * FROM ".$tblprefix."census, ".$tblprefix."census_years WHERE person_id = ".quote_smart($_REQUEST["person"])." AND census = census_id ORDER BY year";
 			$cresult = mysql_query($cquery) or die($err_census_ret);
 			if (mysql_num_rows($cresult) == 0)
 				echo $strNoInfo."\n";
@@ -403,7 +403,7 @@
 		if ($restricted)
 			echo $restrictmsg."\n";
 		else {
-			$dquery = "SELECT *, DATE_FORMAT(doc_date, $datefmt) AS ddate FROM ".$tblprefix."documents WHERE person_id = '".$_REQUEST["person"]."'";
+			$dquery = "SELECT *, DATE_FORMAT(doc_date, $datefmt) AS ddate FROM ".$tblprefix."documents WHERE person_id = ".quote_smart($_REQUEST["person"]);
 			$dresult = mysql_query($dquery) or die($err_trans);
 			if (mysql_num_rows($dresult) == 0) {
 ?>

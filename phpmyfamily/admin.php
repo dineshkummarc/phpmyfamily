@@ -44,7 +44,7 @@
 			else
 				$pwdEdit = "Y";
 			// carry out some simple checks to see if user already exists and if passwords match
-			$check1 = "SELECT * FROM ".$tblprefix."users WHERE username = '".$_POST["pwdUser"]."'";
+			$check1 = "SELECT * FROM ".$tblprefix."users WHERE username = ".quote_smart($_POST["pwdUser"]);
 			$result1 = mysql_query($check1) or die($err_pwd);
 			if (mysql_num_rows($result1) == 0) {
 				if ($_POST["pwdPwd1"] == $_POST["pwdPwd2"]) {

@@ -139,7 +139,7 @@
 			echo "<meta http-equiv=refresh content='0; url=people.php?person=".$person."' />\n";
 			break;
 		case "login":
-			@$query = "SELECT * FROM ".$tblprefix."users WHERE username = '".$_POST["pwdUser"]."' AND password = '".md5($_POST["pwdPassword"])."'";
+			@$query = "SELECT * FROM ".$tblprefix."users WHERE username = ".quote_smart($_POST["pwdUser"])." AND password = '".md5($_POST["pwdPassword"])."'";
 			$result = mysql_query($query) or die($err_logon);
 			if (mysql_num_rows($result) == 1) {
 				while ($row = mysql_fetch_array($result)) {
@@ -232,7 +232,7 @@
 						bb_person($_REQUEST["person"]);
 
 					// delete transcripts
-					$squery = "SELECT * FROM ".$tblprefix."documents WHERE person_id = '".$_REQUEST["person"]."'";
+					$squery = "SELECT * FROM ".$tblprefix."documents WHERE person_id = ".quote_smart($_REQUEST["person"]);
 					$sresult = mysql_query($squery) or die($err_trans);
 					while ($srow = mysql_fetch_array($sresult)) {
 						if (@unlink("docs/".$srow["id"])) {
@@ -247,7 +247,7 @@
 					$dcresult = mysql_query($dcquery) or die($err_census_delete);
 
 					// delete images
-					$squery = "SELECT * FROM ".$tblprefix."images WHERE person_id = '".$_REQUEST["person"]."'";
+					$squery = "SELECT * FROM ".$tblprefix."images WHERE person_id = ".quote_smart($_REQUEST["person"]);
 					$sresult = mysql_query($squery) or die($err_images);
 					while ($srow = mysql_fetch_array($sresult)) {
 						if (@unlink("images/tn_".$srow["image_id"].".jpg") && @unlink("images/".$srow["image_id"].".jpg")){

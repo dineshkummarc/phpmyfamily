@@ -31,7 +31,7 @@
 			switch ($_REQUEST["area"]) {
 				case "detail":
 					// get the person to edit
-					$edquery = "SELECT * FROM ".$tblprefix."people WHERE person_id = '".$_REQUEST["person"]."'";
+					$edquery = "SELECT * FROM ".$tblprefix."people WHERE person_id = ".quote_smart($_REQUEST["person"]);
 					$edresult = mysql_query($edquery) or die($err_person);
 
 					// fill out the form with retrieved data
@@ -114,10 +114,10 @@
 
 				case "marriage":
 					// get the person to edit
-					$pquery = "SELECT * FROM ".$tblprefix."people WHERE person_id = '".$_REQUEST["person"]."'";
+					$pquery = "SELECT * FROM ".$tblprefix."people WHERE person_id = ".quote_smart($_REQUEST["person"]);
 					$presult = mysql_query($pquery) or die($err_person);
 
-					$squery = "SELECT name FROM ".$tblprefix."people WHERE person_id = '".$_REQUEST["spouse"]."'";
+					$squery = "SELECT name FROM ".$tblprefix."people WHERE person_id = ".quote_smart($_REQUEST["spouse"]);
 					$sresult = mysql_query($squery) or die($err_spouse);
 					while ($srow = mysql_fetch_array($sresult)) {
 						$spousename = $srow["name"];
@@ -128,9 +128,9 @@
 					while ($prow = mysql_fetch_array($presult)) {
 
 						if ($prow["gender"] == "M")
-							$edquery = "SELECT * FROM ".$tblprefix."spouses WHERE groom_id = '".$_REQUEST["person"]."' AND bride_id = '".$_REQUEST["spouse"]."'";
+							$edquery = "SELECT * FROM ".$tblprefix."spouses WHERE groom_id = ".quote_smart($_REQUEST["person"])." AND bride_id = ".quote_smart($_REQUEST["spouse"]);
 						else
-							$edquery = "SELECT * FROM ".$tblprefix."spouses WHERE bride_id = '".$_REQUEST["person"]."' AND groom_id = '".$_REQUEST["spouse"]."'";
+							$edquery = "SELECT * FROM ".$tblprefix."spouses WHERE bride_id = ".quote_smart($_REQUEST["person"])." AND groom_id = ".quote_smart($_REQUEST["spouse"]);
 
 						$edresult = mysql_query($edquery) or die($err_marriage);
 
@@ -188,7 +188,7 @@
 
 				case "census":
 					// get the person to edit
-					$edquery = "SELECT * FROM ".$tblprefix."people, ".$tblprefix."census, ".$tblprefix."census_years WHERE ".$tblprefix."people.person_id = '".$_REQUEST["person"]."' AND ".$tblprefix."census.census = '".$_REQUEST["census"]."' AND ".$tblprefix."people.person_id = ".$tblprefix."census.person_id AND ".$tblprefix."census.census = ".$tblprefix."census_years.census_id";
+					$edquery = "SELECT * FROM ".$tblprefix."people, ".$tblprefix."census, ".$tblprefix."census_years WHERE ".$tblprefix."people.person_id = ".quote_smart($_REQUEST["person"])." AND ".$tblprefix."census.census = ".quote_smart($_REQUEST["census"])." AND ".$tblprefix."people.person_id = ".$tblprefix."census.person_id AND ".$tblprefix."census.census = ".$tblprefix."census_years.census_id";
 					$edresult = mysql_query($edquery) or die($err_census_ret);
 
 					// fill out the form with retrieved data
@@ -335,7 +335,7 @@
 
 				case "transcript":
 					// get the person to insert marriage for
-					$edquery = "SELECT * FROM ".$tblprefix."people WHERE person_id = '".$_REQUEST["person"]."'";
+					$edquery = "SELECT * FROM ".$tblprefix."people WHERE person_id = ".quote_smart($_REQUEST["person"]);
 					$edresult = mysql_query($edquery) or die($err_person);
 
 					// fill out the form with retrieved data
@@ -385,7 +385,7 @@
 
 				case "image":
 					// get the person to insert marriage for
-					$edquery = "SELECT * FROM ".$tblprefix."people WHERE person_id = '".$_REQUEST["person"]."'";
+					$edquery = "SELECT * FROM ".$tblprefix."people WHERE person_id = ".quote_smart($_REQUEST["person"]);
 					$edresult = mysql_query($edquery) or die($err_person);
 
 					// fill out the form with retrieved data
@@ -437,7 +437,7 @@
 
 				case "marriage":
 					// get the person to insert marriage for
-					$edquery = "SELECT *, DATE_ADD(date_of_birth, INTERVAL 40 YEAR) AS child_snatcher FROM ".$tblprefix."people WHERE person_id = '".$_REQUEST["person"]."'";
+					$edquery = "SELECT *, DATE_ADD(date_of_birth, INTERVAL 40 YEAR) AS child_snatcher FROM ".$tblprefix."people WHERE person_id = ".quote_smart($_REQUEST["person"]);
 					$edresult = mysql_query($edquery) or die($err_person);
 
 					// fill out the form with retrieved data
@@ -493,7 +493,7 @@
 
 				case "census":
 					// get the person to insert census for
-					$edquery = "SELECT * FROM ".$tblprefix."people WHERE person_id = '".$_REQUEST["person"]."'";
+					$edquery = "SELECT * FROM ".$tblprefix."people WHERE person_id = ".quote_smart($_REQUEST["person"]);
 					$edresult = mysql_query($edquery) or die($err_person);
 
 					// fill out the form with retrieved data

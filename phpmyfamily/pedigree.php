@@ -23,7 +23,7 @@
 	if (!isset($_GET["person"])) $person = 1;
 
 	// the query for the database
-	$pquery = "SELECT *, DATE_FORMAT(date_of_birth, ".$datefmt.") AS DOB, DATE_FORMAT(date_of_death, ".$datefmt.") AS DOD FROM ".$tblprefix."people WHERE person_id = '".$_GET["person"]."'";
+	$pquery = "SELECT *, DATE_FORMAT(date_of_birth, ".$datefmt.") AS DOB, DATE_FORMAT(date_of_death, ".$datefmt.") AS DOD FROM ".$tblprefix."people WHERE person_id = ".quote_smart($_GET["person"]);
 	$presult = mysql_query($pquery) or die($err_person);
 
 	while ($prow = mysql_fetch_array($presult)) {

@@ -20,7 +20,7 @@
 	include "inc/config.inc.php";
 
 	//get the details for the image
-	$iquery = "SELECT *, DATE_FORMAT(date, ".$datefmt.") AS ddate FROM ".$tblprefix."images WHERE image_id = '".$_REQUEST["image"]."'";
+	$iquery = "SELECT *, DATE_FORMAT(date, ".$datefmt.") AS ddate FROM ".$tblprefix."images WHERE image_id = ".quote_smart($_REQUEST["image"]);
 	$iresult = mysql_query($iquery) or die($err_image);
 
 	// when we have an image, get the associated person details

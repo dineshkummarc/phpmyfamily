@@ -305,7 +305,7 @@
 		echo "0 TRLR\n";
 	}	// end of ged_trailer()
 
-	$person = $_REQUEST["person"];
+	$person = mysql_real_escape_string($_REQUEST["person"]);
 	$filename = "gedcom.ged";
 
 

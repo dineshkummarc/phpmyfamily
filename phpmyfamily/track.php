@@ -75,7 +75,7 @@
 	// then show subscribe form
 	if (isset($person) && !isset($email)) {
 		// the query for the database
-		$pquery = "SELECT * FROM ".$tblprefix."people WHERE person_id = '".$person."'";
+		$pquery = "SELECT * FROM ".$tblprefix."people WHERE person_id = ".quote_smart($person);
 		$presult = mysql_query($pquery) or die($err_person);
 		while ($prow = mysql_fetch_array($presult)) {
 
@@ -119,7 +119,7 @@
 		echo "<hr />\n";
 
 		// find out what we're supposed to do
-		$kquery = "SELECT * FROM ".$tblprefix."tracking WHERE `key` = '".$key."'";
+		$kquery = "SELECT * FROM ".$tblprefix."tracking WHERE `key` = ".quote_smart($key);
 		$kresult = mysql_query($kquery);
 		while ($krow = mysql_fetch_array($kresult)) {
 			$action = $krow["action"];

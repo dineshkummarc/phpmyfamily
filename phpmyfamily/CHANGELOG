@@ -1,3 +1,5 @@
+v 1.4.1
+	Fixed SQL Injection vulnerability
 	New ptaff Style added (Thanks Patrice)
 	Revised French translation (Thanks Patrice)
 	Allows deleting of non-existent transcripts
