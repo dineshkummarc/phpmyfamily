@@ -85,9 +85,9 @@
 <body>
 
 <!--titles-->
-	<table class="header">
+	<table width="100%" class="header">
 		<tr>
-			<td width="80%" align="center">
+			<td width="65%" align="center" valign="top">
 				<h2><?php echo $prow["name"] ?></h2>
 				<h3><?php
 					if ($restricted)
@@ -95,17 +95,17 @@
 					else
 						echo "(".formatdate($prow["DOB"])." - ".formatdate($prow["DOD"]).")";?></h3>
 			</td>
-			<td width="20%">
+			<td width="35%" valign="top">
 				<form method="get" action="people.php">
 				<?php listpeeps("person", 0, "A", $_REQUEST["person"]); ?>
 				</form>
 <?php
 			if ($_SESSION["id"] <> 0) { ?>
-				<br /><?php echo $strLoggedIn; ?><a href="index.php" class="hd_link"><?php echo $_SESSION["name"]; ?></a>: (<a href="passthru.php?func=logout" class="hd_link"><?php echo $strLogout; ?></a><?php if ($_SESSION["admin"] == 1) echo ", <a href=\"admin.php\" class=\"hd_link\">".$strAdmin."</a>"; ?>)
+				<?php echo $strLoggedIn; ?><a href="index.php" class="hd_link"><?php echo $_SESSION["name"]; ?></a>: (<a href="passthru.php?func=logout" class="hd_link"><?php echo $strLogout; ?></a><?php if ($_SESSION["admin"] == 1) echo ", <a href=\"admin.php\" class=\"hd_link\">".$strAdmin."</a>"; ?>)
 <?php 		}
 			else {
 ?>
-				<br /><?php echo $strLoggedOut; ?><a href="index.php" class="hd_link"><?php echo $strHome; ?></a>
+				<?php echo $strLoggedOut; ?><a href="index.php" class="hd_link"><?php echo $strHome; ?></a>
 <?php
 			} ?>
 			</td>
@@ -121,7 +121,7 @@
 			<td width="8%" class="tbl_odd" align="center"><?php
 				if ($_SESSION["id"] <> 0) {
 ?><a href="edit.php?func=edit&amp;area=detail&amp;person=<?php echo $prow["person_id"]; ?>"><?php echo $strEdit; ?></a> | <a href="edit.php?func=add&amp;area=detail"><?php echo $strAdd; ?></a></td>
-<?php } ?>
+<?php } else echo "</td>"; ?>
 		</tr>
 	</table>
 

@@ -54,19 +54,18 @@
 <title>phpmyfamily: <?php echo $desc; ?></title>
 </head>
 <body>
-
-<table class="header">
+<table width="100%" class="header">
 	<tr>
-		<td width="80%" align="center">
+		<td width="65%" align="center">
 			<h1>phpmyfamily</h1>
 			<h3><?php echo $desc; ?></h3>
 		</td>
-		<td width="20%" valign="top">
+		<td width="35%" valign="top">
 			<form method="get" action="people.php">
 				<?php listpeeps("person"); ?>
 			</form>
 <?php if ($_SESSION["id"] <> 0) { ?>
-			<br /><?php echo $strLoggedIn; ?><?php echo $_SESSION["name"]; ?>: (<a href="passthru.php?func=logout" class="hd_link"><?php echo $strLogout; ?></a><?php if ($_SESSION["admin"] == 1) echo ", <a href=\"admin.php\" class=\"hd_link\">".$strAdmin."</a>"; ?>)
+			<?php echo $strLoggedIn; ?><?php echo $_SESSION["name"]; ?>: (<a href="passthru.php?func=logout" class="hd_link"><?php echo $strLogout; ?></a><?php if ($_SESSION["admin"] == 1) echo ", <a href=\"admin.php\" class=\"hd_link\">".$strAdmin."</a>"; ?>)
 <?php } ?>
 		</td>
 	</tr>
@@ -149,7 +148,7 @@
 				<!--list of last 20 updated people-->
 				<table width="80%">
 					<tr>
-						<th colspan="2"><?php echo $strLast20; ?></th></th>
+						<th colspan="2"><?php echo $strLast20; ?></th>
 					</tr>
 					<tr>
 						<th><?php echo $strPerson; ?></th>
@@ -169,7 +168,7 @@
 							$class = "tbl_even";
 ?>
 					<tr>
-						<td class="<?php echo $class; ?>"><a href="people.php?person=<?php echo $row["person_id"]; ?>"><?echo $row["name"]; ?></a></td>
+						<td class="<?php echo $class; ?>" align="left"><a href="people.php?person=<?php echo $row["person_id"]; ?>"><?echo $row["name"]; ?></a></td>
 						<td class="<?php echo $class; ?>"><?php echo $row["ddate"]; ?></td>
 					</tr>
 <?php
