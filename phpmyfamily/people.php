@@ -82,7 +82,7 @@
 <meta name="robots" content="INDEX,FOLLOW" />
 <title><?php echo $prow["name"] ?></title>
 
-<script language="JavaScript">
+<script language="JavaScript" type="text/javascript">
  <!--
  function confirm_delete(year, section, url) {
  	input_box = confirm(<?php echo $strConfirmDelete; ?>);
