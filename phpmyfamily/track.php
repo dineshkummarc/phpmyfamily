@@ -172,7 +172,7 @@
 		echo "<hr />\n";
 		echo "<h3>".$_REQUEST["name"]."</h3>\n";
 		// produce a new key (md5 hash of email and person requested)
-		$newkey = md5($email." ".$person." ".rand(1, 100000));
+		$newkey = md5(str_rand(20));
 
 		if ($action == "sub") {
 			// insert into database
