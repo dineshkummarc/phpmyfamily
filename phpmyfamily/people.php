@@ -324,7 +324,7 @@
 								echo "<a href=\"edit.php?func=edit&amp;area=census&amp;person=".$_REQUEST["person"]."&amp;census=".$crow["census_id"]."\">".$strEdit."</a>::<a href=\"JavaScript:confirm_delete('".$crow["year"]." (".$crow["country"].")', '".strtolower($strCensus)."', 'passthru.php?func=delete&amp;area=census&amp;person=".$_REQUEST["person"]."&amp;census=".$crow["census"]."')\" class=\"delete\">".$strDelete."</a>";
 ?></td>
 			<td class="<?php echo $class; ?>"><?php echo $crow["year"]; ?> (<?php echo $crow["country"]; ?>)</td>
-			<td class="<?php echo $class; ?>"><?php echo $crow["schedule"]; ?></td>
+			<td class="<?php echo $class; ?>"><a href="census.php?census=<?php echo $crow["census_id"]; ?>&amp;ref=<?php echo $crow["schedule"]; ?>"><?php echo $crow["schedule"]; ?></a></td>
 			<td class="<?php echo $class; ?>"><?php echo $crow["address"]; ?></td>
 			<td class="<?php echo $class; ?>"><?php echo $crow["condition"]; ?></td>
 			<td class="<?php echo $class; ?>"><?php echo $crow["age"]; ?></td>
