@@ -48,7 +48,7 @@
 			$result1 = mysql_query($check1) or die($err_pwd);
 			if (mysql_num_rows($result1) == 0) {
 				if ($_POST["pwdPwd1"] == $_POST["pwdPwd2"]) {
-					$query = "INSERT INTO ".$tblprefix."users (username, password, edit) VALUES ('".$_POST["pwdUser"]."', '".md5($_POST["pwdPwd1"])."', '".$pwdEdit."')";
+					$query = "INSERT INTO ".$tblprefix."users (username, password, edit, style) VALUES ('".$_POST["pwdUser"]."', '".md5($_POST["pwdPwd1"])."', '".$pwdEdit."', '".$_POST["pwdStyle"].".css.php')";
 					$result = mysql_query($query) or die($err_new_user);
 				}
 				else
