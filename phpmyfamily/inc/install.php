@@ -22,7 +22,7 @@
 	$dbcheck = mysql_list_tables($dbname);
 	if (mysql_num_rows($dbcheck) <> 0) {
 		while ($row = mysql_fetch_array($dbcheck)) {
-			if ($row["0"] == "".$tblprefix."users" || $row["0"] == "".$tblprefix."people" || $row["0"] == "".$tblprefix."census" || $row["0"] == "".$tblprefix."spouses" || $row["0"] == "".$tblprefix."documents" || $row["0"] == "".$tblprefix."images")
+			if ($row["0"] == "".$tblprefix."users" || $row["0"] == "".$tblprefix."people" || $row["0"] == "".$tblprefix."census" || $row["0"] == "".$tblprefix."spouses" || $row["0"] == "".$tblprefix."documents" || $row["0"] == "".$tblprefix."images" || $row["0"] == "".$tblprefix."tracking")
 				die("phpmyfamily: Tables appear to already exist - please check you installation");
 		}
 	}
@@ -146,6 +146,18 @@
 )";
 	$rdocs = mysql_query($fdocs) or die("phpmyfamily: Error creating documents table!!!");
 	echo "Documents table created<br>\n";
+
+	// install tracking
+	$tquery = "CREATE TABLE `".$tblprefix."tracking` (
+  `person_id` smallint(5) unsigned zerofill NOT NULL default '00000',
+  `email` varchar(128) NOT NULL default '',
+  `key` varchar(32) NOT NULL default '',
+  `action` enum('sub','unsub') NOT NULL default 'sub',
+  `expires` datetime default NULL,
+  UNIQUE KEY `person_id` (`person_id`,`email`)
+)";
+	$tresult = mysql_query($tquery) or die("phpmyfamily: Error creating tracking table!!!");
+	echo "tracking table created<br>\n";
 
 	// give a link to continue
 	echo "<h3>Finished!!</h3>\n";

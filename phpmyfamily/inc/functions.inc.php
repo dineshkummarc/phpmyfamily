@@ -114,9 +114,15 @@
 	function stamppeeps($person) {
 		// declare globals used within
 		global $tblprefix;
+		global $tracking;
 
+		// update the updated column
 		$query = "UPDATE ".$tblprefix."people SET updated = NOW() WHERE person_id = '".$person."'";
 		$result = mysql_query($query);
+
+		// If we allow tracking by email
+		if ($tracking)
+			track_person($person);
 	}	// end of stamppeeps()
 
 	// function: imagecreate_wrapper
@@ -362,5 +368,35 @@
 
 
 	}	// end of show_gallery()
+
+	// function: track_person
+	// send an email to everybody tracking an individual
+	function track_person($person) {
+		global $trackemail;
+		global $tblprefix;
+		global $err_person;
+		global $eTrackSubject;
+		global $eTrackBodyTop;
+		global $eTrackBodyBottom;
+		global $absurl;
+
+		$tquery = "SELECT ".$tblprefix."people.person_id, name, email FROM ".$tblprefix."people, ".$tblprefix."tracking WHERE ".$tblprefix."people.person_id = ".$tblprefix."tracking.person_id AND ".$tblprefix."people.person_id = '".$person."' AND `key` = '' AND expires = '0000-00-00 00:00:00'";
+		$tresult = mysql_query($tquery) or die($err_person);
+		while ($trow = mysql_fetch_array($tresult)) {
+			$headers = "Content-type: text/plain; charset=iso-8859-1\r\n";
+			$headers .= "From: <".$trackemail.">\r\n";
+			$headers .= "X-Mailer: PHP/" . phpversion();
+			$subject = str_replace("$1", $trow["name"], $eTrackSubject);
+			$body = str_replace("$1", $trow["name"], $eTrackBodyTop);
+			$body = str_replace("$2", $absurl, $body);
+			$body .= $absurl."people.php?person=".$trow["person_id"]."\n\n";
+			$body .= $eTrackBodyBottom;
+			$body .= $absurl."track.php?person=".$trow["person_id"]."&amp;action=unsub&amp;email=".$trow["email"]."&amp;name=".urlencode($trow["name"])."\n";
+
+			mail($trow["email"], $subject, $body, $headers);
+		}
+		mysql_free_result($tresult);
+	}	// eod of track_person()
+
 	// eof
 ?>

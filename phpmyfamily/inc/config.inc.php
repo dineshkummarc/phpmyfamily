@@ -32,6 +32,12 @@
 	$lang		= "lang/en-uk.inc.php";
 
 //=====================================================================================================================
+// Change tracking details
+	$tracking	= true;									// Allow email monitoring of people
+	$trackemail	= "no-reply@giric.com";					// Emails will come from this address
+	$absurl		= "http://www2.giric.com/phpmyfamily/";	// Where phpmyfamily is installed
+
+//=====================================================================================================================
 // Nothing should need changing beneath this line
 //=====================================================================================================================
 

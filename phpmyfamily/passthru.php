@@ -54,6 +54,8 @@
 					if ($frmDCert == "")
 						$frmDCert = "N";
 					$query = "UPDATE ".$tblprefix."people SET name = '".htmlspecialchars($_POST["frmName"], ENT_QUOTES)."', date_of_birth = '".$_POST["frmDOB"]."', birth_cert = '".$frmBCert."', birth_place = '".htmlspecialchars($_POST["frmBirthPlace"], ENT_QUOTES)."', date_of_death = '".$_POST["frmDOD"]."', death_cert = '".$frmDCert."', death_reason = '".htmlspecialchars($_POST["frmDeathReason"], ENT_QUOTES)."', gender = '".$_POST["frmGender"]."', mother_id = '".$_POST["frmMother"]."', father_id = '".$_POST["frmFather"]."', narrative = '".add_quotes($_POST["frmNarrative"])."' WHERE person_id = '".$_REQUEST["person"]."'";
+					if ($tracking)
+						track_person($_REQUEST["person"]);
 					break;
 				case "census":
 					stamppeeps($_REQUEST["person"]);

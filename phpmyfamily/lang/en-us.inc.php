@@ -172,6 +172,31 @@
 	$strPedigree		= "pedigree";
 	$strToDetails		= "to details";
 	$strSurnameIndex	= "Index of Surnames";
+	$strTracking		= "Tracking";
+	$strTrack			= "track";
+	$strThisPerson		= "this person";
+	$strTrackSpeel		= "Use the form below to track this person.  You will automatically be sent an email everytime this record is updated";
+	$strEmail			= "Email";
+	$strSubscribe		= "subscribe";
+	$strUnSubscribe		= "unsubscribe";
+	$strMonAccept		= "You request for monitoring has been accepted<br />You will now receive an email every time this person is updated.<br />";
+	$strMonCease		= "You request to cease monitoring has been accepted<br />You will no longer receive any emails.<br />";
+	$strMonError		= "There has been a problem with your monitoring request.<br />Please contact the site administrator for assistance";
+	$strMonRequest		= "Your request for monitoring this person is being processed.<br />A confirmation email has been sent to your address and you should follow the instructions therein.<br />";
+	$strCeaseRequest	= "Your request for ceasing monitoring this person is being processed.<br />A confirmation email has been sent to your address and you should follow the instructions therein.<br />";
+	$strAlreadyMon		= "You already seem to be monitoring this person.<br />No action is required.<br />";
+	$strNotMon			= "You do not seem to be monitoring this person.<br />No action is required.<br />";
+
+//=====================================================================================================================
+//  email definitions
+//=====================================================================================================================
+
+	$eTrackSubject		= "[phpmyfamily] $1 has been updated";
+	$eTrackBodyTop		= "This is an automated message.  $1 at $2 has been changed.  Click below to see the updated record\n\n";
+	$eTrackBodyBottom	= "This message has been sent because you previously signed up for tracking this person.  Click below to remove yourself from this monitoring\n\n";
+	$eSubSubject		= "[phpmyfamily] monitoring request";
+	$eSubBody			= "This is an automated message.  You have received this message because you have chosen to monitor the record of $1.  To confirm this subscription, please click the link below within the next 24 hours.\n\n";
+	$eUnSubBody			= "This is an automated message.  You have received this message because you have chosen to cease monitoring the record of $1.  To confirm this cancellation, please click the link below within the next 24 hours.\n\n";
 
 //=====================================================================================================================
 //  error definitions

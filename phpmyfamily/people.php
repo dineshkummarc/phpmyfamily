@@ -115,11 +115,11 @@
 				</form>
 <?php
 			if ($_SESSION["id"] <> 0) { ?>
-				<?php echo $strLoggedIn; ?><a href="index.php" class="hd_link"><?php echo $_SESSION["name"]; ?></a>: (<a href="passthru.php?func=logout" class="hd_link"><?php echo $strLogout; ?></a><?php if ($_SESSION["admin"] == 1) echo ", <a href=\"admin.php\" class=\"hd_link\">".$strAdmin."</a>"; ?>)<br /><a href="edit.php?func=add&amp;area=detail"><?php echo $strAdd; ?></a> <?php echo $strNewPerson; ?>
+				<?php echo $strLoggedIn; ?><a href="index.php" class="hd_link"><?php echo $_SESSION["name"]; ?></a>: (<a href="passthru.php?func=logout" class="hd_link"><?php echo $strLogout; ?></a><?php if ($_SESSION["admin"] == 1) echo ", <a href=\"admin.php\" class=\"hd_link\">".$strAdmin."</a>"; ?>)<br /><a href="edit.php?func=add&amp;area=detail"><?php echo $strAdd; ?></a> <?php echo $strNewPerson; ?><?php if ($tracking) { ?> | <a href="track.php?person=<?php echo $_REQUEST["person"]; ?>"><?php echo $strTrack; ?></a> <?php echo $strThisPerson; }?>
 <?php 		}
 			else {
 ?>
-				<?php echo $strLoggedOut; ?><a href="index.php" class="hd_link"><?php echo $strHome; ?></a>
+				<?php echo $strLoggedOut; ?><a href="index.php" class="hd_link"><?php echo $strHome; ?></a><?php if ($tracking) { ?><br /><a href="track.php?person=<?php echo $_REQUEST["person"]; ?>"><?php echo $strTrack; ?></a> <?php echo $strThisPerson; }?>
 <?php
 			} ?>
 			</td>
