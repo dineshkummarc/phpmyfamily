@@ -212,6 +212,8 @@
 	$eUnSubBody			= "This is an automated message.  You have received this message because you have chosen to cease monitoring the record of $1.  To confirm this cancellation, please click the link below within the next 24 hours.\n\n";
 	$eBBSubject			= "[phpmyfamily] Big Brother has detected a change in $1";
 	$eBBBottom			= "This message has been sent because your phpmyfamily installation has Bog Brother turned on.  Please see the config file if you wish to switch this off.\n\n";
+	$ePwdSubject		= "[phpmyfamily] New Password";
+	$ePwdBody		= "Somebody, hopefully you, has requested a new password for phpmyfamily.  Your password is now $1 \n\n";
 
 //=====================================================================================================================
 //  error definitions

@@ -638,6 +638,7 @@
 	// sends a new password to a user who has forgotten
 	function send_password($email) {
 		global $tblprefix, $trackemail;
+		global $ePwdSubject, $ePwdBody;
 
 		// check we have a valid email address
 		// just drop out if we don't
@@ -652,7 +653,7 @@
 
 		// update the table
 		// just drop out if it doesn't work out right
-		$uquery = "UPDATE ".$tblprefix."users SET password = '".$password."' WHERE email = '".$email."'";
+		$uquery = "UPDATE ".$tblprefix."users SET password = '".md5($password)."' WHERE email = '".$email."'";
 		$uresult = mysql_query($uquery) or die(mysql_error());
 		if (mysql_affected_rows() != 1)
 			return 0;
@@ -662,8 +663,8 @@
 		$headers = "Content-type: text/plain; charset=iso-8859-1\r\n";
 		$headers .= "From: <".$trackemail.">\r\n";
 		$headers .= "X-Mailer: PHP/" . phpversion();
-		$subject = "Your phpmyfamily password";
-		$body = $password;
+		$subject = $ePwdSubject;
+		$body = str_replace("$1", $password, $ePwdBody);
 
 		// fire off the email
 		mail($email, $subject, $body, $headers);
