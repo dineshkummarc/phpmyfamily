@@ -477,5 +477,12 @@
 		$GLOBALS["title"] = $title;
 	}	// end of do_headers()
 
+	// function: fmod
+	// return the modulus of two numbers
+//	function fmod($x, $y) {
+//		$d = floor($x / $y);
+//		return $x - $d * $y;
+//	}	// end of fmod()
+
 	// eof
 ?>
