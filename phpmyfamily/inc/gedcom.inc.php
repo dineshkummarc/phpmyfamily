@@ -27,6 +27,7 @@
 	$desc = array();
 	$pref = array();
 	$blocks = 0;
+	$limit = 1000;
 
 	// pick up the next auto value from table
 	$query = "SHOW TABLE STATUS LIKE '".$tblprefix."people'";
@@ -376,6 +377,9 @@ Parsing parentage data:
 Inserting person data:
 <?php
 
+	$t = 0;
+	$query = "INSERT INTO ".$tblprefix."people (person_id, name, surname, date_of_birth, birth_place, date_of_death, gender, mother_id, father_id, narrative) VALUES";
+
 	for ($i = 1; $i <= $indis; $i++) {
 		// do some sanity checking
 		if (!array_key_exists("name", $indi[$i]))
@@ -395,9 +399,27 @@ Inserting person data:
 		if (!array_key_exists("mother_id", $indi[$i]))
 			$indi[$i]["mother_id"] = "0";
 
-		$query = "INSERT INTO ".$tblprefix."people (person_id, name, surname, date_of_birth, birth_place, date_of_death, gender, mother_id, father_id, narrative) VALUES ('".$indi[$i]["person_id"]."', '".htmlspecialchars($indi[$i]["name"], ENT_QUOTES)."', SUBSTRING_INDEX('".htmlspecialchars($indi[$i]["name"], ENT_QUOTES)."', ' ', -1), '".$indi[$i]["dob"]."', '".htmlspecialchars($indi[$i]["birth_place"], ENT_QUOTES)."', '".$indi[$i]["dod"]."', '".$indi[$i]["gender"]."', '".$indi[$i]["mother_id"]."', '".$indi[$i]["father_id"]."', '".htmlspecialchars($indi[$i]["note"], ENT_QUOTES)."')";
-		$result = mysql_query($query) or die("Error inserting person");
+		// if we have reached limit, pass to db and restart
+		if ($t == $limit) {
+			$result = mysql_query($query) or die("Error inserting person");
+			$query = "INSERT INTO ".$tblprefix."people (person_id, name, surname, date_of_birth, birth_place, date_of_death, gender, mother_id, father_id, narrative) VALUES";
+			$t = 0;
+		}
+
+		// add together parts of query
+		if ($t != 0)
+			$query .= ",";
+
+		$query .= " ('".$indi[$i]["person_id"]."', '".htmlspecialchars($indi[$i]["name"], ENT_QUOTES)."', SUBSTRING_INDEX('".htmlspecialchars($indi[$i]["name"], ENT_QUOTES)."', ' ', -1), '".$indi[$i]["dob"]."', '".htmlspecialchars($indi[$i]["birth_place"], ENT_QUOTES)."', '".$indi[$i]["dod"]."', '".$indi[$i]["gender"]."', '".$indi[$i]["mother_id"]."', '".$indi[$i]["father_id"]."', '".htmlspecialchars($indi[$i]["note"], ENT_QUOTES)."')";
+
+		$t++;
+
 	}
+
+	// process if not 0
+	if ($t != 0)
+		$result = mysql_query($query) or die("Error inserting person");
+
 	echo " OK<br>\n";
 	flush();
 ?>
@@ -405,6 +427,9 @@ Inserting person data:
 <!--sort and insert marriages-->
 Inserting marriage data:
 <?php
+
+	$t = 0;
+	$query = "INSERT INTO ".$tblprefix."spouses (groom_id, bride_id, marriage_date, marriage_place) VALUES";
 
 	for ($i = 1; $i <= $fams; $i++) {
 		if (!array_key_exists("groom_id", $marriage[$i]))
@@ -416,10 +441,27 @@ Inserting marriage data:
 		if (!array_key_exists("place", $marriage[$i]))
 			$marriage[$i]["place"] = "";
 
-		$query = "INSERT INTO ".$tblprefix."spouses (groom_id, bride_id, marriage_date, marriage_place) VALUES ('".$marriage[$i]["groom_id"]."', '".$marriage[$i]["bride_id"]."', '".$marriage[$i]["dom"]."', '".htmlspecialchars($marriage[$i]["place"], ENT_QUOTES)."')";
+		// if we have reached limit, pass to db a restart
+		if ($t == $limit) {
+			$result = mysql_query($query) or die("Error inserting marriage");
+			$query = "INSERT INTO ".$tblprefix."spouses (groom_id, bride_id, marriage_date, marriage_place) VALUES";
+			$t = 0;
+		}
 
-		$result = mysql_query($query) or die("Error inserting marriage");
+		// glue together parts of the query
+		if ($t != 0)
+			$query .= ",";
+
+		$query .= " ('".$marriage[$i]["groom_id"]."', '".$marriage[$i]["bride_id"]."', '".$marriage[$i]["dom"]."', '".htmlspecialchars($marriage[$i]["place"], ENT_QUOTES)."')";
+
+		// inc the counter
+		$t++;
 	}
+
+	// only precess if we have something
+	if ($t != 0)
+		$result = mysql_query($query) or die("Error inserting marriage");
+
 	echo " OK<br>\n";
 ?>
 
