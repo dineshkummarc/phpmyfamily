@@ -28,11 +28,17 @@
 	$dresult = mysql_query($dquery);
 
 	while ($drow = mysql_fetch_array($dresult)) {
+		// see if we have mime capabilities
+		if (function_exists("mime_content_type"))
+			$type = mime_content_type("docs/".$drow["id"]);
+		else
+			$type = "application/unknown";
+
 		// fire off a few headers
 		header("Content-Location: docs/".$drow["id"]);
-		header("Content-Type: application/unknown");
+		header("Content-Type: ".$type);
 		header("Content-Length: ".filesize("docs/".$drow["id"]));
-		header("Content-Disposition: attachment; filename=".$drow["file_name"]);
+		header("Content-Disposition: attachment; filename=\"".$drow["file_name"]."\"");
 
 		readfile("docs/".$drow["id"]);
 
