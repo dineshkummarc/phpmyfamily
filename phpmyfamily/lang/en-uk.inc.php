@@ -207,6 +207,8 @@
 	$strChangeStyle		= "Change your style";
 	$strChangeEmail		= "Change your email";
 	$strGedCom			= "gedcom";
+	$strCreateFamily	= "Creating new family member";
+	$strCreatePerson	= "Create new person";
 
 //=====================================================================================================================
 //  email definitions

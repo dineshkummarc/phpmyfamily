@@ -257,13 +257,13 @@
 		case "add":
 			switch($_REQUEST["area"]) {
 				case "detail":
-					do_headers("Creating new family member");
+					do_headers($strCreateFamily);
 ?>
 
 <table class="header" width="100%">
   <tbody>
     <tr>
-      <td><h2>Create new person</h2>  </td>
+      <td><h2><?php echo $strCreatePerson; ?></h2>  </td>
     </tr>
   </tbody>
 </table>
