@@ -59,14 +59,14 @@
 			$retval = "0000-00-00";
 				// ...if it isn't, check it's not a month
 				if (in_array($work[1], $months))
-					$retval = $work[2]."-".str_pad(array_search($work[1], $months), 2, "0", STR_PAD_LEFT)."-00";
+					$retval = $work[2]."-".str_pad(array_search(strtoupper($work[1]), $months), 2, "0", STR_PAD_LEFT)."-00";
 		} else {
 			// ...if it is, see if it's a year (anybody back to 31AD is a bit buggered)..
 			if ($work[1] > 31) {
 				$retval = $work[1]."-00-00";
 			} else {
 				// ...so it must be a day
-				$retval = $work[3]."-".str_pad(array_search($work[2], $months), 2, "0", STR_PAD_LEFT)."-".str_pad($work[1], 2, "0", STR_PAD_LEFT);
+				$retval = $work[3]."-".str_pad(array_search(strtoupper($work[2]), $months), 2, "0", STR_PAD_LEFT)."-".str_pad($work[1], 2, "0", STR_PAD_LEFT);
 			}
 		}
 
