@@ -42,8 +42,9 @@
 	echo "users table altered<br>\n";
 
 	// alter person table
-	$pquery = "ALTER TABLE `family_people` ADD `suffix` VARCHAR( 10 ) NOT NULL AFTER `surname`";
+	$pquery = "ALTER TABLE `".$tblprefix."people` ADD `suffix` VARCHAR( 10 ) NOT NULL AFTER `surname`";
 	$presult = mysql_query($pquery) or die(mysql_error());
+	echo "Person table altered";
 
 	// give a link to continue
 	echo "<h3>Finished!!</h3>\n";
