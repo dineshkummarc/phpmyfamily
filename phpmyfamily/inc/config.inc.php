@@ -40,9 +40,9 @@
 	session_start();
 
 	// set default variables
-	if (!isset($_SESSION["id"])) $_SESSION["id"] = 0;
-	if (!isset($_SESSION["name"])) $_SESSION["name"] = "nobody";
-	if (!isset($_SESSION["admin"])) $_SESSION["admin"] = 0;
+	if (!isset($_SESSION["id"])) $_SESSION["id"] = 0;					// non zero if logged in
+	if (!isset($_SESSION["name"])) $_SESSION["name"] = "nobody";		// actual login name
+	if (!isset($_SESSION["admin"])) $_SESSION["admin"] = 0;				// admin flag
 
 //=====================================================================================================================
 // Database connection routines
@@ -55,9 +55,9 @@
 // Some general variables
 //=====================================================================================================================
 	// some definitions
-	$version = "1.2.3";
-	$restrictdate = "1910-01-01";
-	$restrictmsg = "<font color=\"red\">Restricted</font>";
+	$version = "1.2.4";											// version string
+	$restrictdate = "1910-01-01";								// date for restricting people
+	$restrictmsg = "<font color=\"red\">Restricted</font>";		// message to show for restricted people
 
 	// eof
 ?>

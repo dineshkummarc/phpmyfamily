@@ -19,8 +19,6 @@
 	// send the headers
 	ini_set("arg_separator.output", "&amp;");
 	ini_set('session.use_trans_sid', false);
-	header('content-Type: text/html; charset=ISO-8859-1');
-	header('content-Language: en');
 
 	// include the configuration parameters and functions
 	include "inc/config.inc.php";
@@ -34,11 +32,16 @@
 	if ($_SESSION["id"] == 0 || $_SESSION["admin"] == 0)
 		die(include "inc/forbidden.inc.php");
 
-	// process requests sent by self
+	// get the request without generating error message
 	@$func = $_REQUEST["func"];
+	// error message to be passed
 	$err = "";
+
+	// process the request
 	switch ($func) {
+		// add a new user
 		case "add":
+			// carry out some simple checks to see if user already exists and if passwords match
 			$check1 = "SELECT * FROM ".$tblprefix."users WHERE username = '".$_POST["pwdUser"]."'";
 			$result1 = mysql_query($check1) or die("Error running new user check 1");
 			if (mysql_num_rows($result1) == 0) {
@@ -52,10 +55,12 @@
 			else
 				$err = "User already exists";
 			break;
+		// delete an existing user
 		case "delete":
 			$query = "DELETE FROM ".$tblprefix."users WHERE id = '".$_REQUEST["id"]."'";
 			$result = mysql_query($query) or die("Error deleting user");
 			break;
+		// bail out if we don't know what else to do
 		default:
 			break;
 	}
@@ -69,6 +74,8 @@
 <head>
 <?php css_site(); ?>
 <title>phpmyfamily Admin</title>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="content-language" content="en">
 </head>
 <body>
 <h3>Admin Functions</h3>
@@ -92,11 +99,13 @@
 				$bgcolour = "#CCCCCC";
 			else
 				$bgcolour = "#DDDDDD";
-			echo "<tr>\n";
-				echo "<td bgcolor=\"".$bgcolour."\"><a href=\"admin.php?func=delete&amp;id=".$row["id"]."\">delete</a></td>\n";
-				echo "<td bgcolor=\"".$bgcolour."\">".$row["username"]."</td>\n";
-				echo "<td bgcolor=\"".$bgcolour."\">".$row["admin"]."</td>\n";
-			echo "</tr>\n";
+?>
+			<tr>
+				<td bgcolor="<?php echo $bgcolour; ?>"><a href="admin.php?func=delete&amp;id=<?echo $row["id"]; ?>">delete</a></td>
+				<td bgcolor="<?php echo $bgcolour; ?>"><?php echo $row["username"]; ?></td>
+				<td bgcolor="<?php echo $bgcolour; ?>"><?php echo $row["admin"]; ?></td>
+			</tr>
+<?php
 		}
 ?>
 		</table>

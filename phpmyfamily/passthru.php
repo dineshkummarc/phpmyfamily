@@ -24,10 +24,13 @@
 	include "inc/browser.inc.php";
 	include "inc/css.inc.php";
 
+	// if you are not logged in then you shouldn't be here!
 	if ($_SESSION["id"] == 0 && $_REQUEST["func"] != "login")
 		die(include "inc/forbidden.inc.php");
 
-	echo "<HEAD>\n";
+	// build the page to be sent
+	// it's really only html headers
+	echo "<head>\n";
 	switch ($_REQUEST["func"]) {
 		case "update":
 			switch ($_REQUEST["area"]) {
@@ -80,7 +83,7 @@
 					$iresult = mysql_query($iquery) or die("Image insert failed");
 					$image = mysql_insert_id();
 					$person = $_REQUEST["person"];
-					if (processimage($image)) 
+					if (processimage($image))
 						stamppeeps($person);
 					break;
 				case "detail":
@@ -104,7 +107,7 @@
 		case "login":
 			@$query = "SELECT * FROM ".$tblprefix."users WHERE username = '".$_POST["pwdUser"]."' AND password = '".md5($_POST["pwdPassword"])."'";
 			$result = mysql_query($query) or die("error logging on");
-			if (mysql_num_rows($result) == 1) {	
+			if (mysql_num_rows($result) == 1) {
 				while ($row = mysql_fetch_array($result)) {
 					$_SESSION["id"] = $row["id"];
 					$_SESSION["name"] = $row["username"];

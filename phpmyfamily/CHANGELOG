@@ -1,3 +1,5 @@
+v 1.2.4
+	html cleaned up throughout app	
 	session.use_trans_id set to false to help spiders
 	Table prefix made ammendable (dafault "family")
 	Forbidden page added

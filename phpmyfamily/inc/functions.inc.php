@@ -16,19 +16,21 @@
 	//along with this program; if not, write to the Free Software
 	//Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
+	// function: convertstamp
 	// convert a timestamp into a proper date/time
 	function convertstamp($origdate) {
 		$year = substr($origdate, 0, 4);
 		$day = substr($origdate, 4, 2);
 		$month = substr($origdate, 6, 2);
-		$hour = substr($origdate, 8, 2) -1;		// poor correction for server being 1hr 
+		$hour = substr($origdate, 8, 2) -1;		// poor correction for server being 1hr
 		$minute = substr($origdate, 10, 2);
 		$sec = substr($origdate, -2);
 		$stamp = mktime($hour,$minute,$sec,$day,$month,$year);
 		return $stamp;
 	}	// end of convertstamp()
 
-	// format a MySQL date as 
+	// function: formatdbdate
+	// format a MySQL date as
 	function formatdbdate($origdate) {
 		$year = substr($origdate, 0, 4);
 		$month = substr($origdate, 5, 2);
@@ -39,16 +41,22 @@
 		return $retval;
 	}	// end of formatdbdate()
 
+	// function: listpeeps
+	// list all people in database that current request has access to
 	function listpeeps($form, $omit = 0, $gender = "A", $default = 0, $auto = 1) {
-		// declare global variables
+
+		// declare global variables used within
 		global $restrictdate;
 		global $tblprefix;
 
 		// create the query based on the parameters
 		$query = "SELECT person_id, SUBSTRING_INDEX(name, ' ', -1) AS surname, name, YEAR(date_of_birth) AS year FROM ".$tblprefix."people WHERE person_id <> '".$omit."'";
+
+		// if the user is not logged in, only show people pre $restrictdate
 		if ($_SESSION["id"] == 0)
 			$query .= " AND date_of_birth < '".$restrictdate."'";
 
+		// need the gender if listing for mother or father selection
 		switch ($gender) {
 			case "M":
 				$query .= " AND gender = 'M'";
@@ -59,20 +67,27 @@
 			default:
 				break;
 		}
+
+		// and sort the query
 		$query .= " ORDER BY surname, name";
 		$result = mysql_query($query) or die(mysql_error($result));
 
-		// create the select list
+		// show the number of people in the list
 		if ($gender == "A" && $omit == 0)
 			echo mysql_num_rows($result)." people on file<BR>\n";
 		if ($gender == "A" && $omit <> 0)
 			echo (mysql_num_rows($result) + 1)." people on file<BR>\n";
+
+		// start building the select list
 		echo "<select name=\"".$form."\" size=\"1\"";
+		//if needed, set form to auto submit
 		if ($auto == 1)
 			echo " onchange=\"this.form.submit()\"";
 		echo ">\n";
+		// if no person selected, show generic at top of list
 		if ($default == 0)
 			echo "<option value=\"0\">Select person</option>\n";
+		//
 		while ($row = mysql_fetch_array($result)) {
 			$year = $row["year"];
 			if ($year == 0)
@@ -88,14 +103,22 @@
 		mysql_free_result($result);
 	}	// end of listpeeps()
 
+	// function: stamppeeps
 	// timestamp a particular person for last updated
 	function stamppeeps($person) {
+		// declare globals used within
+		global $tblprefix;
+
 		$query = "UPDATE ".$tblprefix."people SET updated = NOW() WHERE person_id = '".$person."'";
 		$result = mysql_query($query);
 	}	// end of stamppeeps()
 
+	// function: processimage
 	// process an uploaded image
 	function processimage($image) {
+		// define globals used within
+		global $tblprefix;
+
 		$size = getimagesize($_FILES["userfile"]["tmp_name"]);
 
 		// error with image creation so fail and back out
@@ -144,7 +167,7 @@
 			$border = ($thumbh - $thumbh / $ratio) / 2;
 			imagecopyresized($thumb, $incoming, 0, $border, 0, 0, $thumbw, ($thumbh / $ratio), $size[0], $size[1]);
 		}
-	
+
 		// set as interlaced and save to paths
 		imageinterlace($thumb, 1);
 		imagejpeg($thumb, "images/tn_".$image.".jpg", 100);
@@ -154,6 +177,7 @@
 		return true;
 	}	// end of processimage();
 
+	// function: list_enums
 	// Produce a select list of an enum column
 	function list_enums($table, $col, $name, $value = 0) {
 
@@ -181,7 +205,7 @@
 		for ($j = 0; $j < $enum_cnt; $j++) {
 			$enum_atom = str_replace('\'\'', '\'', str_replace('\\\\', '\\', $enum[$j]));
 			echo '<option value="' . urlencode($enum_atom) . '"';
-			if ($enum_atom == $select) 
+			if ($enum_atom == $select)
 					echo ' selected="selected"';
 			echo '>' . htmlspecialchars($enum_atom) . '</option>' . "\n";
 		}
