@@ -78,7 +78,7 @@
 )";
 	$rpeople = mysql_query($fpeople) or die("phpmyfamily: Error creating people table!!!");
 	echo "People table created<br>\n";
-	$fpeeps = "INSERT INTO ".$tblprefix."people(person_id, name) VALUES ('1', 'Alpha Male')";
+	$fpeeps = "INSERT INTO ".$tblprefix."people(person_id, name, surname) VALUES ('1', 'Alpha Male', 'Male')";
 	$rpeeps = mysql_query($fpeeps) or die("phpmyfamily: Error creating alpha male!!!");
 	echo "Alpha Male created<br>\n";
 
