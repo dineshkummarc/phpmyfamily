@@ -18,7 +18,7 @@
 
 	// include the configuration parameters and functions
 	include "inc/config.inc.php";
-	include "inc/functions.inc.php";
+	
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html dir="<?php echo $dir; ?>">

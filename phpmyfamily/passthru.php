@@ -18,7 +18,8 @@
 
 	// include the configuration parameters and functions
 	include "inc/config.inc.php";
-	include "inc/functions.inc.php";
+
+	// set-time out to be long for image upload
 	ini_set("max_execution_time", 180);
 
 	// if you are not logged in then you shouldn't be here!

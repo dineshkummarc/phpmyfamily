@@ -18,7 +18,6 @@
 
 	// include the configuration parameters and functions
 	include "inc/config.inc.php";
-	include "inc/functions.inc.php";
 
 	// die if user not autorized
 	if ($_SESSION["id"] == 0 || $_SESSION["admin"] == 0)

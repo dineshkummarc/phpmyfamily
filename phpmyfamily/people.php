@@ -18,7 +18,6 @@
 
 	// include the configuration parameters and function
 	include "inc/config.inc.php";
-	include "inc/functions.inc.php";
 
 	// check we have a person
 	if(!isset($_REQUEST["person"])) $person = 1;

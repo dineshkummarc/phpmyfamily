@@ -18,7 +18,6 @@
 
 	// include the configuration parameters and functions
 	include "inc/config.inc.php";
-	include "inc/functions.inc.php";
 
 	//get the details for the image
 	$iquery = "SELECT *, DATE_FORMAT(date, ".$datefmt.") AS ddate FROM ".$tblprefix."images WHERE image_id = '".$_REQUEST["image"]."'";
