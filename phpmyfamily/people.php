@@ -371,7 +371,7 @@
 			<td></td>
 			<th width="30%"><?php echo $strTitle; ?></th>
 			<th width="50%"><?php echo $strDesc; ?></th>
-			<th width="10%"><?php echo $strDate; ?></th>
+			<th width="20%"><?php echo $strDate; ?></th>
 		</tr>
 <?php
 					$i = 0;
