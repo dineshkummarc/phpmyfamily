@@ -31,7 +31,7 @@
 <br />
 <h3>home</h3>
 <p><em>phpmyfamily</em> is a dynamic genealogy website builder which allows geographically dispersed family members to maintain a central database of research which is readily accessable and editable.  By having a central repository, family members can contribute as and when information becomes available without requiring them to send it to a central 'custodian', or disseminate via email, and allows anecdotal information and possible leads to be shared.</p>
-<p><em>phpmyfamily</em> is now hosted by <a href="sourceforge.net" target="_blank">sourceforge.net</a>.  Click <a href="http://sourceforge.net/projects/phpmyfamily/">here</a> to visit the project page and access bug trackers etc.</p>
+<p><em>phpmyfamily</em> is now hosted by <a href="http://sourceforge.net" target="_blank">sourceforge.net</a>.  Click <a href="http://sourceforge.net/projects/phpmyfamily/">here</a> to visit the project page and access bug trackers etc.</p>
 
 <h3>news</h3>
 
