@@ -467,6 +467,7 @@
 			// Flesh out the body
 			$body = str_replace("$1", $trow["name"], $eTrackBodyTop);
 			$body = str_replace("$2", $absurl, $body);
+			$body = str_replace("$3", $_SESSION["name"], $body);
 			$body .= $absurl."people.php?person=".$trow["person_id"]."\n\n";
 			$body .= $eBBBottom;
 		}

@@ -199,7 +199,7 @@
 //=====================================================================================================================
 
 	$eTrackSubject		= "[phpmyfamily] $1 has been updated";
-	$eTrackBodyTop		= "This is an automated message.  $1 at $2 has been changed.  Click below to see the updated record\n\n";
+	$eTrackBodyTop		= "This is an automated message.  $1 at $2 has been changed by $3.  Click below to see the updated record\n\n";
 	$eTrackBodyBottom	= "This message has been sent because you previously signed up for tracking this person.  Click below to remove yourself from this monitoring\n\n";
 	$eSubSubject		= "[phpmyfamily] monitoring request";
 	$eSubBody			= "This is an automated message.  You have received this message because you have chosen to monitor the record of $1.  To confirm this subscription, please click the link below within the next 24 hours.\n\n";
