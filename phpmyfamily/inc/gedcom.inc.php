@@ -395,8 +395,7 @@ Inserting person data:
 		if (!array_key_exists("mother_id", $indi[$i]))
 			$indi[$i]["mother_id"] = "0";
 
-		$query = "INSERT INTO ".$tblprefix."people (person_id, name, date_of_birth, birth_place, date_of_death, gender, mother_id, father_id, narrative) VALUES ('".$indi[$i]["person_id"]."', '".htmlspecialchars($indi[$i]["name"], ENT_QUOTES)."', '".$indi[$i]["dob"]."', '".htmlspecialchars($indi[$i]["birth_place"], ENT_QUOTES)."', '".$indi[$i]["dod"]."', '".$indi[$i]["gender"]."', '".$indi[$i]["mother_id"]."', '".$indi[$i]["father_id"]."', '".htmlspecialchars($indi[$i]["note"], ENT_QUOTES)."')";
-
+		$query = "INSERT INTO ".$tblprefix."people (person_id, name, surname, date_of_birth, birth_place, date_of_death, gender, mother_id, father_id, narrative) VALUES ('".$indi[$i]["person_id"]."', '".htmlspecialchars($indi[$i]["name"], ENT_QUOTES)."', SUBSTRING_INDEX('".htmlspecialchars($indi[$i]["name"], ENT_QUOTES)."', ' ', -1), '".$indi[$i]["dob"]."', '".htmlspecialchars($indi[$i]["birth_place"], ENT_QUOTES)."', '".$indi[$i]["dod"]."', '".$indi[$i]["gender"]."', '".$indi[$i]["mother_id"]."', '".$indi[$i]["father_id"]."', '".htmlspecialchars($indi[$i]["note"], ENT_QUOTES)."')";
 		$result = mysql_query($query) or die("Error inserting person");
 	}
 	echo " OK<br>\n";
