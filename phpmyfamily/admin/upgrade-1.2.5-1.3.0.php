@@ -65,6 +65,53 @@
 	$dresult = mysql_query($dquery) or die("phpmyfamily: Error updating documents table");
 	echo "documents table updated<br>\n";
 
+	// Add new column
+	$pquery = "ALTER TABLE `".$tblprefix."people` ADD `surname` VARCHAR( 20 ) NOT NULL AFTER `name`";
+	$presult = mysql_query($pquery) or die("phpmyfamily: error adding surname column");
+	echo "surname column added<br>\n";
+
+	// update column
+	$uquery = "UPDATE ".$tblprefix."people SET surname = SUBSTRING_INDEX( name, ' ', -1 )";
+	$uresult = mysql_query($uquery) or die("phpmyfamily: error updating surname column");
+	echo "surname column updated<br>\n";
+
+	// add indices
+	$iquery = "ALTER TABLE `".$tblprefix."people` DROP INDEX `name`";
+	$iresult = mysql_query($iquery) or die("phpmyfamily: error dropping name index");
+	echo "name index dropped<br>\n";
+
+	$iquery = "ALTER TABLE `".$tblprefix."people` ADD INDEX `idx_list_peeps1` (`surname`,`name`,`date_of_birth`,`person_id`)";
+	$iresult = mysql_query($iquery) or die("phpmyfamily: error creating idx_list_peeps1 index");
+	echo "idx_list_peeps1 index created<br>\n";
+
+	$iquery = "ALTER TABLE `".$tblprefix."people` ADD INDEX `idx_list_peeps2` (`gender`,`surname`,`name`,`date_of_birth`,`person_id`)";
+	$iresult = mysql_query($iquery) or die("phpmyfamily: error creating idx_list_peeps2 index");
+	echo "idx_list_peeps2 index created<br>\n";
+
+	$iquery = "ALTER TABLE `".$tblprefix."people` ADD INDEX `idx_children` (`date_of_birth`,`mother_id`,`father_id`,`person_id`,`name`,`date_of_death`)";
+	$iresult = mysql_query($iquery) or die("phpmyfamily: error creating idx_children index");
+	echo "idx_children index created<br>\n";
+
+	$iquery = "ALTER TABLE `".$tblprefix."spouses` DROP INDEX `groom_id`";
+	$iresult = mysql_query($iquery) or die("phpmyfamily: error dropping groom_id index");
+	echo "groom_id index dropped<br>\n";
+
+	$iquery = "ALTER TABLE `".$tblprefix."spouses` ADD PRIMARY KEY (`marriage_date`,`groom_id`,`bride_id`)";
+	$iresult = mysql_query($iquery) or die("phpmyfamily: error creating spouse primary key");
+	echo "spouses primary key created<br>\n";
+
+	$iquery = "ALTER TABLE `".$tblprefix."census_years` ADD INDEX `available` (`available`)";
+	$iresult = mysql_query($iquery) or die("phpmyfamily: error creating census_years index");
+	echo "census_years index created<br>\n";
+
+	$iquery = "ALTER TABLE `".$tblprefix."images` DROP INDEX `person_id`";
+	$iresult = mysql_query($iquery) or die("phpmyfamily: error dropping person_id index");
+	echo "person_id index dropped<br>\n";
+
+	$iquery = "ALTER TABLE `".$tblprefix."images` ADD INDEX `idx_show_gallery` (`person_id`,`date`)";
+	$iresult = mysql_query($iquery) or die("phpmyfamily: error creating idx_show_gallery index");
+	echo "idx_show_gallery index created<br>\n";
+
 	// give a link to continue
 	echo "<h3>Finished!!</h3>\n";
 	echo "Click <a href=\"../index.php\">here</a> to continue.\n";

@@ -45,7 +45,7 @@
 
 <?php
 	// provide a list of surnames
-	$nquery = "SELECT ".$tblprefix."people.*, SUBSTRING_INDEX(name, ' ', -1) AS surname FROM ".$tblprefix."people";
+	$nquery = "SELECT surname FROM ".$tblprefix."people";
 	if ($_SESSION["id"] == 0)
 		$nquery .= " WHERE ".$tblprefix."people.date_of_birth < '".$restrictdate."'";
 	$nquery .= " GROUP BY surname";
@@ -58,9 +58,9 @@
 	echo "</h4>\n";
 
 	// make a list of people
-	$squery = "SELECT ".$tblprefix."people.*, SUBSTRING_INDEX(name, ' ', -1) AS surname, DATE_FORMAT(date_of_birth, ".$datefmt.") AS DOB, DATE_FORMAT(date_of_death, ".$datefmt.") AS DOD FROM ".$tblprefix."people";
+	$squery = "SELECT person_id, name, surname, DATE_FORMAT(date_of_birth, ".$datefmt.") AS DOB, DATE_FORMAT(date_of_death, ".$datefmt.") AS DOD FROM ".$tblprefix."people";
 	if ($_SESSION["id"] == 0)
-		$squery .= " WHERE ".$tblprefix."people.date_of_birth < '".$restrictdate."'";
+		$squery .= " WHERE date_of_birth < '".$restrictdate."'";
 	$squery .= " ORDER BY surname, name, date_of_birth";
 	$sresult = mysql_query($squery) or die($err_person);
 	$surname = "";

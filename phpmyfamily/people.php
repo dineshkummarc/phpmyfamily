@@ -191,7 +191,7 @@
 			<td valign="top" class="tbl_even">
 <?php
 		// the query for siblings
-		$squery = "SELECT person_id, name, date_of_birth, date_of_death, DATE_FORMAT(date_of_birth, ".$datefmt.") AS DOB, DATE_FORMAT(date_of_death, ".$datefmt.") AS DOD FROM ".$tblprefix."people WHERE (mother_id = '".$mother."' OR father_id = '".$father."') AND person_id <> '".$_REQUEST["person"]."' ORDER BY date_of_birth";
+		$squery = "SELECT person_id, name, date_of_birth, date_of_death, DATE_FORMAT(date_of_birth, ".$datefmt.") AS DOB, DATE_FORMAT(date_of_death, ".$datefmt.") AS DOD FROM ".$tblprefix."people WHERE (mother_id = '".$mother."' OR father_id = '".$father."') AND person_id != '".$_REQUEST["person"]."' ORDER BY date_of_birth";
 		$sresult = mysql_query($squery) or die($err_siblings);
 		while ($srow = mysql_fetch_array($sresult)) {
 			if ($srow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0) {

@@ -52,6 +52,7 @@
 	$fpeople = "CREATE TABLE `".$tblprefix."people` (
   `person_id` smallint(5) unsigned zerofill NOT NULL auto_increment,
   `name` varchar(50) NOT NULL default '',
+  `surname` varchar(20) NOT NULL default '',
   `date_of_birth` date NOT NULL default '0000-00-00',
   `birth_cert` enum('Y','N') NOT NULL default 'N',
   `birth_place` varchar(50) NOT NULL default '',
@@ -64,8 +65,11 @@
   `narrative` longtext NOT NULL,
   `updated` timestamp(14) NOT NULL,
   PRIMARY KEY  (`person_id`),
-  KEY `name` (`name`),
-  KEY `gender` (`gender`)
+  KEY `gender` (`gender`),
+  KEY `surname` (`surname`),
+  KEY `idx_list_peeps1` (`surname`,`name`,`date_of_birth`,`person_id`),
+  KEY `idx_list_peeps2` (`gender`,`surname`,`name`,`date_of_birth`,`person_id`),
+  KEY `idx_children` (`date_of_birth`,`mother_id`,`father_id`,`person_id`,`name`,`date_of_death`)
 )";
 	$rpeople = mysql_query($fpeople) or die("phpmyfamily: Error creating people table!!!");
 	echo "People table created<br>\n";
@@ -82,7 +86,7 @@
   `marriage_place` varchar(50) NOT NULL default '0',
   `dissolve_date` date NOT NULL default '0000-00-00',
   `dissolve_reason` char(1) NOT NULL default '',
-  KEY `groom_id` (`groom_id`,`bride_id`)
+  PRIMARY KEY  (`marriage_date`,`groom_id`,`bride_id`)
 )";
 	$rspouses = mysql_query($fspouses) or die("phpmyfamily: Error creating spouses table!!!");
 	echo "Spouses table created<br>\n";
@@ -109,7 +113,8 @@
   `country` varchar(20) NOT NULL default '',
   `year` smallint(4) NOT NULL default '0',
   `available` enum('Y','N') NOT NULL default 'Y',
-  PRIMARY KEY  (`census_id`)
+  PRIMARY KEY  (`census_id`),
+  KEY `available` (`available`)
 )";
 	$cyresult = mysql_query($cyquery) or die("phpmyfamily: Error creating census years table!!!");
 	echo "Census years table created<br>\n";
@@ -127,7 +132,7 @@
   `date` date NOT NULL default '0000-00-00',
   `description` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`image_id`),
-  KEY `person_id` (`person_id`)
+  KEY `idx_show_gallery` (`person_id`,`date`)
 )";
 	$rimages = mysql_query($fimages) or die("phpmyfamily: Error creating images table!!!");
 	echo "Images table created<br>\n";

@@ -56,7 +56,7 @@
 		global $strUnknown;
 
 		// create the query based on the parameters
-		$query = "SELECT person_id, SUBSTRING_INDEX(name, ' ', -1) AS surname, TRIM(TRAILING SUBSTRING_INDEX(name, ' ', -1 ) FROM name) AS forenames, name, YEAR(date_of_birth) AS year FROM ".$tblprefix."people WHERE person_id <> '".$omit."'";
+		$query = "SELECT person_id, surname, TRIM(TRAILING surname FROM name) AS forenames, YEAR(date_of_birth) AS year FROM ".$tblprefix."people WHERE person_id <> '".$omit."'";
 
 		// if the user is not logged in, only show people pre $restrictdate
 		if ($_SESSION["id"] == 0)
@@ -461,7 +461,7 @@
 <meta name="copyright" content="2002-2003 Simon E Booth" />
 <meta name="robots" content="INDEX,FOLLOW" />
 <meta name="keywords" content="Genealogy phpmyfamily<?php
-	$fname = "SELECT SUBSTRING_INDEX(name, ' ', -1) AS surname, COUNT(*) as count FROM ".$tblprefix."people GROUP BY surname ORDER BY count DESC LIMIT 0,16";
+	$fname = "SELECT surname, COUNT(*) as count FROM ".$tblprefix."people GROUP BY surname ORDER BY count DESC LIMIT 0,16";
 	$rname = mysql_query($fname) or die($err_keywords);
 	if (mysql_num_rows($rname) <> 0) {
 		while ($row = mysql_fetch_array($rname))
