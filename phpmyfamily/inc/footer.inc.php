@@ -30,7 +30,13 @@
 			<td width="15%" align="center" valign="top"><a href="http://validator.w3.org/check/referer"><img border="0" src="images/valid-xhtml10.png" alt="Valid XHTML 1.0!" height="31" width="88" /></a></td>
 			<td width="70%" align="center" valign="top">
 <?php include "lang/lang.inc.php"; ?>
-				<h5><?php echo $strPowered; ?> <a href="http://www.giric.com/phpmyfamily/" target="_blank" class="copyright">phpmyfamily v<?php echo $version; ?></a> &copy;2002-2004 Simon E Booth<br /><?php if($mailto) echo str_replace("$1", "mail.php?subject=".$title, $strFooter); else echo str_replace("$1", "mailto:".$email."?subject=".$title, $strFooter); ?></h5>
+				<h5><?php echo $strPowered; ?> <a href="http://www.giric.com/phpmyfamily/" target="_blank" class="copyright">phpmyfamily v<?php echo $version; ?></a> &copy;2002-2004 Simon E Booth<br /><?php if($mailto) echo str_replace("$1", "mail.php?subject=".$title, $strFooter); else echo str_replace("$1", "mailto:".$email."?subject=".$title, $strFooter); ?>
+<?php
+	if ($timing) {
+		$endtime = array_sum(explode(' ',microtime()));
+		echo "<br />".$strExecute.": ".bcsub($endtime,$starttime,6)." ".$strSeconds."</h5>\n";
+	} else echo "</h5>\n";
+?>
 			</td>
 			<td width="15%" align="center" valign="top"><a href="http://jigsaw.w3.org/css-validator/check/referer"><img style="border:0;width:88px;height:31px" src="images/vcss.png" alt="Valid CSS!" /></a></td>
 		</tr>
