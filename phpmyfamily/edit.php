@@ -1,21 +1,32 @@
 <?php
-	
-	// family tree software
-	// (c)2002 - 2003 Simon E Booth
-	// All rights reserved
-	// File to control editing and creation of new data.
+	//phpmyfamily - opensource genealogy webbuilder
+	//Copyright (C) 2002 - 2003  Simon E Booth (simon.booth@giric.com)
 
-	// include the database parameters
-	include "inc/session.inc.php";
-	include "inc/db.inc.php";
+	//This program is free software; you can redistribute it and/or
+	//modify it under the terms of the GNU General Public License
+	//as published by the Free Software Foundation; either version 2
+	//of the License, or (at your option) any later version.
+
+	//This program is distributed in the hope that it will be useful,
+	//but WITHOUT ANY WARRANTY; without even the implied warranty of
+	//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	//GNU General Public License for more details.
+
+	//You should have received a copy of the GNU General Public License
+	//along with this program; if not, write to the Free Software
+	//Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+
+
+	// include the configuration parameters and functions
+	include "inc/config.inc.php";
 	include "inc/functions.inc.php";
 
-	// include the browser 
+	// include the browser
 	include "inc/browser.inc.php";
 	include "inc/css.inc.php";
 
 	if ($_SESSION["id"] == 0)
-		die("Security Breach");
+		die(header("HTTP/1.0 403 Forbidden"));
 
 	// fill out the header
 	echo "<HTML>\n";
@@ -42,7 +53,7 @@
 
 						echo "<h2>".$edrow["name"]."</h2>\n";
 						echo "<hr>\n";
-						
+
 						echo "<form method=post action=passthru.php?func=update&area=detail&person=".$_REQUEST["person"].">\n";
 							echo "<table>\n";
 								echo "<tr>\n";
@@ -70,13 +81,13 @@
 								echo "<tr>\n";
 									echo "<td>Mother</td>\n";
 									echo "<TD>\n";
-									listpeeps("frmMother", $_REQUEST["person"], "F", $edrow["mother_id"]);
+									listpeeps("frmMother", $_REQUEST["person"], "F", $edrow["mother_id"], 0);
 									echo "</td>\n";
 								echo "</tr>\n";
 								echo "<tr>\n";
 									echo "<td>Father</td>\n";
 									echo "<td>\n";
-									listpeeps("frmFather", $_REQUEST["person"], "M", $edrow["father_id"]);
+									listpeeps("frmFather", $_REQUEST["person"], "M", $edrow["father_id"], 0);
 									echo "</td>\n";
 								echo "</tr>\n";
 								echo "<tr>\n";
@@ -90,7 +101,7 @@
 							echo "</table>\n";
 						echo "</form>\n";
 					}
-					break; 
+					break;
 
 				case "marriage":
 					// get the person to edit
@@ -122,7 +133,7 @@
 							echo "<BODY>\n";
 
 							echo "<h2>Marriage: ".$prow["name"]." & ".$spousename."</h2>\n";
-							echo "<hr>\n"; 
+							echo "<hr>\n";
 
 							echo "<form method=post action=passthru.php?func=update&area=marriage&person=".$_REQUEST["person"]."&oldspouse=".$_REQUEST["spouse"]."&gender=".$prow["gender"].">\n";
 								echo "<table>\n";
@@ -130,9 +141,9 @@
 										echo "<td>Spouse</td>\n";
 										echo "<td>\n";
 										if ($prow["gender"] == "M")
-											listpeeps("frmSpouse", $_REQUEST["person"], "F", $_REQUEST["spouse"]);
+											listpeeps("frmSpouse", $_REQUEST["person"], "F", $_REQUEST["spouse"], 0);
 										else
-											listpeeps("frmSpouse", $_REQUEST["person"], "M", $_REQUEST["spouse"]);
+											listpeeps("frmSpouse", $_REQUEST["person"], "M", $_REQUEST["spouse"], 0);
 										echo "</td>\n";
 									echo "</tr>\n";
 									echo "<tr>\n";
@@ -170,7 +181,7 @@
 						echo "<BODY>\n";
 
 						echo "<h2> Census: ".$edrow["name"]." (".$edrow["year"].")</h2>\n";
-						echo "<hr>\n"; 
+						echo "<hr>\n";
 
 						echo "<form method=post action=passthru.php?func=update&area=census&person=".$_REQUEST["person"]."&year=".$_REQUEST["year"].">\n";
 							echo "<table>\n";
@@ -260,13 +271,13 @@
 							echo "<tr>\n";
 								echo "<td>Mother</td>\n";
 								echo "<td>\n";
-								listpeeps("frmMother", 0, "F");
+								listpeeps("frmMother", 0, "F", 0, 0);
 								echo "</td>\n";
 							echo "</tr>\n";
 							echo "<tr>\n";
 								echo "<td>Father</td>\n";
 								echo "<td>\n";
-								listpeeps("frmFather", 0, "M");
+								listpeeps("frmFather", 0, "M", 0, 0);
 								echo "</td>\n";
 							echo "</tr>\n";
 							echo "<tr>\n";
@@ -280,7 +291,7 @@
 						echo "</table>\n";
 					echo "</form>\n";
 					break;
-				
+
 				case "transcript":
 					// get the person to insert marriage for
 					$edquery = "SELECT * FROM family_people WHERE person_id = '".$_REQUEST["person"]."'";
@@ -295,7 +306,7 @@
 						echo "<BODY>\n";
 
 						echo "<h2> New Transcript: ".$edrow["name"]."</h2>\n";
-						echo "<hr>\n"; 
+						echo "<hr>\n";
 
 						echo "<form enctype=multipart/form-data method=post action=passthru.php?func=insert&area=transcript&person=".$_REQUEST["person"].">\n";
 						echo "<TABLE>\n";
@@ -339,7 +350,7 @@
 						echo "<BODY>\n";
 
 						echo "<h2> New Image: ".$edrow["name"]."</h2>\n";
-						echo "<hr>\n"; 
+						echo "<hr>\n";
 
 						echo "<form enctype=multipart/form-data method=post action=passthru.php?func=insert&area=image&person=".$_REQUEST["person"].">\n";
 						echo "<TABLE>\n";
@@ -384,7 +395,7 @@
 						echo "<BODY>\n";
 
 						echo "<h2> New Marriage: ".$edrow["name"]."</h2>\n";
-						echo "<hr>\n"; 
+						echo "<hr>\n";
 
 						echo "<form method=post action=passthru.php?func=insert&area=marriage&person=".$_REQUEST["person"]."&gender=".$edrow["gender"].">\n";
 							echo "<table>\n";
@@ -392,9 +403,9 @@
 									echo "<td>Spouse</td>\n";
 									echo "<td>\n";
 									if ($edrow["gender"] == "M")
-										listpeeps("frmSpouse", 0, "F");
+										listpeeps("frmSpouse", 0, "F", 0, 0);
 									else
-										listpeeps("frmSpouse", 0, "M");
+										listpeeps("frmSpouse", 0, "M", 0, 0);
 									echo "</td>\n";
 								echo "<tr>\n";
 								echo "<tr>\n";

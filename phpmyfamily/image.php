@@ -1,18 +1,28 @@
 <?php
+	//phpmyfamily - opensource genealogy webbuilder
+	//Copyright (C) 2002 - 2003  Simon E Booth (simon.booth@giric.com)
 
-	// family tree software
-	// (c)2002 - 2003 Simon E Booth
-	// All rights reserved
-	// file to control display of personal information
+	//This program is free software; you can redistribute it and/or
+	//modify it under the terms of the GNU General Public License
+	//as published by the Free Software Foundation; either version 2
+	//of the License, or (at your option) any later version.
+
+	//This program is distributed in the hope that it will be useful,
+	//but WITHOUT ANY WARRANTY; without even the implied warranty of
+	//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	//GNU General Public License for more details.
+
+	//You should have received a copy of the GNU General Public License
+	//along with this program; if not, write to the Free Software
+	//Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 	// send the headers
 	ini_set("arg_separator.output", "&amp;");
 	header('Content-Type: text/html; charset=ISO-8859-1');
 	header('Content-Language: en');
 
-	// include the database parameters
-	include "inc/session.inc.php";
-	include "inc/db.inc.php";
+	// include the configuration parameters and functions
+	include "inc/config.inc.php";
 	include "inc/functions.inc.php";
 
 	// include the browser 
@@ -70,7 +80,7 @@
 			echo "</td>\n";
 			echo "<td width=\"70%\" align=\"center\" valign=\"middle\">";
 				echo "<h5>Version: ".$version." Copyright 2002-2003 Simon E Booth<br>\n";
-				echo "Email <a href=mailto:simon.booth@giric.com>me</a> with any problems</h5>\n";
+				echo "Email <a href=mailto:".$email.">me</a> with any problems</h5>\n";
 			echo "</td>\n";
 			echo "<td width=\"15%\" align=\"center\" valign=\"middle\">";
 				echo "<a href=\"http://jigsaw.w3.org/css-validator/\"><img style=\"border:0;width:88px;height:31px\" src=\"images/vcss.png\" alt=\"Valid CSS!\"></a>";
@@ -83,7 +93,7 @@
 <noscript><img alt="" src="http://logger.giric.com/pphlogger.php?id=family&amp;st=img"></noscript>
 
 <?php
-	
+
 	echo "</body>";
 	echo "</html>";
 

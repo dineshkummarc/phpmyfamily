@@ -17,23 +17,30 @@
 	//Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ?>
 	<!-- Warning Messages -->
-	<h4>Notice</h4>
-	<p>All details for people born after <?php echo formatdbdate($restrictdate)?> are restricted to protect their identities.  If you are a registered user you can view these details and edit record.  Everybody is free to browse the unrestricted records.  If you think anybody here matches into your family tree, please <a href="mailto:<?php echo $email; ?>">let me know</a></p>
+	<h4>Password Change</h4>
+	<p>Please use this form if you wish to change your password.</p>
 
 	<!-- Form proper -->
-	<form method="post" action="passthru.php?func=login">
-		<table width="20%">
+	<form method="post" action="passthru.php?func=change">
+		<table width="100%">
 			<tr>
-				<td width="102">Username</td>
-				<td width="145"><input type="text" name="pwdUser"></td>
+				<td>Old Password</td>
+				<td><input type="password" name="pwdOld" size=20 maxlength=30></td>
 			</tr>
 			<tr>
-				<td width="102">Password</td>
-				<td width="145"><input type="password" name="pwdPassword"></td>
+				<td>New Password</td>
+				<td><input type="password" name="pwdPwd1" size=20 maxlength=30></td>
 			</tr>
 			<tr>
-				<td width="102"></td>
-				<td width="145"><input type="submit" name="Submit1" value="Login"></td>
+				<td>Re-enter New Password</td>
+				<td><input type="password" name="pwdPwd2" size=20 maxlength=30></td>
+			</tr>
+			<tr>
+				<td width="182"><?php
+					@$reason = $_REQUEST["reason"];
+					echo "<font color=\"red\">".$reason."</font>";
+				?></td>
+				<td width="145"><input type="submit" name="Submit1" value="Change"></td>
 			</tr>
 		</table>
 	</form>

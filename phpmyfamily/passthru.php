@@ -1,16 +1,26 @@
 <?php
+	//phpmyfamily - opensource genealogy webbuilder
+	//Copyright (C) 2002 - 2003  Simon E Booth (simon.booth@giric.com)
 
-	// family tree software
-	// (c)2002 - 2003 Simon E Booth
-	// All rights reserved
-	// passthru.php
+	//This program is free software; you can redistribute it and/or
+	//modify it under the terms of the GNU General Public License
+	//as published by the Free Software Foundation; either version 2
+	//of the License, or (at your option) any later version.
 
-	// include the database parameters
-	include "inc/session.inc.php";
-	include "inc/db.inc.php";
+	//This program is distributed in the hope that it will be useful,
+	//but WITHOUT ANY WARRANTY; without even the implied warranty of
+	//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	//GNU General Public License for more details.
+
+	//You should have received a copy of the GNU General Public License
+	//along with this program; if not, write to the Free Software
+	//Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+
+	// include the configuration parameters and functions
+	include "inc/config.inc.php";
 	include "inc/functions.inc.php";
 
-	if ($_SESSION["id"] == 0 && ($_REQUEST["func"] != "jump" && $_REQUEST["func"] != "login"))
+	if ($_SESSION["id"] == 0 && $_REQUEST["func"] != "login")
 		die("Security Breach");
 
 	echo "<HEAD>\n";
@@ -28,7 +38,6 @@
 						$query = "UPDATE family_spouses SET groom_id = '".$_POST["frmSpouse"]."', marriage_date = '".$_POST["frmDate"]."', marriage_place = '".$_POST["frmPlace"]."' WHERE bride_id = '".$_REQUEST["person"]."' AND groom_id = '".$_REQUEST["oldspouse"]."'";
 					break;
 				case "detail":
-					echo $_POST["frmBirthCert"];
 					$query = "UPDATE family_people SET name = '".$_POST["frmName"]."', date_of_birth = '".$_POST["frmDOB"]."', birth_place = '".$_POST["frmBirthPlace"]."', date_of_death = '".$_POST["frmDOD"]."', death_reason = '".$_POST["frmDeathReason"]."', mother_id = '".$_POST["frmMother"]."', father_id = '".$_POST["frmFather"]."', narrative = '".$_POST["frmNarrative"]."' WHERE person_id = '".$_REQUEST["person"]."'";
 					break;
 				case "census":
@@ -92,15 +101,36 @@
 			@$query = "SELECT * FROM family_users WHERE username = '".$_POST["pwdUser"]."' AND password = '".md5($_POST["pwdPassword"])."'";
 			$result = mysql_query($query) or die("error logging on");
 			if (mysql_num_rows($result) == 1) {	
-				while ($row = mysql_fetch_array($result))
+				while ($row = mysql_fetch_array($result)) {
 					$_SESSION["id"] = $row["id"];
+					$_SESSION["name"] = $row["username"];
+					if ($row["admin"] == "Y")
+						$_SESSION["admin"] = 1;
+					else
+						$_SESSION["admin"] = 0;
+				}
 			}
 			mysql_free_result($result);
 			echo "<META HTTP-EQUIV=Refresh CONTENT='0; URL=index.php'>\n";
 			break;
 		case "logout":
 			$_SESSION["id"] = 0;
+			$_SESSION["name"] = "nobody";
+			$_SESSION["admin"] = 0;
 			echo "<META HTTP-EQUIV=Refresh CONTENT='0; URL=index.php'>\n";
+			break;
+		case "change":
+			$fcheck1 = "SELECT * FROM family_users WHERE id = '".$_SESSION["id"]."' AND password = '".md5($_POST["pwdOld"])."'";
+			$rcheck1 = mysql_query($fcheck1) or die("Error checking password change 1");
+			if (mysql_num_rows($rcheck1) == 0)
+				echo "<META HTTP-EQUIV=Refresh CONTENT='0; URL=index.php?reason=Incorrect Password Supplied'>\n";
+			elseif ($_POST["pwdPwd1"] <> $_POST["pwdPwd2"])
+				echo "<META HTTP-EQUIV=Refresh CONTENT='0; URL=index.php?reason=New passwords do not match'>\n";
+			else {
+				$fchange = "UPDATE family_users SET password = '".md5($_POST["pwdPwd1"])."' WHERE id = '".$_SESSION["id"]."'";
+				$rchange = mysql_query($fchange) or die("Error trying to change password");
+				echo "<META HTTP-EQUIV=Refresh CONTENT='0; URL=index.php?reason=Password successfully changed'>\n";
+			}
 			break;
 		default:
 			echo "<META HTTP-EQUIV=Refresh CONTENT='0; URL=people.php?person=".$_POST["person"]."'>\n";

@@ -1,19 +1,28 @@
 <?php
-	
-	// index.php
-	// family tree software
-	// (c)2002 - 2003 Simon E Booth
-	// All rights reserved
-	// Welcome page
+	//phpmyfamily - opensource genealogy webbuilder
+	//Copyright (C) 2002 - 2003  Simon E Booth (simon.booth@giric.com)
+
+	//This program is free software; you can redistribute it and/or
+	//modify it under the terms of the GNU General Public License
+	//as published by the Free Software Foundation; either version 2
+	//of the License, or (at your option) any later version.
+
+	//This program is distributed in the hope that it will be useful,
+	//but WITHOUT ANY WARRANTY; without even the implied warranty of
+	//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	//GNU General Public License for more details.
+
+	//You should have received a copy of the GNU General Public License
+	//along with this program; if not, write to the Free Software
+	//Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 	// send the headers
 	ini_set("arg_separator.output", "&amp;");
 	header('content-Type: text/html; charset=ISO-8859-1');
 	header('content-Language: en');
 
-	// include the database parameters
-	include "inc/session.inc.php";
-	include "inc/db.inc.php";
+	// include the configuration parameters and functions
+	include "inc/config.inc.php";
 	include "inc/functions.inc.php";
 
 	// include the browser 
@@ -30,8 +39,15 @@
 <meta name="author" content="Simon E Booth">
 <meta name="publisher" content="Giric">
 <meta name="copyright" content="2002-2003 Simon E Booth">
-<meta name="keywords" content="Genealogy Ambler Bate Bickle Birtwistle Booth Bridgewater Chaffe Clegg Eveleigh Grainger Granger Jenkins Jones Kitching Kitchen Knight Parry Platt Raistrick Thorne Vann Verity Virr Willcocks">
-<meta name="description" content="Family tree for me, starting with Booths and Ambler and going who knows where?">
+<meta name="keywords" content="Genealogy<?php
+	$fname = "SELECT SUBSTRING_INDEX(name, ' ', -1) AS surname FROM family_people GROUP BY surname";
+	$rname = mysql_query($fname) or die("Error getting names!");
+	if (mysql_num_rows($rname) <> 0) {
+		while ($row = mysql_fetch_array($rname))
+			echo " ".$row["surname"];
+	}
+?>">
+<meta name="description" content="<?php echo $desc; ?>">
 <meta name="page-topic" content="Genealogy">
 <meta name="audience" content="All">
 <meta name="expires" content="0">
@@ -39,24 +55,27 @@
 <meta name="robots" content="INDEX,FOLLOW">
 
 <?php css_site(); ?>
-<title>Family Tree</title>
+<title>phpmyfamily: <?php echo $desc; ?></title>
 </head>
 <body>
-	
+
 <table>
 	<tr>
 		<td width="80%" align="center">
-			<h2>Family Tree</h2>
+			<h1>phpmyfamily</h1>
+			<h3><?php echo $desc; ?></h3>
 		</td>
 		<td width="20%" valign="top">
-			<form method="post" action="passthru.php?func=jump">
+			<form method="get" action="people.php">
 				<?php listpeeps("person"); ?>
-				<input type="submit" name="Submit1" value="Go">
 			</form>
+<?php if ($_SESSION["id"] <> 0) { ?>
+			<br>You are logged in as <?php echo $_SESSION["name"]; ?>: (<a href="passthru.php?func=logout">logout</a><?php if ($_SESSION["admin"] == 1) echo ", <a href=\"admin.php\">admin</a>"; ?>)
+<?php } ?>
 		</td>
 	</tr>
 </table>
-	
+
 <hr>
 
 <table width="100%">
@@ -66,6 +85,8 @@
 			// include login form if not logged in
 			if ($_SESSION["id"] == 0)
 				include "inc/loginform.inc.php";
+			else
+				include "inc/passwdform.inc.php";
 
 			echo "<br><br>\n";
 			echo "<table>\n";
@@ -146,7 +167,7 @@
 					$result = mysql_query($query) or die(mysql_error($result));
 					$i = 0;
 					while ($row = mysql_fetch_array($result)) {
-						if ($i == 0 || $i == 2 || $i == 4 || $i == 6 || $i == 8 || $i == 10 || $i == 12 || $i == 14 || $i == 16 || $i == 18 || $i == 20)
+						if ($i == 0 || fmod($i, 2) == 0)
 							$bgcolor = "#CCCCCC";
 						else
 							$bgcolor = "#DDDDDD";
@@ -174,8 +195,8 @@
 				echo "<a href=\"http://validator.w3.org/check/referer\"><img border=\"0\" src=\"images/valid-html401.png\" alt=\"Valid HTML 4.01!\" height=\"31\" width=\"88\"></a>";
 			echo "</td>\n";
 			echo "<td width=\"70%\" align=\"center\" valign=\"middle\">";
-				echo "<h5>Version: ".$version." Copyright 2002-2003 Simon E Booth<br>\n";
-				echo "Email <a href=mailto:simon.booth@giric.com>me</a> with any problems</h5>\n";
+				echo "<h5><a href=\"http://www.giric.com/phpmyfamily\">phpmyfamily v".$version."</a><br>Copyright 2002-2003 Simon E Booth<br>\n";
+				echo "Email <a href=mailto:".$email.">me</a> with any problems</h5>\n";
 			echo "</td>\n";
 			echo "<td width=\"15%\" align=\"center\" valign=\"middle\">";
 				echo "<a href=\"http://jigsaw.w3.org/css-validator/\"><img style=\"border:0;width:88px;height:31px\" src=\"images/vcss.png\" alt=\"Valid CSS!\"></a>";

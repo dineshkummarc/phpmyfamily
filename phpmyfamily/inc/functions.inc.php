@@ -1,13 +1,20 @@
 <?php
-		
-	// Copyright (c)2002 - 2003 Simon E Booth
-	// Family Tree Software
-	// functions.inc.php
+	//phpmyfamily - opensource genealogy webbuilder
+	//Copyright (C) 2002 - 2003  Simon E Booth (simon.booth@giric.com)
 
-	// some definitions
-	$version = "1.2.0";
-	$restrictdate = "1910-01-01";
-	$restrictmsg = "<FONT COLOR=RED>Restricted</FONT>";
+	//This program is free software; you can redistribute it and/or
+	//modify it under the terms of the GNU General Public License
+	//as published by the Free Software Foundation; either version 2
+	//of the License, or (at your option) any later version.
+
+	//This program is distributed in the hope that it will be useful,
+	//but WITHOUT ANY WARRANTY; without even the implied warranty of
+	//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	//GNU General Public License for more details.
+
+	//You should have received a copy of the GNU General Public License
+	//along with this program; if not, write to the Free Software
+	//Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 	// convert a timestamp into a proper date/time
 	function convertstamp($origdate) {
@@ -28,16 +35,16 @@
 		$day = substr($origdate, -2);
 		$retval = $day."/".$month."/".$year;
 		if ($year == 0)
-			$retval = "";
+			$retval = "unknown";
 		return $retval;
 	}	// end of formatdbdate()
 
-	function listpeeps($form, $omit = 0, $gender = "A", $default = 0) {
+	function listpeeps($form, $omit = 0, $gender = "A", $default = 0, $auto = 1) {
 		// declare global variables
 		global $restrictdate;
 
 		// create the query based on the parameters
-		$query = "SELECT person_id, SUBSTRING_INDEX(name, ' ', -1) AS surname, name FROM family_people WHERE person_id <> '".$omit."'";
+		$query = "SELECT person_id, SUBSTRING_INDEX(name, ' ', -1) AS surname, name, YEAR(date_of_birth) AS year FROM family_people WHERE person_id <> '".$omit."'";
 		if ($_SESSION["id"] == 0)
 			$query .= " AND date_of_birth < '".$restrictdate."'";
 
@@ -50,7 +57,7 @@
 				break;
 			default:
 				break;
-		}		
+		}
 		$query .= " ORDER BY surname, name";
 		$result = mysql_query($query) or die(mysql_error($result));
 
@@ -59,14 +66,20 @@
 			echo mysql_num_rows($result)." people on file<BR>\n";
 		if ($gender == "A" && $omit <> 0)
 			echo (mysql_num_rows($result) + 1)." people on file<BR>\n";
-		echo "<select name=\"".$form."\" size=\"1\">\n";
+		echo "<select name=\"".$form."\" size=\"1\"";
+		if ($auto == 1)
+			echo " onchange=\"this.form.submit()\"";
+		echo ">\n";
 		if ($default == 0)
 			echo "<option value=\"0\">Select person</option>\n";
 		while ($row = mysql_fetch_array($result)) {
+			$year = $row["year"];
+			if ($year == 0)
+				$year = "unknown";
 			echo "<option value=\"".$row["person_id"]."\"";
 			if ($row["person_id"] == $default)
 				echo " selected=\"selected\"";
-			echo ">".$row["surname"].", ".substr($row["name"], 0, strlen($row["name"]) - strlen($row["surname"]))."</option>\n";
+				echo ">".$row["surname"].", ".substr($row["name"], 0, strlen($row["name"]) - strlen($row["surname"]))."(b. ".$year.")</option>\n";
 		}
 		echo "</select>";
 
@@ -83,7 +96,7 @@
 	// process an uploaded image
 	function processimage($image) {
 		$size = getimagesize($_FILES["userfile"]["tmp_name"]);
-		
+
 		// error with image creation so fail and back out
 		switch ($size[2]) {
 			case 2:
