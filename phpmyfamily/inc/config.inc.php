@@ -76,6 +76,7 @@
 	if (!isset($_SESSION["name"])) $_SESSION["name"] = "nobody";		// actual login name
 	if (!isset($_SESSION["admin"])) $_SESSION["admin"] = 0;				// admin flag
 	if (!isset($_SESSION["lang"])) $_SESSION["lang"] = $lang;			// default language file
+	if (!isset($_SESSION["editable"])) $_SESSION["editable"] = "N";			// Edit permission flag
 
 //=====================================================================================================================
 // Database connection routines

@@ -23,7 +23,7 @@
 	ini_set("max_execution_time", 180);
 
 	// if you are not logged in then you shouldn't be here!
-	if ($_SESSION["id"] == 0 && ($_REQUEST["func"] != "login" && $_REQUEST["func"] != "lang"))
+	if ($_SESSION["editable"] == "N" && ($_REQUEST["func"] != "login" && $_REQUEST["func"] != "lang" && $_REQUEST["func"] != "logout"))
 		die(include "inc/forbidden.inc.php");
 
 	// build the page to be sent
@@ -132,6 +132,7 @@
 						$_SESSION["admin"] = 1;
 					else
 						$_SESSION["admin"] = 0;
+					$_SESSION["editable"] = $row["edit"];
 				}
 			}
 			mysql_free_result($result);

@@ -36,12 +36,18 @@
 	switch ($func) {
 		// add a new user
 		case "add":
+			// Get how the editable flag was passed
+			@$pwdEdit = $_POST["pwdEdit"];
+			if ($pwdEdit == "")
+				$pwdEdit = "N";
+			else
+				$pwdEdit = "Y";
 			// carry out some simple checks to see if user already exists and if passwords match
 			$check1 = "SELECT * FROM ".$tblprefix."users WHERE username = '".$_POST["pwdUser"]."'";
 			$result1 = mysql_query($check1) or die($err_pwd);
 			if (mysql_num_rows($result1) == 0) {
 				if ($_POST["pwdPwd1"] == $_POST["pwdPwd2"]) {
-					$query = "INSERT INTO ".$tblprefix."users (username, password) VALUES ('".$_POST["pwdUser"]."', '".md5($_POST["pwdPwd1"])."')";
+					$query = "INSERT INTO ".$tblprefix."users (username, password, edit) VALUES ('".$_POST["pwdUser"]."', '".md5($_POST["pwdPwd1"])."', '".$pwdEdit."')";
 					$result = mysql_query($query) or die($err_new_user);
 				}
 				else
@@ -105,6 +111,7 @@
 				<th><?php echo $strAction; ?></th>
 				<th><?php echo $strUsername; ?></th>
 				<th><?php echo ucwords($strAdmin); ?></th>
+				<th><?php echo $strEdit; ?></th>
 			</tr>
 <?php
 		$query = "SELECT * FROM ".$tblprefix."users WHERE id <> '".$_SESSION["id"]."' ORDER BY username";
@@ -120,6 +127,7 @@
 				<td class="<?php echo $class; ?>"><a href="admin.php?func=delete&amp;id=<?echo $row["id"]; ?>"><?php echo $strDelete; ?></a></td>
 				<td class="<?php echo $class; ?>"><?php echo $row["username"]; ?></td>
 				<td class="<?php echo $class; ?>"><?php echo $row["admin"]; ?></td>
+				<td class="<?php echo $class; ?>"><?php echo $row["edit"]; ?></td>
 			</tr>
 <?php
 		$i++;
@@ -134,6 +142,7 @@
 					<tr><td><?php echo $strUsername; ?></td><td><input type="text" name="pwdUser" size="20" maxlength="20" /></td></tr>
 					<tr><td><?php echo $strPassword; ?></td><td><input type="password" name="pwdPwd1" size="20" maxlength="30" /></td></tr>
 					<tr><td><?php echo $strRePassword; ?></td><td><input type="password" name="pwdPwd2" size="20" maxlength="30" /></td></tr>
+					<tr><td><?php echo ucwords($strEdit); ?></td><td><input type="checkbox" name="pwdEdit" checked="true" /></td></tr>
 					<tr><td></td><td><input type="submit" name="<?php echo $strCreate; ?>" /></td></tr>
 					<tr><td><font color="red"><?php echo $err; ?></font></td></tr>
 				</form>

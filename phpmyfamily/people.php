@@ -103,7 +103,7 @@
 		<tr>
 			<th width="85%"><h4><?php echo $strDetails; ?></h4></th>
 			<td width="15%" class="tbl_odd" align="center"><?php
-				if ($_SESSION["id"] <> 0) {
+				if ($_SESSION["editable"] == "Y") {
 ?><a href="pedigree.php?person=<?php echo $prow["person_id"]; ?>"><?php echo $strPedigree; ?></a>::<a href="edit.php?func=edit&amp;area=detail&amp;person=<?php echo $prow["person_id"]; ?>"><?php echo $strEdit; ?></a>::<a href="JavaScript:confirm_delete('<?php echo $prow["name"]; ?>', '<?php echo strtolower($strPerson); ?>', 'passthru.php?func=delete&amp;area=person&amp;person=<?php echo $_REQUEST["person"]; ?>')" class="delete"><?php echo $strDelete; ?></a></td>
 <?php } else echo "<a href=\"pedigree.php?person=".$prow["person_id"]."\">".$strPedigree."</a></td>"; ?>
 		</tr>
@@ -228,7 +228,7 @@
 ?>
 					<tr>
 						<td width="85%" class="tbl_even"><?php
-			if ($_SESSION["id"] <> 0)
+			if ($_SESSION["editable"] == "Y")
 				echo "<a href=\"edit.php?func=edit&amp;area=marriage&amp;person=".$_REQUEST["person"]."&amp;spouse=".$wrow["person_id"]."\">".$strEdit."</a>::<a href=\"JavaScript:confirm_delete('".$wrow["name"]."', '".strtolower($strMarriage)."', 'passthru.php?func=delete&amp;area=marriage&amp;person=".$_REQUEST["person"]."&amp;spouse=".$wrow["person_id"]."')\" class=\"delete\">".$strDelete."</a>";
 			if ($wrow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0)
 				echo $wrow["name"]." (<font class=\"restrict\">".$strRestricted."</font>)</td>\n";
@@ -247,7 +247,7 @@
  				</table>
 			</td>
 			<td align="right" class="tbl_odd" valign="top"><?php
-		if ($_SESSION["id"] <> 0)
+		if ($_SESSION["editable"] == "Y")
 			echo "<a href=\"edit.php?func=add&amp;person=".$_REQUEST["person"]."&amp;area=marriage\">".$strInsert."</a> ".$strNewMarriage; ?></td>
 		</tr>
 	</table>
@@ -274,7 +274,7 @@
 		<tr>
 			<td width="80%"><h4><?php echo $strGallery; ?></h4></td>
 			<td align="right"><?php
-		if ($_SESSION["id"] <> 0)
+		if ($_SESSION["editable"] == "Y")
 			echo "<a href=\"edit.php?func=add&amp;area=image&amp;person=".$_REQUEST["person"]."\">".$strUpload."</a> ".$strNewImage;
 ?></td>
 		</tr>
@@ -287,7 +287,7 @@
 		<tr>
 			<td width="80%"><h4><?php echo $strCensusDetails; ?></h4></td>
 			<td width="20%" valign="top" align="right"><?php
-				if ($_SESSION["id"] <> 0)
+				if ($_SESSION["editable"] == "Y")
 					echo "<a href=\"edit.php?func=add&amp;area=census&amp;person=".$_REQUEST["person"]."\">".$strInsert."</a> ".$strNewCensus; ?></td>
 		</tr>
 	</table>
@@ -324,7 +324,7 @@
 ?>
 		<tr>
 			<td class="<?php echo $class; ?>"><?php
-							if ($_SESSION["id"] <> 0)
+							if ($_SESSION["editable"] == "Y")
 								echo "<a href=\"edit.php?func=edit&amp;area=census&amp;person=".$_REQUEST["person"]."&amp;census=".$crow["census_id"]."\">".$strEdit."</a>::<a href=\"JavaScript:confirm_delete('".$crow["year"]." (".$crow["country"].")', '".strtolower($strCensus)."', 'passthru.php?func=delete&amp;area=census&amp;person=".$_REQUEST["person"]."&amp;census=".$crow["census"]."')\" class=\"delete\">".$strDelete."</a>";
 ?></td>
 			<td class="<?php echo $class; ?>"><?php echo $crow["year"]; ?> (<?php echo $crow["country"]; ?>)</td>
@@ -353,7 +353,7 @@
 		<tr>
 			<td width="80%"><h4><?php echo $strDocTrans; ?></h4></td>
 			<td width="20%" valign="top" align="right"><?php
-				if ($_SESSION["id"] <> 0)
+				if ($_SESSION["editable"] == "Y")
 					echo "<a href=\"edit.php?func=add&amp;area=transcript&amp;person=".$_REQUEST["person"]."\">".$strUpload."</a> ".$strNewTrans; ?></td>
 		</tr>
 	</table>
@@ -387,7 +387,7 @@
 ?>
 		<tr>
 <?php
-	if ($_SESSION["id"] <> 0) {
+	if ($_SESSION["editable"] == "Y") {
 ?>
 			<td class="<?php echo $class; ?>"><a href="JavaScript:confirm_delete('<?php echo $drow["doc_title"]; ?>', '<?php echo strtolower($strTranscript); ?>', 'passthru.php?func=delete&amp;area=transcript&amp;person=<?php echo $_REQUEST["person"]; ?>&amp;transcript=<?php echo $drow["id"]; ?>')" class="delete"><?php echo $strDelete; ?></a></td>
 <?php

@@ -19,7 +19,7 @@
 	// include the configuration parameters and functions
 	include "inc/config.inc.php";
 
-	if ($_SESSION["id"] == 0)
+	if ($_SESSION["id"] == 0 || $_SESSION["editable"] == "N")
 		die(include "inc/forbidden.inc.php");
 
 	// fill out the header

@@ -40,6 +40,7 @@
   `username` varchar(10) NOT NULL default '',
   `password` varchar(32) NOT NULL default '',
   `admin` enum('Y','N') NOT NULL default 'N',
+  `edit` enum('Y','N') NOT NULL default 'Y',
   PRIMARY KEY  (`id`)
 )";
 	$rusers = mysql_query($fusers) or die("phpmyfamily: Error creating user table!!!");
