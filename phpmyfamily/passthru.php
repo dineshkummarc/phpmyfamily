@@ -218,7 +218,7 @@
 					// update children to point to the right person
 					$ucquery = "UPDATE ".$tblprefix."people SET mother_id = '0' WHERE mother_id = '".$_REQUEST["person"]."'";
 					$ucresult = mysql_query($ucquery) or die($err_child_update);
-					$ucquery = "UPDATE ".$tblprefix."people SET mother_id = '0' WHERE father_id = '".$_REQUEST["person"]."'";
+					$ucquery = "UPDATE ".$tblprefix."people SET father_id = '0' WHERE father_id = '".$_REQUEST["person"]."'";
 					$ucresult = mysql_query($ucquery) or die($err_child_update);
 
 					// finally, the person
