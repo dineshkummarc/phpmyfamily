@@ -37,7 +37,7 @@
 // Change tracking details
 	$tracking	= true;									// Allow email monitoring of people
 	$trackemail	= "no-reply@giric.com";					// Emails will come from this address
-	$absurl		= "http://www2.giric.com/phpmyfamily/";	// Where phpmyfamily is installed
+	$absurl		= "http://www.phpmyfamily.net/";		// Where phpmyfamily is installed (remember trailing slash)
 
 //=====================================================================================================================
 // Image max and minimum sizes
@@ -88,7 +88,7 @@
 // Some general variables
 //=====================================================================================================================
 	// some definitions
-	$version = "1.3.0rc1";											// version string
+	$version = "1.3.0";											// version string
 	$restrictdate = "1910-01-01";								// date for restricting people
 
 //=====================================================================================================================
