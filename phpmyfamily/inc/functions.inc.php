@@ -4,6 +4,9 @@
 	// Family Tree Software
 	// functions.inc.php
 
+	// some definitions
+	$version = "1.1.1";
+
 	// convert a timestamp into a proper date/time
 	function convertstamp($origdate) {
 		$year = substr($origdate, 0, 4);

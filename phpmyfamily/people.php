@@ -167,7 +167,7 @@
 		
 		// images
 		echo "<hr>\n";
-			echo "<table width=100% border=5>\n";
+			echo "<table width=100%>\n";
 				echo "<tr>\n";
 					echo "<td width=80%><h4>Image Gallery</h4></td>\n";
 					echo "<td align=right><a href=edit.php?func=add&area=image&person=".$_REQUEST["person"].">upload</a> new image</td>\n";
@@ -293,7 +293,7 @@
 			}
 			mysql_free_result($dresult);
 		echo "<HR>\n";
-		echo "<center><h5>Last updated: ".date('H:i \o\n \t\h\e d/m/Y', convertstamp($prow["updated"]))."<br>Any information to add? <a href=edit.php?func=edit&person=".$prow["person_id"]."&area=detail>Edit</a> this person<br>Missing people? <a href=edit.php?func=add&area=detail>Add</a> a new person to the database<br>Problems? Let <a href=mailto:simon.booth@giric.com?subject=".$prow["person_id"].">me</a> know</h5></center>";
+		echo "<center><h5>Version: ".$version."<br>Last updated: ".date('H:i \o\n \t\h\e d/m/Y', convertstamp($prow["updated"]))."<br>Any information to add? <a href=edit.php?func=edit&person=".$prow["person_id"]."&area=detail>Edit</a> this person<br>Missing people? <a href=edit.php?func=add&area=detail>Add</a> a new person to the database<br>Problems? Let <a href=mailto:simon.booth@giric.com?subject=".$prow["person_id"].">me</a> know</h5></center>";
 	}
 	
 	mysql_free_result($presult);

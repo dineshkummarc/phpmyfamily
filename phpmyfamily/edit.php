@@ -54,12 +54,6 @@
 									echo "<td>Birth Place</td>";
 									echo "<td><input type=text name=frmBirthPlace value='".$edrow["birth_place"]."' size=30></td>";
 								echo "</tr>";
-								echo "<tr>\n";
-									echo "<td>Birth Certified</td>\n";
-									echo "<td><input type=checkbox name=frmBirthCert";
-									if ($edrow["birth_cert"] == "Y")
-										echo " checked=checked";
-									echo "></td>\n";
 								echo "<tr>";
 									echo "<td>Date of Death</td>";
 									echo "<td><input type=text name=frmDOD value='".$edrow["date_of_death"]."' size=30></td>";
