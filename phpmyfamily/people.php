@@ -35,6 +35,10 @@
 			$restricted = true;
 		else
 			$restricted = false;
+
+		// if trying to access a restriced person
+		if ($restricted)
+			die("Possible security breach");
 		
 		// fill out the header
 		echo "<HTML>\n";
@@ -93,11 +97,12 @@
 					$fquery = "SELECT * FROM people WHERE person_id = '".$father."'";
 					$fresult = mysql_query($fquery) or die("Father query failed");
 					while ($frow = mysql_fetch_array($fresult)) {
-						echo "<a href=people.php?person=".$frow["person_id"].">".$frow["name"]." </a>";
-						if ($frow["date_of_birth"] > $restrictdate)
-							echo "(".$restrictmsg." - ".$restrictmsg.")";
-						else
-							echo "(".formatdbdate($frow["date_of_birth"])." - ".formatdbdate($frow["date_of_death"]).")";
+						if ($frow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0) 
+							// if anybody gets here they are hacking
+							// or someones made a mistake with peoples parents
+							echo $frow["name"]." (".$restrictmsg.")<br>\n";
+						else 
+							echo "<a href=people.php?person=".$frow["person_id"].">".$frow["name"]."</a>(".formatdbdate($frow["date_of_birth"])." - ".formatdbdate($frow["date_of_death"]).")<br>\n";
 					}
 					mysql_free_result($fresult);
 				echo "</td>\n";
@@ -121,11 +126,12 @@
 					$mquery = "SELECT * FROM people WHERE person_id = '".$mother."'";
 					$mresult = mysql_query($mquery) or die("Mother query failed");
 					while ($mrow = mysql_fetch_array($mresult)) {
-						echo "<a href=people.php?person=".$mrow["person_id"].">".$mrow["name"]."</a>";
-					if ($mrow["date_of_birth"] > $restrictdate)
-						echo "(".$restrictmsg." - ".$restrictmsg.")";
-					else
-						echo "(".formatdbdate($mrow["date_of_birth"])." - ".formatdbdate($mrow["date_of_death"]).")";
+						if ($mrow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0) 
+							// if anybody gets here they are hacking
+							// or someones made a mistake with peoples parents
+							echo $mrow["name"]." (".$restrictmsg.")<br>\n";
+						else 
+							echo "<a href=people.php?person=".$mrow["person_id"].">".$mrow["name"]."</a>(".formatdbdate($mrow["date_of_birth"])." - ".formatdbdate($mrow["date_of_death"]).")<br>\n";
 					}
 					mysql_free_result($mresult);
 				echo "</td>\n";
@@ -139,11 +145,10 @@
 					$cquery = "SELECT * FROM people WHERE (father_id = '".$_REQUEST["person"]."' OR mother_id = '".$_REQUEST["person"]."') ORDER BY date_of_birth";
 					$cresult = mysql_query($cquery) or die("Children query failed");
 					while ($crow = mysql_fetch_array($cresult)) {
-						echo "<a href=people.php?person=".$crow["person_id"].">".$crow["name"]."</a>";
-						if ($crow["date_of_birth"] > $restrictdate)
-							echo "(".$restrictmsg." - ".$restrictmsg.")<br>\n";
-						else
-							echo "(".formatdbdate($crow["date_of_birth"])." - ".formatdbdate($crow["date_of_death"]).")<br>\n";
+						if ($crow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0) 
+							echo $crow["name"]." (".$restrictmsg.")<br>\n";
+						else 
+							echo "<a href=people.php?person=".$crow["person_id"].">".$crow["name"]."</a>(".formatdbdate($crow["date_of_birth"])." - ".formatdbdate($crow["date_of_death"]).")<br>\n";
 					}
 					mysql_free_result($cresult);
 				echo "</td>\n";
@@ -155,11 +160,10 @@
 					$squery = "SELECT * FROM people WHERE (father_id = '".$father."' OR mother_id = '".$mother."') AND person_id <> '".$_REQUEST["person"]."' ORDER BY date_of_birth";
 					$sresult = mysql_query($squery) or die("Siblings query failed");
 					while ($srow = mysql_fetch_array($sresult)) {
-						echo "<a href=people.php?person=".$srow["person_id"].">".$srow["name"]."</a>";
-						if ($srow["date_of_birth"] > $restrictdate)
-							echo "(".$restrictmsg." - ".$restrictmsg.")<br>\n";
-						else
-							echo "(".formatdbdate($srow["date_of_birth"])." - ".formatdbdate($srow["date_of_death"]).")<br>\n";
+						if ($srow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0) 
+							echo $srow["name"]." (".$restrictmsg.")<br>\n";
+						else 
+							echo "<a href=people.php?person=".$srow["person_id"].">".$srow["name"]."</a>(".formatdbdate($srow["date_of_birth"])." - ".formatdbdate($srow["date_of_death"]).")<br>\n";
 					}
 					mysql_free_result($sresult);
 				echo "</td>\n";
@@ -178,12 +182,10 @@
 					while ($wrow = mysql_fetch_array($wresult)) {
 						if ($_SESSION["id"] <> 0)
 							echo "<a href=edit.php?func=edit&area=marriage&person=".$_REQUEST["person"]."&spouse=".$wrow["person_id"].">edit</a>";
-						echo "<a href=people.php?person=".$wrow["person_id"].">".$wrow["name"]."</a> on  ";
-						if ($restricted || $wrow["date_of_birth"] > $restrictdate)
-							echo $restrictmsg;
+						if ($wrow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0)
+							echo $wrow["name"]." on ".$restrictmsg;
 						else
-							echo formatdbdate($wrow["marriage_date"]);
-						echo " at ".$wrow["marriage_place"]."<br>";
+							echo " <a href=people.php?person=".$wrow["person_id"].">".$wrow["name"]."</a> on ".formatdbdate($wrow["marriage_date"])." at ".$wrow["marriage_place"]."<br>";
 						echo "<td valign=top bgcolor=#DDDDDD width=9%>Certified <input type=checkbox name=marriagecert disabled";
 						if ($wrow["marriage_cert"] == "Y")
 							echo " checked";
@@ -271,7 +273,7 @@
 				echo "<td width=80%><h4>Census Details</h4></td>\n";
 				echo "<td width=20% valign=top align=right>";
 					if ($_SESSION["id"] <> 0)
-						echo "<a href=edit.php?func=add&area=census&person=".$_REQUEST["person"].">Insert</a> new census";
+						echo "<a href=edit.php?func=add&area=census&person=".$_REQUEST["person"].">insert</a> new census";
 				echo "</td>\n";
 			echo "</tr>\n";
 		echo "</table>\n";
@@ -325,7 +327,7 @@
 				echo "<td width=80%><h4>Document Transcripts</h4></td>\n";
 				echo "<td width=20% valign=top align=right>";
 				if ($_SESSION["id"] <> 0)
-					echo "<a href=edit.php?func=add&area=transcript&person=".$_REQUEST["person"].">Upload</a> new transcript";
+					echo "<a href=edit.php?func=add&area=transcript&person=".$_REQUEST["person"].">upload</a> new transcript";
 				echo "</td>\n";
 			echo "</tr>\n";
 		echo "</table>\n";
