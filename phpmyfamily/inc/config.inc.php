@@ -54,7 +54,7 @@
 // Some general variables
 //=====================================================================================================================
 	// some definitions
-	$version = "1.2.2";
+	$version = "1.2.3";
 	$restrictdate = "1910-01-01";
 	$restrictmsg = "<font color=\"red\">Restricted</font>";
 
