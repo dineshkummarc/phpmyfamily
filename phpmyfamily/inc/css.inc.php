@@ -38,13 +38,15 @@ function css_site() {
 	?>
 	<STYLE TYPE="text/css">
 	<!--
-	BODY, TH, TD, OL, UL, LI { font-family: verdana, arial, helvetica, sans-serif; font-size: <?php echo $font_size; ?>; background-color: #F5F5F5}
+	BODY, OL, UL, LI { font-family: verdana, arial, helvetica, sans-serif; font-size: <?php echo $font_size; ?>; background-color: #F5F5F5}
         H1 { font-size: 175%; font-family: <?php echo $site_fonts; ?>; }
         H2 { font-size: 150%; font-family: <?php echo $site_fonts; ?>; } 
         H3 { font-size: 125%; font-family: <?php echo $site_fonts; ?>; }
         H4 { font-size: 100%; font-family: <?php echo $site_fonts; ?>; } 
         H5 { font-size: 75%; font-family: <?php echo $site_fonts; ?>; }
         H6 { font-size: 50%; font-family: <?php echo $site_fonts; ?>; }
+	TH { font-family: verdana, arial, helvetica, sans-serif; font-size: <?php echo $font_size; ?>; background-color: #D3DCE3}
+	TD { font-family: verdana, arial, helvetica, sans-serif; font-size: <?php echo $font_size; ?>}
 	PRE, TT, CODE { font-family: courier, sans-serif; font-size: <?php echo $font_size; ?>; }
 	A:hover { text-decoration: none; color: #FF6666; font-size: <?php echo $font_size; ?>; }
 	A.menus { color: #FF6666; text-decoration: none; font-size: <?php echo $font_smaller; ?>; }

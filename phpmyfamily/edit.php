@@ -1,16 +1,17 @@
 <?php
 	
 	// family tree software
-	// (c)2002 Simon E Booth
+	// (c)2002 - 2003 Simon E Booth
 	// All rights reserved
 	// File to control editing and creation of new data.
 
 	// include the database parameters
-	include "db.inc.php";
+	include "inc/db.inc.php";
+	include "inc/functions.inc.php";
 
 	// include the browser 
-	include "browser.inc.php";
-	include "css.inc.php";
+	include "inc/browser.inc.php";
+	include "inc/css.inc.php";
 
 	// fill out the header
 	echo "<HTML>";
@@ -38,7 +39,7 @@
 						echo "<h2>".$edrow["name"]."</h2>";
 						echo "<hr>";
 						
-						echo "<form method=post action=people.php?func=update&person=".$_REQUEST["person"]."&area=detail&spouse=&year=>";
+						echo "<form method=post action=passthru.php?func=update&area=detail&person=".$_REQUEST["person"].">";
 							echo "<table>";
 								echo "<tr>";
 									echo "<td>Name</td>";
@@ -53,50 +54,32 @@
 									echo "<td>Birth Place</td>";
 									echo "<td><input type=text name=frmBirthPlace value='".$edrow["birth_place"]."' size=30></td>";
 								echo "</tr>";
+								echo "<tr>\n";
+									echo "<td>Birth Certified</td>\n";
+									echo "<td><input type=checkbox name=frmBirthCert";
+									if ($edrow["birth_cert"] == "Y")
+										echo " checked=checked";
+									echo "></td>\n";
 								echo "<tr>";
 									echo "<td>Date of Death</td>";
 									echo "<td><input type=text name=frmDOD value='".$edrow["date_of_death"]."' size=30></td>";
 									echo "<td>Please use format YYYY-MM-DD</td>";
 								echo "</tr>";
 								echo "<tr>";
-									echo "<td>Death Reason</td>";
+									echo "<td>Cause of Death</td>";
 									echo "<td><input type=text name=frmDeathReason value='".$edrow["death_reason"]."' size=30></td>";
 								echo "</tr>";
 								echo "<tr>";
 									echo "<td>Mother</td>";
-									echo "<td><select name=frmMother size=1>";
-									$mquery = "SELECT person_id, SUBSTRING_INDEX(name, ' ', -1) AS surname, name FROM people WHERE gender = 'F' AND person_id <> '".$_REQUEST["person"]."' ORDER BY surname, name";
-									$mresult = mysql_query($mquery) or die("Mother query failed");
-							
-									if ($edrow["mother_id"] == 0)
-											echo "<option value=NULL selected=selected>Select mother</option>";
-							
-									while ($mrow = mysql_fetch_array($mresult)) {
-										echo "<option value=".$mrow["person_id"];
-										if ($mrow["person_id"] == $edrow["mother_id"])
-											echo " selected=selected";
-										echo ">".$mrow["surname"].", ".substr($mrow["name"], 0, strlen($mrow["name"]) - strlen($mrow["surname"]))."</option>";
-									}
-									mysql_free_result($mresult);
-									echo "</select></td>";
+									echo "<TD>";
+									listpeeps("frmMother", $_REQUEST["person"], "F", $edrow["mother_id"]);
+									echo "</td>";
 								echo "</tr>";
 								echo "<tr>";
 									echo "<td>Father</td>";
-									echo "<td><select name=frmFather size=1>";
-									$fquery = "SELECT person_id, SUBSTRING_INDEX(name, ' ', -1) AS surname, name FROM people WHERE gender = 'M' AND person_id <> '".$_REQUEST["person"]."' ORDER BY surname, name";
-									$fresult = mysql_query($fquery) or die("Father query failed");
-							
-									if ($edrow["father_id"] == 0)
-											echo "<option value=null selected=selected>Select father</option>";
-
-									while ($frow = mysql_fetch_array($fresult)) {
-										echo "<option value=".$frow["person_id"];
-										if ($frow["person_id"] == $edrow["father_id"])
-											echo " selected=selected";
-										echo ">".$frow["surname"].", ".substr($frow["name"], 0, strlen($frow["name"]) - strlen($frow["surname"]))."</option>";
-									}
-									mysql_free_result($fresult);
-									echo "</select></td>";
+									echo "<td>";
+									listpeeps("frmFather", $_REQUEST["person"], "M", $edrow["father_id"]);
+									echo "</td>\n";
 								echo "</tr>";
 								echo "<tr>";
 									echo "<td>Narrative</td>";
@@ -143,7 +126,7 @@
 							echo "<h2>Marriage: ".$prow["name"]." & ".$spousename."</h2>";
 							echo "<hr>"; 
 
-							echo "<form method=post action=people.php?func=update&person=".$_REQUEST["person"]."&area=marriage&oldspouse=".$_REQUEST["spouse"]."&gender=".$prow["gender"]."&spouse=&year=>";
+							echo "<form method=post action=passthru.php?func=update&area=marriage&person=".$_REQUEST["person"]."&oldspouse=".$_REQUEST["spouse"]."&gender=".$prow["gender"].">";
 								echo "<table>";
 									echo "<tr>";
 										echo "<td>Spouse</td>";
@@ -197,7 +180,7 @@
 						echo "<h2> Census: ".$edrow["name"]." (".$edrow["year"].")</h2>";
 						echo "<hr>"; 
 
-						echo "<form method=post action=people.php?func=update&person=".$_REQUEST["person"]."&area=census&year=".$_REQUEST["year"].">";
+						echo "<form method=post action=passthru.php?func=update&area=census&person=".$_REQUEST["person"]."&year=".$_REQUEST["year"].">";
 							echo "<table>";
 								echo "<tr>";
 									echo "<td>Schedule</td>";
@@ -271,7 +254,7 @@
 					echo "<hr>";
 					echo "Please make sure person doesn't exist before creating!!!<br>";
 
-					echo "<form method=post action=people.php?func=insert&person=&area=detail>";
+					echo "<form method=post action=passthru.php?func=insert&area=detail>";
 						echo "<table>";
 							echo "<tr>";
 								echo "<td>Name</td>";
@@ -292,7 +275,7 @@
 								echo "<td>Please use format YYYY-MM-DD</td>";
 							echo "</tr>";
 							echo "<tr>";
-								echo "<td>Death Reason</td>";
+								echo "<td>Cause of Death</td>";
 								echo "<td><input type=text name=frmDeathReason size=30></td>";
 							echo "</tr>";
 							echo "<tr>";
@@ -338,6 +321,95 @@
 						echo "</table>";
 					echo "</form>";
 					break;
+				
+				case "transcript":
+					// get the person to insert marriage for
+					$edquery = "SELECT * FROM people WHERE person_id = '".$_REQUEST["person"]."'";
+					$edresult = mysql_query($edquery) or die("New marriage person query failed");
+
+					// fill out the form with retrieved data
+					while ($edrow = mysql_fetch_array($edresult)) {
+
+						// fill out the header
+						echo "<title>New Transcript: ".$edrow["name"]."</title>";
+						echo "</HEAD>";
+						echo "<BODY>\n";
+
+						echo "<h2> New Transcript: ".$edrow["name"]."</h2>";
+						echo "<hr>"; 
+
+						echo "<form enctype=multipart/form-data method=post action=passthru.php?func=insert&area=transcript&person=".$_REQUEST["person"].">";
+						echo "<TABLE>\n";
+							echo "<TR>\n";
+								echo "<TD>File to Upload</TD>\n";
+								echo "<TD><INPUT TYPE=FILE NAME=userfile></TD>\n";
+							echo "<TR>\n";
+							echo "<TR>\n";
+								echo "<TD>File Title</TD>\n";
+								echo "<TD><INPUT TYPE=TEXT NAME=frmTitle SIZE=30 MAXLENGTH=30></TD>\n";
+							echo "<TR>\n";
+							echo "<TR>\n";
+								echo "<TD>File Description</TD>\n";
+								echo "<TD><INPUT TYPE=TEXT NAME=frmDesc SIZE=60 MAXLENGTH=60></TD>\n";
+							echo "<TR>\n";
+							echo "<TR>\n";
+								echo "<TD>File Date</TD>\n";
+								echo "<TD><INPUT TYPE=TEXT NAME=frmDate MAXLENGTH=10></TD>\n";
+								echo "<TD>Please use format YYYY-MM-DD</TD>\n";
+							echo "<TR>\n";
+							echo "<TR>\n";
+								echo "<TD><INPUT TYPE=SUBMIT NAME=Submit1 VALUE=Submit></TD>\n";
+								echo "<TD></TD>\n";
+							echo "<TR>\n";
+						echo "</TABLE>\n";
+						echo "</FORM>\n";
+					}
+					break;
+
+				case "image":
+					// get the person to insert marriage for
+					$edquery = "SELECT * FROM people WHERE person_id = '".$_REQUEST["person"]."'";
+					$edresult = mysql_query($edquery) or die("New marriage person query failed");
+
+					// fill out the form with retrieved data
+					while ($edrow = mysql_fetch_array($edresult)) {
+
+						// fill out the header
+						echo "<title>New Image: ".$edrow["name"]."</title>";
+						echo "</HEAD>";
+						echo "<BODY>\n";
+
+						echo "<h2> New Image: ".$edrow["name"]."</h2>";
+						echo "<hr>"; 
+
+						echo "<form enctype=multipart/form-data method=post action=passthru.php?func=insert&area=image&person=".$_REQUEST["person"].">";
+						echo "<TABLE>\n";
+							echo "<TR>\n";
+								echo "<TD>Image to Upload</TD>\n";
+								echo "<TD><INPUT TYPE=FILE NAME=userfile></TD>\n";
+								echo "<td>JPEG only.</td>\n";
+							echo "<TR>\n";
+							echo "<TR>\n";
+								echo "<TD>Image Title</TD>\n";
+								echo "<TD><INPUT TYPE=TEXT NAME=frmTitle SIZE=30 MAXLENGTH=30></TD>\n";
+							echo "<TR>\n";
+							echo "<TR>\n";
+								echo "<TD>Image Description</TD>\n";
+								echo "<TD><INPUT TYPE=TEXT NAME=frmDesc SIZE=60 MAXLENGTH=60></TD>\n";
+							echo "<TR>\n";
+							echo "<TR>\n";
+								echo "<TD>Image Date</TD>\n";
+								echo "<TD><INPUT TYPE=TEXT NAME=frmDate MAXLENGTH=10></TD>\n";
+								echo "<TD>Please use format YYYY-MM-DD</TD>\n";
+							echo "<TR>\n";
+							echo "<TR>\n";
+								echo "<TD><INPUT TYPE=SUBMIT NAME=Submit1 VALUE=Submit></TD>\n";
+								echo "<TD></TD>\n";
+							echo "<TR>\n";
+						echo "</TABLE>\n";
+						echo "</FORM>\n";
+					}
+					break;
 
 				case "marriage":
 					// get the person to insert marriage for
@@ -355,7 +427,7 @@
 						echo "<h2> New Marriage: ".$edrow["name"]."</h2>";
 						echo "<hr>"; 
 
-						echo "<form method=post action=people.php?func=insert&person=".$_REQUEST["person"]."&area=marriage&gender=".$edrow["gender"].">";
+						echo "<form method=post action=passthru.php?func=insert&area=marriage&person=".$_REQUEST["person"]."&gender=".$edrow["gender"].">";
 							echo "<table>";
 								echo "<tr>";
 									echo "<td>Spouse</td>";
@@ -403,7 +475,7 @@
 						echo "<h2> New Census: ".$edrow["name"]."</h2>";
 						echo "<hr>"; 
 
-						echo "<form method=post action=people.php?func=insert&person=".$_REQUEST["person"]."&area=census>";
+						echo "<form method=post action=passthru.php?func=insert&area=census&person=".$_REQUEST["person"].">";
 							echo "<table>";
 								echo "<tr>";
 									echo "<td>Year</td>";

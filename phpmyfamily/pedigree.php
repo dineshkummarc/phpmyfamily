@@ -1,16 +1,16 @@
 <?php
 	
 	// family tree software
-	// (c)2002 Simon E Booth
+	// (c)2002 - 2003 Simon E Booth
 	// All rights reserved
 	// File to control editing and creation of new data.
 
 	// include the database parameters
-	include "db.inc.php";
+	include "inc/db.inc.php";
 
 	// include the browser 
-	include "browser.inc.php";
-	include "css.inc.php";
+	include "inc/browser.inc.php";
+	include "inc/css.inc.php";
 
 	// check to see if we have a person
 	if (!isset($_GET["person"])) $person = 1;
