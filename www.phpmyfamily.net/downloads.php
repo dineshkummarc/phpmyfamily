@@ -25,7 +25,7 @@
     </tr>
 	<tr>
 		<td colspan="2">
-<img src="images/filler.png" width="10" height="600" border="0" align="left" alt="" />
+<img src="images/filler.png" width="10" height="750" border="0" align="left" alt="" />
 
 <!--start of main-->
 <br />
@@ -41,19 +41,19 @@
   </thead>
   <tbody>
     <tr>
-      <td class="tbl_odd"><a href="http://prdownloads.sourceforge.net/phpmyfamily/phpmyfamily-1.2.5.tar.gz?download">phpmyfamily-1.2.5.tar.gz</a>  </td>
-      <td class="tbl_odd">48,701 bytes  </td>
-      <td class="tbl_odd">0ec85e17cdeea04961fe1c89de1cd27c</td>
+      <td class="tbl_odd"><a href="http://prdownloads.sourceforge.net/phpmyfamily/phpmyfamily-1.3.0.tar.gz?download">phpmyfamily-1.3.0.tar.gz</a>  </td>
+      <td class="tbl_odd">54,977 bytes  </td>
+      <td class="tbl_odd">4cae5ca0b4274dfbf220de8736a88d1d</td>
     </tr>
     <tr>
-      <td class="tbl_even"><a href="http://prdownloads.sourceforge.net/phpmyfamily/phpmyfamily-1.2.5.zip?download">phpmyfamily-1.2.5.zip</a>  </td>
-      <td class="tbl_even">75,273 bytes  </td>
-      <td class="tbl_even">4bad0cf107dc44ada4a1f1167af55714</td>
+      <td class="tbl_even"><a href="http://prdownloads.sourceforge.net/phpmyfamily/phpmyfamily-1.3.0.zip?download">phpmyfamily-1.3.0.zip</a>  </td>
+      <td class="tbl_even">86,074 bytes  </td>
+      <td class="tbl_even">12e32a546f83f747b7f7abf0c4dfdefb</td>
     </tr>
 	<tr>
-		<td class="tbl_odd"><a href="http://prdownloads.sourceforge.net/phpmyfamily/phpmyfamily-1.2.5.tar.bz2?download">phpmyfamily-1.2.5.bz2</a></td>
-		<td class="tbl_odd">42,713 bytes</td>
-		<td class="tbl_odd">93d2c63f4962cd32eb1fce6f4e8c16a4</td>
+		<td class="tbl_odd"><a href="http://prdownloads.sourceforge.net/phpmyfamily/phpmyfamily-1.3.0.tar.bz2?download">phpmyfamily-1.3.0.bz2</a></td>
+		<td class="tbl_odd">47,452 bytes</td>
+		<td class="tbl_odd">1edf0334f5c88d5a51d960c3174f2f8d</td>
 	</tr>
   </tbody>
 </table>
@@ -61,9 +61,17 @@
 <!--end of main-->
 
 <h3>changelog</h3>
-<strong><em>phpmyfamily</em> v1.2.5 (Released 09/04/2004)</strong>
+<strong><em>phpmyfamily</em> v1.3.0 (Released 26/05/2004)</strong>
 <p>The latest release of <em>phpmyfamily</em> has many feature enhancements.  New to this version are;</p>
+<ul>
+	<li>Surname List - View all names on one page; great for search engines</li>
+	<li>Email monitoring - sign up and be informed of any changes to an individual</li>
+	<li>Image gallery - view all images at once</li>
+	<li>Census view - see other individuals captured by a census </li>
+</ul>
 
+<strong><em>phpmyfamily</em> v1.2.5 (Released 09/04/2004)</strong>
+<p>This release of <em>phpmyfamily</em> has many feature enhancements.  New to this version are;</p>
 <ul>
   <li>Pedigree Page - allow users to see an individuals pedigree</li>
   <li>GEDCOM import - import data from exisiting GEDCOM files</li>
@@ -75,7 +83,6 @@
 
 <strong><em>phpmyfamily</em> v1.2.4 (Released 30/11/2003)</strong>
 <p>This release of phpmyfamily fixes a number of small bugs and includes a general clean up of the code.  The major changes are listed below.</p>
-
 <ul>
   <li>Forbidden page added - a more gracefull way for the script to die if it detects a possible hacking attempt.</li>
   <li>User ammendable table prefixes (defaults to "family_").  </li>

@@ -25,7 +25,7 @@
     </tr>
 	<tr>
 		<td colspan="2">
-<img src="images/filler.png" width="10" height="600" border="0" align="left" alt="" />
+<img src="images/filler.png" width="10" height="650" border="0" align="left" alt="" />
 
 <!--start of main-->
 <br />
@@ -35,6 +35,7 @@
 <ol>
   <li><a href="faq.php#install1">How do I change the date format?</a>  </li>
   <li><a href="faq.php#install2">Why does the image upload not work?</a></li>
+  <li><a href="faq.php#install3">Why do I keep getting a message about fmod()?</a></li>
 </ol>
 <h4>use</h4>
 <ol>
@@ -46,6 +47,7 @@
 <ol>
   <li><a name="install1"></a>How do I change the date format?<p>It is now easy to change the format of the displayed dates.  Line 28 of your chosen language file can be altered to any POSIX date string.  Look <a href="http://dev.mysql.com/doc/mysql/en/Date_and_time_functions.html#IDX1364" target="_blank">here</a> for details of valid characters.</p>  </li>
   <li><a name="install2"></a>Why does the image upload not work?<p>For image uploading to work, the web-server must have write permissions to the image directory.  For instance, if you are running Apache and it runs as 'nobody' you could issue the commands 'chgrp nobody images' and 'chmod g+w images.'</p></li>
+  <li><a name="install3"></a>Why do I keep getting a message about fmod()?<p>You are seeing this message because you are running a version of PHP prior to 4.2.0.  Although the recommended option is to upgrade, this is not always possible so a replacement function has been included.  Un-comment the lines for the fmod() function in the inc/functions.inc.php file.</p></li>
 </ol>
 <h4>use</h4>
 <ol>
