@@ -44,11 +44,11 @@
 			else
 				$pwdEdit = "Y";
 			// carry out some simple checks to see if user already exists and if passwords match
-			$check1 = "SELECT * FROM ".$tblprefix."users WHERE username = '".$_POST["pwdUser"]."'";
+			$check1 = "SELECT * FROM ".$tblprefix."users WHERE email = '".$_POST["pwdEmail"]."'";
 			$result1 = mysql_query($check1) or die($err_pwd);
 			if (mysql_num_rows($result1) == 0) {
 				if ($_POST["pwdPwd1"] == $_POST["pwdPwd2"]) {
-					$query = "INSERT INTO ".$tblprefix."users (username, password, edit, style) VALUES ('".$_POST["pwdUser"]."', '".md5($_POST["pwdPwd1"])."', '".$pwdEdit."', '".$_POST["pwdStyle"].".css.php')";
+					$query = "INSERT INTO ".$tblprefix."users (email, password, edit, style) VALUES ('".$_POST["pwdEmail"]."', '".md5($_POST["pwdPwd1"])."', '".$pwdEdit."', '".$_POST["pwdStyle"].".css.php')";
 					$result = mysql_query($query) or die($err_new_user);
 				}
 				else
@@ -110,14 +110,14 @@
 	  	<table width="80%">
 			<tr>
 				<th><?php echo $strAction; ?></th>
-				<th><?php echo $strUsername; ?></th>
+				<th><?php echo $strEmail; ?></th>
 				<th><?php echo ucwords($strAdmin); ?></th>
 				<th><?php echo $strEdit; ?></th>
 				<th><?php echo $strRestricted." ".$strDate; ?></th>
 				<th><?php echo $strStyle; ?></th>
 			</tr>
 <?php
-		$query = "SELECT * FROM ".$tblprefix."users WHERE id <> '".$_SESSION["id"]."' ORDER BY username";
+		$query = "SELECT * FROM ".$tblprefix."users WHERE id <> '".$_SESSION["id"]."' ORDER BY email";
 		$result = mysql_query($query) or die($err_users);
 		$i = 0;
 		while ($row = mysql_fetch_array($result)) {
@@ -128,7 +128,7 @@
 ?>
 			<tr>
 				<td class="<?php echo $class; ?>"><a href="admin.php?func=delete&amp;id=<?echo $row["id"]; ?>"><?php echo $strDelete; ?></a></td>
-				<td class="<?php echo $class; ?>"><?php echo $row["username"]; ?></td>
+				<td class="<?php echo $class; ?>"><?php echo $row["email"]; ?></td>
 				<td class="<?php echo $class; ?>"><?php echo $row["admin"]; ?></td>
 				<td class="<?php echo $class; ?>"><?php echo $row["edit"]; ?></td>
 				<td class="<?php echo $class; ?>"><?php echo $row["restrictdate"]; ?></td>
@@ -144,7 +144,7 @@
 			<table>
 				<tr><h4><?php echo $strUserCreate; ?></h4></tr>
 				<form method="POST" action="admin.php?func=add">
-					<tr><td><?php echo $strUsername; ?></td><td><input type="text" name="pwdUser" size="20" maxlength="20" /></td></tr>
+					<tr><td><?php echo $strEmail; ?></td><td><input type="text" name="pwdEmail" size="30" maxlength="128" /></td></tr>
 					<tr><td><?php echo $strPassword; ?></td><td><input type="password" name="pwdPwd1" size="20" maxlength="30" /></td></tr>
 					<tr><td><?php echo $strRePassword; ?></td><td><input type="password" name="pwdPwd2" size="20" maxlength="30" /></td></tr>
 					<tr><td><?php echo ucwords($strEdit); ?></td><td><input type="checkbox" name="pwdEdit" checked="true" /></td></tr>

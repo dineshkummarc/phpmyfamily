@@ -128,12 +128,12 @@
 			echo "<meta http-equiv=refresh content='0; url=people.php?person=".$person."' />\n";
 			break;
 		case "login":
-			@$query = "SELECT * FROM ".$tblprefix."users WHERE username = '".$_POST["pwdUser"]."' AND password = '".md5($_POST["pwdPassword"])."'";
+			@$query = "SELECT * FROM ".$tblprefix."users WHERE email = '".$_POST["pwdEmail"]."' AND password = '".md5($_POST["pwdPassword"])."'";
 			$result = mysql_query($query) or die($err_logon);
 			if (mysql_num_rows($result) == 1) {
 				while ($row = mysql_fetch_array($result)) {
 					$_SESSION["id"] = $row["id"];
-					$_SESSION["name"] = $row["username"];
+					$_SESSION["name"] = $row["email"];
 					if ($row["admin"] == "Y")
 						$_SESSION["admin"] = 1;
 					else

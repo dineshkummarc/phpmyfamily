@@ -24,8 +24,8 @@
 	<form method="post" action="passthru.php?func=login">
 		<table width="20%">
 			<tr>
-				<td width="102"><?php echo $strUsername; ?></td>
-				<td width="145"><input type="text" name="pwdUser" /></td>
+				<td width="102"><?php echo $strEmail; ?></td>
+				<td width="145"><input type="text" name="pwdEmail" maxlength="128" /></td>
 			</tr>
 			<tr>
 				<td width="102"><?php echo $strPassword; ?></td>

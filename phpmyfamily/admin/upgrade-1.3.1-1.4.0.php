@@ -39,6 +39,8 @@
 	$uresult = mysql_query($uquery) or die("phpmyfamily: Error altering users table!!!");
 	$uquery = "UPDATE `"$tblprefix."users` SET `style` = `default.css.php`";
 	$uresult = mysql_query($uquery) or die("phpmyfamily: Error altering users table!!!");
+	$uquery = "ALTER TABLE `family_users` CHANGE `username` `email` VARCHAR( 128 ) NOT NULL ";
+	$uresult = mysql_query($uquery) or die("phpmyfamily: Error altering users table!!!");
 	echo "users table altered<br>\n";
 
 	// give a link to continue
