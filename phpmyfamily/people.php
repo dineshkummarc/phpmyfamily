@@ -18,7 +18,7 @@
 
 	// send the headers
 	ini_set("arg_separator.output", "&amp;");
-
+	ini_set('session.use_trans_sid', false);
 
 	// include the configuration parameters and function
 	include "inc/config.inc.php";

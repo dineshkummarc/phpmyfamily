@@ -18,6 +18,7 @@
 
 	// send the headers
 	ini_set("arg_separator.output", "&amp;");
+	ini_set('session.use_trans_sid', false);
 	header('Content-Type: text/html; charset=ISO-8859-1');
 	header('Content-Language: en');
 
@@ -45,7 +46,7 @@
 				$restricted = false;
 
 			// fill out the header
-			echo "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"\n\t\"http://www.w3.org/TR/html4/loose.dtd\">\n";
+			echo "<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">\n";
 			echo "<HTML>\n";
 			echo "<HEAD>\n";
 			css_site();

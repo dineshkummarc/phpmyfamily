@@ -18,6 +18,7 @@
 
 	// send the headers
 	ini_set("arg_separator.output", "&amp;");
+	ini_set('session.use_trans_sid', false);
 	header('content-Type: text/html; charset=ISO-8859-1');
 	header('content-Language: en');
 
