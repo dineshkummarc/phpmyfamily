@@ -24,10 +24,6 @@
 	include "inc/config.inc.php";
 	include "inc/functions.inc.php";
 
-	// include the browser
-	include "inc/browser.inc.php";
-	include "inc/css.inc.php";
-
 	// check we have a person
 	if(!isset($_REQUEST["person"])) $person = 1;
 	@$person = $_REQUEST["person"];
@@ -59,13 +55,20 @@
 	"http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<link rel="stylesheet" href="<?php echo $style; ?>" type="text/css">
+<link rel="SHORTCUT ICON" href="images/favicon.ico">
 <meta name="author" content="Simon E Booth">
 <meta name="publisher" content="Giric">
 <meta name="copyright" content="2002-2003 Simon E Booth">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta http-equiv="content-language" content="en">
-<meta name="keywords" content="Genealogy<?php
-	$fname = "SELECT SUBSTRING_INDEX(name, ' ', -1) AS surname FROM ".$tblprefix."people GROUP BY surname";
+<meta name="keywords" content="Genealogy <?php echo $prow["name"]; ?><?php
+	$fname = "SELECT SUBSTRING_INDEX(name, ' ', -1) AS surname FROM ".$tblprefix."people";
+	if ($_SESSION["id"] == 0)
+		$fname .= " WHERE date_of_birth < '".$restrictdate."' AND person_id <> '".$_REQUEST["person"]."'";
+	else
+		$fname .= " WHERE person_id <> '".$_REQUEST["person"]."'";
+	$fname .= " GROUP BY surname LIMIT 0,16";
 	$rname = mysql_query($fname) or die("Error getting names!");
 	if (mysql_num_rows($rname) <> 0) {
 		while ($row = mysql_fetch_array($rname))
@@ -78,15 +81,12 @@
 <meta name="expires" content="0">
 <meta name="page-type" content="Private homepage">
 <meta name="robots" content="INDEX,FOLLOW">
-<?php
-	css_site();
-?>
 <title><?php echo $prow["name"] ?></title>
 </head>
 <body>
 
 <!--titles-->
-	<table>
+	<table class="header">
 		<tr>
 			<td width="80%" align="center">
 				<h2><?php echo $prow["name"] ?></h2>
@@ -102,11 +102,11 @@
 				</form>
 <?php
 			if ($_SESSION["id"] <> 0) { ?>
-				<br>You are logged in as <a href="index.php"><?php echo $_SESSION["name"]; ?></a>: (<a href="passthru.php?func=logout">logout</a><?php if ($_SESSION["admin"] == 1) echo ", <a href=\"admin.php\">admin</a>"; ?>)
+				<br>You are logged in as <a href="index.php" class="hd_link"><?php echo $_SESSION["name"]; ?></a>: (<a href="passthru.php?func=logout" class="hd_link">logout</a><?php if ($_SESSION["admin"] == 1) echo ", <a href=\"admin.php\" class=\"hd_link\">admin</a>"; ?>)
 <?php 		}
 			else {
 ?>
-				<br>You are not logged in: <a href="index.php">home</a>
+				<br>You are not logged in: <a href="index.php" class="hd_link">home</a>
 <?php
 			} ?>
 			</td>
@@ -119,7 +119,7 @@
 	<table width="100%">
 		<tr>
 			<th width="95%"><h4>Details</h4></th>
-			<td width="5%" bgcolor="#CCCCCC"><?php
+			<td width="5%" class="tbl_odd"><?php
 				if ($_SESSION["id"] <> 0)
 					echo "<a href=\"edit.php?func=edit&amp;area=detail&amp;person=".$prow["person_id"]."\">edit</a>"; ?></td>
 		</tr>
@@ -129,14 +129,14 @@
 	<table>
 		<tr>
 			<th width="5%" valign="top">Born:</th>
-			<td width="38%" bgcolor="#CCCCCC" valign="top"><?php
+			<td width="38%" class="tbl_odd" valign="top"><?php
 				if ($restricted)
 					echo $restrictmsg;
 				else
 					echo formatdbdate($prow["date_of_birth"])." at ".$prow["birth_place"]; ?></td>
-			<td bgcolor="#CCCCCC" valign="top">Certified <input type="checkbox" name="birthcert" disabled<?php if ($prow["birth_cert"] == "Y") echo " checked" ?>></td>
+			<td class="tbl_odd" valign="top">Certified <input type="checkbox" name="birthcert" disabled<?php if ($prow["birth_cert"] == "Y") echo " checked" ?>></td>
 			<th width="5%" valign="top">Father:</th>
-			<td width="40%" bgcolor="#CCCCCC" valign="top"><?php
+			<td width="40%" class="tbl_odd" valign="top"><?php
 		// the query for father
 		$fquery = "SELECT * FROM ".$tblprefix."people WHERE person_id = '".$father."'";
 		$fresult = mysql_query($fquery) or die("Father query failed");
@@ -144,7 +144,7 @@
 			if ($frow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0)
 				// if anybody gets here they are hacking
 				// or someones made a mistake with peoples parents
-				echo $frow["name"]." (".$restrictmsg.")<br>\n";
+				echo $frow["name"]." (<font class=\"restrict\">Restricted</font>)<br>\n";
 			else
 				echo "<a href=\"people.php?person=".$frow["person_id"]."\">".$frow["name"]."</a>(".formatdbdate($frow["date_of_birth"])." - ".formatdbdate($frow["date_of_death"]).")";
 		}
@@ -153,14 +153,14 @@
 		</tr>
 		<tr>
 			<th width="5%" valign="top">Died:</th>
-			<td width="20%" bgcolor="#CCCCCC" valign="top"><?php
+			<td width="20%" class="tbl_odd" valign="top"><?php
 			if ($restricted)
 				echo $restrictmsg;
 			else
 				echo formatdbdate($prow["date_of_death"])." of ".$prow["death_reason"]; ?></td>
-			<td bgcolor="#CCCCCC" valign="top">Certified <input type="checkbox" name="deathcert" disabled<?php if ($prow["death_cert"] == "Y") echo " checked"; ?>></td>
+			<td class="tbl_odd" valign="top">Certified <input type="checkbox" name="deathcert" disabled<?php if ($prow["death_cert"] == "Y") echo " checked"; ?>></td>
 			<th valign="top">Mother:</th>
-			<td bgcolor="#CCCCCC" valign="top"><?php
+			<td class="tbl_odd" valign="top"><?php
 		// the query for mother
 		$mquery = "SELECT * FROM ".$tblprefix."people WHERE person_id = '".$mother."'";
 		$mresult = mysql_query($mquery) or die("Mother query failed");
@@ -168,7 +168,7 @@
 			if ($mrow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0)
 			// if anybody gets here they are hacking
 			// or someones made a mistake with peoples parents
-			echo $mrow["name"]." (".$restrictmsg.")<br>\n";
+			echo $mrow["name"]." (<font class=\"restrict\">Restricted</font>)<br>\n";
 		else
 			echo "<a href=\"people.php?person=".$mrow["person_id"]."\">".$mrow["name"]."</a>(".formatdbdate($mrow["date_of_birth"])." - ".formatdbdate($mrow["date_of_death"]).")";
 		}
@@ -178,7 +178,7 @@
 		<tr>
 			<!--Children-->
 			<th valign="top">Children:</th>
-			<td valign="top" bgcolor="#DDDDDD" colspan="2">
+			<td valign="top" class="tbl_even" colspan="2">
 <?php
 		// query for children
 		$cquery = "SELECT * FROM ".$tblprefix."people WHERE (father_id = '".$_REQUEST["person"]."' OR mother_id = '".$_REQUEST["person"]."') ORDER BY date_of_birth";
@@ -186,7 +186,7 @@
 		while ($crow = mysql_fetch_array($cresult)) {
 			if ($crow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0) {
 ?>
-				<?php echo $crow["name"]." (".$restrictmsg.")"; ?><br>
+				<?php echo $crow["name"]; ?>(<font class="restrict">Restricted</font>)<br>
 <?php
 			}
 			else {
@@ -200,7 +200,7 @@
 			</td>
 			<!--Siblings-->
 			<th valign="top">Siblings:</th>
-			<td valign="top" bgcolor="#DDDDDD">
+			<td valign="top" class="tbl_even">
 <?php
 		// the query for siblings
 		$squery = "SELECT * FROM ".$tblprefix."people WHERE (father_id = '".$father."' OR mother_id = '".$mother."') AND person_id <> '".$_REQUEST["person"]."' ORDER BY date_of_birth";
@@ -208,7 +208,7 @@
 		while ($srow = mysql_fetch_array($sresult)) {
 			if ($srow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0) {
 ?>
-				<?php echo $srow["name"]." (".$restrictmsg.")"; ?><br>
+				<?php echo $srow["name"]; ?>(<font class="restrict">Restricted</font>)<br>
 <?php
 			}
 			else {
@@ -228,7 +228,7 @@
 	<table>
 		<tr>
 			<th valign="top" width="5%">Married:</th>
-			<td valign="top" width="71%" bgcolor="#DDDDDD">
+			<td valign="top" width="71%" class="tbl_even">
 <?php
 		// query for weddings
 		$wquery = "SELECT * FROM ".$tblprefix."people, ".$tblprefix."spouses WHERE (bride_id = person_id OR groom_id = person_id) AND (groom_id = '".$_REQUEST["person"]."' OR bride_id = '".$_REQUEST["person"]."') AND person_id <> '".$_REQUEST["person"]."' ORDER BY marriage_date";
@@ -243,11 +243,11 @@
 			if ($_SESSION["id"] <> 0)
 				echo "<a href=\"edit.php?func=edit&amp;area=marriage&amp;person=".$_REQUEST["person"]."&amp;spouse=".$wrow["person_id"]."\">edit</a>";
 			if ($wrow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0)
-				echo $wrow["name"]." on ".$restrictmsg;
+				echo $wrow["name"]." (<font class=\"restrict\">Restricted</font>)";
 			else
 				echo " <a href=\"people.php?person=".$wrow["person_id"]."\">".$wrow["name"]."</a> on ".formatdbdate($wrow["marriage_date"])." at ".$wrow["marriage_place"]."</td>\n";
 ?>
-						<td valign="top" bgcolor="#DDDDDD" width="15%" align="right">Certified <input type="checkbox" name="marriagecert" disabled"<?php
+						<td valign="top" class="tbl_even" width="15%" align="right">Certified <input type="checkbox" name="marriagecert" disabled"<?php
 			if ($wrow["marriage_cert"] == "Y")
 				echo " checked";
 ?>></td>
@@ -258,7 +258,7 @@
 ?>
  				</table>
 			</td>
-			<td align="right" bgcolor="#CCCCCC" valign="top"><?php
+			<td align="right" class="tbl_odd" valign="top"><?php
 		if ($_SESSION["id"] <> 0)
 			echo "<a href=\"edit.php?func=add&amp;person=".$_REQUEST["person"]."&amp;area=marriage\">insert</a> new marriage"; ?></td>
 		</tr>
@@ -319,12 +319,12 @@
 						}
 						// alternate background colours
 						if ($current == 0 || fmod($current, 2) == 0)
-							$bgcolour = "#CCCCCC";
+							$class = "tbl_odd";
 						else
-							$bgcolour = "#DDDDDD";
+							$class = "tbl_even";
 						// display image thumbnail
 ?>
-			<td width="20%" bgcolor="<?php echo $bgcolour; ?>" align="center" valign="top"><a href="image.php?image=<?php echo $irow["image_id"]; ?>"><img src="images/tn_<?php echo $irow["image_id"]; ?>.jpg" width="100" height="100" border="0" title="<?php echo $irow["description"]; ?>" alt="<?php echo $irow["description"]; ?>"></a><br><a href="image.php?image=<?php echo $irow["image_id"]; ?>"><?php echo $irow["title"]; ?></a></td>
+			<td width="20%" class="<?php echo $class; ?>" align="center" valign="top"><a href="image.php?image=<?php echo $irow["image_id"]; ?>"><img src="images/tn_<?php echo $irow["image_id"]; ?>.jpg" width="100" height="100" border="0" title="<?php echo $irow["description"]; ?>" alt="<?php echo $irow["description"]; ?>"></a><br><a href="image.php?image=<?php echo $irow["image_id"]; ?>"><?php echo $irow["title"]; ?></a></td>
 <?php
 						// close each row every 5 images
 						if ($current <> 0 && fmod($current + 1, 5) == 0) {
@@ -391,22 +391,22 @@
 		$i = 0;
 		while ($crow = mysql_fetch_array($cresult)) {
 			if ($i == 0 || fmod($i, 2) == 0)
-				$bgcolor = "#CCCCCC";
+				$class = "tbl_odd";
 			else
-				$bgcolor = "#DDDDDD";
+				$class = "tbl_even";
 ?>
 		<tr>
-			<td bgcolor="<?php echo $bgcolor; ?>"><?php
+			<td class="<?php echo $class; ?>"><?php
 							if ($_SESSION["id"] <> 0)
 								echo "<a href=\"edit.php?func=edit&amp;area=census&amp;person=".$_REQUEST["person"]."&amp;year=".$crow["year"]."\">edit</a>";
 ?></td>
-			<td bgcolor="<?php echo $bgcolor; ?>"><?php echo $crow["year"]; ?></td>
-			<td bgcolor="<?php echo $bgcolor; ?>"><?php echo $crow["schedule"]; ?></td>
-			<td bgcolor="<?php echo $bgcolor; ?>"><?php echo $crow["address"]; ?></td>
-			<td bgcolor="<?php echo $bgcolor; ?>"><?php echo $crow["condition"]; ?></td>
-			<td bgcolor="<?php echo $bgcolor; ?>"><?php echo $crow["age"]; ?></td>
-			<td bgcolor="<?php echo $bgcolor; ?>"><?php echo $crow["profession"]; ?></td>
-			<td bgcolor="<?php echo $bgcolor; ?>"><?php echo $crow["where_born"]; ?></td>
+			<td class="<?php echo $class; ?>"><?php echo $crow["year"]; ?></td>
+			<td class="<?php echo $class; ?>"><?php echo $crow["schedule"]; ?></td>
+			<td class="<?php echo $class; ?>"><?php echo $crow["address"]; ?></td>
+			<td class="<?php echo $class; ?>"><?php echo $crow["condition"]; ?></td>
+			<td class="<?php echo $class; ?>"><?php echo $crow["age"]; ?></td>
+			<td class="<?php echo $class; ?>"><?php echo $crow["profession"]; ?></td>
+			<td class="<?php echo $class; ?>"><?php echo $crow["where_born"]; ?></td>
 		</tr>
 <?php
 			$i++;
@@ -452,14 +452,14 @@
 					$i = 0;
 					while ($drow = mysql_fetch_array($dresult)) {
 						if ($i == 0 || fmod($i, 2) == 0)
-							$bgcolour = "#CCCCCC";
+							$class = "tbl_odd";
 						else
-							$bgcolour = "#DDDDDD";
+							$class = "tbl_even";
 ?>
 		<tr>
-			<td bgcolor="<?php echo $bgcolour; ?>"><a href="http://logger.giric.com/dlcount.php?id=family&amp;url=/<?php echo $drow["file_name"]; ?>"><?php echo $drow["doc_title"]; ?></a></td>
-			<td bgcolor="<?php echo $bgcolour; ?>"><?php echo $drow["doc_description"]; ?></td>
-			<td bgcolor="<?php echo $bgcolour; ?>"><?php echo formatdbdate($drow["doc_date"]); ?></td>
+			<td class="<?php echo $class; ?>"><a href="http://logger.giric.com/dlcount.php?id=family&amp;url=/<?php echo $drow["file_name"]; ?>"><?php echo $drow["doc_title"]; ?></a></td>
+			<td class="<?php echo $class; ?>"><?php echo $drow["doc_description"]; ?></td>
+			<td class="<?php echo $class; ?>"><?php echo formatdbdate($drow["doc_date"]); ?></td>
 		</tr>
 <?php
 					$i++;

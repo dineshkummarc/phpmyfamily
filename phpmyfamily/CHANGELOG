@@ -1,4 +1,6 @@
 v 1.2.4
+	styles sheets much cleaned up
+	shortened keywords on index and people to be more "search engine friendly"
 	install.php ammended to correct issue with first image creation and zero-filled db column
 	html cleaned up throughout app
 	session.use_trans_id set to false to help spiders

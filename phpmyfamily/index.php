@@ -23,25 +23,23 @@
 	// include the configuration parameters and functions
 	include "inc/config.inc.php";
 	include "inc/functions.inc.php";
-
-	// include the browser 
-	include "inc/browser.inc.php";
-	include "inc/css.inc.php";
-
-	// fill out the header
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 	"http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-
+<link rel="stylesheet" href="<?php echo $style; ?>" type="text/css">
+<link rel="SHORTCUT ICON" href="images/favicon.ico">
 <meta name="author" content="Simon E Booth">
 <meta name="publisher" content="Giric">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta http-equiv="content-language" content="en">
 <meta name="copyright" content="2002-2003 Simon E Booth">
-<meta name="keywords" content="Genealogy<?php
-	$fname = "SELECT SUBSTRING_INDEX(name, ' ', -1) AS surname FROM ".$tblprefix."people GROUP BY surname";
+<meta name="keywords" content="Genealogy phpmyfamily<?php
+	$fname = "SELECT SUBSTRING_INDEX(name, ' ', -1) AS surname FROM ".$tblprefix."people";
+	if ($_SESSION["id"] == 0)
+		$fname .= " WHERE date_of_birth < '".$restrictdate."'";
+	$fname .= " GROUP BY surname LIMIT 0,18";
 	$rname = mysql_query($fname) or die("Error getting names!");
 	if (mysql_num_rows($rname) <> 0) {
 		while ($row = mysql_fetch_array($rname))
@@ -54,13 +52,11 @@
 <meta name="expires" content="0">
 <meta name="page-type" content="Private homepage">
 <meta name="robots" content="INDEX,FOLLOW">
-
-<?php css_site(); ?>
 <title>phpmyfamily: <?php echo $desc; ?></title>
 </head>
 <body>
 
-<table>
+<table class="header">
 	<tr>
 		<td width="80%" align="center">
 			<h1>phpmyfamily</h1>
@@ -71,7 +67,7 @@
 				<?php listpeeps("person"); ?>
 			</form>
 <?php if ($_SESSION["id"] <> 0) { ?>
-			<br>You are logged in as <?php echo $_SESSION["name"]; ?>: (<a href="passthru.php?func=logout">logout</a><?php if ($_SESSION["admin"] == 1) echo ", <a href=\"admin.php\">admin</a>"; ?>)
+			<br>You are logged in as <?php echo $_SESSION["name"]; ?>: (<a href="passthru.php?func=logout" class="hd_link">logout</a><?php if ($_SESSION["admin"] == 1) echo ", <a href=\"admin.php\" class=\"hd_link\">admin</a>"; ?>)
 <?php } ?>
 		</td>
 	</tr>
@@ -100,8 +96,8 @@
 						<th width="50">No</th>
 					</tr>
 					<tr>
-						<td bgcolor="#CCCCCC">People on file</td>
-						<td bgcolor="#CCCCCC" align="right">
+						<td class="tbl_odd">People on file</td>
+						<td class="tbl_odd" align="right">
 <?php
 					$query = "SELECT count(*) as number FROM ".$tblprefix."people";
 					$result = mysql_query($query);
@@ -112,8 +108,8 @@
 						</td>
 					</tr>
 					<tr>
-						<td bgcolor="#DDDDDD">Census Records</td>
-						<td bgcolor="#DDDDDD" align="right">
+						<td class="tbl_even">Census Records</td>
+						<td class="tbl_even" align="right">
 <?php
 					$query = "SELECT count(*) as number FROM ".$tblprefix."census";
 					$result = mysql_query($query);
@@ -124,10 +120,10 @@
 						</td>
 					</tr>
 					<tr>
-						<td bgcolor="#CCCCCC">Images</td>
-						<td bgcolor="#CCCCCC" align="right">
+						<td class="tbl_odd">Images</td>
+						<td class="tbl_odd" align="right">
 <?php
-					$query = "SELECT count(*) as number FROM ".$tblprefix."images";
+					$query = "SELECT count(*) as number FROM ".$tblprefix."images WHERE image_id <> '10000'";
 					$result = mysql_query($query);
 					while ($row = mysql_fetch_array($result))
 						echo $row["number"];
@@ -136,8 +132,8 @@
 						</td>
 					</tr>
 					<tr>
-						<td bgcolor="#DDDDDD">Document Transcripts</td>
-						<td bgcolor="#DDDDDD" align="right">
+						<td class="tbl_even">Document Transcripts</td>
+						<td class="tbl_even" align="right">
 <?php
 					$query = "SELECT count(*) as number FROM ".$tblprefix."documents";
 					$result = mysql_query($query);
@@ -148,8 +144,8 @@
 						</td>
 					</tr>
 					<tr>
-						<td bgcolor="#CCCCCC">Page Requests</td>
-						<td bgcolor="#CCCCCC" align="right">
+						<td class="tbl_odd">Page Requests</td>
+						<td class="tbl_odd" align="right">
 <?php
 					$query = "SELECT count(*) as number FROM pphl_97075_mpdl";
 					$result = mysql_query($query);
@@ -181,13 +177,13 @@
 					$i = 0;
 					while ($row = mysql_fetch_array($result)) {
 						if ($i == 0 || fmod($i, 2) == 0)
-							$bgcolor = "#CCCCCC";
+							$class = "tbl_odd";
 						else
-							$bgcolor = "#DDDDDD";
+							$class = "tbl_even";
 ?>
 					<tr>
-						<td bgcolor="<?php echo $bgcolor; ?>"><a href="people.php?person=<?php echo $row["person_id"]; ?>"><?echo $row["name"]; ?></a></td>
-						<td bgcolor="<?php echo $bgcolor; ?>"><?php echo date('H:i d/m/Y', convertstamp($row["updated"])); ?></td>
+						<td class="<?php echo $class; ?>"><a href="people.php?person=<?php echo $row["person_id"]; ?>"><?echo $row["name"]; ?></a></td>
+						<td class="<?php echo $class; ?>"><?php echo date('H:i d/m/Y', convertstamp($row["updated"])); ?></td>
 					</tr>
 <?php
 						$i++;

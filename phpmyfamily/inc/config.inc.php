@@ -28,6 +28,7 @@
 	$email 		= "simesb@giric.com";	// Contact email address
 	$desc  		= "My Family";
 	$tblprefix 	= "family_";
+	$style		= "styles/default.css";
 
 //=====================================================================================================================
 // Nothing should need changing beneath this line
@@ -57,7 +58,6 @@
 	// some definitions
 	$version = "1.2.4";											// version string
 	$restrictdate = "1910-01-01";								// date for restricting people
-	$restrictmsg = "<font color=\"red\">Restricted</font>";		// message to show for restricted people
 
 	// eof
 ?>

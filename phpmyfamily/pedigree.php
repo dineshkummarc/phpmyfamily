@@ -24,10 +24,6 @@
 	include "inc/config.inc.php";
 	include "inc/functions.inc.php";
 
-	// include the browser 
-	include "inc/browser.inc.php";
-	include "inc/css.inc.php";
-
 	// check to see if we have a person
 	if (!isset($_GET["person"])) $person = 1;
 
@@ -50,7 +46,10 @@
 		// fill out the header
 		echo "<html>";
 		echo "<head>";
-		css_site();
+?>
+<link rel="stylesheet" href="<?php echo $style; ?>" type="text/css">
+<link rel="SHORTCUT ICON" href="images/favicon.ico">
+<?php
 		echo "<title>Pedigree for: ".$prow["name"]."</title>";
 		echo "</HEAD>";
 

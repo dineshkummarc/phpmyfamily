@@ -24,10 +24,6 @@
 	include "inc/config.inc.php";
 	include "inc/functions.inc.php";
 
-	// include the browser
-	include "inc/browser.inc.php";
-	include "inc/css.inc.php";
-
 	// die if user not autorized
 	if ($_SESSION["id"] == 0 || $_SESSION["admin"] == 0)
 		die(include "inc/forbidden.inc.php");
@@ -72,13 +68,21 @@
 	"http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<?php css_site(); ?>
-<title>phpmyfamily Admin</title>
+<link rel="stylesheet" href="<?php echo $style; ?>" type="text/css">
+<link rel="SHORTCUT ICON" href="images/favicon.ico">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta http-equiv="content-language" content="en">
+<title>phpmyfamily Admin</title>
 </head>
 <body>
-<h3>Admin Functions</h3>
+<table class="header" width="100%">
+  <tbody>
+    <tr>
+      <td><h3>Admin Functions</h3>  </td>
+    </tr>
+  </tbody>
+</table>
+
 <hr>
 <table width="100%">
   <tbody>
@@ -96,16 +100,17 @@
 		$i = 0;
 		while ($row = mysql_fetch_array($result)) {
 			if ($i == 0 || fmod($i, 2) == 0)
-				$bgcolour = "#CCCCCC";
+				$class = "tbl_odd";
 			else
-				$bgcolour = "#DDDDDD";
+				$class = "tbl_even";
 ?>
 			<tr>
-				<td bgcolor="<?php echo $bgcolour; ?>"><a href="admin.php?func=delete&amp;id=<?echo $row["id"]; ?>">delete</a></td>
-				<td bgcolor="<?php echo $bgcolour; ?>"><?php echo $row["username"]; ?></td>
-				<td bgcolor="<?php echo $bgcolour; ?>"><?php echo $row["admin"]; ?></td>
+				<td class="<?php echo $class; ?>"><a href="admin.php?func=delete&amp;id=<?echo $row["id"]; ?>">delete</a></td>
+				<td class="<?php echo $class; ?>"><?php echo $row["username"]; ?></td>
+				<td class="<?php echo $class; ?>"><?php echo $row["admin"]; ?></td>
 			</tr>
 <?php
+		$i++;
 		}
 ?>
 		</table>
@@ -125,6 +130,7 @@
     </tr>
   </tbody>
 </table>
+
 <hr>
 <a href="index.php">Back</a> to the homepage.
 </body>
