@@ -76,7 +76,7 @@
 
 <table width="100%">
 	<tr>
-		<td width="70%" valign="top">
+		<td width="50%" valign="top">
 <?php
 			// include login form if not logged in
 			if ($_SESSION["id"] == 0)
@@ -145,9 +145,9 @@
 				</table>
 
 			</td>
-			<td width="30%" align="right">
+			<td width="50%" align="right">
 				<!--list of last 20 updated people-->
-				<table>
+				<table width="80%">
 					<tr>
 						<th colspan="2"><?php echo $strLast20; ?></th></th>
 					</tr>
