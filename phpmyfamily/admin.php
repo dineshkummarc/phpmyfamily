@@ -33,6 +33,10 @@
 	// error message to be passed
 	$err = "";
 
+	// we need a long execution time here
+	if ($func == "ged")
+		ini_set("max_execution_time", 360);
+
 	// process the request
 	switch ($func) {
 		// add a new user
