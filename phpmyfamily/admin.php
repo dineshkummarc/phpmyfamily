@@ -69,6 +69,28 @@
   <tbody>
     <tr>
       <td><h3><?php echo $strAdminFuncs; ?></h3>  </td>
+<?php
+	$fp = @fopen("http://www.phpmyfamily.net/pmf_version.php", "r");
+	if ($fp) {
+		$buffer = "";
+		while (!feof($fp)) {
+    		$buffer = fgets($fp, 1024);
+		}
+		fclose($fp);
+
+		$current = explode(".", $version);
+		$latest = explode(".", $buffer);
+
+		$str = "<td>A newer version of <em>phpmyfamily</em> is available.  Click <a href=\"http://sourceforge.net/project/showfiles.php?group_id=110402&package_id=119221&release_id=".$latest[3]."\">here</a> for information</td>\n";
+		if ($latest[0] > $current[0]) {
+			echo $str;
+		} elseif ($latest[1] > $current[1] && $latest[0] == $current[0]) {
+			echo $str;
+		} elseif ($latest[2] > $current[2] && $latest[1] == $current[1] && $latest[0] == $current[0]) {
+			echo $str;
+		}
+	}
+?>
     </tr>
   </tbody>
 </table>

@@ -1,4 +1,5 @@
 v 1.3.0
+	Auto version checking added to admin page
 	SQL optomized
 	Added script execution time (for those that care)
 	First working version of transcript spoofing
