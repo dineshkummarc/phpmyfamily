@@ -101,7 +101,7 @@
 			echo "<option value=\"".$row["person_id"]."\"";
 			if ($row["person_id"] == $default)
 				echo " selected=\"selected\"";
-				echo ">".$row["surname"].", ".substr($row["name"], 0, strlen($row["name"]) - strlen($row["surname"]))."(b. ".$year.")</option>\n";
+			echo ">".$row["surname"].", ".str_replace(" ".$row["surname"], "", $row["name"])." (b. ".$year.")</option>\n";
 		}
 		echo "</select>";
 
