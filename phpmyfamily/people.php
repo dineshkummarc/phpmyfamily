@@ -169,7 +169,7 @@
 			<td valign="top" class="tbl_even" colspan="2">
 <?php
 		// query for children
-		$cquery = "SELECT *, DATE_FORMAT(date_of_birth, ".$datefmt.") AS DOB, DATE_FORMAT(date_of_death, ".$datefmt.") AS DOD FROM ".$tblprefix."people WHERE (father_id = '".$_REQUEST["person"]."' OR mother_id = '".$_REQUEST["person"]."') ORDER BY date_of_birth";
+		$cquery = "SELECT person_id, name, date_of_birth, date_of_death, DATE_FORMAT(date_of_birth, ".$datefmt.") AS DOB, DATE_FORMAT(date_of_death, ".$datefmt.") AS DOD FROM ".$tblprefix."people WHERE (mother_id = '".$_REQUEST["person"]."' OR father_id = '".$_REQUEST["person"]."') ORDER BY date_of_birth";
 		$cresult = mysql_query($cquery) or die($err_children);
 		while ($crow = mysql_fetch_array($cresult)) {
 			if ($crow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0) {
@@ -191,7 +191,7 @@
 			<td valign="top" class="tbl_even">
 <?php
 		// the query for siblings
-		$squery = "SELECT *, DATE_FORMAT(date_of_birth, ".$datefmt.") AS DOB, DATE_FORMAT(date_of_death, ".$datefmt.") AS DOD FROM ".$tblprefix."people WHERE (father_id = '".$father."' OR mother_id = '".$mother."') AND person_id <> '".$_REQUEST["person"]."' ORDER BY date_of_birth";
+		$squery = "SELECT person_id, name, date_of_birth, date_of_death, DATE_FORMAT(date_of_birth, ".$datefmt.") AS DOB, DATE_FORMAT(date_of_death, ".$datefmt.") AS DOD FROM ".$tblprefix."people WHERE (mother_id = '".$mother."' OR father_id = '".$father."') AND person_id <> '".$_REQUEST["person"]."' ORDER BY date_of_birth";
 		$sresult = mysql_query($squery) or die($err_siblings);
 		while ($srow = mysql_fetch_array($sresult)) {
 			if ($srow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0) {
@@ -219,7 +219,7 @@
 			<td valign="top" width="80%" class="tbl_even">
 <?php
 		// query for weddings
-		$wquery = "SELECT *, DATE_FORMAT(marriage_date, ".$datefmt.") AS DOM FROM ".$tblprefix."people, ".$tblprefix."spouses WHERE (bride_id = person_id OR groom_id = person_id) AND (groom_id = '".$_REQUEST["person"]."' OR bride_id = '".$_REQUEST["person"]."') AND person_id <> '".$_REQUEST["person"]."' ORDER BY marriage_date";
+		$wquery = "SELECT person_id, name, date_of_birth, marriage_place, marriage_cert, DATE_FORMAT(marriage_date, ".$datefmt.") AS DOM FROM ".$tblprefix."people, ".$tblprefix."spouses WHERE (bride_id = person_id AND groom_id = '".$_REQUEST["person"]."') OR (groom_id = person_id AND bride_id = '".$_REQUEST["person"]."') ORDER BY marriage_date";
 		$wresult = mysql_query($wquery) or die($err_marriage);
 ?>
 				<table width="100%" cellspacing="0">
