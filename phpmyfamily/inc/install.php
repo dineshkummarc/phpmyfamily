@@ -114,7 +114,7 @@
 )";
 	$rimages = mysql_query($fimages) or die("phpmyfamily: Error creating images table!!!");
 	echo "Images table created<br>\n";
-	$fimg = "INSERT INTO '".$tblprefix."'.images ('image_id') VALUES ('10000')";
+	$fimg = "INSERT INTO ".$tblprefix."images (image_id) VALUES ('10000')";
 	$rimg = mysql_query($fimg) or die("phpmyfamily: Error creating default image");
 	echo "Default image created<br>";
 
