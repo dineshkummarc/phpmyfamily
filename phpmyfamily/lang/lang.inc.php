@@ -22,6 +22,7 @@
 				<a href="passthru.php?func=lang&amp;trans=de"><img src="images/de.gif" alt="&#196;ndern Sie Sprache zum Deutschen" width="20" height="20" border="0" /></a>
 				<a href="passthru.php?func=lang&amp;trans=no"><img src="images/no.gif" alt="Endre språk til norsk" width="20" height="20" border="0" /></a>
 				<a href="passthru.php?func=lang&amp;trans=fr"><img src="images/fr.gif" alt="Changez la langue en Fran&#231;ais" width="20" height="20" border="0" /></a>
+				<a href="passthru.php?func=lang&amp;trans=es"><img src="images/es.gif" alt="Cambie la lengua al espa&#241;ol" width="20" height="20" border="0" /></a>
 <?php
 	// eof
 ?>
