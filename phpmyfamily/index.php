@@ -113,7 +113,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td class="tbl_odd"><?php echo $strImages; ?></td>
+						<td class="tbl_odd"><a href="gallery.php"><?php echo $strImages; ?></a></td>
 						<td class="tbl_odd" align="right">
 <?php
 					$query = "SELECT count(*) as number FROM ".$tblprefix."images WHERE image_id <> '10000'";
