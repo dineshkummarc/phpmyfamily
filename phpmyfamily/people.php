@@ -272,7 +272,7 @@
 ?>
 
 <script language="JavaScript" type="text/javascript" src="pphlogger.js"></script>
-<noscript><img alt="" src="http://logger.giric.com/pphlogger.php?id=giric&st=img"></noscript>
+<noscript><img alt="" src="http://logger.giric.com/pphlogger.php?id=family&st=img"></noscript>
 
 <?php
 	
