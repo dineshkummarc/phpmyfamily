@@ -140,6 +140,7 @@
 						$_SESSION["admin"] = 0;
 					$_SESSION["editable"] = $row["edit"];
 					$_SESSION["style"] = $row["style"];
+					$_SESSION["email"] = $row["email"];
 				}
 			}
 			mysql_free_result($result);
@@ -151,6 +152,7 @@
 			$_SESSION["admin"] = 0;
 			$_SESSION["editable"] = "N";
 			$_SESSION["style"] = $defaultstyle;
+			$_SESSION["email"] = "";
 			echo "<meta http-equiv=refresh content='0; url=index.php' />\n";
 			break;
 		case "change":
