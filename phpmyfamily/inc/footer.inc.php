@@ -1,6 +1,6 @@
 <?php
 	//phpmyfamily - opensource genealogy webbuilder
-	//Copyright (C) 2002 - 2004  Simon E Booth (simon.booth@giric.com)
+	//Copyright (C) 2002 - 2005  Simon E Booth (simon.booth@giric.com)
 
 	//This program is free software; you can redistribute it and/or
 	//modify it under the terms of the GNU General Public License
@@ -30,7 +30,7 @@
 			<td width="15%" align="center" valign="top"><a href="http://validator.w3.org/check/referer"><img border="0" src="images/valid-xhtml10.png" alt="Valid XHTML 1.0!" height="31" width="88" /></a></td>
 			<td width="70%" align="center" valign="top">
 <?php include "lang/lang.inc.php"; ?>
-				<h5><?php echo $strPowered; ?> <a href="http://www.phpmyfamily.net/" target="_blank" class="copyright">phpmyfamily v<?php echo $version; ?></a> &copy;2002-2004 Simon E Booth<br /><?php if($mailto) echo str_replace("$1", "mail.php?subject=".$title, $strFooter); else echo str_replace("$1", "mailto:".$email."?subject=".$title, $strFooter); ?>
+				<h5><?php echo $strPowered; ?> <a href="http://www.phpmyfamily.net/" target="_blank" class="copyright">phpmyfamily v<?php echo $version; ?></a> &copy;2002-2005 Simon E Booth<br /><?php if($mailto) echo str_replace("$1", "mail.php?subject=".$title, $strFooter); else echo str_replace("$1", "mailto:".$email."?subject=".$title, $strFooter); ?>
 <?php
 	if ($timing) {
 		$endtime = array_sum(explode(' ',microtime()));

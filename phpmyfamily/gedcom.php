@@ -1,6 +1,6 @@
 <?php
 	//phpmyfamily - opensource genealogy webbuilder
-	//Copyright (C) 2002 - 2004  Simon E Booth (simon.booth@giric.com)
+	//Copyright (C) 2002 - 2005  Simon E Booth (simon.booth@giric.com)
 	//GedcomExport (C) 2004 Geltmar von Buxhoeveden (geltmar@gmx.net)
 
 	//This program is free software; you can redistribute it and/or
