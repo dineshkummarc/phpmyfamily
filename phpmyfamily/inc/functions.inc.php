@@ -588,6 +588,10 @@
 		if (isset($_COOKIE["fam_name"]) && isset($_COOKIE["fam_passwd"])) {
 			$query = "SELECT * FROM ".$tblprefix."users WHERE username = '".$_COOKIE["fam_name"]."' AND password = '".$_COOKIE["fam_passwd"]."'";
 			$result = mysql_query($query) or die(mysql_error());
+			if (mysql_num_rows($result) == 0) {
+				setcookie("fam_name", "", time() - 3600);
+				setcookie("fam_passwd", "", time() - 3600);
+			}
 			while ($row = mysql_fetch_array($result)) {
 				// if we're in here then the user/passwd in good
 				$_SESSION["id"] = $row["id"];
