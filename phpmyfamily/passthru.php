@@ -30,6 +30,18 @@
 	// it's really only html headers
 	echo "<head>\n";
 	switch ($_REQUEST["func"]) {
+		case "track":
+			switch ($_REQUEST["action"]) {
+				case "do":
+					$query = "INSERT INTO ".$tblprefix."tracking (person_id, email) VALUES ('".$_REQUEST["person"]."', '".$_SESSION["email"]."')";
+					break;
+				case "dont":
+					$query = "DELETE FROM ".$tblprefix."tracking WHERE person_id = '".$_REQUEST["person"]."' AND email = '".$_SESSION["email"]."'";
+					break;
+			}
+			$result = mysql_query($query) or die(mysql_error());
+			echo "<meta http-equiv=refresh content='0; url=people.php?person=".$_REQUEST["person"]."' />\n";
+			break;
 		case "update":
 			switch ($_REQUEST["area"]) {
 				case "marriage":

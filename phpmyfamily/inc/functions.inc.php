@@ -560,9 +560,9 @@
 				$query = "SELECT * FROM ".$tblprefix."tracking WHERE email = '".$_SESSION["email"]."' AND person_id = '".$person."'";
 				$result = mysql_query($query) or die(mysql_error());
 				if (mysql_num_rows($result) != 0) {
-					echo $strStop." ".strtolower($strTracking)." ".$strThisPerson;
+					echo "<a href=\"passthru.php?func=track&amp;action=dont&amp;person=".$person."\" class=\"hd_link\">".$strStop." ".strtolower($strTracking)." ".$strThisPerson."</a>";
 				} else {
-					echo "<a href=\"track.php?person=".$person."\" class=\"hd_link\">".$strTrack." ".$strThisPerson."</a>";
+					echo "<a href=\"passthru.php?func=track&amp;action=do&amp;person=".$person."\" class=\"hd_link\">".$strTrack." ".$strThisPerson."</a>";
 				}
 			}
 		} else {
