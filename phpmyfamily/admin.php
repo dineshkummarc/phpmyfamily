@@ -38,11 +38,11 @@
 	$err = "";
 	switch ($func) {
 		case "add":
-			$check1 = "SELECT * FROM family_users WHERE username = '".$_POST["pwdUser"]."'";
+			$check1 = "SELECT * FROM ".$tblprefix."users WHERE username = '".$_POST["pwdUser"]."'";
 			$result1 = mysql_query($check1) or die("Error running new user check 1");
 			if (mysql_num_rows($result1) == 0) {
 				if ($_POST["pwdPwd1"] == $_POST["pwdPwd2"]) {
-					$query = "INSERT INTO family_users (username, password) VALUES ('".$_POST["pwdUser"]."', '".md5($_POST["pwdPwd1"])."')";
+					$query = "INSERT INTO ".$tblprefix."users (username, password) VALUES ('".$_POST["pwdUser"]."', '".md5($_POST["pwdPwd1"])."')";
 					$result = mysql_query($query) or die("Error adding new user");
 				}
 				else
@@ -52,7 +52,7 @@
 				$err = "User already exists";
 			break;
 		case "delete":
-			$query = "DELETE FROM family_users WHERE id = '".$_REQUEST["id"]."'";
+			$query = "DELETE FROM ".$tblprefix."users WHERE id = '".$_REQUEST["id"]."'";
 			$result = mysql_query($query) or die("Error deleting user");
 			break;
 		default:
@@ -83,7 +83,7 @@
 				<th>Admin</th>
 			</tr>
 <?php
-		$query = "SELECT * FROM family_users WHERE id <> '".$_SESSION["id"]."' ORDER BY username";
+		$query = "SELECT * FROM ".$tblprefix."users WHERE id <> '".$_SESSION["id"]."' ORDER BY username";
 		$result = mysql_query($query) or die("Error running list users query");
 		$i = 0;
 		while ($row = mysql_fetch_array($result)) {

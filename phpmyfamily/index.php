@@ -40,7 +40,7 @@
 <meta name="publisher" content="Giric">
 <meta name="copyright" content="2002-2003 Simon E Booth">
 <meta name="keywords" content="Genealogy<?php
-	$fname = "SELECT SUBSTRING_INDEX(name, ' ', -1) AS surname FROM family_people GROUP BY surname";
+	$fname = "SELECT SUBSTRING_INDEX(name, ' ', -1) AS surname FROM ".$tblprefix."people GROUP BY surname";
 	$rname = mysql_query($fname) or die("Error getting names!");
 	if (mysql_num_rows($rname) <> 0) {
 		while ($row = mysql_fetch_array($rname))
@@ -100,7 +100,7 @@
 				echo "<tr>\n";
 					echo "<td bgcolor=\"#CCCCCC\">People on file</td>\n";
 					echo "<td bgcolor=\"#CCCCCC\" align=\"right\">";
-					$query = "SELECT count(*) as number FROM family_people";
+					$query = "SELECT count(*) as number FROM ".$tblprefix."people";
 					$result = mysql_query($query);
 					while ($row = mysql_fetch_array($result))
 						echo $row["number"];
@@ -110,7 +110,7 @@
 				echo "<tr>\n";
 					echo "<td bgcolor=\"#DDDDDD\">Census Records</td>\n";
 					echo "<td bgcolor=\"#DDDDDD\" align=\"right\">";
-					$query = "SELECT count(*) as number FROM family_census";
+					$query = "SELECT count(*) as number FROM ".$tblprefix."census";
 					$result = mysql_query($query);
 					while ($row = mysql_fetch_array($result))
 						echo $row["number"];
@@ -120,7 +120,7 @@
 				echo "<tr>\n";
 					echo "<td bgcolor=\"#CCCCCC\">Images</td>\n";
 					echo "<td bgcolor=\"#CCCCCC\" align=right>";
-					$query = "SELECT count(*) as number FROM family_images";
+					$query = "SELECT count(*) as number FROM ".$tblprefix."images";
 					$result = mysql_query($query);
 					while ($row = mysql_fetch_array($result))
 						echo $row["number"];
@@ -130,7 +130,7 @@
 				echo "<tr>\n";
 					echo "<td bgcolor=\"#DDDDDD\">Document Transcripts</td>\n";
 					echo "<td bgcolor=\"#DDDDDD\" align=\"right\">";
-					$query = "SELECT count(*) as number FROM family_documents";
+					$query = "SELECT count(*) as number FROM ".$tblprefix."documents";
 					$result = mysql_query($query);
 					while ($row = mysql_fetch_array($result))
 						echo $row["number"];
@@ -160,7 +160,7 @@
 						echo "<th>Person</th>\n";
 						echo "<th>Updated</th>\n";
 					echo "</tr>\n";
-					$query = "SELECT person_id, name, updated FROM family_people"; 
+					$query = "SELECT person_id, name, updated FROM ".$tblprefix."people"; 
 					if ($_SESSION["id"] == 0)
 						$query .= " WHERE date_of_birth < '".$restrictdate."'";
 					$query .= " ORDER BY updated DESC LIMIT 0,20";

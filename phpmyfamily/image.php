@@ -30,11 +30,11 @@
 	include "inc/css.inc.php";
 
 	//get the details for the image
-	$iquery = "SELECT * FROM family_images WHERE image_id = '".$_REQUEST["image"]."'";
+	$iquery = "SELECT * FROM ".$tblprefix."images WHERE image_id = '".$_REQUEST["image"]."'";
 	$iresult = mysql_query($iquery) or die("Image retreival query failed");
 
 	while ($irow = mysql_fetch_array($iresult)) {
-		$pquery = "SELECT name, date_of_birth FROM family_people WHERE person_id = '".$irow["person_id"]."'";
+		$pquery = "SELECT name, date_of_birth FROM ".$tblprefix."people WHERE person_id = '".$irow["person_id"]."'";
 		$presult = mysql_query($pquery) or die("Person fetch failed");
 		while ($prow = mysql_fetch_array($presult)) {
 
@@ -52,12 +52,12 @@
 			echo "<title>".$irow["title"]." (".$prow["name"].")</title>\n";
 			echo "</HEAD>\n";
 			echo "<BODY>\n";
-	
+
 			echo "<h2>".$irow["title"]."</h2>\n";
 			echo "<hr>\n";
 		}
 		mysql_free_result($presult);
-	
+
 	echo "<center><img src=\"images/".$irow["image_id"].".jpg\" alt=\"".$irow["description"]."\"></center>\n";
 	echo "<center><p>";
 	if ($restricted)
@@ -67,7 +67,7 @@
 	echo "</p>\n";
 	echo "<p>".$irow["description"]."</p></center>\n";
  	echo "<br><br>back\n";
-	
+
 	}
 	mysql_free_result($iresult);
 

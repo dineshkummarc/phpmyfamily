@@ -18,15 +18,16 @@
 
 //=====================================================================================================================
 // Database Connection details
-	$dbhost = "localhost"; 	// host the database is running on
-	$dbname = "family";		// Database name
-	$dbuser = "root";		// Database user name
-	$dbpwd  = "dave27";		// Database password
+	$dbhost 	= "localhost"; 	// host the database is running on
+	$dbname 	= "family";		// Database name
+	$dbuser 	= "root";		// Database user name
+	$dbpwd  	= "dave27";		// Database password
 
 //=====================================================================================================================
 // General details
-	$email = "simesb@giric.com";	// Contact email address
-	$desc  = "My Family";
+	$email 		= "simesb@giric.com";	// Contact email address
+	$desc  		= "My Family";
+	$tblprefix 	= "family_";
 
 //=====================================================================================================================
 // Nothing should need changing beneath this line

@@ -22,7 +22,7 @@
 	$dbcheck = mysql_list_tables($dbname);
 	if (mysql_num_rows($dbcheck) <> 0) {
 		while ($row = mysql_fetch_array($dbcheck)) {
-			if ($row["0"] == "family_users" || $row["0"] == "family_people" || $row["0"] == "family_census" || $row["0"] == "family_spouses" || $row["0"] == "family_documents" || $row["0"] == "family_images")
+			if ($row["0"] == "".$tblprefix."users" || $row["0"] == "".$tblprefix."people" || $row["0"] == "".$tblprefix."census" || $row["0"] == "".$tblprefix."spouses" || $row["0"] == "".$tblprefix."documents" || $row["0"] == "".$tblprefix."images")
 				die("phpmyfamily: Tables appear to already exist - please check you installation");
 		}
 	}
@@ -34,8 +34,8 @@
 	echo "<body>\n";
 	echo "<h2>Installing phpmyfamily database</h2>\n";
 
-	// install family_users
-	$fusers = "CREATE TABLE `family_users` (
+	// install ".$tblprefix."users
+	$fusers = "CREATE TABLE `".$tblprefix."users` (
   `id` smallint(6) NOT NULL auto_increment,
   `username` varchar(10) NOT NULL default '',
   `password` varchar(32) NOT NULL default '',
@@ -44,12 +44,12 @@
 )";
 	$rusers = mysql_query($fusers) or die("phpmyfamily: Error creating user table!!!");
 	echo "User table created<br>\n";
-	$fadmin = "INSERT INTO family_users VALUES('43', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'Y')";
+	$fadmin = "INSERT INTO ".$tblprefix."users VALUES('43', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'Y')";
 	$radmin = mysql_query($fadmin) or die("phpmyfamily: Error creating default user!!!");
 	echo "Default user created<br>\n";
 
-	// install family_people
-	$fpeople = "CREATE TABLE `family_people` (
+	// install ".$tblprefix."people
+	$fpeople = "CREATE TABLE `".$tblprefix."people` (
   `person_id` smallint(5) unsigned zerofill NOT NULL auto_increment,
   `name` varchar(50) NOT NULL default '',
   `date_of_birth` date NOT NULL default '0000-00-00',
@@ -69,12 +69,12 @@
 )";
 	$rpeople = mysql_query($fpeople) or die("phpmyfamily: Error creating people table!!!");
 	echo "People table created<br>\n";
-	$fpeeps = "INSERT INTO family_people(person_id, name) VALUES ('1', 'Alpha Male')";
+	$fpeeps = "INSERT INTO ".$tblprefix."people(person_id, name) VALUES ('1', 'Alpha Male')";
 	$rpeeps = mysql_query($fpeeps) or die("phpmyfamily: Error creating alpha male!!!");
 	echo "Alpha Male created<br>\n";
 
-	// install family_spouses
-	$fspouses = "CREATE TABLE `family_spouses` (
+	// install ".$tblprefix."spouses
+	$fspouses = "CREATE TABLE `".$tblprefix."spouses` (
   `groom_id` smallint(5) unsigned zerofill NOT NULL default '00000',
   `bride_id` smallint(5) unsigned zerofill NOT NULL default '00000',
   `marriage_date` date NOT NULL default '0000-00-00',
@@ -87,8 +87,8 @@
 	$rspouses = mysql_query($fspouses) or die("phpmyfamily: Error creating spouses table!!!");
 	echo "Spouses table created<br>\n";
 
-	// install family_census
-	$fcensus = "CREATE TABLE `family_census` (
+	// install ".$tblprefix."census
+	$fcensus = "CREATE TABLE `".$tblprefix."census` (
   `person_id` smallint(5) unsigned zerofill NOT NULL default '00000',
   `year` enum('1841','1851','1861','1871','1881','1891','1901') NOT NULL default '1881',
   `schedule` varchar(20) NOT NULL default '',
@@ -102,8 +102,8 @@
 	$rcensus = mysql_query($fcensus) or die("phpmyfamily: Error creating census table!!!");
 	echo "Census table created<br>\n";
 
-	// install family_images
-	$fimages = "CREATE TABLE `family_images` (
+	// install ".$tblprefix."images
+	$fimages = "CREATE TABLE `".$tblprefix."images` (
   `image_id` smallint(5) unsigned zerofill NOT NULL auto_increment,
   `person_id` smallint(5) unsigned zerofill NOT NULL default '00000',
   `title` varchar(30) NOT NULL default '',
@@ -115,8 +115,8 @@
 	$rimages = mysql_query($fimages) or die("phpmyfamily: Error creating images table!!!");
 	echo "Images table created<br>\n";
 
-	// install family_documents
-	$fdocs = "CREATE TABLE `family_documents` (
+	// install ".$tblprefix."documents
+	$fdocs = "CREATE TABLE `".$tblprefix."documents` (
   `person_id` smallint(5) unsigned zerofill NOT NULL default '00000',
   `doc_date` date NOT NULL default '0000-00-00',
   `doc_title` varchar(30) NOT NULL default '',

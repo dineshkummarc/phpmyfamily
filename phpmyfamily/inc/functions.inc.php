@@ -42,9 +42,10 @@
 	function listpeeps($form, $omit = 0, $gender = "A", $default = 0, $auto = 1) {
 		// declare global variables
 		global $restrictdate;
+		global $tblprefix;
 
 		// create the query based on the parameters
-		$query = "SELECT person_id, SUBSTRING_INDEX(name, ' ', -1) AS surname, name, YEAR(date_of_birth) AS year FROM family_people WHERE person_id <> '".$omit."'";
+		$query = "SELECT person_id, SUBSTRING_INDEX(name, ' ', -1) AS surname, name, YEAR(date_of_birth) AS year FROM ".$tblprefix."people WHERE person_id <> '".$omit."'";
 		if ($_SESSION["id"] == 0)
 			$query .= " AND date_of_birth < '".$restrictdate."'";
 
@@ -89,7 +90,7 @@
 
 	// timestamp a particular person for last updated
 	function stamppeeps($person) {
-		$query = "UPDATE family_people SET updated = NOW() WHERE person_id = '".$person."'";
+		$query = "UPDATE ".$tblprefix."people SET updated = NOW() WHERE person_id = '".$person."'";
 		$result = mysql_query($query);
 	}	// end of stamppeeps()
 
@@ -104,7 +105,7 @@
 				$incoming = imagecreatefromjpeg($_FILES["userfile"]["tmp_name"]);
 				break;
 			default:
-				$query = "DELETE FROM family_images WHERE image_id = '".$image."'";
+				$query = "DELETE FROM ".$tblprefix."images WHERE image_id = '".$image."'";
 				$result = mysql_query($query);
 				return false;
 				break;
