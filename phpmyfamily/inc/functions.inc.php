@@ -398,5 +398,43 @@
 		mysql_free_result($tresult);
 	}	// eod of track_person()
 
+	// function: do_headers
+	// Standardize the html headers
+	function do_headers($title) {
+		global $clang;
+		global $dir;
+		global $style;
+		global $charset;
+		global $desc;
+		global $tblprefix;
+		global $err_keywords;
+
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $clang; ?>" lang="<?php echo $clang; ?>" dir="<?php echo $dir; ?>">
+<head>
+<link rel="stylesheet" href="<?php echo $style; ?>" type="text/css" />
+<link rel="shortcut icon" href="images/favicon.ico" />
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $charset; ?>" />
+<meta name="description" content="<?php echo $desc; ?>" />
+<meta name="page-topic" content="Genealogy" />
+<meta name="audience" content="All" />
+<meta name="author" content="Simon E Booth" />
+<meta name="copyright" content="2002-2003 Simon E Booth" />
+<meta name="robots" content="INDEX,FOLLOW" />
+<meta name="keywords" content="Genealogy phpmyfamily<?php
+	$fname = "SELECT SUBSTRING_INDEX(name, ' ', -1) AS surname, COUNT(*) as count FROM ".$tblprefix."people GROUP BY surname ORDER BY count DESC LIMIT 0,16";
+	$rname = mysql_query($fname) or die($err_keywords);
+	if (mysql_num_rows($rname) <> 0) {
+		while ($row = mysql_fetch_array($rname))
+			echo " ".$row["surname"];
+	}
+?>" />
+<title><?php echo $title; ?></title>
+</head>
+<body>
+<?php
+	}	// end of do_headers()
+
 	// eof
 ?>

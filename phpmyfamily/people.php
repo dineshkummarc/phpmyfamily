@@ -45,36 +45,10 @@
 		$mother = $prow["mother_id"];
 		if ($mother == 0) $mother = -1;
 
+		// Fill out the headers
+		do_headers($prow["name"]);
+
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $clang; ?>" lang="<?php echo $clang; ?>" dir="<?php echo $dir; ?>">
-<head>
-<link rel="stylesheet" href="<?php echo $style; ?>" type="text/css" />
-<link rel="shortcut icon" href="images/favicon.ico" />
-<meta name="author" content="Simon E Booth" />
-<meta name="publisher" content="Giric" />
-<meta name="copyright" content="2002-2003 Simon E Booth" />
-<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $charset; ?>" />
-<meta name="keywords" content="Genealogy <?php echo $prow["name"]; ?><?php
-	$fname = "SELECT SUBSTRING_INDEX(name, ' ', -1) AS surname FROM ".$tblprefix."people";
-	if ($_SESSION["id"] == 0)
-		$fname .= " WHERE date_of_birth < '".$restrictdate."' AND person_id <> '".$_REQUEST["person"]."'";
-	else
-		$fname .= " WHERE person_id <> '".$_REQUEST["person"]."'";
-	$fname .= " GROUP BY surname LIMIT 0,16";
-	$rname = mysql_query($fname) or die($err_keywords);
-	if (mysql_num_rows($rname) <> 0) {
-		while ($row = mysql_fetch_array($rname))
-			echo " ".$row["surname"];
-	}
-?>" />
-<meta name="description" content="<?php echo $desc; ?>" />
-<meta name="page-topic" content="Genealogy" />
-<meta name="audience" content="All" />
-<meta name="expires" content="0" />
-<meta name="page-type" content="Private homepage" />
-<meta name="robots" content="INDEX,FOLLOW" />
-<title><?php echo $prow["name"] ?></title>
 
 <script language="JavaScript" type="text/javascript">
  <!--
@@ -93,10 +67,6 @@
  }
  -->
 </script>
-
-
-</head>
-<body>
 
 <!--titles-->
 	<table width="100%" class="header">

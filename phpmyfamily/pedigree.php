@@ -81,25 +81,10 @@
 		mysql_free_result($dresult);
 	}
 
+	// Fill out the headers
+	do_headers($strPedigreeOf." ".$prow["name"]);
+
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $clang; ?>" lang="<?php echo $clang; ?>" dir="<?php echo $dir; ?>">
-<head>
-<link rel="stylesheet" href="<?php echo $style; ?>" type="text/css" />
-<link rel="shortcut icon" href="images/favicon.ico" />
-<meta name="author" content="Simon E Booth" />
-<meta name="publisher" content="Giric" />
-<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $charset; ?>" />
-<meta name="copyright" content="2002-2003 Simon E Booth" />
-<meta name="description" content="<?php echo $desc; ?>" />
-<meta name="page-topic" content="Genealogy" />
-<meta name="audience" content="All" />
-<meta name="expires" content="0" />
-<meta name="page-type" content="Private homepage" />
-<meta name="robots" content="INDEX,FOLLOW" />
-<title><?php echo $strPedigreeOf." ".$prow["name"]; ?></title>
-</head>
-<body>
 
 <!--titles-->
 	<table width="100%" class="header">

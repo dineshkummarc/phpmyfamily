@@ -23,14 +23,6 @@
 		die(include "inc/forbidden.inc.php");
 
 	// fill out the header
-?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $clang; ?>" lang="<?php echo $clang; ?>" dir="<?php echo $dir; ?>">
-<head>
-<link rel="stylesheet" href="<?php echo $style; ?>" type="text/css" />
-<link rel="shortcut icon" href="images/favicon.ico" />
-<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $charset; ?>" />
-<?php
 
 	switch ($_REQUEST["func"]) {
 
@@ -44,10 +36,9 @@
 
 					// fill out the form with retrieved data
 					while ($edrow = mysql_fetch_array($edresult)) {
+						do_headers($strEditing.": ".$edrow["name"]);
 ?>
-<title><?php echo $strEditing.": ".$edrow["name"]; ?></title>
-</head>
-<body>
+
 <table class="header" width="100%">
   <tbody>
     <tr>
@@ -140,11 +131,9 @@
 						$edresult = mysql_query($edquery) or die($err_marriage);
 
 						while ($edrow = mysql_fetch_array($edresult)) {
+							do_headers($strEditing." ".$strMarriage.": ".$prow["name"]." & ".$spousename);
 ?>
 
-<title><?php echo $strEditing." ".$strMarriage.": ".$prow["name"]; ?> & <?php echo $spousename; ?></title>
-</head>
-<body>
 <table class="header" width="100%">
   <tbody>
     <tr>
@@ -200,11 +189,9 @@
 
 					// fill out the form with retrieved data
 					while ($edrow = mysql_fetch_array($edresult)) {
+						do_headers($strEditing." ".$strCensus.": ".$edrow["name"]."(".$edrow["year"].")");
 ?>
 
-<title><?php echo $strEditing." ".$strCensus.": ".$edrow["name"]; ?> (<?php echo $edrow["year"]; ?>)</title>
-</head>
-<body>
 <table class="header" width="100%">
   <tbody>
     <tr>
@@ -266,11 +253,9 @@
 		case "add":
 			switch($_REQUEST["area"]) {
 				case "detail":
+					do_headers("Creating new family member");
 ?>
 
-<title>Creating new family member</title>
-</head>
-<body>
 <table class="header" width="100%">
   <tbody>
     <tr>
@@ -347,10 +332,9 @@
 
 					// fill out the form with retrieved data
 					while ($edrow = mysql_fetch_array($edresult)) {
+						do_headers(ucwords($strNewTrans).": ".$edrow["name"]);
 ?>
-<title><?php echo ucwords($strNewTrans).": ".$edrow["name"]; ?></title>
-</head>
-<body>
+
 <table class="header" width="100%">
   <tbody>
     <tr>
@@ -398,10 +382,9 @@
 
 					// fill out the form with retrieved data
 					while ($edrow = mysql_fetch_array($edresult)) {
+						do_headers(ucwords($strNewImage).": ".$edrow["name"]);
 ?>
-<title><?php echo ucwords($strNewImage).": ".$edrow["name"]; ?></title>
-</head>
-<body>
+
 <table class="header" width="100%">
   <tbody>
     <tr>
@@ -451,10 +434,9 @@
 
 					// fill out the form with retrieved data
 					while ($edrow = mysql_fetch_array($edresult)) {
+						do_headers(ucwords($strNewMarriage).": ".$edrow["name"]);
 ?>
-<title><?php echo ucwords($strNewMarriage).": ".$edrow["name"]; ?></title>
-</head>
-<body>
+
 <table class="header" width="100%">
   <tbody>
     <tr>
@@ -508,10 +490,9 @@
 
 					// fill out the form with retrieved data
 					while ($edrow = mysql_fetch_array($edresult)) {
+						do_headers(ucwords($strNewCensus).": ".$edrow["name"]);
 ?>
-<title><?php echo ucwords($strNewCensus).": ".$edrow["name"]; ?></title>
-</head>
-<body>
+
 <table class="header" width="100%">
   <tbody>
     <tr>

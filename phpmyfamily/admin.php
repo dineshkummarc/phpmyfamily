@@ -61,19 +61,8 @@
 	}
 
 	// fill out the header
-?>
+	do_headers("phpmyfamily Admin");
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $clang; ?>" lang="<?php echo $clang; ?>" dir="<?php echo $dir; ?>">
-<head>
-<link rel="stylesheet" href="<?php echo $style; ?>" type="text/css" />
-<link rel="shortcut icon" href="images/favicon.ico" />
-<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $charset; ?>" />
-<title>phpmyfamily Admin</title>
-</head>
-<body>
-
-<?php
 	if ($func <> "ged") {
 ?>
 <table class="header" width="100%">

@@ -44,17 +44,10 @@
 
 	}	// end of delete_expired()
 
-?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $clang; ?>" lang="<?php echo $clang; ?>" dir="<?php echo $dir; ?>">
-<head>
-<link rel="stylesheet" href="<?php echo $style; ?>" type="text/css" />
-<link rel="shortcut icon" href="images/favicon.ico" />
-<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $charset; ?>" />
-<title><?php echo $strTracking; ?></title>
+	// Fill out the headers
+	do_headers($strTracking);
 
-</head>
-<body>
+?>
 
 <table class="header" width="100%">
 	<tbody>
