@@ -107,11 +107,14 @@
 			<td width="65%" align="center" valign="top">
 				<h2><?php echo $strPedigreeOf." ".$prow["name"]." ".$prow["suffix"]; ?></h2>
 				<h3><?php
-					if ($restricted)
-						echo "(".$restrictmsg." - ".$restrictmsg.")";
-					else
-						echo "(".formatdate($prow["DOB"])." - ".formatdate($prow["DOD"]).")";?></h3>
-			</td>
+					if ($prow["date_of_birth"] != "0000-00-00" && $prow["date_of_death"] != "0000-00-00") {
+						echo "(".$prow["DOB"]." - ".$prow["DOD"].")";
+					} elseif ($prow["date_of_birth"] != "0000-00-00") {
+						echo "(".$strBorn." ".$prow["DOB"].")";
+					} elseif ($prow["date_of_death"] != "0000-00-00") {
+						echo "(".$strDied." ".$prow["DOD"].")";
+					}
+				?></td>
 			<td width="35%" valign="top" align="right">
 				<form method="get" action="pedigree.php">
 				<?php listpeeps("person", 0, "A", $_REQUEST["person"]); ?>
