@@ -329,7 +329,7 @@
 							$class = "tbl_even";
 						// display image thumbnail
 ?>
-			<td width="20%" class="<?php echo $class; ?>" align="center" valign="top"><a href="image.php?image=<?php echo $irow["image_id"]; ?>"><img src="images/tn_<?php echo $irow["image_id"]; ?>.jpg" width="100" height="100" border="0" title="<?php echo $irow["description"]; ?>" alt="<?php echo $irow["description"]; ?>" /></a><br /><a href="image.php?image=<?php echo $irow["image_id"]; ?>"><?php echo $irow["title"]; ?></a><?php if($_SESSION["id"] != 0) { ?><br /><a href="JavaScript:confirm_delete('<?php echo $irow["title"]; ?>', '<?php echo strtolower($strImage); ?>', 'passthru.php?func=delete&amp;area=image&amp;person=<?php echo $person; ?>&amp;image=<?php echo $irow["image_id"]; ?>')" class="delete"><?php echo $strDelete; ?></a></td><?php } ?>
+			<td width="20%" class="<?php echo $class; ?>" align="center" valign="top"><a href="image.php?image=<?php echo $irow["image_id"]; ?>"><img src="images/tn_<?php echo $irow["image_id"]; ?>.jpg" width="100" height="100" border="0" title="<?php echo $irow["description"]; ?>" alt="<?php echo $irow["description"]; ?>" /></a><br /><a href="image.php?image=<?php echo $irow["image_id"]; ?>"><?php echo $irow["title"]; ?></a><?php if($_SESSION["id"] != 0) { ?><br /><a href="JavaScript:confirm_delete('<?php echo $irow["title"]; ?>', '<?php echo strtolower($strImage); ?>', 'passthru.php?func=delete&amp;area=image&amp;person=<?php echo $person; ?>&amp;image=<?php echo $irow["image_id"]; ?>')" class="delete"><?php echo $strDelete; ?></a><?php } ?></td>
 <?php
 						// close each row every 5 images
 						if ($current <> 0 && fmod($current + 1, 5) == 0) {
