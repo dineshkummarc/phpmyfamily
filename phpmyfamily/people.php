@@ -457,7 +457,7 @@
 							$class = "tbl_even";
 ?>
 		<tr>
-			<td class="<?php echo $class; ?>"><a href="docs/<?php echo $drow["file_name"]; ?>"><?php echo $drow["doc_title"]; ?></a></td>
+			<td class="<?php echo $class; ?>"><a href="<?php echo $drow["file_name"]; ?>"><?php echo $drow["doc_title"]; ?></a></td>
 			<td class="<?php echo $class; ?>"><?php echo $drow["doc_description"]; ?></td>
 			<td class="<?php echo $class; ?>"><?php echo formatdbdate($drow["doc_date"]); ?></td>
 		</tr>
