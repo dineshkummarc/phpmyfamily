@@ -59,7 +59,7 @@
 	//die($err_person);
 	while ($row = mysql_fetch_array($result)) {
 		echo "<h4>".$row["name"]."</h4>\n";
-		show_gallery($row["person_id"]);
+		show_gallery($row["person_id"], "gallery");
 	}
 	mysql_free_result($result);
 

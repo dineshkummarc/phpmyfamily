@@ -167,7 +167,10 @@
 						$dresult = mysql_query($dquery) or die($err_image_delete);
 						stamppeeps($_REQUEST["person"]);
 					}
-					echo "<meta http-equiv=refresh content='0; url=people.php?person=".$_REQUEST["person"]."' />\n";
+					if ($_REQUEST["dest"] == "gallery")
+						echo "<meta http-equiv=refresh content='0; url=gallery.php' />\n";
+					else
+						echo "<meta http-equiv=refresh content='0; url=people.php?person=".$_REQUEST["person"]."' />\n";
 					break;
 				case "marriage":
 					stamppeeps($_REQUEST["person"]);
