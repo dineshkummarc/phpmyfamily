@@ -434,6 +434,8 @@
 </head>
 <body>
 <?php
+		// make titles available for later,
+		$GLOBALS["title"] = $title;
 	}	// end of do_headers()
 
 	// eof

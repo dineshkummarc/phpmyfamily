@@ -25,11 +25,12 @@
 
 //=====================================================================================================================
 // General details
-	$email 		= "simesb@giric.com";	// Contact email address
+	$email 		= "simesb@giric.com";					// Contact email address
+	$mailto		= true;									// bool for use of mailto form
 	$desc  		= "My Family";
 	$tblprefix 	= "family_";
-	$style		= "styles/default.css.php";
-	$lang		= "lang/en-uk.inc.php";
+	$style		= "styles/default.css.php";				// See styles directory for options
+	$lang		= "lang/en-uk.inc.php";					// Translations welcome!
 
 //=====================================================================================================================
 // Change tracking details

@@ -151,9 +151,9 @@
 	$strBack			= "Back";
 	$strToHome			= "to the homepage.";
 	$strNewMsg			= "Please make sure that the person does not already exist in the database before creating!";
-	$strIndex			= "All details for people born after $dispdate are restricted to protect their identities.  If you are a registered user you can view these details and edit record.  Everybody is free to browse the unrestricted records.  If you think anybody here matches into your family tree, please <a href=\"mailto: $email\">let me know</a>";
+	$strIndex			= "All details for people born after $dispdate are restricted to protect their identities.  If you are a registered user you can view these details and edit record.  Everybody is free to browse the unrestricted records.  If you think anybody here matches into your family tree, please <a href=\"$1\">let me know</a>";
 	$strNote			= "Note";
-	$strFooter			= "Email the <a href=\"mailto:$email\">webmaster</a> with any problems.";
+	$strFooter			= "Email the <a href=\"$1\">webmaster</a> with any problems.";
 	$strPowered			= "Powered by";
 	$strPedigreeOf		= "Pedigree of";
 	$strBirths			= "Births";
@@ -187,6 +187,10 @@
 	$strAlreadyMon		= "You already seem to be monitoring this person.<br />No action is required.<br />";
 	$strNotMon			= "You do not seem to be monitoring this person.<br />No action is required.<br />";
 	$strRandomImage		= "Random Image";
+	$strMailTo			= "Send Message";
+	$strSubject			= "Subject";
+	$strNoEmail			= "\"You must provide an email address\"";
+	$strEmailSent		= "Your email has been sent to the webmaster.";
 
 //=====================================================================================================================
 //  email definitions
