@@ -18,6 +18,7 @@
 ?>
 				<a href="passthru.php?func=lang&amp;trans=en-uk"><img src="images/gb.gif" alt="Change language to UK English" width="20" height="20" border="0" /></a>
 				<a href="passthru.php?func=lang&amp;trans=en-us"><img src="images/us.gif" alt="Change language to US English" width="20" height="20" border="0" /></a>
+				<a href="passthru.php?func=lang&amp;trans=it"><img src="images/it.gif" alt="Cambia la lingua all'Italiano" width="20" height="20" border="0" /></a>
 <?php
 	// eof
 ?>
