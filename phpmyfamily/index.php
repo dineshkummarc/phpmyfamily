@@ -47,13 +47,9 @@
 <?php
 			// include login form if not logged in
 			if ($_SESSION["id"] == 0) {
-				if($mailto) echo "<p>".str_replace("$1", "mail.php?subject=".$title, $strIndex)."</p>"; else echo "<p>".str_replace("$1", "mailto:".$email."?subject=".$title, $strIndex)."</p>";
-			} else {
-				include "inc/passwdform.inc.php";
-			}
+				if($mailto) echo "<p>".str_replace("$1", "mail.php?subject=".$title, $strIndex)."</p>"; else echo "<p>".str_replace("$1", "mailto:".$email."?subject=".$title, $strIndex)."</p><br /><br />";
+			} 
 ?>
-
-			<br /><br />
 				<table>
 					<tr>
 						<th colspan="2"><?php echo $strStats; ?></th>
