@@ -91,10 +91,10 @@
 			// make double sure to delete a person
 			person_box = confirm(<?php echo $strDoubleDelete; ?>);
 			if (person_box == true)
-				window.location = '"' + url + '"';
+				window.location = url;
 		}
 		else
- 			window.location = '"' + url + '"';
+ 			window.location = url;
  	}
  }
  -->
