@@ -41,19 +41,19 @@
   </thead>
   <tbody>
     <tr>
-      <td class="tbl_odd"><a href="http://prdownloads.sourceforge.net/phpmyfamily/phpmyfamily-1.4.0.tar.gz?download">phpmyfamily-1.4.0.tar.gz</a>  </td>
-      <td class="tbl_odd">76,420 bytes  </td>
-      <td class="tbl_odd">328d6051d2e7312b9ab55d12c57392fd</td>
+      <td class="tbl_odd"><a href="http://prdownloads.sourceforge.net/phpmyfamily/phpmyfamily-1.4.1.tar.gz?download">phpmyfamily-1.4.1.tar.gz</a>  </td>
+      <td class="tbl_odd">83,355 bytes  </td>
+      <td class="tbl_odd">e36e18a5f0018aa922f4adec85d23349</td>
     </tr>
     <tr>
-      <td class="tbl_even"><a href="http://prdownloads.sourceforge.net/phpmyfamily/phpmyfamily-1.4.0.zip?download">phpmyfamily-1.4.0.zip</a>  </td>
-      <td class="tbl_even">118,116 bytes  </td>
-      <td class="tbl_even">c6d4a6f42f47e1b1a2c433ec662ebadd</td>
+      <td class="tbl_even"><a href="http://prdownloads.sourceforge.net/phpmyfamily/phpmyfamily-1.4.1.zip?download">phpmyfamily-1.4.1.zip</a>  </td>
+      <td class="tbl_even">130,715 bytes  </td>
+      <td class="tbl_even">2809890fa4d49340b92a6560280fe35e</td>
     </tr>
 	<tr>
-		<td class="tbl_odd"><a href="http://prdownloads.sourceforge.net/phpmyfamily/phpmyfamily-1.4.0.tar.bz2?download">phpmyfamily-1.4.0.bz2</a></td>
-		<td class="tbl_odd">66,111 bytes</td>
-		<td class="tbl_odd">d9362b723ecbd86fd1268c53f05963fc</td>
+		<td class="tbl_odd"><a href="http://prdownloads.sourceforge.net/phpmyfamily/phpmyfamily-1.4.1.tar.bz2?download">phpmyfamily-1.4.1.bz2</a></td>
+		<td class="tbl_odd">73,772 bytes</td>
+		<td class="tbl_odd">dd51f71da8695f5a5c1a01b304c95b25</td>
 	</tr>
   </tbody>
 </table>
@@ -61,6 +61,9 @@
 <!--end of main-->
 
 <h3>changelog</h3>
+<strong><em>phpmyfamily</em> v1.4.1 (Released 24/03/2005)</strong>
+<p>This is an important security release and all users are urged to upgrade as soon as possible.</p>
+
 <strong><em>phpmyfamily</em> v1.4.0 (Released 12/12/2004)</strong>
 <p>The latest release of <em>phpmyfamily</em> has many new features and enhancements. Please see the CHANGELOG for full details.</p>
 
