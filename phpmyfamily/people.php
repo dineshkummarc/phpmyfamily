@@ -5,8 +5,13 @@
 	// All rights reserved
 	// file to control display of personal information
 
+	// send the headers
+	ini_set("arg_separator.output", "&amp;");
+	header('Content-Type: text/html; charset=ISO-8859-1');
+	header('Content-Language: en');
+
 	// include the database parameters
-	include "inc./session.inc.php";
+	include "inc/session.inc.php";
 	include "inc/db.inc.php";
 	include "inc/functions.inc.php";
 
@@ -41,6 +46,7 @@
 			die("Possible security breach");
 		
 		// fill out the header
+		echo "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"\n\t\"http://www.w3.org/TR/html4/loose.dtd\">\n";
 		echo "<HTML>\n";
 		echo "<HEAD>\n";
 		css_site();
@@ -49,8 +55,8 @@
 		echo "<BODY>\n";
 
 		echo "<table>\n";
-			echo "<tr width=100%>\n";
-				echo "<td width=80% align=center>\n";
+			echo "<tr>\n";
+				echo "<td width=\"80%\" align=\"center\">\n";
 					echo "<h2>".$prow["name"]."</h2>\n";
 					echo "<h3>";
 					if ($restricted)
@@ -58,10 +64,10 @@
 					else echo "(".formatdbdate($prow["date_of_birth"])." - ".formatdbdate($prow["date_of_death"]).")";
 					echo "</h3>\n";
 				echo "</td>\n";
-				echo "<td width=20%>\n";
-					echo "<form method=post action=passthru.php?func=jump>\n";
+				echo "<td width=\"20%\">\n";
+					echo "<form method=\"post\" action=\"passthru.php?func=jump\">\n";
 						listpeeps("person", $_REQUEST["person"]);
-						echo "<INPUT TYPE=SUBMIT NAME=Submit1 VALUE=Go>\n";
+						echo "<INPUT TYPE=\"SUBMIT\" NAME=\"Submit1\" VALUE=\"Go\">\n";
 					echo "</form>\n";
 				echo "</td>\n";
 			echo "</tr>\n";
@@ -69,30 +75,30 @@
 
 		echo "<HR>\n";
 		 
-		echo "<table width=100%>\n";
-			echo "<tr width=100%>\n";
-				echo "<th width=95%><h4>Details</h4></th>\n";
-				echo "<td width=5% bgcolor=#CCCCCC>";
+		echo "<table width=\"100%\">\n";
+			echo "<tr>\n";
+				echo "<th width=\"95%\"><h4>Details</h4></th>\n";
+				echo "<td width=\"5%\" bgcolor=\"#CCCCCC\">";
 				if ($_SESSION["id"] <> 0)
-					echo "<a href=edit.php?func=edit&area=detail&person=".$prow["person_id"].">edit</a>";
+					echo "<a href=\"edit.php?func=edit&amp;area=detail&amp;person=".$prow["person_id"]."\">edit</a>";
 				echo "</td>\n";
 			echo "</tr>\n";
 		echo "</table>\n";
 		echo "<table>\n";
 			echo "<tr>\n";
-				echo "<th width=5% valign=top>Born:</th>\n";
-				echo "<td width=38% bgcolor=#CCCCCC valign=top>\n";
+				echo "<th width=\"5%\" valign=top>Born:</th>\n";
+				echo "<td width=\"38%\" bgcolor=\"#CCCCCC\" valign=\"top\">\n";
 					if ($restricted)
 						echo $restrictmsg;
 					else
 						echo formatdbdate($prow["date_of_birth"])." at ".$prow["birth_place"];
 				echo "</td>\n";
-				echo "<td bgcolor=#CCCCCC valign=top>Certified <input type=checkbox name=birthcert disabled";
+				echo "<td bgcolor=\"#CCCCCC\" valign=\"top\">Certified <input type=\"checkbox\" name=\"birthcert\" disabled";
 					if ($prow["birth_cert"] == "Y")
 						echo " checked";
 				echo "></td>\n";
-				echo "<th width=5% valign=top>Father:</th>\n";
-				echo "<td width=40% bgcolor=#CCCCCC valign=top>";
+				echo "<th width=\"5%\" valign=\"top\">Father:</th>\n";
+				echo "<td width=\"40%\" bgcolor=\"#CCCCCC\" valign=top>";
 					// the query for father
 					$fquery = "SELECT * FROM people WHERE person_id = '".$father."'";
 					$fresult = mysql_query($fquery) or die("Father query failed");
@@ -102,26 +108,26 @@
 							// or someones made a mistake with peoples parents
 							echo $frow["name"]." (".$restrictmsg.")<br>\n";
 						else 
-							echo "<a href=people.php?person=".$frow["person_id"].">".$frow["name"]."</a>(".formatdbdate($frow["date_of_birth"])." - ".formatdbdate($frow["date_of_death"]).")<br>\n";
+							echo "<a href=\"people.php?person=".$frow["person_id"]."\">".$frow["name"]."</a>(".formatdbdate($frow["date_of_birth"])." - ".formatdbdate($frow["date_of_death"]).")<br>\n";
 					}
 					mysql_free_result($fresult);
 				echo "</td>\n";
 				
 			echo "</tr>\n";
 			echo "<tr>\n";
-				echo "<th width=5% valign=top>Died:</th>\n";
-				echo "<td width=20% bgcolor=#CCCCCC valign=top>";
+				echo "<th width=\"5%\" valign=\"top\">Died:</th>\n";
+				echo "<td width=\"20%\" bgcolor=\"#CCCCCC\" valign=\"top\">";
 					if ($restricted)
 						echo $restrictmsg;
 					else
 						echo formatdbdate($prow["date_of_death"])." of ".$prow["death_reason"];
 				echo "</td>\n";
-				echo "<td bgcolor=#CCCCCC valign=top>Certified <input type=checkbox name=deathcert disabled";
+				echo "<td bgcolor=\"#CCCCCC\" valign=\"top\">Certified <input type=\"checkbox\" name=\"deathcert\" disabled";
 					if ($prow["death_cert"] == "Y")
 						echo " checked";
 				echo "></td>\n";
-				echo "<th valign=top>Mother:</th>\n";
-				echo "<td bgcolor=#CCCCCC valign=top>\n";
+				echo "<th valign=\"top\">Mother:</th>\n";
+				echo "<td bgcolor=\"#CCCCCC\" valign=\"top\">\n";
 					// the query for mother
 					$mquery = "SELECT * FROM people WHERE person_id = '".$mother."'";
 					$mresult = mysql_query($mquery) or die("Mother query failed");
@@ -131,7 +137,7 @@
 							// or someones made a mistake with peoples parents
 							echo $mrow["name"]." (".$restrictmsg.")<br>\n";
 						else 
-							echo "<a href=people.php?person=".$mrow["person_id"].">".$mrow["name"]."</a>(".formatdbdate($mrow["date_of_birth"])." - ".formatdbdate($mrow["date_of_death"]).")<br>\n";
+							echo "<a href=\"people.php?person=".$mrow["person_id"]."\">".$mrow["name"]."</a>(".formatdbdate($mrow["date_of_birth"])." - ".formatdbdate($mrow["date_of_death"]).")<br>\n";
 					}
 					mysql_free_result($mresult);
 				echo "</td>\n";
@@ -139,8 +145,8 @@
 			echo "<tr>\n";
 
 				// Children
-				echo "<th valign=top>Children:</th>\n";
-				echo "<td valign=top bgcolor=#DDDDDD colspan=2>";
+				echo "<th valign=\"top\">Children:</th>\n";
+				echo "<td valign=\"top\" bgcolor=\"#DDDDDD\" colspan=\"2\">";
 					// query for children
 					$cquery = "SELECT * FROM people WHERE (father_id = '".$_REQUEST["person"]."' OR mother_id = '".$_REQUEST["person"]."') ORDER BY date_of_birth";
 					$cresult = mysql_query($cquery) or die("Children query failed");
@@ -148,14 +154,14 @@
 						if ($crow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0) 
 							echo $crow["name"]." (".$restrictmsg.")<br>\n";
 						else 
-							echo "<a href=people.php?person=".$crow["person_id"].">".$crow["name"]."</a>(".formatdbdate($crow["date_of_birth"])." - ".formatdbdate($crow["date_of_death"]).")<br>\n";
+							echo "<a href=\"people.php?person=".$crow["person_id"]."\">".$crow["name"]."</a>(".formatdbdate($crow["date_of_birth"])." - ".formatdbdate($crow["date_of_death"]).")<br>\n";
 					}
 					mysql_free_result($cresult);
 				echo "</td>\n";
 
 				// Siblings
-				echo "<th valign=top>Siblings:</th>\n";
-				echo "<td valign=top bgcolor=#DDDDDD>";
+				echo "<th valign=\"top\">Siblings:</th>\n";
+				echo "<td valign=\"top\" bgcolor=\"#DDDDDD\">";
 					// the query for siblings
 					$squery = "SELECT * FROM people WHERE (father_id = '".$father."' OR mother_id = '".$mother."') AND person_id <> '".$_REQUEST["person"]."' ORDER BY date_of_birth";
 					$sresult = mysql_query($squery) or die("Siblings query failed");
@@ -163,7 +169,7 @@
 						if ($srow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0) 
 							echo $srow["name"]." (".$restrictmsg.")<br>\n";
 						else 
-							echo "<a href=people.php?person=".$srow["person_id"].">".$srow["name"]."</a>(".formatdbdate($srow["date_of_birth"])." - ".formatdbdate($srow["date_of_death"]).")<br>\n";
+							echo "<a href=\"people.php?person=".$srow["person_id"]."\">".$srow["name"]."</a>(".formatdbdate($srow["date_of_birth"])." - ".formatdbdate($srow["date_of_death"]).")<br>\n";
 					}
 					mysql_free_result($sresult);
 				echo "</td>\n";
@@ -174,38 +180,43 @@
 		echo "<hr>\n";
 		echo "<table>\n";
 			echo "<tr>\n";
-				echo "<th valign=top width=5%>Married:</th>\n";
-				echo "<td valign=top width=71% bgcolor=#DDDDDD>";
+				echo "<th valign=\"top\" width=\"5%\">Married:</th>\n";
+				echo "<td valign=\"top\" width=\"71%\" bgcolor=\"#DDDDDD\">";
 					// query for weddings
 					$wquery = "SELECT * FROM people, spouses WHERE (bride_id = person_id OR groom_id = person_id) AND (groom_id = '".$_REQUEST["person"]."' OR bride_id = '".$_REQUEST["person"]."') AND person_id <> '".$_REQUEST["person"]."' ORDER BY marriage_date";
+					echo "<table width=\"100%\">\n";
 					$wresult = mysql_query($wquery) or die("Marriage query failed");
 					while ($wrow = mysql_fetch_array($wresult)) {
+						echo "<tr>\n";
+						echo "<td width=\"90%\">\n";
 						if ($_SESSION["id"] <> 0)
-							echo "<a href=edit.php?func=edit&area=marriage&person=".$_REQUEST["person"]."&spouse=".$wrow["person_id"].">edit</a>";
+							echo "<a href=\"edit.php?func=edit&amp;area=marriage&amp;person=".$_REQUEST["person"]."&amp;spouse=".$wrow["person_id"]."\">edit</a>";
 						if ($wrow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0)
 							echo $wrow["name"]." on ".$restrictmsg;
 						else
-							echo " <a href=people.php?person=".$wrow["person_id"].">".$wrow["name"]."</a> on ".formatdbdate($wrow["marriage_date"])." at ".$wrow["marriage_place"]."<br>";
-						echo "<td valign=top bgcolor=#DDDDDD width=9%>Certified <input type=checkbox name=marriagecert disabled";
+							echo " <a href=\"people.php?person=".$wrow["person_id"]."\">".$wrow["name"]."</a> on ".formatdbdate($wrow["marriage_date"])." at ".$wrow["marriage_place"]."<br>";
+						echo "<td valign=\"top\" bgcolor=\"#DDDDDD\" width=\"9%\">Certified <input type=\"checkbox\" name=\"marriagecert\" disabled";
 						if ($wrow["marriage_cert"] == "Y")
 							echo " checked";
 						echo "></td>\n";
+						echo "</tr>\n";
 					}
+					echo "</table>\n";
 					mysql_free_result($wresult);
 				echo "</td>\n";
-				echo "<td align=right bgcolor=#CCCCCC>";
+				echo "<td align=\"right\" bgcolor=\"#CCCCCC\" valign=\"top\">";
 				if ($_SESSION["id"] <> 0)
-					echo "<a href=edit.php?func=add&person=".$_REQUEST["person"]."&area=marriage>insert</a> new marriage";
+					echo "<a href=\"edit.php?func=add&amp;person=".$_REQUEST["person"]."&amp;area=marriage\">insert</a> new marriage";
 				echo "</td>\n";
 			echo "</tr>\n";
 		echo "</table>\n";
 
 		// notes
 		echo "<HR>\n";
-		echo "<table width=100%>\n";
-			echo "<tr width=100%>\n";
-				echo "<td width=95%><h4>Notes</h4></td>\n";
-				echo "<td width=5%>";
+		echo "<table width=\"100%\">\n";
+			echo "<tr>\n";
+				echo "<td width=\"95%\"><h4>Notes</h4></td>\n";
+				echo "<td width=\"5%\">";
 				//<a href=edit.php?func=edit&person=".$prow["person_id"]."&area=narrative>edit</a>
 				echo "</td>\n";
 			echo "</tr>\n";
@@ -218,12 +229,12 @@
 		
 		// images
 		echo "<hr>\n";
-		echo "<table width=100%>\n";
+		echo "<table width=\"100%\">\n";
 			echo "<tr>\n";
-				echo "<td width=80%><h4>Image Gallery</h4></td>\n";
-				echo "<td align=right>";
+				echo "<td width=\"80%\"><h4>Image Gallery</h4></td>\n";
+				echo "<td align=\"right\">";
 					if ($_SESSION["id"] <> 0)
-						echo "<a href=edit.php?func=add&area=image&person=".$_REQUEST["person"].">upload</a> new image";
+						echo "<a href=\"edit.php?func=add&amp;area=image&amp;person=".$_REQUEST["person"]."\">upload</a> new image";
 				echo "</td>\n";
 			echo "</tr>\n";
 		echo "</table>\n";
@@ -237,14 +248,14 @@
 			if (mysql_num_rows($iresult) == 0)
 				echo "No images available\n";
 			else {
-				echo "<table width=100%>\n";
+				echo "<table width=\"100%\">\n";
 				$rows = ceil(mysql_num_rows($iresult) / 4);
 				$current = 0;
 				$currentrow = 1;
 					while ($irow = mysql_fetch_array($iresult)) {
 						if ($current == 0 || $current == 5 || $current == 10 || $current == 15)
 							echo "<tr>\n";
-						echo "<td width=20% bgcolor=#CCCCCC align=center valign=top><a href=image.php?image=".$irow["image_id"]."><IMG SRC=images/tn_".$irow["image_id"].".jpg WIDTH=100 HEIGHT=100 BORDER=0 title='".$irow["description"]."'></a><br><a href=image.php?image=".$irow["image_id"].">".$irow["title"]."</a></td>\n";
+						echo "<td width=\"20%\" bgcolor=\"#CCCCCC\" align=\"center\" valign=\"top\"><a href=\"image.php?image=".$irow["image_id"]."\"><IMG SRC=\"images/tn_".$irow["image_id"].".jpg\" WIDTH=\"100\" HEIGHT=\"100\" BORDER=\"0\" title=\"".$irow["description"]."\" alt=\"".$irow["description"]."\"></a><br><a href=\"image.php?image=".$irow["image_id"]."\">".$irow["title"]."</a></td>\n";
 						if ($current == 4 || $current == 9 || $current == 14 || $current == 19) {
 							$currentrow++;
 							echo "</tr>\n";
@@ -255,7 +266,7 @@
 					while ($currentrow <= $rows) {
 						if ($current == 0 || $current == 5 || $current == 10 || $current == 15)
 							echo "<tr>\n";
-						echo "<td width=20%></td>\n";
+						echo "<td width=\"20%\"></td>\n";
 						if ($current == 4 || $current == 9 || $current == 14 || $current == 19) {
 							$currentrow++;
 							echo "</tr>\n";
@@ -268,12 +279,12 @@
 		
 		// census details
 		echo "<HR>\n";
-		echo "<table width=100%>\n";
+		echo "<table width=\"100%\">\n";
 			echo "<tr>\n";
-				echo "<td width=80%><h4>Census Details</h4></td>\n";
-				echo "<td width=20% valign=top align=right>";
+				echo "<td width=\"80%\"><h4>Census Details</h4></td>\n";
+				echo "<td width=\"20%\" valign=\"top\" align=\"right\">";
 					if ($_SESSION["id"] <> 0)
-						echo "<a href=edit.php?func=add&area=census&person=".$_REQUEST["person"].">insert</a> new census";
+						echo "<a href=\"edit.php?func=add&amp;area=census&amp;person=".$_REQUEST["person"]."\">insert</a> new census";
 				echo "</td>\n";
 			echo "</tr>\n";
 		echo "</table>\n";
@@ -286,7 +297,7 @@
 			if (mysql_num_rows($cresult) == 0)
 				echo "No information available\n";
 			else {
-				echo "<table width=100%>";
+				echo "<table width=\"100%\">";
 					echo "<tr>";
 						echo "<th></th>";
 						echo "<th>Year</th>";
@@ -304,14 +315,17 @@
 						else
 							$bgcolor = "#DDDDDD";
 						echo "<tr>\n";
-							echo "<td bgcolor=".$bgcolor."><a href=edit.php?func=edit&area=census&person=".$_REQUEST["person"]."&year=".$crow["year"].">edit</a></td>\n";
-							echo "<td bgcolor=".$bgcolor.">".$crow["year"]."</td>\n";
-							echo "<td bgcolor=".$bgcolor.">".$crow["schedule"]."</td>\n";
-							echo "<td bgcolor=".$bgcolor.">".$crow["address"]."</td>\n";
-							echo "<td bgcolor=".$bgcolor.">".$crow["condition"]."</td>\n";
-							echo "<td bgcolor=".$bgcolor.">".$crow["age"]."</td>\n";
-							echo "<td bgcolor=".$bgcolor.">".$crow["profession"]."</td>\n";
-							echo "<td bgcolor=".$bgcolor.">".$crow["where_born"]."</td>\n";
+							echo "<td bgcolor=\"".$bgcolor."\">";
+							if ($_SESSION["id"] <> 0)
+								echo "<a href=\"edit.php?func=edit&amp;area=census&amp;person=".$_REQUEST["person"]."&amp;year=".$crow["year"]."\">edit</a>";
+							echo "</td>\n";
+							echo "<td bgcolor=\"".$bgcolor."\">".$crow["year"]."</td>\n";
+							echo "<td bgcolor=\"".$bgcolor."\">".$crow["schedule"]."</td>\n";
+							echo "<td bgcolor=\"".$bgcolor."\">".$crow["address"]."</td>\n";
+							echo "<td bgcolor=\"".$bgcolor."\">".$crow["condition"]."</td>\n";
+							echo "<td bgcolor=\"".$bgcolor."\">".$crow["age"]."</td>\n";
+							echo "<td bgcolor=\"".$bgcolor."\">".$crow["profession"]."</td>\n";
+							echo "<td bgcolor=\"".$bgcolor."\">".$crow["where_born"]."</td>\n";
 						echo "</tr>\n";
 						$i++;
 					}
@@ -322,12 +336,12 @@
 
 		// document transcripts
 		echo "<HR>\n";
-		echo "<table width=100%>\n";
+		echo "<table width=\"100%\">\n";
 			echo "<tr>\n";
-				echo "<td width=80%><h4>Document Transcripts</h4></td>\n";
-				echo "<td width=20% valign=top align=right>";
+				echo "<td width=\"80%\"><h4>Document Transcripts</h4></td>\n";
+				echo "<td width=\"20%\" valign=\"top\" align=\"right\">";
 				if ($_SESSION["id"] <> 0)
-					echo "<a href=edit.php?func=add&area=transcript&person=".$_REQUEST["person"].">upload</a> new transcript";
+					echo "<a href=\"edit.php?func=add&amp;area=transcript&amp;person=".$_REQUEST["person"]."\">upload</a> new transcript";
 				echo "</td>\n";
 			echo "</tr>\n";
 		echo "</table>\n";
@@ -342,10 +356,10 @@
 			} 
 			else {
 				echo "<TABLE>\n";
-					echo "<TR WIDTH=100%>\n";
-						echo "<TH WIDTH=30%>Title</TH>\n";
-						echo "<TH WIDTH=50%>Description</TH>\n";
-						echo "<TH WIDTH=10%>Date</TH>\n";
+					echo "<TR>\n";
+						echo "<TH WIDTH=\"30%\">Title</TH>\n";
+						echo "<TH WIDTH=\"50%\">Description</TH>\n";
+						echo "<TH WIDTH=\"10%\">Date</TH>\n";
 					echo "</TR>\n";
 					$i = 0;
 					while ($drow = mysql_fetch_array($dresult)) {
@@ -354,31 +368,43 @@
 						else
 							$bgcolor = "#DDDDDD";
 						echo "<TR>\n";
-							echo "<TD bgcolor=".$bgcolor."><A HREF='http://logger.giric.com/dlcount.php?id=family&url=/".$drow["file_name"]."'>".$drow["doc_title"]."</A></TD>\n";
-							echo "<TD bgcolor=".$bgcolor.">".$drow["doc_description"]."</TD>\n";
-							echo "<TD bgcolor=".$bgcolor.">".formatdbdate($drow["doc_date"])."</TD>\n";
+							echo "<TD bgcolor=\"".$bgcolor."\"><A HREF=\"http://logger.giric.com/dlcount.php?id=family&amp;url=/".$drow["file_name"]."\">".$drow["doc_title"]."</A></TD>\n";
+							echo "<TD bgcolor=\"".$bgcolor."\">".$drow["doc_description"]."</TD>\n";
+							echo "<TD bgcolor=\"".$bgcolor."\">".formatdbdate($drow["doc_date"])."</TD>\n";
 						echo "</TR>\n";
 						$i++;
 					}
 				echo "</TABLE>\n";
 			
-				echo "<BR>Click the document title to download. (Might have to right click & Save Target As.. in Internet Explorer)<BR>\n";
+				echo "<BR>Click the document title to download. (Might have to right click &amp; Save Target As.. in Internet Explorer)<BR>\n";
 			}
 			mysql_free_result($dresult);
 		}
 
 		// page footer
 		echo "<HR>\n";
-		echo "<center><h5>Version: ".$version." Copyright 2002-2003 Simon E Booth<br>\n";
-		echo "Last updated: ".date('H:i \o\n \t\h\e d/m/Y', convertstamp($prow["updated"]))."<br>\n";
-		if ($_SESSION["id"] <> 0) {
-			echo "Any information to add? <a href=edit.php?func=edit&person=".$prow["person_id"]."&area=detail>Edit</a> this person<br>\n";
-			echo "Missing people? <a href=edit.php?func=add&area=detail>Add</a> a new person to the database<br>\n";
-		}
-		echo "Problems";
-		if ($_SESSION["id"] == 0)
-			echo " or anything to add";
-		echo "? Let <a href=mailto:simon.booth@giric.com?subject=\"".$prow["name"]."\">me</a> know</h5></center>\n";
+		echo "<table width=\"100%\">\n";
+		echo "<tr>\n";
+			echo "<td width=\"15%\" align=\"center\" valign=\"middle\">";
+				echo "<a href=\"http://validator.w3.org/check/referer\"><img border=\"0\" src=\"images/valid-html401.png\" alt=\"Valid HTML 4.01!\" height=\"31\" width=\"88\"></a>";
+			echo "</td>\n";
+			echo "<td width=\"70%\" align=\"center\" valign=\"middle\">";
+				echo "<h5>Version: ".$version." Copyright 2002-2003 Simon E Booth<br>\n";
+				echo "Last updated: ".date('H:i \o\n \t\h\e d/m/Y', convertstamp($prow["updated"]))."<br>\n";
+				if ($_SESSION["id"] <> 0) {
+					echo "Any information to add? <a href=\"edit.php?func=edit&amp;person=".$prow["person_id"]."&amp;area=detail\">Edit</a> this person<br>\n";
+					echo "Missing people? <a href=\"edit.php?func=add&amp;area=detail\">Add</a> a new person to the database<br>\n";
+				}
+				echo "Problems";
+				if ($_SESSION["id"] == 0)
+					echo " or anything to add";
+				echo "? Let <a href=\"mailto:simon.booth@giric.com?subject=".$prow["name"]."\">me</a> know</h5>\n";
+			echo "</td>\n";
+			echo "<td width=\"15%\" align=\"center\" valign=\"middle\">";
+				echo "<a href=\"http://jigsaw.w3.org/css-validator/\"><img style=\"border:0;width:88px;height:31px\" src=\"images/vcss.png\" alt=\"Valid CSS!\"></a>";
+			echo "</td>\n";
+		echo "</tr>\n";
+	echo "</table>\n";
 	}
 	
 	mysql_free_result($presult);
@@ -386,7 +412,7 @@
 ?>
 
 <script language="JavaScript" type="text/javascript" src="pphlogger.js"></script>
-<noscript><img alt="" src="http://logger.giric.com/pphlogger.php?id=family&st=img"></noscript>
+<noscript><img alt="" src="http://logger.giric.com/pphlogger.php?id=family&amp;st=img"></noscript>
 
 <?php
 	

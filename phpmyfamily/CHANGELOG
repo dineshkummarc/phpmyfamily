@@ -1,3 +1,7 @@
+	image.php made w3c(HTML 4.01) compliant
+	people.php made w3c(HTML 4.01) compliant (also fixes bug#000001 - html format on weddings)
+	Index.php made w3c(HTML 4.01) compliant
+	Meta tags added to index.php.
 v 1.2.0
 	Index page rearranged to allow login form
 	Support added to passthru.php for login and logout

@@ -21,6 +21,16 @@
 
 	while ($prow = mysql_fetch_array($presult)) {
 
+		// set security for living people (born after 01/01/1910)
+		if ($_SESSION["id"] == 0 && $prow["date_of_birth"] > $restrictdate)
+			$restricted = true;
+		else
+			$restricted = false;
+
+		// if trying to access a restriced person
+		if ($restricted)
+			die("Possible security breach");
+
 		// fill out the header
 		echo "<html>";
 		echo "<head>";
@@ -28,17 +38,10 @@
 		echo "<title>Pedigree for: ".$prow["name"]."</title>";
 		echo "</HEAD>";
 
-		$father[0] = $prow["father_id"];
-		$mother[0] = $prow["mother_id"];
+		echo $prow["name"];
 
-		
-	
-
-		echo $prow["name"]."<br>\n";
-
-		echo $father[0]."<br>\n";
-		echo $mother[0]."<br>\n";
-
+		$query = "SELECT * FROM people WHERE person_id = '".$prow["father_id"]."'";
+		$row = 
 
 
 
