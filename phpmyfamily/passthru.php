@@ -133,8 +133,88 @@
 				echo "<meta http-equiv=refresh content='0; url=index.php?reason=".$err_pwd_success."' />\n";
 			}
 			break;
+		case "delete":
+			switch ($_REQUEST["area"]) {
+				case "census":
+					stamppeeps($_REQUEST["person"]);
+					$dquery = "DELETE FROM ".$tblprefix."census WHERE person_id = '".$_REQUEST["person"]."' AND census = '".$_REQUEST["census"]."'";
+					$dresult = mysql_query($dquery) or die($err_census_delete);
+					echo "<meta http-equiv=refresh content='0; url=people.php?person=".$_REQUEST["person"]."' />\n";
+					break;
+				case "image":
+					if (@unlink("images/tn_".$_REQUEST["image"].".jpg") && @unlink("images/".$_REQUEST["image"].".jpg")){
+						$dquery = "DELETE FROM ".$tblprefix."images WHERE image_id = '".$_REQUEST["image"]."'";
+						$dresult = mysql_query($dquery) or die($err_image_delete);
+						stamppeeps($_REQUEST["person"]);
+					}
+					echo "<meta http-equiv=refresh content='0; url=people.php?person=".$_REQUEST["person"]."' />\n";
+					break;
+				case "marriage":
+					stamppeeps($_REQUEST["person"]);
+					stamppeeps($_REQUEST["spouse"]);
+					$dquery = "DELETE FROM ".$tblprefix."spouses WHERE (groom_id = '".$_REQUEST["person"]."' AND bride_id = '".$_REQUEST["spouse"]."') OR (groom_id = '".$_REQUEST["spouse"]."' AND bride_id = '".$_REQUEST["person"]."')";
+					$dresult = mysql_query($dquery) or die($err_marriage_delete);
+					echo "<meta http-equiv=refresh content='0; url=people.php?person=".$_REQUEST["person"]."' />\n";
+					break;
+				case "transcript":
+					if (@unlink($_REQUEST["transcript"])) {
+						$dquery = "DELETE FROM ".$tblprefix."documents WHERE person_id = '".$_REQUEST["person"]."' AND file_name = '".$_REQUEST["transcript"]."'";
+						$dresult = mysql_query($dquery) or die($err_trans_delete);
+						stamppeeps($_REQUEST["person"]);
+					}
+					echo "<meta http-equiv=refresh content='0; url=people.php?person=".$_REQUEST["person"]."' />\n";
+					break;
+				case "person":
+					// there's a lot to do here
+					// delete transcripts
+					$squery = "SELECT * FROM ".$tblprefix."documents WHERE person_id = '".$_REQUEST["person"]."'";
+					$sresult = mysql_query($squery) or die($err_trans);
+					while ($srow = mysql_fetch_array($sresult)) {
+						if (@unlink($srow["file_name"])) {
+							$dquery = "DELETE FROM ".$tblprefix."documents WHERE person_id = '".$srow["person_id"]."' AND file_name = '".$srow["file_name"]."'";
+							$dresult = mysql_query($dquery) or die($err_trans_delete);
+						} else die($err_trans_file);
+					}
+					mysql_free_result($sresult);
+
+					// delete censuses
+					$dcquery = "DELETE FROM ".$tblprefix."census WHERE person_id = '".$_REQUEST["person"]."'";
+					$dcresult = mysql_query($dcquery) or die($err_census_delete);
+
+					// delete images
+					$squery = "SELECT * FROM ".$tblprefix."images WHERE person_id = '".$_REQUEST["person"]."'";
+					$sresult = mysql_query($squery) or die($err_images);
+					while ($srow = mysql_fetch_array($sresult)) {
+						if (@unlink("images/tn_".$srow["image_id"].".jpg") && @unlink("images/".$srow["image_id"].".jpg")){
+							$dquery = "DELETE FROM ".$tblprefix."images WHERE image_id = '".$srow["image_id"]."'";
+							$dresult = mysql_query($dquery) or die($err_image_delete);
+						} else die ($err_image_file);
+					}
+					mysql_free_result($sresult);
+
+					// delete marriages
+					$dmquery = "DELETE FROM ".$tblprefix."spouses WHERE groom_id = '".$_REQUEST["person"]."' OR bride_id = '".$_REQUEST["person"]."'";
+					$dmresult = mysql_query($dmquery) or die($err_marriage_delete);
+
+					// update children to point to the right person
+					$ucquery = "UPDATE ".$tblprefix."people SET mother_id = '0' WHERE mother_id = '".$_REQUEST["person"]."'";
+					$ucresult = mysql_query($ucquery) or die($err_child_update);
+					$ucquery = "UPDATE ".$tblprefix."people SET mother_id = '0' WHERE father_id = '".$_REQUEST["person"]."'";
+					$ucresult = mysql_query($ucquery) or die($err_child_update);
+
+					// finally, the person
+					$dpquery = "DELETE FROM ".$tblprefix."people WHERE person_id = '".$_REQUEST["person"]."'";
+					$dpresult = mysql_query($dpquery) or die($err_person_delete);
+
+					// have to go to index, cos don't know where else to go
+					echo "<meta http-equiv=refresh content='0; url=index.php' />\n";
+					break;
+				default:
+					break;
+			}
+			break;
 		default:
-			echo "<meta http-equiv=refresh content='0; url=people.php?person=".$_POST["person"]."' />\n";
+			echo "<meta http-equiv=refresh content='10; url=people.php?person=".$_POST["person"]."' />\n";
 			break;
 	}
 	echo "</head>\n";

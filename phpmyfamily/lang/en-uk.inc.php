@@ -27,7 +27,7 @@
 	$dir				= "ltr";
 	$datefmt 			= "'%d/%m/%Y'";
 	// flags are from http://flags.sourceforge.net
-	// I can;t find a copyrigh to credit
+	// I can't find a copyrigh to credit
 	// but I'm sure somebody has it
 	$flag				= "images/gb.gif";
 
@@ -161,6 +161,10 @@
 	$strUpcoming		= "Upcoming Anniversaries";
 	$strMarriages		= "Marriages";
 	$strDeaths			= "Deaths";
+	$strConfirmDelete	= "\"Are you sure you wish to delete the\\n'\" + year + \"' \" + section +\"?\"";
+	$strTranscript		= "transcript";
+	$strImage			= "image";
+	$strDoubleDelete	= "\"Are you really sure you wish to DELETE this person\\nThis process is IRREVERSABLE!!\"";
 
 //=====================================================================================================================
 //  error definitions
@@ -197,6 +201,13 @@
 	$err_pwd			= "Error retrieving password from database";
 	$err_delete_user	= "Error deleting user from database";
 	$err_users			= "Error retrieving users from database";
+	$err_census_delete	= "Error deleting census from database";
+	$err_marriage_delete= "Error deleting marriage from database";
+	$err_trans_delete	= "Error deleting transcript from database";
+	$err_person_delete	= "Error deleting person from database";
+	$err_trans_file		= "Error deleting transcript file";
+	$err_image_file		= "Error deleting image file";
+	$err_child_update	= "Error updating childrens records";
 
 	// eof
 ?>
