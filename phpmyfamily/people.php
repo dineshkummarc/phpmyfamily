@@ -417,6 +417,10 @@
 ?>
 			<td class="<?php echo $class; ?>"><a href="JavaScript:confirm_delete('<?php echo $drow["doc_title"]; ?>', '<?php echo strtolower($strTranscript); ?>', 'passthru.php?func=delete&amp;area=transcript&amp;person=<?php echo $_REQUEST["person"]; ?>&amp;transcript=<?php echo $drow["file_name"]; ?>')" class="delete"><?php echo $strDelete; ?></a></td>
 <?php
+	} else {
+?>
+			<td class="<?php echo $class; ?>"></td>
+<?php
 	}
 ?>
 			<td class="<?php echo $class; ?>"><a href="<?php echo $drow["file_name"]; ?>"><?php echo $drow["doc_title"]; ?></a></td>
