@@ -76,7 +76,7 @@
 		echo $strEmailSent."<br /><br />\n";
 	} else {
 ?>
-<form action="mail.php" method="POST" name="mailform" onSubmit="return check_email();">
+<form action="mail.php" method="post" name="mailform" onsubmit="return check_email();">
 	<input type="hidden" name="action" value="send" />
 	<input type="hidden" name="referer" value="<?php echo $referer; ?>" />
 	<table>
