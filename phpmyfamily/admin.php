@@ -74,6 +74,10 @@
 <title>phpmyfamily Admin</title>
 </head>
 <body>
+
+<?php
+	if ($func <> "ged") {
+?>
 <table class="header" width="100%">
   <tbody>
     <tr>
@@ -127,11 +131,42 @@
 			</table>
 	  </td>
     </tr>
+	<!--Gedcom table-->
+	<tr>
+		<td>
+			<form action="admin.php?func=ged" method="POST" enctype="multipart/form-data" >
+				<table>
+					<tbody>
+						<tr>
+							<th colspan="2"> Upload Gedcom File</th>
+						</tr>
+						<tr>
+							<td class="<?php echo $tbl_odd; ?>">File to upload  </td>
+							<td class="<?php echo $tbl_even; ?>"><input type="file" name="gedfile" size="30" />  </td>
+						</tr>
+						<tr>
+							<td class="<?php echo $tbl_even; ?>"><input type="submit" name="Submit1" value="<?php echo $strSubmit; ?>" /></td>
+							<td>  </td>
+						</tr>
+						<tr>
+							<td colspan="2" class="<?php echo $tbl_even; ?>">Warning - Highly experimental - Only tested on Version 5.5</td>
+						</tr>
+					</tbody>
+				</table>
+			</form>
+		</td>
+	</tr>
   </tbody>
 </table>
 
 <hr />
 <a href="index.php"><?php echo $strBack; ?></a> <?php echo $strToHome; ?>
+
+<?php
+	} else {
+		include "inc/gedcom.inc.php";
+	}
+?>
 </body>
 </html>
 
