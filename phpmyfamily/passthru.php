@@ -213,6 +213,14 @@
 					break;
 			}
 			break;
+		case "lang":
+			$_SESSION["lang"] = "lang/".$_REQUEST["trans"].".inc.php";
+			@$page = $_SERVER["HTTP_REFERER"];
+			if ($page == "")
+				echo "<meta http-equiv=refresh content='0; url=index.php' />\n";
+			else
+				echo "<meta http-equiv=refresh content='0; url=".$page."' />\n";
+			break;
 		default:
 			echo "<meta http-equiv=refresh content='10; url=people.php?person=".$_POST["person"]."' />\n";
 			break;
