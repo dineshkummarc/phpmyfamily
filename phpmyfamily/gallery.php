@@ -63,7 +63,15 @@
 	//die($err_person);
 	while ($row = mysql_fetch_array($result)) {
 		echo "<hr />\n";
-		echo "<h4><a href=\"people.php?person=".$row["person_id"]."\">".$row["name"]." ".$row["suffix"]."</a> (".formatdate($row["DOB"])." - ".formatdate($row["DOD"]).")</h4>\n";
+		echo "<h4><a href=\"people.php?person=".$row["person_id"]."\">".$row["name"]." ".$row["suffix"]."</a> ";
+		if ($row["date_of_birth"] != "0000-00-00" && $row["date_of_death"] != "0000-00-00") {
+			echo "(".$row["DOB"]." - ".$row["DOD"].")";
+		} elseif ($row["date_of_birth"] != "0000-00-00") {
+			echo "(".$strBorn." ".$row["DOB"].")";
+		} elseif ($row["date_of_death"] != "0000-00-00") {
+			echo "(".$strDied." ".$row["DOD"].")";
+		}
+		echo "</h4>\n";
 		show_gallery($row["person_id"], "gallery");
 	}
 	mysql_free_result($result);
