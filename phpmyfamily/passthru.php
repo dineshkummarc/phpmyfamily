@@ -215,7 +215,8 @@
 					echo "<meta http-equiv=refresh content='0; url=people.php?person=".$_REQUEST["person"]."' />\n";
 					break;
 				case "transcript":
-					if (@unlink("docs/".$_REQUEST["transcript"])) {
+					$docFile = "docs/".$_REQUEST["transcript"];
+					if (@unlink($docFile) || !file_exists($docFile)) {
 						$dquery = "DELETE FROM ".$tblprefix."documents WHERE id = '".$_REQUEST["transcript"]."'";
 						$dresult = mysql_query($dquery) or die($err_trans_delete);
 						stamppeeps($_REQUEST["person"]);

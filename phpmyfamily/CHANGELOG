@@ -1,3 +1,4 @@
+	Allows deleting of non-existent transcripts
 	Fixed bug #1095669 (Deleting non-existent images)
 	Fixed bug #1102093 (Duplicate translation string)
 	Added Polish translation (Thanks Mateusz)
