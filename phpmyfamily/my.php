@@ -60,6 +60,11 @@
 </table>
 <hr />
 <br /><br />
+<?php
+	if ($_SESSION["admin"] == 1) {
+		echo "You are an <a href=\"admin.php\">admin</a> user<br>\n";
+	}
+?>
 <table width="100%">
 	<tr>
 		<td width="50%" valign="top"><?php include "inc/passwdform.inc.php"; ?></td>
