@@ -577,10 +577,10 @@
 		global $strLoggedOut;
 
 		if ($_SESSION["id"] != 0) {
-			echo $strLoggedIn."'".$_SESSION["name"]."'<br>\n";
+			echo $strLoggedIn."'".$_SESSION["name"]."'<br />\n";
 			echo "<a href=\"index.php\" class=\"hd_link\">".$strHome."</a> |";
 			echo " <a href=\"passthru.php?func=logout\" class=\"hd_link\">".$strLogout."</a> |";
-			echo " <a href=\"my.php\" class=\"hd_link\">".$strPreferences."</a><br>\n";
+			echo " <a href=\"my.php\" class=\"hd_link\">".$strPreferences."</a><br />\n";
 			if ($_SESSION["editable"] == "Y") {
 				echo "<a href=\"edit.php?func=add&amp;area=detail\" class=\"hd_link\">".$strAdd." ".$strNewPerson."</a>";
 			}
@@ -596,10 +596,10 @@
 				}
 			}
 		} else {
-			echo $strLoggedOut."<br>\n";
+			echo $strLoggedOut."<br />\n";
 			echo "<a href=\"index.php\" class=\"hd_link\">".$strHome."</a> |";
 			echo " <a href=\"my.php\" class=\"hd_link\">".$strLogin."</a> |";
-			echo " <a href=\"my.php?state=lost\" class=\"hd_link\">".$strRecoverPwd."</a> <br>\n";
+			echo " <a href=\"my.php?state=lost\" class=\"hd_link\">".$strRecoverPwd."</a> <br />\n";
 			if ($person != 0) {
 				echo "<a href=\"track.php?person=".$person."\" class=\"hd_link\">".$strTrack." ".$strThisPerson." </a>\n";
 			}

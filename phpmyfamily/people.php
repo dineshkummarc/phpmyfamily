@@ -103,7 +103,7 @@
 ?><a href="pedigree.php?person=<?php echo $prow["person_id"]; ?>"><?php echo $strPedigree; ?></a>::<a href="edit.php?func=edit&amp;area=detail&amp;person=<?php echo $prow["person_id"]; ?>"><?php echo $strEdit; ?></a>::<a href="JavaScript:confirm_delete('<?php echo $prow["name"]; ?>', '<?php echo strtolower($strPerson); ?>', 'passthru.php?func=delete&amp;area=person&amp;person=<?php echo $_REQUEST["person"]; ?>')" class="delete"><?php echo $strDelete; ?></a>
 <?php 
 					if ($gedcom == true)
-						echo "<br><a href=\"gedcom.php?person=".$_REQUEST["person"]."\">".$strGedCom."</a>\n";
+						echo "<br /><a href=\"gedcom.php?person=".$_REQUEST["person"]."\">".$strGedCom."</a>\n";
 
 					echo "</td>\n";
 				} 
@@ -210,7 +210,7 @@
 				} elseif ($crow["date_of_death"] != "0000-00-00") {
 					echo "(".$strDied." ".$crow["DOD"].")";
 				}
-				echo "<br>\n";
+				echo "<br />\n";
 			}
 		}
 		mysql_free_result($cresult);
@@ -238,7 +238,7 @@
 				} elseif ($srow["date_of_death"] != "0000-00-00") {
 					echo "(".$strDied." ".$srow["DOD"].")";
 				}
-				echo "<br>\n";
+				echo "<br />\n";
 			}
 		}
 		mysql_free_result($sresult);
