@@ -301,6 +301,7 @@
 		global $tblprefix;
 		global $strDelete;
 		global $strImage;
+		global $strNoImages;
 
 		// only run query if user permitted
 		$iquery = "SELECT * FROM ".$tblprefix."images WHERE person_id = '".$person."' ORDER BY date";
