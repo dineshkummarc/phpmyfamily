@@ -1,4 +1,4 @@
-	Wrapper around mysql_connect
+	Wrapper around mysql_connect & imagecreatetruecolor
 	GedCom import added (experimental)
 	All fields are now editable
 	Can now delete anything (subject to permission)

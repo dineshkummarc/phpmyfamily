@@ -119,6 +119,17 @@
 		$result = mysql_query($query);
 	}	// end of stamppeeps()
 
+	// function: imagecreate_wrapper
+	// see if we have latest imagecreatetrucolor available
+	function imagecreate_wrapper($xsize, $ysize) {
+
+		// check we have the function
+		if (function_exists("imagecreatetruecolor"))
+			return imagecreatetruecolor($xsize, $ysize);
+		else
+			return imagecreate($xsize, $ysize);
+	}	// end of imagecreate_wrapper()
+
 	// function: processimage
 	// process an uploaded image
 	function processimage() {
@@ -167,7 +178,7 @@
 		// create the thumbnail
 		$thumbw = 100;
 		$thumbh = 100;
-		$thumb = imagecreatetruecolor($thumbw, $thumbh);
+		$thumb = imagecreate_wrapper($thumbw, $thumbh);
 		$background = imagecolorallocate($thumb, 147, 150, 147);
 		imagefill($thumb, 0, 0, $background);
 
@@ -178,7 +189,7 @@
 		// do different things depending on orientation of image
 		if ($ratio < 1) {		// higher than wide
 			// create a file with maximum height
-			$file = imagecreatetruecolor($maxwidth * $ratio, $maxheight);
+			$file = imagecreate_wrapper($maxwidth * $ratio, $maxheight);
 			imagecopyresized($file, $incoming, 0, 0, 0, 0, ($maxheight * $ratio), $maxheight, $size[0], $size[1]);
 
 			// workout border for thumbnail
@@ -187,7 +198,7 @@
 		}
 		else {					// wider than high
 			// create a file with maximum width
-			$file = imagecreatetruecolor($maxwidth, $maxheight / $ratio);
+			$file = imagecreate_wrapper($maxwidth, $maxheight / $ratio);
 			imagecopyresized($file, $incoming, 0, 0, 0, 0, $maxwidth, ($maxwidth / $ratio), $size[0], $size[1]);
 
 			// workout border for thumbnail
