@@ -47,7 +47,7 @@
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html dir="<?php echo $dir; ?>">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $clang; ?>" lang="<?php echo $clang; ?>" dir="<?php echo $dir; ?>">
 <head>
 <link rel="stylesheet" href="<?php echo $style; ?>" type="text/css" />
 <link rel="shortcut icon" href="images/favicon.ico" />
@@ -55,7 +55,6 @@
 <meta name="publisher" content="Giric" />
 <meta name="copyright" content="2002-2003 Simon E Booth" />
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $charset; ?>" />
-<meta http-equiv="content-language" content="<?php echo $clang; ?>" />
 <meta name="keywords" content="Genealogy <?php echo $prow["name"]; ?><?php
 	$fname = "SELECT SUBSTRING_INDEX(name, ' ', -1) AS surname FROM ".$tblprefix."people";
 	if ($_SESSION["id"] == 0)

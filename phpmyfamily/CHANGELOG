@@ -1,3 +1,4 @@
+	Better xhtml support
 v 1.2.5
 	Pedigree page added
 	Wrapper around mysql_connect & imagecreatetruecolor

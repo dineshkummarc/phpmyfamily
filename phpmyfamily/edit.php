@@ -25,12 +25,11 @@
 	// fill out the header
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html dir="<?php echo $dir; ?>">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $clang; ?>" lang="<?php echo $clang; ?>" dir="<?php echo $dir; ?>">
 <head>
 <link rel="stylesheet" href="<?php echo $style; ?>" type="text/css" />
 <link rel="shortcut icon" href="images/favicon.ico" />
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $charset; ?>" />
-<meta http-equiv="content-language" content="<?php echo $clang; ?>" />
 <?php
 
 	switch ($_REQUEST["func"]) {
