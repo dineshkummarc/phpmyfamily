@@ -42,18 +42,18 @@
   <tbody>
     <tr>
       <td class="tbl_odd"><a href="http://prdownloads.sourceforge.net/phpmyfamily/phpmyfamily-1.4.1.tar.gz?download">phpmyfamily-1.4.1.tar.gz</a>  </td>
-      <td class="tbl_odd">83,355 bytes  </td>
-      <td class="tbl_odd">e36e18a5f0018aa922f4adec85d23349</td>
+      <td class="tbl_odd">83,361 bytes  </td>
+      <td class="tbl_odd">e4663442761631a439b0085c8bb06adc</td>
     </tr>
     <tr>
       <td class="tbl_even"><a href="http://prdownloads.sourceforge.net/phpmyfamily/phpmyfamily-1.4.1.zip?download">phpmyfamily-1.4.1.zip</a>  </td>
-      <td class="tbl_even">130,715 bytes  </td>
-      <td class="tbl_even">2809890fa4d49340b92a6560280fe35e</td>
+      <td class="tbl_even">130,713 bytes  </td>
+      <td class="tbl_even">3ea9c590dde91f84bcd9a7e4c292b275</td>
     </tr>
 	<tr>
 		<td class="tbl_odd"><a href="http://prdownloads.sourceforge.net/phpmyfamily/phpmyfamily-1.4.1.tar.bz2?download">phpmyfamily-1.4.1.bz2</a></td>
-		<td class="tbl_odd">73,772 bytes</td>
-		<td class="tbl_odd">dd51f71da8695f5a5c1a01b304c95b25</td>
+		<td class="tbl_odd">73,713 bytes</td>
+		<td class="tbl_odd">021ada415891fd0658273a2e693bf2d6</td>
 	</tr>
   </tbody>
 </table>
