@@ -33,8 +33,14 @@
 	}	// end of formatdbdate()
 
 	function listpeeps($form, $omit = 0, $gender = "A", $default = 0) {
+		// declare global variables
+		global $restrictdate;
+
 		// create the query based on the parameters
 		$query = "SELECT person_id, SUBSTRING_INDEX(name, ' ', -1) AS surname, name FROM people WHERE person_id <> '".$omit."'";
+		if ($_SESSION["id"] == 0)
+			$query .= " AND date_of_birth < '".$restrictdate."'";
+
 		switch ($gender) {
 			case "M":
 				$query .= " AND gender = 'M'";
