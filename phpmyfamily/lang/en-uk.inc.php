@@ -168,6 +168,7 @@
 	$strBirthCert		= "Birth Certified?";
 	$strDeathCert		= "Death Certified?";
 	$strMarriageCert	= "Marriage Certified?";
+	$strNewPerson		= "a new person";
 
 //=====================================================================================================================
 //  error definitions

@@ -115,13 +115,13 @@
 					else
 						echo "(".formatdate($prow["DOB"])." - ".formatdate($prow["DOD"]).")";?></h3>
 			</td>
-			<td width="35%" valign="top">
+			<td width="35%" valign="top" align="right">
 				<form method="get" action="people.php">
 				<?php listpeeps("person", 0, "A", $_REQUEST["person"]); ?>
 				</form>
 <?php
 			if ($_SESSION["id"] <> 0) { ?>
-				<?php echo $strLoggedIn; ?><a href="index.php" class="hd_link"><?php echo $_SESSION["name"]; ?></a>: (<a href="passthru.php?func=logout" class="hd_link"><?php echo $strLogout; ?></a><?php if ($_SESSION["admin"] == 1) echo ", <a href=\"admin.php\" class=\"hd_link\">".$strAdmin."</a>"; ?>)
+				<?php echo $strLoggedIn; ?><a href="index.php" class="hd_link"><?php echo $_SESSION["name"]; ?></a>: (<a href="passthru.php?func=logout" class="hd_link"><?php echo $strLogout; ?></a><?php if ($_SESSION["admin"] == 1) echo ", <a href=\"admin.php\" class=\"hd_link\">".$strAdmin."</a>)<br /><a href=\"edit.php?func=add&amp;area=detail\">".$strAdd."</a> ".$strNewPerson; ?>
 <?php 		}
 			else {
 ?>
@@ -137,10 +137,10 @@
 <!--links to relations table-->
 	<table width="100%">
 		<tr>
-			<th width="88%"><h4><?php echo $strDetails; ?></h4></th>
-			<td width="12%" class="tbl_odd" align="center"><?php
+			<th width="90%"><h4><?php echo $strDetails; ?></h4></th>
+			<td width="10%" class="tbl_odd" align="center"><?php
 				if ($_SESSION["id"] <> 0) {
-?><a href="edit.php?func=edit&amp;area=detail&amp;person=<?php echo $prow["person_id"]; ?>"><?php echo $strEdit; ?></a>::<a href="edit.php?func=add&amp;area=detail"><?php echo $strAdd; ?></a>::<a href="JavaScript:confirm_delete('<?php echo $prow["name"]; ?>', '<?php echo strtolower($strPerson); ?>', 'passthru.php?func=delete&amp;area=person&amp;person=<?php echo $_REQUEST["person"]; ?>')" class="delete"><?php echo $strDelete; ?></a></td>
+?><a href="edit.php?func=edit&amp;area=detail&amp;person=<?php echo $prow["person_id"]; ?>"><?php echo $strEdit; ?></a>::<a href="JavaScript:confirm_delete('<?php echo $prow["name"]; ?>', '<?php echo strtolower($strPerson); ?>', 'passthru.php?func=delete&amp;area=person&amp;person=<?php echo $_REQUEST["person"]; ?>')" class="delete"><?php echo $strDelete; ?></a></td>
 <?php } else echo "</td>"; ?>
 		</tr>
 	</table>
@@ -248,18 +248,18 @@
 	<table>
 		<tr>
 			<th valign="top" width="5%"><?php echo $strMarried; ?>:</th>
-			<td valign="top" width="71%" class="tbl_even">
+			<td valign="top" width="80%" class="tbl_even">
 <?php
 		// query for weddings
 		$wquery = "SELECT *, DATE_FORMAT(marriage_date, ".$datefmt.") AS DOM FROM ".$tblprefix."people, ".$tblprefix."spouses WHERE (bride_id = person_id OR groom_id = person_id) AND (groom_id = '".$_REQUEST["person"]."' OR bride_id = '".$_REQUEST["person"]."') AND person_id <> '".$_REQUEST["person"]."' ORDER BY marriage_date";
 		$wresult = mysql_query($wquery) or die($err_marriage);
 ?>
-				<table width="100%">
+				<table width="100%" cellspacing="0">
 <?php
 		while ($wrow = mysql_fetch_array($wresult)) {
 ?>
 					<tr>
-						<td width="80%" class="tbl_even"><?php
+						<td width="85%" class="tbl_even"><?php
 			if ($_SESSION["id"] <> 0)
 				echo "<a href=\"edit.php?func=edit&amp;area=marriage&amp;person=".$_REQUEST["person"]."&amp;spouse=".$wrow["person_id"]."\">".$strEdit."</a>::<a href=\"JavaScript:confirm_delete('".$wrow["name"]."', '".strtolower($strMarriage)."', 'passthru.php?func=delete&amp;area=marriage&amp;person=".$_REQUEST["person"]."&amp;spouse=".$wrow["person_id"]."')\" class=\"delete\">".$strDelete."</a>";
 			if ($wrow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0)

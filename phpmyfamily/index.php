@@ -60,12 +60,12 @@
 			<h1>phpmyfamily</h1>
 			<h3><?php echo $desc; ?></h3>
 		</td>
-		<td width="35%" valign="top">
+		<td width="35%" valign="top" align="right">
 			<form method="get" action="people.php">
 				<?php listpeeps("person"); ?>
 			</form>
 <?php if ($_SESSION["id"] <> 0) { ?>
-			<?php echo $strLoggedIn; ?><?php echo $_SESSION["name"]; ?>: (<a href="passthru.php?func=logout" class="hd_link"><?php echo $strLogout; ?></a><?php if ($_SESSION["admin"] == 1) echo ", <a href=\"admin.php\" class=\"hd_link\">".$strAdmin."</a>"; ?>)
+			<?php echo $strLoggedIn; ?><?php echo $_SESSION["name"]; ?>: (<a href="passthru.php?func=logout" class="hd_link"><?php echo $strLogout; ?></a><?php if ($_SESSION["admin"] == 1) echo ", <a href=\"admin.php\" class=\"hd_link\">".$strAdmin."</a>)<br /><a href=\"edit.php?func=add&amp;area=detail\">".$strAdd."</a> ".$strNewPerson; ?>
 <?php } ?>
 		</td>
 	</tr>
@@ -281,10 +281,7 @@
 					}
 					mysql_free_result($result);
 
-					if ($_SESSION["id"] <> 0) {
 ?>
-					<tr><td colspan="2"><a href="edit.php?func=add&amp;area=detail">Add</a> a new person</td></tr>
-					<?php } ?>
 				</table>
 
 			</td>
