@@ -197,6 +197,7 @@
 	$strPreferences		= "preferences";
 	$strRecoverPwd		= "recover password";
 	$strStop			= "stop";
+	$strRememberMe		= "Remember me";
 
 //=====================================================================================================================
 //  email definitions

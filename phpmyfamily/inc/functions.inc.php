@@ -580,6 +580,28 @@
 		}
 	}	// end of user_opts()
 
+	// function: check_cookies
+	// see if we have a valid cookie
+	function check_cookies() {
+		global $tblprefix;
+
+		if (isset($_COOKIE["fam_name"]) && isset($_COOKIE["fam_passwd"])) {
+			$query = "SELECT * FROM ".$tblprefix."users WHERE username = '".$_COOKIE["fam_name"]."' AND password = '".$_COOKIE["fam_passwd"]."'";
+			$result = mysql_query($query) or die(mysql_error());
+			while ($row = mysql_fetch_array($result)) {
+				$_SESSION["id"] = $row["id"];
+				$_SESSION["name"] = $row["username"];
+				if ($row["admin"] == "Y")
+					$_SESSION["admin"] = 1;
+				else
+					$_SESSION["admin"] = 0;
+				$_SESSION["editable"] = $row["edit"];
+				$_SESSION["style"] = $row["style"];
+				$_SESSION["email"] = $row["email"];
+			}
+		}
+	}	// end of check_cookies()
+
 	// function: fmod
 	// return the modulus of two numbers
 //	function fmod($x, $y) {

@@ -28,7 +28,6 @@
 
 	// build the page to be sent
 	// it's really only html headers
-	echo "<head>\n";
 	switch ($_REQUEST["func"]) {
 		case "track":
 			switch ($_REQUEST["action"]) {
@@ -154,6 +153,11 @@
 					$_SESSION["style"] = $row["style"];
 					$_SESSION["email"] = $row["email"];
 				}
+				@$remember = $_POST["pwdRemember"];
+				if ($remember != "") {
+					setcookie("fam_name", $_POST["pwdUser"], time() + 3600);
+					setcookie("fam_passwd", md5($_POST["pwdPassword"]), time() + 3600);
+				}
 			}
 			mysql_free_result($result);
 			echo "<meta http-equiv=refresh content='0; url=index.php' />\n";
@@ -165,6 +169,8 @@
 			$_SESSION["editable"] = "N";
 			$_SESSION["style"] = $defaultstyle;
 			$_SESSION["email"] = "";
+			setcookie("fam_name", "", time() - 3600);
+			setcookie("fam_passwd", "", time() - 3600);
 			echo "<meta http-equiv=refresh content='0; url=index.php' />\n";
 			break;
 		case "change":

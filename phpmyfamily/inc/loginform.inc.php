@@ -22,17 +22,21 @@
 
 	<!-- Form proper -->
 	<form method="post" action="passthru.php?func=login">
-		<table width="20%">
+		<table width="30%">
 			<tr>
-				<td width="102"><?php echo $strUsername; ?></td>
+				<td width="152"><?php echo $strUsername; ?></td>
 				<td width="145"><input type="text" name="pwdUser" maxlength="128" /></td>
 			</tr>
 			<tr>
-				<td width="102"><?php echo $strPassword; ?></td>
+				<td width="152"><?php echo $strPassword; ?></td>
 				<td width="145"><input type="password" name="pwdPassword" /></td>
 			</tr>
 			<tr>
-				<td width="102"></td>
+				<td width="152"><?php echo $strRememberMe; ?></td>
+				<td><input type="checkbox" name="pwdRemember"></td>
+			</tr>
+			<tr>
+				<td width="152"></td>
 				<td width="145"><input type="submit" name="Submit1" value="<?php echo $strLogin; ?>" /></td>
 			</tr>
 		</table>

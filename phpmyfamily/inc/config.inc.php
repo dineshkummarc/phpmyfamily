@@ -68,6 +68,13 @@
 	include "functions.inc.php";
 
 //=====================================================================================================================
+// Database connection routines
+//=====================================================================================================================
+	// connect to database
+	$mysql_connect = mysql_connect_wrapper($dbhost, $dbuser, $dbpwd) or die("phpmyfamily cannot access the database server (".$dbhost.")");
+	$database_select = mysql_select_db($dbname) or die("phpmyfamily cannot access the database (".$dbname.")");
+
+//=====================================================================================================================
 // Session routines
 //=====================================================================================================================
 	// call to start a new session or resume if exists
@@ -82,12 +89,8 @@
 	if (!isset($_SESSION["style"])) $_SESSION["style"] = $defaultstyle;	// set the default style sheet
 	if (!isset($_SESSION["email"])) $_SESSION["email"] = "";			// set default email for user
 
-//=====================================================================================================================
-// Database connection routines
-//=====================================================================================================================
-	// connect to database
-	$mysql_connect = mysql_connect_wrapper($dbhost, $dbuser, $dbpwd) or die("phpmyfamily cannot access the database server (".$dbhost.")");
-	$database_select = mysql_select_db($dbname) or die("phpmyfamily cannot access the database (".$dbname.")");
+	if ($_SESSION["id"] == 0)
+		check_cookies();
 
 //=====================================================================================================================
 // Some general variables
