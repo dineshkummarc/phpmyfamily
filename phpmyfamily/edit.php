@@ -14,8 +14,8 @@
 	include "inc/css.inc.php";
 
 	// fill out the header
-	echo "<HTML>";
-	echo "<HEAD>";
+	echo "<HTML>\n";
+	echo "<HEAD>\n";
 	css_site();
 
 	switch ($_REQUEST["func"]) {
@@ -32,59 +32,59 @@
 					while ($edrow = mysql_fetch_array($edresult)) {
 
 						// fill out the header
-						echo "<title>Editing: ".$edrow["name"]."</title>";
-						echo "</HEAD>";
+						echo "<title>Editing: ".$edrow["name"]."</title>\n";
+						echo "</HEAD>\n";
 						echo "<BODY>\n";
 
-						echo "<h2>".$edrow["name"]."</h2>";
-						echo "<hr>";
+						echo "<h2>".$edrow["name"]."</h2>\n";
+						echo "<hr>\n";
 						
-						echo "<form method=post action=passthru.php?func=update&area=detail&person=".$_REQUEST["person"].">";
-							echo "<table>";
-								echo "<tr>";
-									echo "<td>Name</td>";
-									echo "<td><input type=text name=frmName value='".$edrow["name"]."' size=30></td>";
-								echo "</tr>";
-								echo "<tr>";
-									echo "<td>Date of Birth</td>";
-									echo "<td><input type=text name=frmDOB value='".$edrow["date_of_birth"]."' size=30></td>";
-									echo "<td>Please use format YYYY-MM-DD</td>";
-								echo "</tr>";
-								echo "<tr>";
-									echo "<td>Birth Place</td>";
-									echo "<td><input type=text name=frmBirthPlace value='".$edrow["birth_place"]."' size=30></td>";
-								echo "</tr>";
-								echo "<tr>";
-									echo "<td>Date of Death</td>";
-									echo "<td><input type=text name=frmDOD value='".$edrow["date_of_death"]."' size=30></td>";
-									echo "<td>Please use format YYYY-MM-DD</td>";
-								echo "</tr>";
-								echo "<tr>";
-									echo "<td>Cause of Death</td>";
-									echo "<td><input type=text name=frmDeathReason value='".$edrow["death_reason"]."' size=30></td>";
-								echo "</tr>";
-								echo "<tr>";
-									echo "<td>Mother</td>";
-									echo "<TD>";
+						echo "<form method=post action=passthru.php?func=update&area=detail&person=".$_REQUEST["person"].">\n";
+							echo "<table>\n";
+								echo "<tr>\n";
+									echo "<td>Name</td>\n";
+									echo "<td><input type=text name=frmName value='".$edrow["name"]."' size=30 maxlength=50></td>\n";
+								echo "</tr>\n";
+								echo "<tr>\n";
+									echo "<td>Date of Birth</td>\n";
+									echo "<td><input type=text name=frmDOB value='".$edrow["date_of_birth"]."' size=30></td>\n";
+									echo "<td>Please use format YYYY-MM-DD</td>\n";
+								echo "</tr>\n";
+								echo "<tr>\n";
+									echo "<td>Birth Place</td>\n";
+									echo "<td><input type=text name=frmBirthPlace value='".$edrow["birth_place"]."' size=30 maxlenght=50></td>\n";
+								echo "</tr>\n";
+								echo "<tr>\n";
+									echo "<td>Date of Death</td>\n";
+									echo "<td><input type=text name=frmDOD value='".$edrow["date_of_death"]."' size=30></td>\n";
+									echo "<td>Please use format YYYY-MM-DD</td>\n";
+								echo "</tr>\n";
+								echo "<tr>\n";
+									echo "<td>Cause of Death</td>\n";
+									echo "<td><input type=text name=frmDeathReason value='".$edrow["death_reason"]."' size=30 maxlength=50></td>\n";
+								echo "</tr>\n";
+								echo "<tr>\n";
+									echo "<td>Mother</td>\n";
+									echo "<TD>\n";
 									listpeeps("frmMother", $_REQUEST["person"], "F", $edrow["mother_id"]);
-									echo "</td>";
-								echo "</tr>";
-								echo "<tr>";
-									echo "<td>Father</td>";
-									echo "<td>";
+									echo "</td>\n";
+								echo "</tr>\n";
+								echo "<tr>\n";
+									echo "<td>Father</td>\n";
+									echo "<td>\n";
 									listpeeps("frmFather", $_REQUEST["person"], "M", $edrow["father_id"]);
 									echo "</td>\n";
-								echo "</tr>";
-								echo "<tr>";
-									echo "<td>Narrative</td>";
-									echo "<td><textarea name=frmNarrative rows=10 cols=40>".$edrow["narrative"]."</textarea></td>";
-								echo "</tr>";
-								echo "<tr>";
-									echo "<td><INPUT TYPE=SUBMIT NAME=Submit1 VALUE=Submit></td>";
-									echo "<td><INPUT TYPE=RESET NAME=Reset1 VALUE=Reset></td>";
-								echo "</tr>";
-							echo "</table>";
-						echo "</form>";
+								echo "</tr>\n";
+								echo "<tr>\n";
+									echo "<td>Narrative</td>\n";
+									echo "<td colspan=2><textarea name=frmNarrative rows=10 cols=80>".$edrow["narrative"]."</textarea></td>\n";
+								echo "</tr>\n";
+								echo "<tr>\n";
+									echo "<td><INPUT TYPE=SUBMIT NAME=Submit1 VALUE=Submit></td>\n";
+									echo "<td><INPUT TYPE=RESET NAME=Reset1 VALUE=Reset></td>\n";
+								echo "</tr>\n";
+							echo "</table>\n";
+						echo "</form>\n";
 					}
 					break; 
 
@@ -113,45 +113,39 @@
 						while ($edrow = mysql_fetch_array($edresult)) {
 
 							// fill out the header
-							echo "<title>Editing Marriage: ".$prow["name"]." & ".$spousename."</title>";
-							echo "</HEAD>";
+							echo "<title>Editing Marriage: ".$prow["name"]." & ".$spousename."</title>\n";
+							echo "</HEAD>\n";
 							echo "<BODY>\n";
 
-							echo "<h2>Marriage: ".$prow["name"]." & ".$spousename."</h2>";
-							echo "<hr>"; 
+							echo "<h2>Marriage: ".$prow["name"]." & ".$spousename."</h2>\n";
+							echo "<hr>\n"; 
 
-							echo "<form method=post action=passthru.php?func=update&area=marriage&person=".$_REQUEST["person"]."&oldspouse=".$_REQUEST["spouse"]."&gender=".$prow["gender"].">";
-								echo "<table>";
-									echo "<tr>";
-										echo "<td>Spouse</td>";
-										echo "<td><select name=frmSpouse size=1>";
-											$squery = "SELECT person_id, SUBSTRING_INDEX(name, ' ', -1) AS surname, name FROM people WHERE gender <> '".$prow["gender"]."' ORDER BY surname, name";
-											$sresult = mysql_query($squery) or die("Spouse list query failed");
-							
-											while ($srow = mysql_fetch_array($sresult)) {
-												echo "<option value=".$srow["person_id"];
-												if ($srow["person_id"] == $_REQUEST["spouse"])
-													echo " selected=selected";
-												echo ">".$srow["surname"].", ".substr($srow["name"], 0, strlen($srow["name"]) - strlen($srow["surname"]))."</option>";
-											}
-											mysql_free_result($fresult);
-										echo "</select></td>";
-									echo "</tr>";
-									echo "<tr>";
-										echo "<td>Date</td>";
-										echo "<td><input type=text name=frmDate value='".$edrow["marriage_date"]."'</td>";
-										echo "<td>Please use format YYYY-MM-DD</td>";
-									echo "</tr>";
-									echo "<tr>";
-										echo "<td>Place</td>";
-										echo "<td><input type=text name=frmPlace value='".$edrow["marriage_place"]."'></td>";
-									echo "</tr>";
-									echo "<tr>";
-										echo "<td><INPUT TYPE=SUBMIT NAME=Submit1 VALUE=Submit></td>";
-										echo "<td><INPUT TYPE=RESET NAME=Reset1 VALUE=Reset></td>";
-									echo "</tr>";
-								echo "</table>";
-							echo "</form>";
+							echo "<form method=post action=passthru.php?func=update&area=marriage&person=".$_REQUEST["person"]."&oldspouse=".$_REQUEST["spouse"]."&gender=".$prow["gender"].">\n";
+								echo "<table>\n";
+									echo "<tr>\n";
+										echo "<td>Spouse</td>\n";
+										echo "<td>\n";
+										if ($prow["gender"] == "M")
+											listpeeps("frmSpouse", $_REQUEST["person"], "F", $_REQUEST["spouse"]);
+										else
+											listpeeps("frmSpouse", $_REQUEST["person"], "M", $_REQUEST["spouse"]);
+										echo "</td>\n";
+									echo "</tr>\n";
+									echo "<tr>\n";
+										echo "<td>Date of marriage</td>\n";
+										echo "<td><input type=text name=frmDate value='".$edrow["marriage_date"]."' size=15 maxlength=10></td>\n";
+										echo "<td>Please use format YYYY-MM-DD</td>\n";
+									echo "</tr>\n";
+									echo "<tr>\n";
+										echo "<td>Marriage Place</td>\n";
+										echo "<td><input type=text name=frmPlace value='".$edrow["marriage_place"]."' size=30 maxlength=50></td>\n";
+									echo "</tr>\n";
+									echo "<tr>\n";
+										echo "<td><INPUT TYPE=SUBMIT NAME=Submit1 VALUE=Submit></td>\n";
+										echo "<td><INPUT TYPE=RESET NAME=Reset1 VALUE=Reset></td>\n";
+									echo "</tr>\n";
+								echo "</table>\n";
+							echo "</form>\n";
 						}
 						mysql_free_result($edresult);
 					}
@@ -167,64 +161,47 @@
 					while ($edrow = mysql_fetch_array($edresult)) {
 
 						// fill out the header
-						echo "<title>Editing Census: ".$edrow["name"]." (".$edrow["year"].")</title>";
-						echo "</HEAD>";
+						echo "<title>Editing Census: ".$edrow["name"]." (".$edrow["year"].")</title>\n";
+						echo "</HEAD>\n";
 						echo "<BODY>\n";
 
-						echo "<h2> Census: ".$edrow["name"]." (".$edrow["year"].")</h2>";
-						echo "<hr>"; 
+						echo "<h2> Census: ".$edrow["name"]." (".$edrow["year"].")</h2>\n";
+						echo "<hr>\n"; 
 
-						echo "<form method=post action=passthru.php?func=update&area=census&person=".$_REQUEST["person"]."&year=".$_REQUEST["year"].">";
-							echo "<table>";
-								echo "<tr>";
-									echo "<td>Schedule</td>";
-									echo "<td><input type=text name=frmSchedule value='".$edrow["schedule"]."' size=30></td>";
-								echo "</tr>";
-								echo "<tr>";
-									echo "<td>Address</td>";
-									echo "<td><input type=text name=frmAddress value='".$edrow["address"]."' size=50></td>";
-								echo "</tr>";
-								echo "<tr>";
-									echo "<td>Condition</td>";
-									$cquery = "SHOW COLUMNS FROM census LIKE 'condition'";
-									$cresult = mysql_query($cquery);
-									while ($crow = mysql_fetch_array($cresult)) {
-										$enum        = str_replace('enum(', '', $crow['Type']);
-										$enum        = ereg_replace('\\)$', '', $enum);
-										$enum        = explode('\',\'', substr($enum, 1, -1));
-										$enum_cnt    = count($enum);
-									}
-									echo "<td>";
-										echo "<select name=frmCondition size=1>";
-											for ($j = 0; $j < $enum_cnt; $j++) {
-												$enum_atom = str_replace('\'\'', '\'', str_replace('\\\\', '\\', $enum[$j]));
-												echo '<option value="' . urlencode($enum_atom) . '"';
-												if ($enum_atom == $edrow["condition"]) 
-													echo ' selected="selected"';
-												echo '>' . htmlspecialchars($enum_atom) . '</option>' . "\n";
-											}
-										echo "</select>";
-									mysql_free_result($cresult);
-									echo "</td>";
-								echo "</tr>";
-								echo "<tr>";
-									echo "<td>Age</td>";
-									echo "<td><input type=text name=frmAge value='".$edrow["age"]."' size=30></td>";
-								echo "</tr>";
-								echo "<tr>";
-									echo "<td>Profession</td>";
-									echo "<td><input type=text name=frmProfession value='".$edrow["profession"]."' size=30></td>";
-								echo "</tr>";
-								echo "<tr>";
-									echo "<td>Place of Birth</td>";
-									echo "<td><input type=text name=frmBirthPlace value='".$edrow["where_born"]."' size=30></td>";
-								echo "</tr>";
-								echo "<tr>";
-									echo "<td><INPUT TYPE=SUBMIT NAME=Submit1 VALUE=Submit></td>";
-									echo "<td><INPUT TYPE=RESET NAME=Reset1 VALUE=Reset></td>";
-								echo "</tr>";
-							echo "</table>";
-						echo "</form>";
+						echo "<form method=post action=passthru.php?func=update&area=census&person=".$_REQUEST["person"]."&year=".$_REQUEST["year"].">\n";
+							echo "<table>\n";
+								echo "<tr>\n";
+									echo "<td>Schedule</td>\n";
+									echo "<td><input type=text name=frmSchedule value='".$edrow["schedule"]."' size=30 maxlength=20></td>\n";
+								echo "</tr>\n";
+								echo "<tr>\n";
+									echo "<td>Address</td>\n";
+									echo "<td><input type=text name=frmAddress value='".$edrow["address"]."' size=50 maxlength=70></td>\n";
+								echo "</tr>\n";
+								echo "<tr>\n";
+									echo "<td>Condition</td>\n";
+									echo "<td>\n";
+									list_enums("census", "condition", "frmCondition", $edrow["condition"]);
+									echo "</td>\n";
+								echo "</tr>\n";
+								echo "<tr>\n";
+									echo "<td>Age</td>\n";
+									echo "<td><input type=text name=frmAge value='".$edrow["age"]."' size=30 maxlength=3></td>\n";
+								echo "</tr>\n";
+								echo "<tr>\n";
+									echo "<td>Profession</td>\n";
+									echo "<td><input type=text name=frmProfession value='".$edrow["profession"]."' size=30 maxlength=40></td>\n";
+								echo "</tr>\n";
+								echo "<tr>\n";
+									echo "<td>Place of Birth</td>\n";
+									echo "<td><input type=text name=frmBirthPlace value='".$edrow["where_born"]."' size=30 maxlength=40></td>\n";
+								echo "</tr>\n";
+								echo "<tr>\n";
+									echo "<td><INPUT TYPE=SUBMIT NAME=Submit1 VALUE=Submit></td>\n";
+									echo "<td><INPUT TYPE=RESET NAME=Reset1 VALUE=Reset></td>\n";
+								echo "</tr>\n";
+							echo "</table>\n";
+						echo "</form>\n";
 					}
 					break;
 
@@ -240,80 +217,64 @@
 			switch($_REQUEST["area"]) {
 				case "detail":
 					// fill out the header
-					echo "<title>Creating new family member</title>";
-					echo "</HEAD>";
+					echo "<title>Creating new family member</title>\n";
+					echo "</HEAD>\n";
 					echo "<BODY>\n";
 
-					echo "<h2>Create new person</h2>";
-					echo "<hr>";
-					echo "Please make sure person doesn't exist before creating!!!<br>";
+					echo "<h2>Create new person</h2>\n";
+					echo "<hr>\n";
+					echo "<b>Please make sure person doesn't exist before creating!!!</b><br>\n";
 
-					echo "<form method=post action=passthru.php?func=insert&area=detail>";
-						echo "<table>";
-							echo "<tr>";
-								echo "<td>Name</td>";
-								echo "<td><input type=text name=frmName size=30></td>";
-							echo "</tr>";
-							echo "<tr>";
-								echo "<td>Date of Birth</td>";
-								echo "<td><input type=text name=frmDOB size=30></td>";
-								echo "<td>Please use format YYYY-MM-DD</td>";
-							echo "</tr>";
-							echo "<tr>";
-								echo "<td>Birth Place</td>";
-								echo "<td><input type=text name=frmBirthPlace size=30></td>";
-							echo "</tr>";
-							echo "<tr>";
-								echo "<td>Date of Death</td>";
-								echo "<td><input type=text name=frmDOD size=30></td>";
-								echo "<td>Please use format YYYY-MM-DD</td>";
-							echo "</tr>";
-							echo "<tr>";
-								echo "<td>Cause of Death</td>";
-								echo "<td><input type=text name=frmDeathReason size=30></td>";
-							echo "</tr>";
-							echo "<tr>";
-								echo "<td>Gender</td>";
-								echo "<td><input type=radio name=frmGender value=M checked=checked>M<input type=radio name=frmGender value=F>F</td>";
-							echo "</tr>";
-							echo "<tr>";
-								echo "<td>Mother</td>";
-								echo "<td><select name=frmMother size=1>";
-								$mquery = "SELECT person_id, SUBSTRING_INDEX(name, ' ', -1) AS surname, name FROM people WHERE gender = 'F' AND person_id <> '".$_REQUEST["person"]."' ORDER BY surname, name";
-								$mresult = mysql_query($mquery) or die("Mother query failed");
-							
-								echo "<option value=NULL selected=selected>Select mother</option>";
-							
-								while ($mrow = mysql_fetch_array($mresult)) {
-									echo "<option value=".$mrow["person_id"].">".$mrow["surname"].", ".substr($mrow["name"], 0, strlen($mrow["name"]) - strlen($mrow["surname"]))."</option>";
-								}
-								mysql_free_result($mresult);
-								echo "</select></td>";
-							echo "</tr>";
-							echo "<tr>";
-								echo "<td>Father</td>";
-								echo "<td><select name=frmFather size=1>";
-								$fquery = "SELECT person_id, SUBSTRING_INDEX(name, ' ', -1) AS surname, name FROM people WHERE gender = 'M' AND person_id <> '".$_REQUEST["person"]."' ORDER BY surname, name";
-								$fresult = mysql_query($fquery) or die("Father query failed");
-							
-								echo "<option value=null selected=selected>Select father</option>";
-
-								while ($frow = mysql_fetch_array($fresult)) {
-									echo "<option value=".$frow["person_id"].">".$frow["surname"].", ".substr($frow["name"], 0, strlen($frow["name"]) - strlen($frow["surname"]))."</option>";
-								}
-								mysql_free_result($fresult);
-								echo "</select></td>";
-							echo "</tr>";
-							echo "<tr>";
-								echo "<td>Narrative</td>";
-								echo "<td><textarea name=frmNarrative rows=10 cols=40></textarea></td>";
-							echo "</tr>";
-							echo "<tr>";
-								echo "<td><INPUT TYPE=SUBMIT NAME=Submit1 VALUE=Submit></td>";
-								echo "<td><INPUT TYPE=RESET NAME=Reset1 VALUE=Reset></td>";
-							echo "</tr>";
-						echo "</table>";
-					echo "</form>";
+					echo "<form method=post action=passthru.php?func=insert&area=detail>\n";
+						echo "<table>\n";
+							echo "<tr>\n";
+								echo "<td>Name</td>\n";
+								echo "<td><input type=text name=frmName size=30 maxlength=50></td>";
+							echo "</tr>\n";
+							echo "<tr>\n";
+								echo "<td>Date of Birth</td>\n";
+								echo "<td><input type=text name=frmDOB size=30 maxlength=10 value='0000-00-00'></td>\n";
+								echo "<td>Please use format YYYY-MM-DD</td>\n";
+							echo "</tr>\n";
+							echo "<tr>\n";
+								echo "<td>Birth Place</td>\n";
+								echo "<td><input type=text name=frmBirthPlace size=30 maxlength=50></td>\n";
+							echo "</tr>\n";
+							echo "<tr>\n";
+								echo "<td>Date of Death</td>\n";
+								echo "<td><input type=text name=frmDOD size=30 maxlength=10 value='0000-00-00'></td>\n";
+								echo "<td>Please use format YYYY-MM-DD</td>\n";
+							echo "</tr>\n";
+							echo "<tr>\n";
+								echo "<td>Cause of Death</td>\n";
+								echo "<td><input type=text name=frmDeathReason size=30 maxlength=50></td>\n";
+							echo "</tr>\n";
+							echo "<tr>\n";
+								echo "<td>Gender</td>\n";
+								echo "<td><input type=radio name=frmGender value=M checked=checked>M<input type=radio name=frmGender value=F>F</td>\n";
+							echo "</tr>\n";
+							echo "<tr>\n";
+								echo "<td>Mother</td>\n";
+								echo "<td>\n";
+								listpeeps("frmMother", 0, "F");
+								echo "</td>\n";
+							echo "</tr>\n";
+							echo "<tr>\n";
+								echo "<td>Father</td>\n";
+								echo "<td>\n";
+								listpeeps("frmFather", 0, "M");
+								echo "</td>\n";
+							echo "</tr>\n";
+							echo "<tr>\n";
+								echo "<td>Narrative</td>\n";
+								echo "<td colspan=2><textarea name=frmNarrative rows=10 cols=80></textarea></td>\n";
+							echo "</tr>\n";
+							echo "<tr>\n";
+								echo "<td><INPUT TYPE=SUBMIT NAME=Submit1 VALUE=Submit></td>\n";
+								echo "<td><INPUT TYPE=RESET NAME=Reset1 VALUE=Reset></td>\n";
+							echo "</tr>\n";
+						echo "</table>\n";
+					echo "</form>\n";
 					break;
 				
 				case "transcript":
@@ -325,14 +286,14 @@
 					while ($edrow = mysql_fetch_array($edresult)) {
 
 						// fill out the header
-						echo "<title>New Transcript: ".$edrow["name"]."</title>";
-						echo "</HEAD>";
+						echo "<title>New Transcript: ".$edrow["name"]."</title>\n";
+						echo "</HEAD>\n";
 						echo "<BODY>\n";
 
-						echo "<h2> New Transcript: ".$edrow["name"]."</h2>";
-						echo "<hr>"; 
+						echo "<h2> New Transcript: ".$edrow["name"]."</h2>\n";
+						echo "<hr>\n"; 
 
-						echo "<form enctype=multipart/form-data method=post action=passthru.php?func=insert&area=transcript&person=".$_REQUEST["person"].">";
+						echo "<form enctype=multipart/form-data method=post action=passthru.php?func=insert&area=transcript&person=".$_REQUEST["person"].">\n";
 						echo "<TABLE>\n";
 							echo "<TR>\n";
 								echo "<TD>File to Upload</TD>\n";
@@ -348,7 +309,7 @@
 							echo "<TR>\n";
 							echo "<TR>\n";
 								echo "<TD>File Date</TD>\n";
-								echo "<TD><INPUT TYPE=TEXT NAME=frmDate MAXLENGTH=10></TD>\n";
+								echo "<TD><INPUT TYPE=TEXT NAME=frmDate MAXLENGTH=10 value='0000-00-00'></TD>\n";
 								echo "<TD>Please use format YYYY-MM-DD</TD>\n";
 							echo "<TR>\n";
 							echo "<TR>\n";
@@ -369,14 +330,14 @@
 					while ($edrow = mysql_fetch_array($edresult)) {
 
 						// fill out the header
-						echo "<title>New Image: ".$edrow["name"]."</title>";
-						echo "</HEAD>";
+						echo "<title>New Image: ".$edrow["name"]."</title>\n";
+						echo "</HEAD>\n";
 						echo "<BODY>\n";
 
-						echo "<h2> New Image: ".$edrow["name"]."</h2>";
-						echo "<hr>"; 
+						echo "<h2> New Image: ".$edrow["name"]."</h2>\n";
+						echo "<hr>\n"; 
 
-						echo "<form enctype=multipart/form-data method=post action=passthru.php?func=insert&area=image&person=".$_REQUEST["person"].">";
+						echo "<form enctype=multipart/form-data method=post action=passthru.php?func=insert&area=image&person=".$_REQUEST["person"].">\n";
 						echo "<TABLE>\n";
 							echo "<TR>\n";
 								echo "<TD>Image to Upload</TD>\n";
@@ -414,41 +375,38 @@
 					while ($edrow = mysql_fetch_array($edresult)) {
 
 						// fill out the header
-						echo "<title>New Marriage: ".$edrow["name"]."</title>";
-						echo "</HEAD>";
+						echo "<title>New Marriage: ".$edrow["name"]."</title>\n";
+						echo "</HEAD>\n";
 						echo "<BODY>\n";
 
-						echo "<h2> New Marriage: ".$edrow["name"]."</h2>";
-						echo "<hr>"; 
+						echo "<h2> New Marriage: ".$edrow["name"]."</h2>\n";
+						echo "<hr>\n"; 
 
-						echo "<form method=post action=passthru.php?func=insert&area=marriage&person=".$_REQUEST["person"]."&gender=".$edrow["gender"].">";
-							echo "<table>";
-								echo "<tr>";
-									echo "<td>Spouse</td>";
-									echo "<td><select name=frmSpouse size=1>";
-										$squery = "SELECT person_id, SUBSTRING_INDEX(name, ' ', -1) AS surname, name FROM people WHERE gender <> '".$edrow["gender"]."' ORDER BY surname, name";
-										$sresult = mysql_query($squery) or die("Spouse list query failed");
-							
-										while ($srow = mysql_fetch_array($sresult)) {
-											echo "<option value=".$srow["person_id"].">".$srow["surname"].", ".substr($srow["name"], 0, strlen($srow["name"]) - strlen($srow["surname"]))."</option>";
-										}
-										mysql_free_result($fresult);
-									echo "</select></td>";
-								echo "<tr>";
-								echo "<tr>";
-									echo "<td>Date of marriage</td>";
-									echo "<td><input type=text name=frmDate size=30></td>";
-									echo "<td>Use format YYYY-MM-DD</td>";
-								echo "</tr>";
-								echo "<tr>";
-									echo "<td>Marriage Place</td>";
-									echo "<td><input type=text name=frmPlace size=30></td>";
-								echo "</tr>";
-								echo "<tr>";
-								echo "<td><INPUT TYPE=SUBMIT NAME=Submit1 VALUE=Submit></td>";
-							echo "</tr>";
-							echo "</table>";
-						echo "</form>";
+						echo "<form method=post action=passthru.php?func=insert&area=marriage&person=".$_REQUEST["person"]."&gender=".$edrow["gender"].">\n";
+							echo "<table>\n";
+								echo "<tr>\n";
+									echo "<td>Spouse</td>\n";
+									echo "<td>\n";
+									if ($edrow["gender"] == "M")
+										listpeeps("frmSpouse", 0, "F");
+									else
+										listpeeps("frmSpouse", 0, "M");
+									echo "</td>\n";
+								echo "<tr>\n";
+								echo "<tr>\n";
+									echo "<td>Date of marriage</td>\n";
+									echo "<td><input type=text name=frmDate size=15 maxlength=10 value='0000-00-00'></td>\n";
+									echo "<td>Please use format YYYY-MM-DD</td>\n";
+								echo "</tr>\n";
+								echo "<tr>\n";
+									echo "<td>Marriage Place</td>\n";
+									echo "<td><input type=text name=frmPlace size=30 maxlength=50></td>\n";
+								echo "</tr>\n";
+								echo "<tr>\n";
+								echo "<td><INPUT TYPE=SUBMIT NAME=Submit1 VALUE=Submit></td>\n";
+							echo "</tr>\n";
+							echo "</table>\n";
+						echo "</form>\n";
 					}
 					mysql_free_result($edresult);
 					break;
@@ -462,89 +420,53 @@
 					while ($edrow = mysql_fetch_array($edresult)) {
 
 						// fill out the header
-						echo "<title>New Census: ".$edrow["name"]."</title>";
-						echo "</HEAD>";
+						echo "<title>New Census: ".$edrow["name"]."</title>\n";
+						echo "</HEAD>\n";
 						echo "<BODY>\n";
 
-						echo "<h2> New Census: ".$edrow["name"]."</h2>";
-						echo "<hr>"; 
+						echo "<h2> New Census: ".$edrow["name"]."</h2>\n";
+						echo "<hr>\n"; 
 
-						echo "<form method=post action=passthru.php?func=insert&area=census&person=".$_REQUEST["person"].">";
-							echo "<table>";
-								echo "<tr>";
-									echo "<td>Year</td>";
-									$yquery = "SHOW COLUMNS FROM census LIKE 'year'";
-									$yresult = mysql_query($yquery);
-									while ($yrow = mysql_fetch_array($yresult)) {
-										$enum        = str_replace('enum(', '', $yrow['Type']);
-										$enum        = ereg_replace('\\)$', '', $enum);
-										$enum        = explode('\',\'', substr($enum, 1, -1));
-										$enum_cnt    = count($enum);
-										$default	 = $yrow["Default"];
-									}
-									echo "<td>";
-										echo "<select name=frmYear size=1>";
-											for ($j = 0; $j < $enum_cnt; $j++) {
-												$enum_atom = str_replace('\'\'', '\'', str_replace('\\\\', '\\', $enum[$j]));
-												echo '<option value="' . urlencode($enum_atom) . '"';
-												if ($enum_atom == $default) 
-													echo ' selected="selected"';
-												echo '>' . htmlspecialchars($enum_atom) . '</option>' . "\n";
-											}
-										echo "</select>";
-									mysql_free_result($yresult);
-									echo "</td>";
-								echo "</tr>";
-								echo "<tr>";
-									echo "<td>Schedule</td>";
-									echo "<td><input type=text name=frmSchedule size=30></td>";
-								echo "</tr>";
-								echo "<tr>";
-									echo "<td>Address</td>";
-									echo "<td><input type=text name=frmAddress size=50></td>";
-								echo "</tr>";
-								echo "<tr>";
-									echo "<td>Condition</td>";
-									$cquery = "SHOW COLUMNS FROM census LIKE 'condition'";
-									$cresult = mysql_query($cquery);
-									while ($crow = mysql_fetch_array($cresult)) {
-										$enum        = str_replace('enum(', '', $crow['Type']);
-										$enum        = ereg_replace('\\)$', '', $enum);
-										$enum        = explode('\',\'', substr($enum, 1, -1));
-										$enum_cnt    = count($enum);
-										$default	 = $crow["Default"];
-									}
-									echo "<td>";
-										echo "<select name=frmCondition size=1>";
-											for ($j = 0; $j < $enum_cnt; $j++) {
-												$enum_atom = str_replace('\'\'', '\'', str_replace('\\\\', '\\', $enum[$j]));
-												echo '<option value="' . urlencode($enum_atom) . '"';
-												if ($enum_atom == $default) 
-													echo ' selected="selected"';
-												echo '>' . htmlspecialchars($enum_atom) . '</option>' . "\n";
-											}
-										echo "</select>";
-									mysql_free_result($cresult);
-									echo "</td>";
-								echo "</tr>";
-								echo "<tr>";
-									echo "<td>Age</td>";
-									echo "<td><input type=text name=frmAge size=10></td>";
-								echo "</tr>";
-								echo "<tr>";
-									echo "<td>Profession</td>";
-									echo "<td><input type=text name=frmProfession size=30></td>";
-								echo "</tr>";
-								echo "<tr>";
-									echo "<td>Birth Place</td>";
-									echo "<td><input type=text name=frmWhereBorn size=30></td>";
-								echo "</tr>";
-								echo "<tr>";
-									echo "<td><INPUT TYPE=SUBMIT NAME=Submit1 VALUE=Submit></td>";
-									echo "<td></td>";
-								echo "</tr>";
-							echo "</table>";
-						echo "</form>";
+						echo "<form method=post action=passthru.php?func=insert&area=census&person=".$_REQUEST["person"].">\n";
+							echo "<table>\n";
+								echo "<tr>\n";
+									echo "<td>Year</td>\n";
+									echo "<td>\n";
+									list_enums("census", "year", "frmYear");
+									echo "</td>\n";
+								echo "</tr>\n";
+								echo "<tr>\n";
+									echo "<td>Schedule</td>\n";
+									echo "<td><input type=text name=frmSchedule size=30 maxlength=20></td>\n";
+								echo "</tr>\n";
+								echo "<tr>\n";
+									echo "<td>Address</td>\n";
+									echo "<td><input type=text name=frmAddress size=50 maxlength=70></td>\n";
+								echo "</tr>\n";
+								echo "<tr>\n";
+									echo "<td>Condition</td>\n";
+									echo "<td>\n";
+									list_enums("census", "condition", "frmCondition");
+									echo "</td>\n";
+								echo "</tr>\n";
+								echo "<tr>\n";
+									echo "<td>Age</td>\n";
+									echo "<td><input type=text name=frmAge size=10 maxlength=3></td>\n";
+								echo "</tr>\n";
+								echo "<tr>\n";
+									echo "<td>Profession</td>\n";
+									echo "<td><input type=text name=frmProfession size=30 maxlength=40></td>\n";
+								echo "</tr>\n";
+								echo "<tr>\n";
+									echo "<td>Place of Birth</td>\n";
+									echo "<td><input type=text name=frmWhereBorn size=30 maxlength=40></td>\n";
+								echo "</tr>\n";
+								echo "<tr>\n";
+									echo "<td><INPUT TYPE=SUBMIT NAME=Submit1 VALUE=Submit></td>\n";
+									echo "<td></td>\n";
+								echo "</tr>\n";
+							echo "</table>\n";
+						echo "</form>\n";
 					}
 					mysql_free_result($edresult);
 					break;
@@ -569,6 +491,6 @@
 <?php
 
 	echo "</BODY>\n";
-	echo "</html>";
+	echo "</html>\n";
 	// eof
 ?>
