@@ -152,6 +152,18 @@
 		// if left as standard 8M, image creation fails and you get error messages and blank thumbnails
 		ini_set("memory_limit", "32M");
 
+		// bit of error checking
+		if ($x_max < $x_min) {
+			$temp = $x_max;
+			$x_max = $x_min;
+			$x_min = $temp;
+		}
+		if ($y_max < $y_min) {
+			$temp = $y_max;
+			$y_max = $y_min;
+			$y_min = $temp;
+		}
+
 		$size = getimagesize($_FILES["userfile"]["tmp_name"]);
 
 		// get the image resource from the uploaded file
