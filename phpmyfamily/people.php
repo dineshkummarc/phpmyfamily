@@ -305,68 +305,7 @@
 ?></td>
 		</tr>
 	</table>
-<?php
-		// only run query if user permitted
-		if ($restricted)
-			echo $restrictmsg."\n";
-		else {
-			$iquery = "SELECT * FROM ".$tblprefix."images WHERE person_id = '".$_REQUEST["person"]."' ORDER BY date";
-			$iresult = mysql_query($iquery) or die($err_images);
-			if (mysql_num_rows($iresult) == 0) {
-				echo "\t".$strNoImages;
-			}
-			else {
-?>
-	<table width="100%">
-<?php
-				$rows = ceil(mysql_num_rows($iresult) / 5);
-				$current = 0;
-				$currentrow = 1;
-					while ($irow = mysql_fetch_array($iresult)) {
-						// start a new row every 5 images
-						if ($current == 0 || fmod($current, 5) == 0) {
-?>
-		<tr>
-<?php
-						}
-						// alternate background colours
-						if ($current == 0 || fmod($current, 2) == 0)
-							$class = "tbl_odd";
-						else
-							$class = "tbl_even";
-						// display image thumbnail
-?>
-			<td width="20%" class="<?php echo $class; ?>" align="center" valign="top"><a href="image.php?image=<?php echo $irow["image_id"]; ?>"><img src="images/tn_<?php echo $irow["image_id"]; ?>.jpg" width="100" height="100" border="0" title="<?php echo $irow["description"]; ?>" alt="<?php echo $irow["description"]; ?>" /></a><br /><a href="image.php?image=<?php echo $irow["image_id"]; ?>"><?php echo $irow["title"]; ?></a><?php if($_SESSION["id"] != 0) { ?><br /><a href="JavaScript:confirm_delete('<?php echo $irow["title"]; ?>', '<?php echo strtolower($strImage); ?>', 'passthru.php?func=delete&amp;area=image&amp;person=<?php echo $_REQUEST["person"]; ?>&amp;image=<?php echo $irow["image_id"]; ?>')" class="delete"><?php echo $strDelete; ?></a></td><?php } ?>
-<?php
-						// close each row every 5 images
-						if ($current <> 0 && fmod($current + 1, 5) == 0) {
-							$currentrow++;
-?>
-		</tr>
-<?php
-						}
-						$current++;
-					}
-				mysql_free_result($iresult);
-					// make sure that rows and tables are padded and closed properly
-					while ($currentrow <= $rows) {
-?>
-			<td width="20%"></td>
-<?php
-						if ($current <> 0 && fmod($current + 1, 5) == 0) {
-							$currentrow++;
-?>
-		</tr>
-<?php
-						}
-						$current++;
-					}
-?>
-	</table>
-<?php
-			}
-		}
-?>
+<?php show_gallery($_REQUEST["person"]); ?>
 
 <!--census-->
 <hr />
