@@ -130,15 +130,15 @@
 		switch ($size[2]) {
 			case 1:
 				// it's a gif
-				$incoming = imagecreatefromgif($_FILES["userfile"]["tmp_name"]);
+				$incoming = @imagecreatefromgif($_FILES["userfile"]["tmp_name"]);
 				break;
 			case 2:
 				// it's a jpeg
-				$incoming = imagecreatefromjpeg($_FILES["userfile"]["tmp_name"]);
+				$incoming = @imagecreatefromjpeg($_FILES["userfile"]["tmp_name"]);
 				break;
 			case 3:
 				// it's a png
-				$incoming = imagecreatefrompng($_FILES["userfile"]["tmp_name"]);
+				$incoming = @imagecreatefrompng($_FILES["userfile"]["tmp_name"]);
 				break;
 			default:
 				// don't know what it is so just bail-out
