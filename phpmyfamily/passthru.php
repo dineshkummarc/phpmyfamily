@@ -76,7 +76,7 @@
 					if ($_REQUEST["gender"] == "M")
 						$iquery = "INSERT INTO ".$tblprefix."spouses (groom_id, bride_id, marriage_date, marriage_cert, marriage_place) VALUES ('".$_REQUEST["person"]."', '".$_POST["frmSpouse"]."', '".$_POST["frmDate"]."', '".$frmMCert."', '".htmlspecialchars($_POST["frmPlace"], ENT_QUOTES)."')";
 					else
-						$iquery = "INSERT INTO ".$tblprefix."spouses (groom_id, bride_id, marriage_date, marriage_place) VALUES ('".$_POST["frmSpouse"]."', '".$_REQUEST["person"]."', '".$_POST["frmDate"]."', '".$frmMCert."', '".htmlspecialchars($_POST["frmPlace"], ENT_QUOTES)."')";
+						$iquery = "INSERT INTO ".$tblprefix."spouses (groom_id, bride_id, marriage_date, marriage_cert, marriage_place) VALUES ('".$_POST["frmSpouse"]."', '".$_REQUEST["person"]."', '".$_POST["frmDate"]."', '".$frmMCert."', '".htmlspecialchars($_POST["frmPlace"], ENT_QUOTES)."')";
 					$iresult = mysql_query($iquery) or die($err_marriage_insert);
 					$person = $_REQUEST["person"];
 					break;
