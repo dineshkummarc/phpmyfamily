@@ -34,6 +34,12 @@
 	$lang			= "lang/en-uk.inc.php";					// Translations welcome!
 	$timing			= true;									// Whether we want execution time
 	$gedcom			= true;									// Whether we want to allow gedcom export
+	$dynamicrestrict	= false;						// set to true for a dynamic restrict date
+	$restrictyears		= 100;							// number of years to restrict if dynamic
+	if ($dynamicrestrict)
+		$restrictdate = date("Y")-$restrictyears.date("-n-j");
+	else
+		$restrictdate = "1910-01-01";						// date for restricting people
 
 //=====================================================================================================================
 // Change tracking details
@@ -98,7 +104,6 @@
 //=====================================================================================================================
 	// some definitions
 	$version = "1.4.0";											// version string
-	$restrictdate = "1910-01-01";								// date for restricting people
 
 //=====================================================================================================================
 // Language routines
