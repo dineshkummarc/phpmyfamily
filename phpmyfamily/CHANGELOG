@@ -1,3 +1,4 @@
+	Implemented RFE #1065770 (Surname suffix field)
 	Spanish translation added (Thanks Miguel)
 	Better formatting of dates when not known
 	Now possible to "remember me" at login

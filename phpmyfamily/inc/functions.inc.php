@@ -57,7 +57,7 @@
 		global $strUnknown;
 
 		// create the query based on the parameters
-		$query = "SELECT person_id, surname, TRIM(TRAILING surname FROM name) AS forenames, YEAR(date_of_birth) AS year FROM ".$tblprefix."people WHERE person_id <> '".$omit."'";
+		$query = "SELECT person_id, surname, TRIM(TRAILING surname FROM name) AS forenames, YEAR(date_of_birth) AS year, suffix FROM ".$tblprefix."people WHERE person_id <> '".$omit."'";
 
 		// if the user is not logged in, only show people pre $restrictdate
 		if ($_SESSION["id"] == 0)
@@ -100,12 +100,16 @@
 		//
 		while ($row = mysql_fetch_array($result)) {
 			$year = $row["year"];
+			if ($row["suffix"] != "")
+				$suffix = " ".$row["suffix"];
+			else
+				$suffix = "";
 			if ($year == 0)
 				$year = $strUnknown;
 			echo "<option value=\"".$row["person_id"]."\"";
 			if ($row["person_id"] == $default)
 				echo " selected=\"selected\"";
-			echo ">".$row["surname"].", ".$row["forenames"]." (b. ".$year.")</option>\n";
+			echo ">".$row["surname"].$suffix.", ".$row["forenames"]." (b. ".$year.")</option>\n";
 		}
 		echo "</select>";
 

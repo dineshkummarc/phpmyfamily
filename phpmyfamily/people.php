@@ -46,7 +46,7 @@
 		if ($mother == 0) $mother = -1;
 
 		// Fill out the headers
-		do_headers($prow["name"]);
+		do_headers($prow["name"]." ".$prow["suffix"]);
 
 ?>
 
@@ -72,7 +72,7 @@
 	<table width="100%" class="header">
 		<tr>
 			<td width="65%" align="center" valign="top">
-				<h2><?php echo $prow["name"] ?></h2>
+				<h2><?php echo $prow["name"]." ".$prow["suffix"] ?></h2>
 				<h3><?php
 					if ($prow["date_of_birth"] != "0000-00-00" && $prow["date_of_death"] != "0000-00-00") {
 						echo "(".$prow["DOB"]." - ".$prow["DOD"].")";
@@ -128,9 +128,9 @@
 				if ($frow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0)
 					// if anybody gets here they are hacking
 					// or someones made a mistake with peoples parents
-					echo $frow["name"]." (<font class=\"restrict\">".$strRestricted."</font>)<br />\n";
+					echo $frow["name"]." ".$frow["suffix"]." (<font class=\"restrict\">".$strRestricted."</font>)<br />\n";
 				else {
-					echo "<a href=\"people.php?person=".$frow["person_id"]."\">".$frow["name"]."</a> ";
+					echo "<a href=\"people.php?person=".$frow["person_id"]."\">".$frow["name"]." ".$frow["suffix"]."</a> ";
 					if ($frow["date_of_birth"] != "0000-00-00" && $frow["date_of_death"] != "0000-00-00") {
 						echo "(".$frow["DOB"]." - ".$frow["DOD"].")";
 					} elseif ($prow["date_of_birth"] != "0000-00-00") {
@@ -165,9 +165,9 @@
 				if ($mrow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0)
 				// if anybody gets here they are hacking
 				// or someones made a mistake with peoples parents
-				echo $mrow["name"]." (<font class=\"restrict\">".$strRestricted."</font>)<br />\n";
+				echo $mrow["name"]." ".$mrow["suffix"]." (<font class=\"restrict\">".$strRestricted."</font>)<br />\n";
 			else {
-				echo "<a href=\"people.php?person=".$mrow["person_id"]."\">".$mrow["name"]."</a> ";
+				echo "<a href=\"people.php?person=".$mrow["person_id"]."\">".$mrow["name"]." ".$mrow["suffix"]."</a> ";
 				if ($mrow["date_of_birth"] != "0000-00-00" && $mrow["date_of_death"] != "0000-00-00") {
 						echo "(".$mrow["DOB"]." - ".$mrow["DOD"].")";
 					} elseif ($mrow["date_of_birth"] != "0000-00-00") {
@@ -187,16 +187,16 @@
 			<td valign="top" class="tbl_even" colspan="2">
 <?php
 		// query for children
-		$cquery = "SELECT person_id, name, date_of_birth, date_of_death, DATE_FORMAT(date_of_birth, ".$datefmt.") AS DOB, DATE_FORMAT(date_of_death, ".$datefmt.") AS DOD FROM ".$tblprefix."people WHERE (mother_id = '".$_REQUEST["person"]."' OR father_id = '".$_REQUEST["person"]."') ORDER BY date_of_birth";
+		$cquery = "SELECT person_id, name, suffix, date_of_birth, date_of_death, DATE_FORMAT(date_of_birth, ".$datefmt.") AS DOB, DATE_FORMAT(date_of_death, ".$datefmt.") AS DOD FROM ".$tblprefix."people WHERE (mother_id = '".$_REQUEST["person"]."' OR father_id = '".$_REQUEST["person"]."') ORDER BY date_of_birth";
 		$cresult = mysql_query($cquery) or die($err_children);
 		while ($crow = mysql_fetch_array($cresult)) {
 			if ($crow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0) {
 ?>
-				<?php echo $crow["name"]; ?> (<font class="restrict"><?php echo $strRestricted; ?></font>)<br />
+				<?php echo $crow["name"]." ".$crow["suffix"]; ?> (<font class="restrict"><?php echo $strRestricted; ?></font>)<br />
 <?php
 			}
 			else {
-				echo "<a href=\"people.php?person=".$crow["person_id"]."\">".$crow["name"]."</a> ";
+				echo "<a href=\"people.php?person=".$crow["person_id"]."\">".$crow["name"]." ".$crow["suffix"]."</a> ";
 				if ($crow["date_of_birth"] != "0000-00-00" && $crow["date_of_death"] != "0000-00-00") {
 					echo "(".$crow["DOB"]." - ".$crow["DOD"].")";
 				} elseif ($crow["date_of_birth"] != "0000-00-00") {
@@ -215,16 +215,16 @@
 			<td valign="top" class="tbl_even">
 <?php
 		// the query for siblings
-		$squery = "SELECT person_id, name, date_of_birth, date_of_death, DATE_FORMAT(date_of_birth, ".$datefmt.") AS DOB, DATE_FORMAT(date_of_death, ".$datefmt.") AS DOD FROM ".$tblprefix."people WHERE (mother_id = '".$mother."' OR father_id = '".$father."') AND person_id != '".$_REQUEST["person"]."' ORDER BY date_of_birth";
+		$squery = "SELECT person_id, name, suffix, date_of_birth, date_of_death, DATE_FORMAT(date_of_birth, ".$datefmt.") AS DOB, DATE_FORMAT(date_of_death, ".$datefmt.") AS DOD FROM ".$tblprefix."people WHERE (mother_id = '".$mother."' OR father_id = '".$father."') AND person_id != '".$_REQUEST["person"]."' ORDER BY date_of_birth";
 		$sresult = mysql_query($squery) or die($err_siblings);
 		while ($srow = mysql_fetch_array($sresult)) {
 			if ($srow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0) {
 ?>
-				<?php echo $srow["name"]; ?> (<font class="restrict"><?php echo $strRestricted; ?></font>)<br />
+				<?php echo $srow["name"]." ".$srow["suffix"]; ?> (<font class="restrict"><?php echo $strRestricted; ?></font>)<br />
 <?php
 			}
 			else {
-				echo "<a href=\"people.php?person=".$srow["person_id"]."\">".$srow["name"]."</a> ";
+				echo "<a href=\"people.php?person=".$srow["person_id"]."\">".$srow["name"]." ".$srow["suffix"]."</a> ";
 				if ($srow["date_of_birth"] != "0000-00-00" && $srow["date_of_death"] != "0000-00-00") {
 					echo "(".$srow["DOB"]." - ".$srow["DOD"].")";
 				} elseif ($srow["date_of_birth"] != "0000-00-00") {
@@ -249,7 +249,7 @@
 			<td valign="top" width="80%" class="tbl_even">
 <?php
 		// query for weddings
-		$wquery = "SELECT person_id, name, date_of_birth, marriage_place, marriage_cert, marriage_date, DATE_FORMAT(marriage_date, ".$datefmt.") AS DOM FROM ".$tblprefix."people, ".$tblprefix."spouses WHERE (bride_id = person_id AND groom_id = '".$_REQUEST["person"]."') OR (groom_id = person_id AND bride_id = '".$_REQUEST["person"]."') ORDER BY marriage_date";
+		$wquery = "SELECT person_id, name, suffix, date_of_birth, marriage_place, marriage_cert, marriage_date, DATE_FORMAT(marriage_date, ".$datefmt.") AS DOM FROM ".$tblprefix."people, ".$tblprefix."spouses WHERE (bride_id = person_id AND groom_id = '".$_REQUEST["person"]."') OR (groom_id = person_id AND bride_id = '".$_REQUEST["person"]."') ORDER BY marriage_date";
 		$wresult = mysql_query($wquery) or die($err_marriage);
 ?>
 				<table width="100%" cellspacing="0">
@@ -259,11 +259,11 @@
 					<tr>
 						<td width="85%" class="tbl_even"><?php
 			if ($_SESSION["editable"] == "Y")
-				echo "<a href=\"edit.php?func=edit&amp;area=marriage&amp;person=".$_REQUEST["person"]."&amp;spouse=".$wrow["person_id"]."\">".$strEdit."</a>::<a href=\"JavaScript:confirm_delete('".$wrow["name"]."', '".strtolower($strMarriage)."', 'passthru.php?func=delete&amp;area=marriage&amp;person=".$_REQUEST["person"]."&amp;spouse=".$wrow["person_id"]."')\" class=\"delete\">".$strDelete."</a>";
+				echo "<a href=\"edit.php?func=edit&amp;area=marriage&amp;person=".$_REQUEST["person"]."&amp;spouse=".$wrow["person_id"]."\">".$strEdit."</a>::<a href=\"JavaScript:confirm_delete('".$wrow["name"]." ".$wrow["suffix"]."', '".strtolower($strMarriage)."', 'passthru.php?func=delete&amp;area=marriage&amp;person=".$_REQUEST["person"]."&amp;spouse=".$wrow["person_id"]."')\" class=\"delete\">".$strDelete."</a>";
 			if ($wrow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0)
-				echo $wrow["name"]." (<font class=\"restrict\">".$strRestricted."</font>)</td>\n";
+				echo $wrow["name"]." ".$wrow["suffix"]." (<font class=\"restrict\">".$strRestricted."</font>)</td>\n";
 			else {
-				echo " <a href=\"people.php?person=".$wrow["person_id"]."\">".$wrow["name"]."</a>";
+				echo " <a href=\"people.php?person=".$wrow["person_id"]."\">".$wrow["name"]." ".$wrow["suffix"]."</a>";
 				if ($wrow["marriage_date"] != "0000-00-00")
 					echo " ".$strOn." ".$wrow["DOM"];
 				if ($wrow["marriage_place"] != "")

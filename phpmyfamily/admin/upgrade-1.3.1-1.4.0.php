@@ -43,6 +43,10 @@
 	$uresult = mysql_query($uquery) or die("phpmyfamily: Error altering users table!!!");
 	echo "users table altered<br>\n";
 
+	// alter person table
+	$pquery = "ALTER TABLE `family_people` ADD `suffix` VARCHAR( 10 ) NOT NULL AFTER `surname`";
+	$presult = mysql_query($pquery) or die(mysql_error());
+
 	// give a link to continue
 	echo "<h3>Finished!!</h3>\n";
 	echo "Click <a href=\"../index.php\">here</a> to continue.\n";

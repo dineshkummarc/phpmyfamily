@@ -94,7 +94,7 @@
 				die(include "inc/forbidden.inc.php");
 
 			echo "<hr />\n";
-			echo "<h3>".$prow["name"]."</h3>\n";
+			echo "<h3>".$prow["name"]." ".$prow["suffix"]."</h3>\n";
 			echo $strTrackSpeel."<br /><br />\n";
 ?>
 	<form action="track.php" method="post" name="trackform" onsubmit="return check_email();">

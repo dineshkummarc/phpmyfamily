@@ -25,7 +25,7 @@
 
 	// when we have an image, get the associated person details
 	while ($irow = mysql_fetch_array($iresult)) {
-		$pquery = "SELECT name, date_of_birth FROM ".$tblprefix."people WHERE person_id = '".$irow["person_id"]."'";
+		$pquery = "SELECT name, suffix, date_of_birth FROM ".$tblprefix."people WHERE person_id = '".$irow["person_id"]."'";
 		$presult = mysql_query($pquery) or die($err_person);
 		while ($prow = mysql_fetch_array($presult)) {
 
@@ -35,8 +35,15 @@
 			else
 				$restricted = false;
 
+			// if we don't have a suffix
+			// don't want brackets messed up
+			if ($prow["suffix"] != "")
+				$suffix = " ".$prow["suffix"];
+			else
+				$suffix = "";
+
 			// fill out the header
-			do_headers($irow["title"]." (".$prow["name"].")");
+			do_headers($irow["title"]." (".$prow["name"].$suffix.")");
 ?>
 
 <table class="header" width="100%">

@@ -64,7 +64,7 @@
 					@$frmDCert = $_POST["frmDCert"];
 					if ($frmDCert == "")
 						$frmDCert = "N";
-					$query = "UPDATE ".$tblprefix."people SET name = '".htmlspecialchars($_POST["frmName"], ENT_QUOTES)."', surname = SUBSTRING_INDEX(name, ' ', -1), date_of_birth = '".$_POST["frmDOB"]."', birth_cert = '".$frmBCert."', birth_place = '".htmlspecialchars($_POST["frmBirthPlace"], ENT_QUOTES)."', date_of_death = '".$_POST["frmDOD"]."', death_cert = '".$frmDCert."', death_reason = '".htmlspecialchars($_POST["frmDeathReason"], ENT_QUOTES)."', gender = '".$_POST["frmGender"]."', mother_id = '".$_POST["frmMother"]."', father_id = '".$_POST["frmFather"]."', narrative = '".add_quotes($_POST["frmNarrative"])."' WHERE person_id = '".$_REQUEST["person"]."'";
+					$query = "UPDATE ".$tblprefix."people SET name = '".htmlspecialchars($_POST["frmName"], ENT_QUOTES)."', surname = SUBSTRING_INDEX(name, ' ', -1), suffix = '".$_POST["frmSuffix"]."', date_of_birth = '".$_POST["frmDOB"]."', birth_cert = '".$frmBCert."', birth_place = '".htmlspecialchars($_POST["frmBirthPlace"], ENT_QUOTES)."', date_of_death = '".$_POST["frmDOD"]."', death_cert = '".$frmDCert."', death_reason = '".htmlspecialchars($_POST["frmDeathReason"], ENT_QUOTES)."', gender = '".$_POST["frmGender"]."', mother_id = '".$_POST["frmMother"]."', father_id = '".$_POST["frmFather"]."', narrative = '".add_quotes($_POST["frmNarrative"])."' WHERE person_id = '".$_REQUEST["person"]."'";
 					if ($tracking)
 						track_person($_REQUEST["person"]);
 					// If Big Brother is watching
@@ -118,7 +118,7 @@
 					@$frmDCert = $_POST["frmDCert"];
 					if ($frmDCert == "")
 						$frmDCert = "N";
-					$iquery = "INSERT INTO ".$tblprefix."people (person_id, name, surname, date_of_birth, birth_cert, birth_place, date_of_death, death_cert, death_reason, gender, mother_id, father_id, narrative, updated) VALUES ('', '".htmlspecialchars($_POST["frmName"], ENT_QUOTES)."', SUBSTRING_INDEX(name, ' ', -1), '".$_POST["frmDOB"]."', '".$frmBCert."', '".htmlspecialchars($_POST["frmBirthPlace"], ENT_QUOTES)."', '".$_POST["frmDOD"]."', '".$frmDCert."', '".htmlspecialchars($_POST["frmDeathReason"], ENT_QUOTES)."', '".$_POST["frmGender"]."', '".$_POST["frmMother"]."', '".$_POST["frmFather"]."', '".add_quotes($_POST["frmNarrative"])."', NOW())";
+					$iquery = "INSERT INTO ".$tblprefix."people (person_id, name, surname, suffix, date_of_birth, birth_cert, birth_place, date_of_death, death_cert, death_reason, gender, mother_id, father_id, narrative, updated) VALUES ('', '".htmlspecialchars($_POST["frmName"], ENT_QUOTES)."', SUBSTRING_INDEX(name, ' ', -1), '".$_POST["frmSuffix"]."', '".$_POST["frmDOB"]."', '".$frmBCert."', '".htmlspecialchars($_POST["frmBirthPlace"], ENT_QUOTES)."', '".$_POST["frmDOD"]."', '".$frmDCert."', '".htmlspecialchars($_POST["frmDeathReason"], ENT_QUOTES)."', '".$_POST["frmGender"]."', '".$_POST["frmMother"]."', '".$_POST["frmFather"]."', '".add_quotes($_POST["frmNarrative"])."', NOW())";
 					$iresult = mysql_query($iquery) or die($err_detail);
 					$person = mysql_insert_id();
 					// If Big Brother is watching

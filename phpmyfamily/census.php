@@ -77,7 +77,7 @@
 
 <?php
 
-	$cquery = "SELECT ".$tblprefix."census.*, ".$tblprefix."people.name FROM ".$tblprefix."census, ".$tblprefix."people WHERE ".$tblprefix."census.person_id = ".$tblprefix."people.person_id AND ".$tblprefix."census.schedule = '".$ref."' AND ".$tblprefix."census.census = '".$census."'";
+	$cquery = "SELECT ".$tblprefix."census.*, ".$tblprefix."people.name, ".$tblprefix."people.suffix FROM ".$tblprefix."census, ".$tblprefix."people WHERE ".$tblprefix."census.person_id = ".$tblprefix."people.person_id AND ".$tblprefix."census.schedule = '".$ref."' AND ".$tblprefix."census.census = '".$census."'";
 	if ($_SESSION["id"] == 0)
 		$cquery .= " AND ".$tblprefix."people.date_of_birth < '".$restrictdate."'";
 	$cquery .= " ORDER BY ".$tblprefix."census.address, ".$tblprefix."census.age DESC";
@@ -90,7 +90,7 @@
 			$class = "tbl_even";
 ?>
 		<tr>
-			<td class="<?php echo $class; ?>"><a href="people.php?person=<?php echo $crow["person_id"]; ?>"><?php echo $crow["name"]; ?></a></td>
+			<td class="<?php echo $class; ?>"><a href="people.php?person=<?php echo $crow["person_id"]; ?>"><?php echo $crow["name"]." ".$crow["suffix"]; ?></a></td>
 			<td class="<?php echo $class; ?>"><?php echo $crow["address"]; ?></td>
 			<td class="<?php echo $class; ?>"><?php echo $crow["condition"]; ?></td>
 			<td class="<?php echo $class; ?>"><?php echo $crow["age"]; ?></td>

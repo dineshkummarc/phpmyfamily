@@ -71,7 +71,7 @@
 				$class = "tbl_even";
 
 			echo "<td bgcolor=\"#FFFFFF\" width=\"22%\" class=\"".$class."\">";
-			echo "<a href=\"pedigree.php?person=".$dip."\">".$drow["name"]."</a><br />";
+			echo "<a href=\"pedigree.php?person=".$dip."\">".$drow["name"]." ".$drow["suffix"]."</a><br />";
 
 			// display birth details
 			if ($drow["date_of_birth"] != "0000-00-00" && $drow["birth_place"] != "") {
@@ -97,7 +97,7 @@
 	}
 
 	// Fill out the headers
-	do_headers($strPedigreeOf." ".$prow["name"]);
+	do_headers($strPedigreeOf." ".$prow["name"]." ".$prow["suffix"]);
 
 ?>
 
@@ -105,7 +105,7 @@
 	<table width="100%" class="header">
 		<tr>
 			<td width="65%" align="center" valign="top">
-				<h2><?php echo $strPedigreeOf." ".$prow["name"] ?></h2>
+				<h2><?php echo $strPedigreeOf." ".$prow["name"]." ".$prow["suffix"]; ?></h2>
 				<h3><?php
 					if ($restricted)
 						echo "(".$restrictmsg." - ".$restrictmsg.")";

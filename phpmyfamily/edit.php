@@ -36,13 +36,13 @@
 
 					// fill out the form with retrieved data
 					while ($edrow = mysql_fetch_array($edresult)) {
-						do_headers($strEditing.": ".$edrow["name"]);
+						do_headers($strEditing.": ".$edrow["name"]." ".$edrow["suffix"]);
 ?>
 
 <table class="header" width="100%">
   <tbody>
     <tr>
-      <td><h2><?php echo $strEditing.": ".$edrow["name"]; ?></h2>  </td>
+      <td><h2><?php echo $strEditing.": ".$edrow["name"]." ".$edrow["suffix"]; ?></h2>  </td>
     </tr>
   </tbody>
 </table>
@@ -55,6 +55,10 @@
 		<tr>
 			<td class="tbl_odd"><?php echo $strName; ?></td>
 			<td class="tbl_even"><input type="text" name="frmName" value="<?php echo $edrow["name"]; ?>" size="30" maxlength="50" /></td>
+		</tr>
+		<tr>
+			<td class="tbl_odd"><?php echo $strSuffix; ?></td>
+			<td class="tbl_even"><input type="text" name="frmSuffix" value="<?php echo $edrow["suffix"]; ?>" size="30" maxlength="10" /></td>
 		</tr>
 		<tr>
 			<td class="tbl_odd"><?php echo $strDOB; ?></td>
@@ -273,6 +277,10 @@
 		<tr>
 			<td class="tbl_odd"><?php echo $strName; ?></td>
 			<td class="tbl_even"><input type="text" name="frmName" size="30" maxlength="50" /></td>
+		</tr>
+		<tr>
+			<td class="tbl_odd"><?php echo $strSuffix; ?></td>
+			<td class="tbl_even"><input type="text" name="frmSuffix" size="30" maxlength="10" /></td>
 		</tr>
 		<tr>
 			<td class="tbl_odd"><?php echo $strDOB; ?></td>

@@ -198,6 +198,7 @@
 	$strRecoverPwd		= "recover password";
 	$strStop			= "stop";
 	$strRememberMe		= "Remember me";
+	$strSuffix			= "Suffix";
 
 //=====================================================================================================================
 //  email definitions

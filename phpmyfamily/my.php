@@ -1,6 +1,6 @@
 <?php
 	//phpmyfamily - opensource genealogy webbuilder
-	//Copyright (C) 2002 - 2004  Simon E Booth (simon.booth@giric.com)
+	//Coyright (C) 2002 - 2004  Simon E Booth (simon.booth@giric.com)
 
 	//This program is free software; you can redistribute it and/or
 	//modify it under the terms of the GNU General Public License
@@ -65,7 +65,7 @@
 				$class = "tbl_odd";
 			else
 				$class = "tbl_even";
-			echo "<tr><td class=\"".$class."\">".$row["name"]."</td></tr>\n";
+			echo "<tr><td class=\"".$class."\">".$row["name"]." ".$row["suffix"]."</td></tr>\n";
 			$i++;
 		}
 ?>

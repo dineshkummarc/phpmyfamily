@@ -50,7 +50,7 @@
 	echo "</h4>\n";
 
 	// make a list of people
-	$squery = "SELECT person_id, name, surname, DATE_FORMAT(date_of_birth, ".$datefmt.") AS DOB, DATE_FORMAT(date_of_death, ".$datefmt.") AS DOD FROM ".$tblprefix."people";
+	$squery = "SELECT person_id, name, surname, suffix, DATE_FORMAT(date_of_birth, ".$datefmt.") AS DOB, DATE_FORMAT(date_of_death, ".$datefmt.") AS DOD FROM ".$tblprefix."people";
 	if ($_SESSION["id"] == 0)
 		$squery .= " WHERE date_of_birth < '".$restrictdate."'";
 	$squery .= " ORDER BY surname, name, date_of_birth";
@@ -64,7 +64,7 @@
 		} else {
 			$familyname = "";
 		}
-		echo "<a href=\"people.php?person=".$srow["person_id"]."\"".$familyname.">".$srow["name"]."</a> (".formatdate($srow["DOB"])." - ".formatdate($srow["DOD"])."):<br />\n";
+		echo "<a href=\"people.php?person=".$srow["person_id"]."\"".$familyname.">".$srow["name"]." ".$srow["suffix"]."</a> (".formatdate($srow["DOB"])." - ".formatdate($srow["DOD"])."):<br />\n";
 	}
 	mysql_free_result($sresult);
 

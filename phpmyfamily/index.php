@@ -165,7 +165,7 @@
 			$class = "tbl_even";
 ?>
 						<tr>
-							<td class="<?php echo $class; ?>"><a href="people.php?person=<?php echo $brow["person_id"]; ?>"><?php echo $brow["name"]; ?></a></td>
+							<td class="<?php echo $class; ?>"><a href="people.php?person=<?php echo $brow["person_id"]; ?>"><?php echo $brow["name"]." ".$brow["suffix"]; ?></a></td>
 							<td class="<?php echo $class; ?>"><?php echo $brow["DOB"]; ?></td>
 							<td class="<?php echo $class; ?>"><?php echo $brow["year_birth"] - $brow["date_of_birth"]; ?> years</td>
 						</tr>
@@ -179,7 +179,7 @@
 						</tr>
 <?php
 	// get the marriages in the next n days
-	$mquery = "SELECT CONCAT_WS('-', YEAR(NOW()), LPAD(MONTH(marriage_date), 2, '0'), LPAD(DAYOFMONTH(marriage_date), 2, '0')) AS year_marriage, DATE_FORMAT(marriage_date, ".$datefmt.") AS DOM, marriage_date, tbl_male.name AS male, tbl_female.name AS female, tbl_male.person_id AS groom, tbl_female.person_id AS bride FROM ".$tblprefix."spouses, ".$tblprefix."people AS tbl_male, ".$tblprefix."people AS tbl_female";
+	$mquery = "SELECT CONCAT_WS('-', YEAR(NOW()), LPAD(MONTH(marriage_date), 2, '0'), LPAD(DAYOFMONTH(marriage_date), 2, '0')) AS year_marriage, DATE_FORMAT(marriage_date, ".$datefmt.") AS DOM, marriage_date, tbl_male.name AS male, tbl_male.suffix AS male_suffix, tbl_female.suffix AS female_suffix, tbl_female.name AS female, tbl_male.person_id AS groom, tbl_female.person_id AS bride FROM ".$tblprefix."spouses, ".$tblprefix."people AS tbl_male, ".$tblprefix."people AS tbl_female";
 	if ($_SESSION["id"] == 0)
 		$mquery .= " WHERE (tbl_male.date_of_birth < '".$restrictdate."' AND tbl_female.date_of_birth < '".$restrictdate."') AND";
 	else
@@ -194,7 +194,7 @@
 			$class = "tbl_even";
 ?>
 						<tr>
-							<td class="<?php echo $class; ?>"><a href="people.php?person=<?php echo $mrow["groom"]; ?>"><?php echo $mrow["male"]; ?></a> &amp; <a href="people.php?person=<?php echo $mrow["bride"]; ?>"><?php echo $mrow["female"]; ?></a></td>
+							<td class="<?php echo $class; ?>"><a href="people.php?person=<?php echo $mrow["groom"]; ?>"><?php echo $mrow["male"]." ".$mrow["male_suffix"]; ?></a> &amp; <a href="people.php?person=<?php echo $mrow["bride"]; ?>"><?php echo $mrow["female"]." ".$mrow["female_suffix"]; ?></a></td>
 							<td class="<?php echo $class; ?>"><?php echo $mrow["DOM"]; ?></td>
 							<td class="<?php echo $class; ?>"><?php echo $mrow["year_marriage"] - $mrow["marriage_date"]; ?> years</td>
 						</tr>
@@ -221,7 +221,7 @@
 			$class = "tbl_even";
 ?>
 						<tr>
-							<td class="<?php echo $class; ?>"><a href="people.php?person=<?php echo $drow["person_id"]; ?>"><?php echo $drow["name"]; ?></a></td>
+							<td class="<?php echo $class; ?>"><a href="people.php?person=<?php echo $drow["person_id"]; ?>"><?php echo $drow["name"]." ".$drow["suffix"]; ?></a></td>
 							<td class="<?php echo $class; ?>"><?php echo $drow["DOD"]; ?></td>
 							<td class="<?php echo $class; ?>"><?php echo $drow["year_death"] - $drow["date_of_death"]; ?> years</td>
 						</tr>
@@ -245,7 +245,7 @@
 						<th><?php echo $strUpdated; ?></th>
 					</tr>
 <?php
-					$query = "SELECT person_id, name, DATE_FORMAT(updated, ".$datefmt.") AS ddate FROM ".$tblprefix."people";
+					$query = "SELECT person_id, name, DATE_FORMAT(updated, ".$datefmt.") AS ddate, suffix FROM ".$tblprefix."people";
 					if ($_SESSION["id"] == 0)
 						$query .= " WHERE date_of_birth < '".$restrictdate."'";
 					$query .= " ORDER BY updated DESC LIMIT 0,20";
@@ -258,7 +258,7 @@
 							$class = "tbl_even";
 ?>
 					<tr>
-						<td class="<?php echo $class; ?>" align="left"><a href="people.php?person=<?php echo $row["person_id"]; ?>"><?echo $row["name"]; ?></a></td>
+						<td class="<?php echo $class; ?>" align="left"><a href="people.php?person=<?php echo $row["person_id"]; ?>"><?echo $row["name"]." ".$row["suffix"]; ?></a></td>
 						<td class="<?php echo $class; ?>"><?php echo $row["ddate"]; ?></td>
 					</tr>
 <?php
