@@ -142,6 +142,10 @@
 		// define globals used within
 		global $tblprefix;
 		global $err_image_insert;
+		global $x_min;
+		global $y_min;
+		global $x_max;
+		global $y_max;
 
 		// image creation needs masses of memory
 		// this is set too large! but needs to be to process a 1MB jpg!
@@ -188,24 +192,40 @@
 		$background = imagecolorallocate($thumb, 147, 150, 147);
 		imagefill($thumb, 0, 0, $background);
 
-		// basics for creating the main image
-		$maxheight = 500;
-		$maxwidth = 500;
-
 		// do different things depending on orientation of image
 		if ($ratio < 1) {		// higher than wide
-			// create a file with maximum height
-			$file = imagecreate_wrapper($maxwidth * $ratio, $maxheight);
-			imagecopyresized($file, $incoming, 0, 0, 0, 0, ($maxheight * $ratio), $maxheight, $size[0], $size[1]);
+			if ($size[1] > $y_max) {
+				// create a file with maximum height
+				$file = imagecreate_wrapper($x_max * $ratio, $y_max);
+				imagecopyresized($file, $incoming, 0, 0, 0, 0, ($x_max * $ratio), $y_max, $size[0], $size[1]);
+			} elseif ($size[1] < $y_min) {
+				// create a file with minimum height
+				$file = imagecreate_wrapper($x_min * $ratio, $y_min);
+				imagecopyresized($file, $incoming, 0, 0, 0, 0, ($x_min * $ratio), $y_min, $size[0], $size[1]);
+			} else {
+				// create a file the same size
+				$file = imagecreate_wrapper($size[0], $size[1]);
+				imagecopyresized($file, $incoming, 0, 0, 0, 0, $size[0], $size[1], $size[0], $size[1]);
+			}
 
 			// workout border for thumbnail
 			$border = ($thumbw - $thumbw * $ratio) / 2;
 			imagecopyresized($thumb, $incoming, $border, 0, 0, 0, ($thumbw * $ratio), $thumbh, $size[0], $size[1]);
 		}
 		else {					// wider than high
-			// create a file with maximum width
-			$file = imagecreate_wrapper($maxwidth, $maxheight / $ratio);
-			imagecopyresized($file, $incoming, 0, 0, 0, 0, $maxwidth, ($maxwidth / $ratio), $size[0], $size[1]);
+			if ($size[0] > $x_max) {
+				// create a file with maximum width
+				$file = imagecreate_wrapper($x_max, $x_max / $ratio);
+				imagecopyresized($file, $incoming, 0, 0, 0, 0, $x_max, ($x_max / $ratio), $size[0], $size[1]);
+			} elseif ($size[0] < $x_min) {
+				// create a file with minimum width
+				$file = imagecreate_wrapper($x_min, $x_min / $ratio);
+				imagecopyresized($file, $incoming, 0, 0, 0, 0, $x_min, ($x_min / $ratio), $size[0], $size[1]);
+			} else {
+				// create a file the same size
+				$file = imagecreate_wrapper($size[0], $size[1]);
+				imagecopyresized($file, $incoming, 0, 0, 0, 0, $size[0], $size[1], $size[0], $size[1]);
+			}
 
 			// workout border for thumbnail
 			$border = ($thumbh - $thumbh / $ratio) / 2;
