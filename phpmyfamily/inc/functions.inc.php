@@ -525,8 +525,29 @@
 		$GLOBALS["title"] = $title;
 	}	// end of do_headers()
 
+	// function: str_rand (aidan@php.net - http://aidan.dotgeek.org/lib/?file=function.str_rand.php)
+	// generate a random string
+	function str_rand($length = 8, $seeds = 'abcdefghijklmnopqrstuvwxyz0123456789')
+	{
+		$str = '';
+		$seeds_count = strlen($seeds);
+ 
+		// Seed
+		list($usec, $sec) = explode(' ', microtime());
+		$seed = (float) $sec + ((float) $usec * 100000);
+		mt_srand($seed);
+ 
+		// Generate
+		for ($i = 0; $length > $i; $i++) {
+		    $str .= $seeds{mt_rand(0, $seeds_count - 1)};
+		}
+ 
+		return $str;
+	}	// end of str_rand()
+
 	// function: liststyles
 	// list styles to choose
+	// "Ken Joyce"
 	function liststyles($form, $style) {
 		global $strChange;
 		global $styledir;
@@ -612,6 +633,41 @@
 			}
 		}
 	}	// end of check_cookies()
+
+	// function: send password
+	// sends a new password to a user who has forgotten
+	function send_password($email) {
+		global $tblprefix;
+
+		// check we have a valid email address
+		// just drop out if we don't
+		$query = "SELECT * FROM ".$tblprefix."users WHERE email = '".$email."'";
+		$result = mysql_query($query) or die(mysql_error());
+		if (mysql_num_rows($result) != 1)
+			return 0;
+		mysql_free_result($result);
+
+		// generate a new password
+		$password = str_rand();
+
+		// update the table
+		// just drop out if it doesn't work out right
+		$uquery = "UPDATE ".$tblprefix."users SET password = '".$password."' WHERE email = '".$email."'";
+		$uresult = mysql_query($uquery) or die(mysql_error());
+		if (mysql_affected_rows($uresult) != 1)
+			return 0;
+
+		// email to user
+		// Set up the headers to be meaningful
+		$headers = "Content-type: text/plain; charset=iso-8859-1\r\n";
+		$headers .= "From: <".$trackemail.">\r\n";
+		$headers .= "X-Mailer: PHP/" . phpversion();
+		$subject = "Your phpmyfamily password";
+		$body = $password;
+
+		// fire off the email
+		mail($email, $subject, $body, $headers);
+	}	// end of send_password()
 
 	// function: fmod
 	// return the modulus of two numbers

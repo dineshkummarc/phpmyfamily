@@ -92,6 +92,7 @@
 <?php
 	} else {
 		do_headers("Login to phpmyfamily");
+
 ?>
 <table width="100%" class="header">
 	<tr>
@@ -108,7 +109,21 @@
 	</tr>
 </table>
 <?php
-		include "inc/loginform.inc.php";
+
+		//find out the state
+		@$state = $_REQUEST["state"];
+
+		switch ($state) {
+			case "lost":
+				echo "You have lost your password<br>\n";
+				include "inc/lostpasswdform.inc.php";
+				break;
+			case "sent":
+				send_password($_REQUEST["pwdEmail"]);
+				echo "A New password has been sent";
+			default:
+				include "inc/loginform.inc.php";
+		}
 	}
 
 	include "inc/footer.inc.php";
