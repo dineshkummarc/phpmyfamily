@@ -38,6 +38,7 @@
 	$tracking	= true;									// Allow email monitoring of people
 	$trackemail	= "no-reply@giric.com";					// Emails will come from this address
 	$absurl		= "http://www.phpmyfamily.net/";		// Where phpmyfamily is installed (remember trailing slash)
+	$bbtracking	= true;									// Big brother tracking of all changes. (Sent to $email)
 
 //=====================================================================================================================
 // Image max and minimum sizes

@@ -123,6 +123,11 @@
 		// If we allow tracking by email
 		if ($tracking)
 			track_person($person);
+
+		// If Big Brother is watching
+		if ($bbtracking)
+			bb_person($person);
+
 	}	// end of stamppeeps()
 
 	// function: imagecreate_wrapper
@@ -435,6 +440,40 @@
 		}
 		mysql_free_result($tresult);
 	}	// eod of track_person()
+
+	// function: bb_person($person)
+	// send a big brother email on all changes
+	function bb_person($person, $action = "updated") {
+		global $email;
+		global $tblprefix;
+		global $absurl;
+		global $err_person;
+		global $eBBSubject;
+		global $eTrackBodyTop;
+		global $eBBBottom;
+
+		// Get the details of the person changed from the db
+		$query = "SELECT * FROM ".$tblprefix."people WHERE person_id = '".$person."'";
+		$result = mysql_query($query) or die($err_person);
+		while ($row = mysql_fetch_array($result)) {
+			// Set up the headers to be meaningful
+			$headers = "Content-type: text/plain; charset=iso-8859-1\r\n";
+			$headers .= "From: <".$trackemail.">\r\n";
+			$headers .= "X-Mailer: PHP/" . phpversion();
+
+			// Give a subject line
+			$subject = str_replace("$1", $row["name"], $eBBSubject);
+
+			// Flesh out the body
+			$body = str_replace("$1", $trow["name"], $eTrackBodyTop);
+			$body = str_replace("$2", $absurl, $body);
+			$body .= $absurl."people.php?person=".$trow["person_id"]."\n\n";
+			$body .= $eBBBottom;
+		}
+
+		// Fire of the Big Brother email
+		mail($email, $subject, $body, $headers);
+	}	// end of bb_person()
 
 	// function: do_headers
 	// Standardize the html headers
