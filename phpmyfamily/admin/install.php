@@ -45,7 +45,7 @@
 )";
 	$rusers = mysql_query($fusers) or die("phpmyfamily: Error creating user table!!!");
 	echo "User table created<br>\n";
-	$fadmin = "INSERT INTO ".$tblprefix."users VALUES('43', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'Y')";
+	$fadmin = "INSERT INTO ".$tblprefix."users VALUES('43', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'Y', 'Y')";
 	$radmin = mysql_query($fadmin) or die("phpmyfamily: Error creating default user!!!");
 	echo "Default user created<br>\n";
 
