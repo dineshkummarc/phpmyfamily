@@ -7,6 +7,7 @@
 	// Welcome page
 
 	// include the database parameters
+	include "inc/session.inc.php";
 	include "inc/db.inc.php";
 	include "inc/functions.inc.php";
 

@@ -1,3 +1,5 @@
+	Restrictions added to edit, people, image & passthru based on session and person age
+	Added session.inc.php
 	css.inc.php changed to use favicon
 	favicon added to CVS
 v 1.1.2

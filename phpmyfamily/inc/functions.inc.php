@@ -6,6 +6,8 @@
 
 	// some definitions
 	$version = "1.1.2";
+	$restrictdate = "1910-01-01";
+	$restrictmsg = "<FONT COLOR=RED>Restricted</FONT>";
 
 	// convert a timestamp into a proper date/time
 	function convertstamp($origdate) {

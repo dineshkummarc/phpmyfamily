@@ -6,12 +6,16 @@
 	// File to control editing and creation of new data.
 
 	// include the database parameters
+	include "inc/session.inc.php";
 	include "inc/db.inc.php";
 	include "inc/functions.inc.php";
 
 	// include the browser 
 	include "inc/browser.inc.php";
 	include "inc/css.inc.php";
+
+	if ($_SESSION["id"] == 0)
+		die("Security Breach");
 
 	// fill out the header
 	echo "<HTML>\n";

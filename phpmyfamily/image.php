@@ -6,6 +6,7 @@
 	// file to control display of personal information
 
 	// include the database parameters
+	include "inc/session.inc.php";
 	include "inc/db.inc.php";
 	include "inc/functions.inc.php";
 
@@ -18,9 +19,16 @@
 	$iresult = mysql_query($iquery) or die("Image retreival query failed");
 
 	while ($irow = mysql_fetch_array($iresult)) {
-		$pquery = "SELECT name FROM people WHERE person_id = '".$irow["person_id"]."'";
+		$pquery = "SELECT name, date_of_birth FROM people WHERE person_id = '".$irow["person_id"]."'";
 		$presult = mysql_query($pquery) or die("Person fetch failed");
 		while ($prow = mysql_fetch_array($presult)) {
+
+			// check security
+			if ($_SESSION["id"] == 0 && $prow["date_of_birth"] > $restrictdate)
+				$restricted = true;
+			else
+				$restricted = false;
+
 			// fill out the header
 			echo "<HTML>\n";
 			echo "<HEAD>\n";
@@ -35,9 +43,14 @@
 		mysql_free_result($presult);
 	
 	echo "<center><img src=images/".$irow["image_id"].".jpg></center>\n";
-	echo "<p><center>".formatdbdate($irow["date"])."</center></p>\n";
+	echo "<p><center>";
+	if ($restricted)
+		echo $restrictmsg;
+	else
+		echo formatdbdate($irow["date"]);
+	echo "</center></p>\n";
 	echo "<p><center>".$irow["description"]."</center></p>\n";
-// 	echo "<br><br><a type=javascript href=javascript.go(-1)>back</a>\n";
+ 	echo "<br><br><a type=javascript href=javascript:go(-1)>back</a>\n";
 	
 	}
 	mysql_free_result($iresult);

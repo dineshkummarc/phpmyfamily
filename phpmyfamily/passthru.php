@@ -6,8 +6,12 @@
 	// passthru.php
 
 	// include the database parameters
+	include "inc/session.inc.php";
 	include "inc/db.inc.php";
 	include "inc/functions.inc.php";
+
+	if ($_SESSION["id"] == 0 && $_REQUEST["func"] != "jump")
+		die("Security Breach");
 
 	echo "<HEAD>\n";
 	switch ($_REQUEST["func"]) {
