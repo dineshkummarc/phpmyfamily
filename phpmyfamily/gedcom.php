@@ -305,4 +305,14 @@
 		echo "0 TRLR\n";
 	}	// end of ged_trailer()
 
+	$person = $_REQUEST["person"];
+	$filename = "gedcom.ged";
+
+	header("Content-Location: ".$filename);
+	header("Content-Type: application/unknown");
+	header("Content-Disposition: attachment; filename=\"".$filename."\"");
+	header("Content-Transfer-Encoding: binary");
+	ged_header($filename);
+	ged_indi($person);
+	ged_trailer();
 ?>
