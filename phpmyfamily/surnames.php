@@ -68,11 +68,11 @@
 	while ($srow = mysql_fetch_array($sresult)) {
 		if ($surname != $srow["surname"]) {
 			$surname = $srow["surname"];
-			$name = " name=\"".$surname."\"";
+			$familyname = " name=\"".$surname."\"";
 		} else {
-			$name = "";
+			$familyname = "";
 		}
-		echo "<a href=\"people.php?person=".$srow["person_id"]."\"".$name.">".$srow["name"]."</a> (".formatdate($srow["DOB"])." - ".formatdate($srow["DOD"])."):<br />\n";
+		echo "<a href=\"people.php?person=".$srow["person_id"]."\"".$familyname.">".$srow["name"]."</a> (".formatdate($srow["DOB"])." - ".formatdate($srow["DOD"])."):<br />\n";
 	}
 	mysql_free_result($sresult);
 
