@@ -21,10 +21,23 @@
 
 	// wortk out if we have to do anything
 	@$work = $_REQUEST["func"];
-	if ($work == "style") {
-		$query = "UPDATE ".$tblprefix."users SET style = '".$_POST["pwdStyle"].".css.php' WHERE id = '".$_SESSION["id"]."'";
-		$result = mysql_query($query) or die(mysql_error());
-		$_SESSION["style"] = $_POST["pwdStyle"].".css.php";
+	switch ($work) {
+		case "style":
+			$query = "UPDATE ".$tblprefix."users SET style = '".$_POST["pwdStyle"].".css.php' WHERE id = '".$_SESSION["id"]."'";
+			$result = mysql_query($query) or die(mysql_error());
+			$_SESSION["style"] = $_POST["pwdStyle"].".css.php";
+			break;
+		case "email":
+			// update the users table
+			$query = "UPDATE ".$tblprefix."users SET email = '".$_POST["pwdEmail"]."' WHERE id = '".$_SESSION["id"]."'";
+			$result = mysql_query($query) or die(mysql_error());
+
+			// update the tracking table
+			$query = "UPDATE ".$tblprefix."tracking SET email = '".$_POST["pwdEmail"]."' WHERE email = '".$_SESSION["email"]."'";
+			$result = mysql_query($query) or die(mysql_error());
+
+			// update the session variables
+			$_SESSION["email"] = $_POST["pwdEmail"];
 	}
 
 	// do different things for those not logged in
@@ -75,10 +88,14 @@
 		}
 ?>
 			</table>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<form method="post" action="my.php?func=style">
 			<table>
 				<tr>
-					<td><h3>Change your style</h3></td>
+					<td><h4>Change your style</h4></td>
 					<td></td>
 				</tr>
 				<tr>
@@ -92,6 +109,28 @@
 			</table>
 			</form>
 		</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>
+			<form method="post" action="my.php?func=email">
+			<table>
+				<tr>
+					<td><h4>Change your email</h4></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><?php echo $strEmail; ?></td>
+					<td><input type="input" name="pwdEmail" value="<?php echo $_SESSION["email"]; ?>" size="40" maxlength="128" /></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><input type="submit" name="submit2" value="<?php echo $strChange; ?>" /></td>
+				</tr>
+			</table>
+			</form>
+		</td>
+		<td></td>
 	</tr>
 </table>
 <?php
