@@ -243,5 +243,23 @@
 		mysql_free_result($result);
 	}	// end of list_enums()
 
+	// function: list_censuses
+	// Provide a list of censuses
+	function list_censuses($name) {
+		global $tblprefix;
+		global $err_list_census;
+
+		$cquery = "SELECT * FROM ".$tblprefix."census_years WHERE available = 'Y' ORDER BY country, year";
+		$cresult = mysql_query($cquery) or die($err_list_census);
+
+		// do the output
+		echo "<select name=".$name." size=1>\n";
+		while ($crow = mysql_fetch_array($cresult)) {
+			echo "<option value=\"".$crow["census_id"]."\">".$crow["year"]." / ".$crow["country"]."</option>\n";
+		}
+		echo "</select>\n";
+		mysql_free_result($cresult);
+	}	// end of list_censuses()
+
 	// eof
 ?>

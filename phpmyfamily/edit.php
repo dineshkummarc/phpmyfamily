@@ -185,7 +185,7 @@
 
 				case "census":
 					// get the person to edit
-					$edquery = "SELECT * FROM ".$tblprefix."people, ".$tblprefix."census WHERE ".$tblprefix."people.person_id = '".$_REQUEST["person"]."' AND ".$tblprefix."census.year = '".$_REQUEST["year"]."' AND ".$tblprefix."people.person_id = ".$tblprefix."census.person_id";
+					$edquery = "SELECT * FROM ".$tblprefix."people, ".$tblprefix."census, ".$tblprefix."census_years WHERE ".$tblprefix."people.person_id = '".$_REQUEST["person"]."' AND ".$tblprefix."census.census = '".$_REQUEST["census"]."' AND ".$tblprefix."people.person_id = ".$tblprefix."census.person_id AND ".$tblprefix."census.census = ".$tblprefix."census_years.census_id";
 					$edresult = mysql_query($edquery) or die($err_census_ret);
 
 					// fill out the form with retrieved data
@@ -206,7 +206,7 @@
 <hr />
 
 <!--Fill out the form-->
-<form method="post" action="passthru.php?func=update&amp;area=census&amp;person=<?php echo $_REQUEST["person"]; ?>&amp;year=<?php echo $_REQUEST["year"]; ?>">
+<form method="post" action="passthru.php?func=update&amp;area=census&amp;person=<?php echo $_REQUEST["person"]; ?>&amp;census=<?php echo $_REQUEST["census"]; ?>">
 	<table>
 		<tr>
 			<td class="tbl_odd"><?php echo $strSchedule; ?></td>
@@ -232,6 +232,9 @@
 			<td class="tbl_odd"><?php echo $strBirthPlace; ?></td>
 			<td class="tbl_even"><input type="text" name="frmBirthPlace" value="<?php echo $edrow["where_born"]; ?>" size="30" maxlength="40" /></td>
 		</tr>
+		<tr>
+			<td class="tbl_odd" valign="top"><?php echo $strDetails; ?></td>
+			<td class="tbl_even"><textarea type="text" name="frmDetails" rows="4" cols="40"><?php echo $edrow["other_details"]; ?></textarea></td>
 		<tr>
 			<td class="tbl_even"><input type="submit" name="Submit1" value="<?php echo $strSubmit; ?>" /></td>
 			<td class="tbl_even"><input type="reset" name="Reset1" value="<?php echo $strReset; ?>" /></td>
@@ -502,7 +505,7 @@
 	<table>
 		<tr>
 			<td class="tbl_odd"><?php echo $strYear; ?></td>
-			<td class="tbl_even"><?php list_enums("".$tblprefix."census", "year", "frmYear"); ?></td>
+			<td class="tbl_even"><?php list_censuses("frmYear"); ?></td>
 		</tr>
 		<tr>
 			<td class="tbl_odd"><?php echo $strSchedule; ?></td>
@@ -514,7 +517,7 @@
 		</tr>
 		<tr>
 			<td class="tbl_odd"><?php echo $strCondition; ?></td>
-			<td class="tbl_even"><?php list_enums("".$tblprefix."census", "condition", "frmCondition"); ?></td>
+			<td class="tbl_even"><?php list_enums($tblprefix."census", "condition", "frmCondition"); ?></td>
 		</tr>
 		<tr>
 			<td class="tbl_odd"><?php echo $strAge; ?></td>
@@ -527,6 +530,10 @@
 		<tr>
 			<td class="tbl_odd"><?php echo $strBirthPlace; ?></td>
 			<td class="tbl_even"><input type="text" name="frmWhereBorn" size="30" maxlength="40" /></td>
+		</tr>
+		<tr>
+			<td class="tbl_odd"><?php echo $strDetails; ?></td>
+			<td class="tbl_even"><textarea name="frmDetails" cols="40" rows="4" type="text"></textarea></td>
 		</tr>
 		<tr>
 			<td class="tbl_even"><input type="submit" name="Submit1" value="<?php echo $strSubmit; ?>" /></td>

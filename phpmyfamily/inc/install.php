@@ -90,17 +90,34 @@
 	// install ".$tblprefix."census
 	$fcensus = "CREATE TABLE `".$tblprefix."census` (
   `person_id` smallint(5) unsigned zerofill NOT NULL default '00000',
-  `year` enum('1841','1851','1861','1871','1881','1891','1901') NOT NULL default '1881',
+  `census` mediumint(4) NOT NULL default '0',
   `schedule` varchar(20) NOT NULL default '',
   `address` varchar(70) NOT NULL default '',
   `condition` enum('','married','unmarried','widowed') NOT NULL default 'unmarried',
   `age` tinyint(4) unsigned NOT NULL default '0',
   `profession` varchar(45) NOT NULL default '',
   `where_born` varchar(40) NOT NULL default '',
-  PRIMARY KEY  (`person_id`,`year`)
+  `other_details` varchar(255) NOT NULL default '',
+  PRIMARY KEY  (`person_id`,`census`)
 )";
 	$rcensus = mysql_query($fcensus) or die("phpmyfamily: Error creating census table!!!");
 	echo "Census table created<br>\n";
+
+	// install ",$tblprefix."census_years
+	$cyquery = "CREATE TABLE `".$tblprefix."census_years` (
+  `census_id` mediumint(9) NOT NULL auto_increment,
+  `country` varchar(20) NOT NULL default '',
+  `year` smallint(4) NOT NULL default '0',
+  `available` enum('Y','N') NOT NULL default 'Y',
+  PRIMARY KEY  (`census_id`)
+)";
+	$cyresult = mysql_query($cyquery) or die("phpmyfamily: Error creating census years table!!!");
+	echo "Census years table created<br>\n";
+
+	// install ".$tblprefix."census_years values
+	$cyvquery = "INSERT INTO ".$tblprefix."census_years (country, year) VALUES ('British Isles', '1841'), ('British Isles', '1851'), ('British Isles', '1861'), ('British Isles', '1871'), ('British Isles', '1881'), ('British Isles', '1891'), ('British Isles', '1901'), ('USA', '1790'), ('USA', '1800'), ('USA', '1810'), ('USA', '1820'), ('USA', '1830'), ('USA', '1840'), ('USA', '1850'), ('USA', '1860'), ('USA', '1870'), ('USA', '1880'), ('USA', '1890'), ('USA', '1900'), ('USA', '1910'), ('USA', '1920'), ('USA', '1930'), ('Canada', '1842'), ('Canada', '1848'), ('Canada', '1851'), ('Canada', '1861'), ('Canada', '1871'), ('Canada', '1881'), ('Canada', '1891'), ('Canada', '1901')";
+	$cyvresult = mysql_query($cyvquery) or die("phpmyfamily: Error creating census years values!!!");
+	echo "Census years values created<br>\n";
 
 	// install ".$tblprefix."images
 	$fimages = "CREATE TABLE `".$tblprefix."images` (

@@ -47,7 +47,7 @@
 				case "census":
 					stamppeeps($_REQUEST["person"]);
 
-					$query = "UPDATE ".$tblprefix."census SET schedule = '".$_POST["frmSchedule"]."', address = '".$_POST["frmAddress"]."', condition = '".$_POST["frmCondition"]."', age = '".$_POST["frmAge"]."', profession = '".$_POST["frmProfession"]."', where_born = '".$_POST["frmBirthPlace"]."' WHERE person_id = '".$_REQUEST["person"]."' AND year = '".$_REQUEST["year"]."'";
+					$query = "UPDATE ".$tblprefix."census SET schedule = '".$_POST["frmSchedule"]."', address = '".$_POST["frmAddress"]."', condition = '".$_POST["frmCondition"]."', age = '".$_POST["frmAge"]."', profession = '".$_POST["frmProfession"]."', where_born = '".$_POST["frmBirthPlace"]."', other_details = '".$_POST["frmDetails"]."' WHERE person_id = '".$_REQUEST["person"]."' AND census = '".$_REQUEST["census"]."'";
 					break;
 				default:
 					break;
@@ -88,7 +88,7 @@
 				case "census":
 					stamppeeps($_REQUEST["person"]);
 
-					$iquery = "INSERT INTO ".$tblprefix."census (person_id, year, schedule, address, condition, age, profession, where_born) VALUES ('".$_REQUEST["person"]."', '".$_POST["frmYear"]."', '".$_POST["frmSchedule"]."', '".$_POST["frmAddress"]."', '".$_POST["frmCondition"]."', '".$_POST["frmAge"]."', '".$_POST["frmProfession"]."', '".$_POST["frmWhereBorn"]."')";
+					$iquery = "INSERT INTO ".$tblprefix."census (person_id, census, schedule, address, condition, age, profession, where_born, other_details) VALUES ('".$_REQUEST["person"]."', '".$_POST["frmYear"]."', '".$_POST["frmSchedule"]."', '".$_POST["frmAddress"]."', '".$_POST["frmCondition"]."', '".$_POST["frmAge"]."', '".$_POST["frmProfession"]."', '".$_POST["frmWhereBorn"]."', '".$_POST["frmDetails"]."')";
 					$iresult = mysql_query($iquery) or die($err_census);
 
 					$person = $_REQUEST["person"];

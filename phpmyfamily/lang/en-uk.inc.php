@@ -169,6 +169,7 @@
 	$err_listpeeps		= "Error listing people in database";
 	$err_image_insert	= "Error inserting image into database";
 	$err_list_enums		= "Error enumerating types on column";
+	$err_list_census	= "Error listing available censuses";
 	$err_keywords		= "Error retrieving names for keywords from database";
 	$err_changed		= "Error retrieving list of last changed people";
 	$err_father			= "Error retrieving father's details from database";

@@ -369,7 +369,7 @@
 		if ($restricted)
 			echo $restrictmsg."\n";
 		else {
-			$cquery = "SELECT * FROM ".$tblprefix."census WHERE person_id = '".$_REQUEST["person"]."' ORDER BY year";
+			$cquery = "SELECT * FROM ".$tblprefix."census, ".$tblprefix."census_years WHERE person_id = '".$_REQUEST["person"]."' AND census = census_id ORDER BY year";
 			$cresult = mysql_query($cquery) or die($err_census_ret);
 			if (mysql_num_rows($cresult) == 0)
 				echo $strNoInfo."\n";
@@ -385,6 +385,7 @@
 			<th><?php echo $strAge; ?></th>
 			<th><?php echo $strProfession; ?></th>
 			<th><?php echo $strBirthPlace; ?></th>
+			<th><?php echo $strDetails; ?></th>
 		</tr>
 <?php
 		$i = 0;
@@ -397,15 +398,16 @@
 		<tr>
 			<td class="<?php echo $class; ?>"><?php
 							if ($_SESSION["id"] <> 0)
-								echo "<a href=\"edit.php?func=edit&amp;area=census&amp;person=".$_REQUEST["person"]."&amp;year=".$crow["year"]."\">".$strEdit."</a>";
+								echo "<a href=\"edit.php?func=edit&amp;area=census&amp;person=".$_REQUEST["person"]."&amp;census=".$crow["census_id"]."\">".$strEdit."</a>";
 ?></td>
-			<td class="<?php echo $class; ?>"><?php echo $crow["year"]; ?></td>
+			<td class="<?php echo $class; ?>"><?php echo $crow["year"]; ?> (<?php echo $crow["country"]; ?>)</td>
 			<td class="<?php echo $class; ?>"><?php echo $crow["schedule"]; ?></td>
 			<td class="<?php echo $class; ?>"><?php echo $crow["address"]; ?></td>
 			<td class="<?php echo $class; ?>"><?php echo $crow["condition"]; ?></td>
 			<td class="<?php echo $class; ?>"><?php echo $crow["age"]; ?></td>
 			<td class="<?php echo $class; ?>"><?php echo $crow["profession"]; ?></td>
 			<td class="<?php echo $class; ?>"><?php echo $crow["where_born"]; ?></td>
+			<td class="<?php echo $class; ?>"><?php echo $crow["other_details"]; ?></td>
 		</tr>
 <?php
 			$i++;

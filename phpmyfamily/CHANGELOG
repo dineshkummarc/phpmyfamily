@@ -1,4 +1,8 @@
+	census re-written to allow multiple countries
+	anniversaries added to index
+	image upload bug fixed
 	footers standardised
+	style sheets made browser aware
 	internationalisation files created
 	converted to xhtml
 v 1.2.4
