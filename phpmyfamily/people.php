@@ -457,7 +457,7 @@
 							$class = "tbl_even";
 ?>
 		<tr>
-			<td class="<?php echo $class; ?>"><a href="http://logger.giric.com/dlcount.php?id=family&amp;url=/<?php echo $drow["file_name"]; ?>"><?php echo $drow["doc_title"]; ?></a></td>
+			<td class="<?php echo $class; ?>"><a href="docs/<?php echo $drow["file_name"]; ?>"><?php echo $drow["doc_title"]; ?></a></td>
 			<td class="<?php echo $class; ?>"><?php echo $drow["doc_description"]; ?></td>
 			<td class="<?php echo $class; ?>"><?php echo formatdbdate($drow["doc_date"]); ?></td>
 		</tr>
@@ -494,11 +494,6 @@
 
 	mysql_free_result($presult);
 ?>
-
-<!--pphlogger code-->
-<script language="JavaScript" type="text/javascript" src="pphlogger.js"></script><noscript>
-<img alt="" src="http://logger.giric.com/pphlogger.php?id=family&amp;st=img"></noscript>
-<!--end of pphlogger code-->
 
 </body>
 </html>

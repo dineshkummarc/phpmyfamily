@@ -558,11 +558,6 @@
 		</tr>
 	</table>
 
-<!--pphlogger code-->
-<script language="JavaScript" type="text/javascript" src="pphlogger.js"></script>
-<noscript><img alt="" src="http://logger.giric.com/pphlogger.php?id=family&st=img"></noscript>
-<!--end of pphlogger code-->
-
 </body>
 </html>
 

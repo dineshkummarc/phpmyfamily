@@ -143,18 +143,6 @@
 ?>
 						</td>
 					</tr>
-					<tr>
-						<td class="tbl_odd">Page Requests</td>
-						<td class="tbl_odd" align="right">
-<?php
-					$query = "SELECT count(*) as number FROM pphl_97075_mpdl";
-					$result = mysql_query($query);
-					while ($row = mysql_fetch_array($result))
-						echo $row["number"];
-					mysql_free_result($result);
-?>
-						</td>
-					</tr>
 				</table>
 
 			</td>
@@ -204,11 +192,6 @@
 			<td width="15%" align="center" valign="middle"><a href="http://jigsaw.w3.org/css-validator/"><img style="border:0;width:88px;height:31px" src="images/vcss.png" alt="Valid CSS!"></a></td>
 		</tr>
 	</table>
-
-<!--pphlogger code-->
-<script language="JavaScript" type="text/javascript" src="pphlogger.js"></script>
-<noscript><img alt="" src="http://logger.giric.com/pphlogger.php?id=family&amp;st=img"></noscript>
-<!--end of pphlogger code-->
 
 </body>
 </html>
