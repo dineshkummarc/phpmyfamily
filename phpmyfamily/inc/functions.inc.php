@@ -157,7 +157,7 @@
 			return false;
 		}
 
-		$iquery = "INSERT INTO ".$tblprefix."images (person_id, title, date, description) VALUES ('".$_REQUEST["person"]."', '".$_POST["frmTitle"]."', '".$_POST["frmDate"]."', '".$_POST["frmDesc"]."')";;
+		$iquery = "INSERT INTO ".$tblprefix."images (person_id, title, date, description) VALUES ('".$_REQUEST["person"]."', '".htmlspecialchars($_POST["frmTitle"], ENT_QUOTES)."', '".$_POST["frmDate"]."', '".htmlspecialchars($_POST["frmDesc"], ENT_QUOTES)."')";;
 		$iresult = mysql_query($iquery) or die($err_image_insert);
 		$image = mysql_insert_id();
 
