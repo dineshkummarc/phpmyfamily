@@ -167,7 +167,7 @@
 		// create the thumbnail
 		$thumbw = 100;
 		$thumbh = 100;
-		$thumb = imagecreate($thumbw, $thumbh);
+		$thumb = imagecreatetruecolor($thumbw, $thumbh);
 		$background = imagecolorallocate($thumb, 147, 150, 147);
 		imagefill($thumb, 0, 0, $background);
 
@@ -178,7 +178,7 @@
 		// do different things depending on orientation of image
 		if ($ratio < 1) {		// higher than wide
 			// create a file with maximum height
-			$file = imagecreate($maxwidth * $ratio, $maxheight);
+			$file = imagecreatetruecolor($maxwidth * $ratio, $maxheight);
 			imagecopyresized($file, $incoming, 0, 0, 0, 0, ($maxheight * $ratio), $maxheight, $size[0], $size[1]);
 
 			// workout border for thumbnail
@@ -187,7 +187,7 @@
 		}
 		else {					// wider than high
 			// create a file with maximum width
-			$file = imagecreate($maxwidth, $maxheight / $ratio);
+			$file = imagecreatetruecolor($maxwidth, $maxheight / $ratio);
 			imagecopyresized($file, $incoming, 0, 0, 0, 0, $maxwidth, ($maxwidth / $ratio), $size[0], $size[1]);
 
 			// workout border for thumbnail
