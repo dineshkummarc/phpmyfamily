@@ -5,7 +5,7 @@
 
 		$banner = rand(5, 7);
 ?>
-			<td align="center"><h2>phpmyfamily::<?php echo $title; ?></h2><h5>Current Version: 1.4.0</h5></td>
+			<td align="center"><h2>phpmyfamily::<?php echo $title; ?></h2><h5>Current Version: 1.4.1</h5></td>
 			<td align="right">
 <a href="http://sourceforge.net"><img src="http://sourceforge.net/sflogo.php?group_id=110402&amp;type=<?php echo $banner; ?>" width="210" height="62" border="0" alt="SourceForge.net Logo"/></a>
 <script type="text/javascript"><!--
