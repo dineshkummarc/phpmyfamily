@@ -25,6 +25,7 @@
 	$marriage = array();
 	$text = array();
 	$desc = array();
+	$pref = array();
 	$blocks = 0;
 
 	// pick up the next auto value from table
@@ -75,7 +76,7 @@
 			$retval = "0000-00-00";
 
 		// return the string
-		return $retval."(".$incoming.")";
+		return $retval;
 	}
 
 ?>
@@ -204,15 +205,15 @@ Parsing notes data:
 		for ($c = 0; $c < $count; $c++) {
 
 			if ($c == 0)
-				$desc[$i]["ged_notes_ref"] = substr($text[$i][$c], 3, strlen($text[$i][$c]) - 9);
+				$temp = substr($text[$i][$c], 3, strlen($text[$i][$c]) - 9);
 
 			switch (substr($text[$i][$c], 0, 6)) {
 				case "1 CONC":
 				case "1 CONT":
-					if (array_key_exists("notes", $desc[$i]))
-						$desc[$i]["notes"] = $desc[$i]["notes"]."\n".substr($text[$i][$c], 6, strlen($text[$i][$c]) - 6);
+					if (array_key_exists($temp, $desc))
+						$desc[$temp] = $desc[$temp]."\n".substr($text[$i][$c], 6, strlen($text[$i][$c]) - 6);
 					else
-						$desc[$i]["notes"] = substr($text[$i][$c], 6, strlen($text[$i][$c]) - 6);
+						$desc[$temp] = substr($text[$i][$c], 6, strlen($text[$i][$c]) - 6);
 					break;
 				default:
 					break;
@@ -227,7 +228,7 @@ Parsing individual data:
 <?php
 
 	// process each individual in turn
-	for ($i = 1; $i < $indis; $i++) {
+	for ($i = 1; $i <= $indis; $i++) {
 		$count = count($people[$i]);
 
 		$indi[$i]["person_id"] = ($autoval + $i - 1);
@@ -235,8 +236,11 @@ Parsing individual data:
 		// process each record in turn
 		for ($c = 0; $c < $count; $c++) {
 
-			if ($c == 0)
-				$indi[$i]["ged_person_ref"] = substr($people[$i][$c], 3, strlen($people[$i][$c]) - 9);
+			if ($c == 0) {
+				$temp = substr($people[$i][$c], 3, strlen($people[$i][$c]) - 9);
+				$indi[$i]["ged_person_ref"] = $temp;
+				$pref[$temp] = ($autoval + $i -1);
+			}
 			switch (substr($people[$i][$c], 0, 6)) {
 				case "1 NAME":
 					$indi[$i]["name"] = str_replace("/", "", substr($people[$i][$c], 6, strlen($people[$i][$c]) - 6));
@@ -258,16 +262,8 @@ Parsing individual data:
 					break;
 				case "1 NOTE":
 					if (substr($people[$i][$c], 7, 1) == "@") {
-						$skey = substr($people[$i][$c], 8, strlen($people[$i][$c]) - 9);
-						for ($d = 1; $d < $notes; $d++) {
-							if ($desc[$d]["ged_notes_ref"] == $skey) {
-								if (array_key_exists("note", $indi[$i])) {
-									$indi[$i]["note"] = $indi[$i]["note"]."\n".$desc[$d]["notes"];
-								} else {
-									$indi[$i]["note"] = $desc[$d]["notes"];
-								}
-							}
-						}
+						$temp = substr($people[$i][$c], 8, strlen($people[$i][$c]) - 9);
+						$indi[$i]["note"] = $desc[$temp];
 					}
 					else
 						$indi[$i]["note"] = substr($people[$i][$c], 6, strlen($people[$i][$c]) - 6);
@@ -294,7 +290,7 @@ Parsing marriage data:
 <?php
 
 	// process each family in turn
-	for ($i = 1; $i < $fams; $i++) {
+	for ($i = 1; $i <= $fams; $i++) {
 		$count = count($family[$i]);
 
 		// process each row in turn
@@ -305,18 +301,12 @@ Parsing marriage data:
 			switch (substr($family[$i][$c], 0, 6)) {
 				case "1 HUSB":
 					$temp = substr($family[$i][$c], 8, strlen($family[$i][$c]) - 9);
-					for ($m = 1; $m < $indis; $m++) {
-						if ($indi[$m]["ged_person_ref"] == $temp)
-							$marriage[$i]["groom_id"] = $indi[$m]["person_id"];
-					}
+					$marriage[$i]["groom_id"] = $pref[$temp];
 					$marriage[$i]["ged_husb_ref"] = $temp;
 					break;
 				case "1 WIFE":
 					$temp = substr($family[$i][$c], 8, strlen($family[$i][$c]) - 9);
-					for ($m = 1; $m < $indis; $m++) {
-						if ($indi[$m]["ged_person_ref"] == $temp)
-							$marriage[$i]["bride_id"] = $indi[$m]["person_id"];
-					}
+					$marriage[$i]["bride_id"] = $pref[$temp];
 					$marriage[$i]["ged_wife_ref"] = $temp;
 					break;
 				case "2 DATE":
@@ -341,7 +331,7 @@ Parsing marriage data:
 Parsing parentage data:
 <?php
 
-	for ($i = 1; $i < $fams; $i++) {
+	for ($i = 1; $i <= $fams; $i++) {
 		$count = count($family[$i]);
 
 		$father_ref = 0;
@@ -353,17 +343,11 @@ Parsing parentage data:
 			switch (substr($family[$i][$c], 0, 6)) {
 				case "1 HUSB":
 					$father_ref = substr($family[$i][$c], 8, strlen($family[$i][$c]) - 9);
-					for ($m = 1; $m < $indis; $m++) {
-						if ($indi[$m]["ged_person_ref"] == $father_ref)
-							$father_id = $indi[$m]["person_id"];
-					}
+					$father_id = $pref[$father_ref];
 					break;
 				case "1 WIFE":
 					$mother_ref = substr($family[$i][$c], 8, strlen($family[$i][$c]) - 9);
-					for ($m = 1; $m < $indis; $m++) {
-						if ($indi[$m]["ged_person_ref"] == $mother_ref)
-							$mother_id = $indi[$m]["person_id"];
-					}
+					$mother_id = $pref[$mother_ref];
 					break;
 				case "1 CHIL":
 					$temp = substr($family[$i][$c], 8, strlen($family[$i][$c]) - 9);
@@ -385,7 +369,7 @@ Parsing parentage data:
 Inserting person data:
 <?php
 
-	for ($i = 1; $i < $indis; $i++) {
+	for ($i = 1; $i <= $indis; $i++) {
 		// do some sanity checking
 		if (!array_key_exists("name", $indi[$i]))
 			$indi[$i]["name"] = "";
@@ -415,7 +399,7 @@ Inserting person data:
 Inserting marriage data:
 <?php
 
-	for ($i = 1; $i < $fams; $i++) {
+	for ($i = 1; $i <= $fams; $i++) {
 		if (!array_key_exists("groom_id", $marriage[$i]))
 			break;
 		if (!array_key_exists("bride_id", $marriage[$i]))
