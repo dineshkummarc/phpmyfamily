@@ -56,7 +56,7 @@
 					</tr>
 					<tr>
 						<th width="200"><?php echo $strArea; ?></th>
-						<th width="50"><?php echo $strNo; ?></th>
+						<th width="50"><?php echo $strNumber; ?></th>
 					</tr>
 					<tr>
 						<td class="tbl_odd"><a href="surnames.php"><?php echo ucwords($strOnFile); ?></a></td>

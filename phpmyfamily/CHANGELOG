@@ -1,3 +1,4 @@
+	Fixed bug #1102093 (Duplicate translation string)
 	Added Polish translation (Thanks Mateusz)
 	Fixed bug #1100161 (Untranslated phrases)
 	Fixed bug #1104819 (Big Brother Emails)

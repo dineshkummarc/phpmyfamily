@@ -98,7 +98,7 @@
 	$strRightClick		= "Click the document title to download. (Might need to right click &amp; Save Target As.. in Internet Explorer)";
 	$strStats			= "Site Statistics";
 	$strArea			= "Area";
-	$strNo				= "Number";
+	$strNumber			= "Number";
 	$strCensusRecs		= "Census records";
 	$strImages			= "Images";
 	$strLast20			= "Last 20 People Updated";
