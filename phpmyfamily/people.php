@@ -122,17 +122,19 @@
 			<th width="5%" valign="top"><?php echo $strFather; ?>:</th>
 			<td width="40%" class="tbl_odd" valign="top"><?php
 		// the query for father
-		$fquery = "SELECT *, DATE_FORMAT(date_of_birth, ".$datefmt.") AS DOB, DATE_FORMAT(date_of_death, ".$datefmt.") AS DOD FROM ".$tblprefix."people WHERE person_id = '".$father."'";
-		$fresult = mysql_query($fquery) or die($err_father);
-		while ($frow = mysql_fetch_array($fresult)) {
-			if ($frow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0)
-				// if anybody gets here they are hacking
-				// or someones made a mistake with peoples parents
-				echo $frow["name"]." (<font class=\"restrict\">".$strRestricted."</font>)<br />\n";
-			else
-				echo "<a href=\"people.php?person=".$frow["person_id"]."\">".$frow["name"]."</a> (".formatdate($frow["DOB"])." - ".formatdate($frow["DOD"]).")";
+		if ($father != -1) {
+			$fquery = "SELECT *, DATE_FORMAT(date_of_birth, ".$datefmt.") AS DOB, DATE_FORMAT(date_of_death, ".$datefmt.") AS DOD FROM ".$tblprefix."people WHERE person_id = '".$father."'";
+			$fresult = mysql_query($fquery) or die($err_father);
+			while ($frow = mysql_fetch_array($fresult)) {
+				if ($frow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0)
+					// if anybody gets here they are hacking
+					// or someones made a mistake with peoples parents
+					echo $frow["name"]." (<font class=\"restrict\">".$strRestricted."</font>)<br />\n";
+				else
+					echo "<a href=\"people.php?person=".$frow["person_id"]."\">".$frow["name"]."</a> (".formatdate($frow["DOB"])." - ".formatdate($frow["DOD"]).")";
+			}
+			mysql_free_result($fresult);
 		}
-		mysql_free_result($fresult);
 ?></td>
 		</tr>
 		<tr>
@@ -146,17 +148,19 @@
 			<th valign="top"><?php echo $strMother; ?>:</th>
 			<td class="tbl_odd" valign="top"><?php
 		// the query for mother
-		$mquery = "SELECT *, DATE_FORMAT(date_of_birth, ".$datefmt.") AS DOB, DATE_FORMAT(date_of_death, ".$datefmt.") AS DOD FROM ".$tblprefix."people WHERE person_id = '".$mother."'";
-		$mresult = mysql_query($mquery) or die($err_mother);
-		while ($mrow = mysql_fetch_array($mresult)) {
-			if ($mrow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0)
-			// if anybody gets here they are hacking
-			// or someones made a mistake with peoples parents
-			echo $mrow["name"]." (<font class=\"restrict\">".$strRestricted."</font>)<br />\n";
-		else
-			echo "<a href=\"people.php?person=".$mrow["person_id"]."\">".$mrow["name"]."</a> (".formatdate($mrow["DOB"])." - ".formatdate($mrow["DOD"]).")";
+		if ($mother != -1) {
+			$mquery = "SELECT *, DATE_FORMAT(date_of_birth, ".$datefmt.") AS DOB, DATE_FORMAT(date_of_death, ".$datefmt.") AS DOD FROM ".$tblprefix."people WHERE person_id = '".$mother."'";
+			$mresult = mysql_query($mquery) or die($err_mother);
+			while ($mrow = mysql_fetch_array($mresult)) {
+				if ($mrow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0)
+				// if anybody gets here they are hacking
+				// or someones made a mistake with peoples parents
+				echo $mrow["name"]." (<font class=\"restrict\">".$strRestricted."</font>)<br />\n";
+			else
+				echo "<a href=\"people.php?person=".$mrow["person_id"]."\">".$mrow["name"]."</a> (".formatdate($mrow["DOB"])." - ".formatdate($mrow["DOD"]).")";
+			}
+			mysql_free_result($mresult);
 		}
-		mysql_free_result($mresult);
 ?></td>
 		</tr>
 		<tr>
