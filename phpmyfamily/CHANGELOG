@@ -1,2 +1,6 @@
+v 1.1.2
+	Edit.php changed to use list_enums()
+	Edit.php changed to use listpeeps()
+	Edit.php cleaned up to limit input length on all fields
 v 1.1.1
 	Version control added
