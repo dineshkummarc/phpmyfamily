@@ -5,7 +5,7 @@
 	// functions.inc.php
 
 	// some definitions
-	$version = "1.1.1";
+	$version = "1.1.2";
 
 	// convert a timestamp into a proper date/time
 	function convertstamp($origdate) {
@@ -53,7 +53,7 @@
 			echo (mysql_num_rows($result) + 1)." people on file<BR>\n";
 		echo "<SELECT NAME=".$form." SIZE=1>\n";
 		if ($default == 0)
-			echo "<OPTION VALUE=0>Jump to person</OPTION>\n";
+			echo "<OPTION VALUE=0>Select person</OPTION>\n";
 		while ($row = mysql_fetch_array($result)) {
 			echo "<OPTION VALUE=".$row["person_id"];
 			if ($row["person_id"] == $default)
@@ -131,6 +131,43 @@
 
 		return true;
 	}	// end of processimage();
+
+	// Produce a select list of an enum column
+	function list_enums($table, $col, $name, $value = 0) {
+
+		// get an array of the values in the column
+		$query = "SHOW COLUMNS FROM ".$table." LIKE '".$col."'";
+		$result = mysql_query($query) or die(mysql_error($result));
+
+		// do some processing ?
+		while ($row = mysql_fetch_array($result)) {
+			$enum        = str_replace('enum(', '', $row['Type']);
+			$enum        = ereg_replace('\\)$', '', $enum);
+			$enum        = explode('\',\'', substr($enum, 1, -1));
+			$enum_cnt    = count($enum);
+			$default	 = $row["Default"];
+		}
+
+		// decide if we want column default, or a value passed as arg
+		if (func_num_args() == 4)
+			$select = $value;			// we've been given a value to select
+		else
+			$select = $default;			// just select the column default value
+
+		// do the output
+		echo "<select name=".$name." size=1>";
+		for ($j = 0; $j < $enum_cnt; $j++) {
+			$enum_atom = str_replace('\'\'', '\'', str_replace('\\\\', '\\', $enum[$j]));
+			echo '<option value="' . urlencode($enum_atom) . '"';
+			if ($enum_atom == $select) 
+					echo ' selected="selected"';
+			echo '>' . htmlspecialchars($enum_atom) . '</option>' . "\n";
+		}
+		echo "</select>";
+
+		// clean up
+		mysql_free_result($result);
+	}	// end of list_enums()
 
 	// eof
 ?>
