@@ -129,11 +129,18 @@
 	// see if we have latest imagecreatetrucolor available
 	function imagecreate_wrapper($xsize, $ysize) {
 
-		// check we have the function
-		if (function_exists("imagecreatetruecolor"))
+		// checking function exists doesn't work
+		// function is there, even if it isn't
+
+		// nasty work around
+		// FIX ME
+		$test = imagecreatetruecolor(1,1);
+
+		if ($test)
 			return imagecreatetruecolor($xsize, $ysize);
 		else
 			return imagecreate($xsize, $ysize);
+
 	}	// end of imagecreate_wrapper()
 
 	// function: processimage
@@ -142,10 +149,8 @@
 		// define globals used within
 		global $tblprefix;
 		global $err_image_insert;
-		global $x_min;
-		global $y_min;
-		global $x_max;
-		global $y_max;
+		global $img_max;
+		global $img_min;
 
 		// image creation needs masses of memory
 		// this is set too large! but needs to be to process a 1MB jpg!
@@ -153,17 +158,13 @@
 		ini_set("memory_limit", "32M");
 
 		// bit of error checking
-		if ($x_max < $x_min) {
-			$temp = $x_max;
-			$x_max = $x_min;
-			$x_min = $temp;
-		}
-		if ($y_max < $y_min) {
-			$temp = $y_max;
-			$y_max = $y_min;
-			$y_min = $temp;
+		if ($img_max < $img_min) {
+			$temp = $img_max;
+			$img_max = $img_min;
+			$img_min = $temp;
 		}
 
+		// get the dimensions of the uploaded file
 		$size = getimagesize($_FILES["userfile"]["tmp_name"]);
 
 		// get the image resource from the uploaded file
@@ -186,13 +187,8 @@
 				break;
 		}
 
-		if (!$incoming) {
+		if (!$incoming)
 			return false;
-		}
-
-		$iquery = "INSERT INTO ".$tblprefix."images (person_id, title, date, description) VALUES ('".$_REQUEST["person"]."', '".htmlspecialchars($_POST["frmTitle"], ENT_QUOTES)."', '".$_POST["frmDate"]."', '".htmlspecialchars($_POST["frmDesc"], ENT_QUOTES)."')";;
-		$iresult = mysql_query($iquery) or die($err_image_insert);
-		$image = str_pad(mysql_insert_id(), 5, 0, STR_PAD_LEFT);
 
 		// work out the ratio of width to height
 		$ratio = $size[0] / $size[1];
@@ -201,19 +197,22 @@
 		$thumbw = 100;
 		$thumbh = 100;
 		$thumb = imagecreate_wrapper($thumbw, $thumbh);
+		if (!$thumb)
+			return false;
+
 		$background = imagecolorallocate($thumb, 147, 150, 147);
 		imagefill($thumb, 0, 0, $background);
 
 		// do different things depending on orientation of image
 		if ($ratio < 1) {		// higher than wide
-			if ($size[1] > $y_max) {
+			if ($size[1] > $img_max) {
 				// create a file with maximum height
-				$file = imagecreate_wrapper($x_max * $ratio, $y_max);
-				imagecopyresized($file, $incoming, 0, 0, 0, 0, ($x_max * $ratio), $y_max, $size[0], $size[1]);
-			} elseif ($size[1] < $y_min) {
+				$file = imagecreate_wrapper($img_max * $ratio, $img_max);
+				imagecopyresized($file, $incoming, 0, 0, 0, 0, ($img_max * $ratio), $img_max, $size[0], $size[1]);
+			} elseif ($size[1] < $img_min) {
 				// create a file with minimum height
-				$file = imagecreate_wrapper($x_min * $ratio, $y_min);
-				imagecopyresized($file, $incoming, 0, 0, 0, 0, ($x_min * $ratio), $y_min, $size[0], $size[1]);
+				$file = imagecreate_wrapper($img_min * $ratio, $img_min);
+				imagecopyresized($file, $incoming, 0, 0, 0, 0, ($img_min * $ratio), $img_min, $size[0], $size[1]);
 			} else {
 				// create a file the same size
 				$file = imagecreate_wrapper($size[0], $size[1]);
@@ -225,14 +224,14 @@
 			imagecopyresized($thumb, $incoming, $border, 0, 0, 0, ($thumbw * $ratio), $thumbh, $size[0], $size[1]);
 		}
 		else {					// wider than high
-			if ($size[0] > $x_max) {
+			if ($size[0] > $img_max) {
 				// create a file with maximum width
-				$file = imagecreate_wrapper($x_max, $x_max / $ratio);
-				imagecopyresized($file, $incoming, 0, 0, 0, 0, $x_max, ($x_max / $ratio), $size[0], $size[1]);
-			} elseif ($size[0] < $x_min) {
+				$file = imagecreate_wrapper($img_max, $img_max / $ratio);
+				imagecopyresized($file, $incoming, 0, 0, 0, 0, $img_max, ($img_max / $ratio), $size[0], $size[1]);
+			} elseif ($size[0] < $img_min) {
 				// create a file with minimum width
-				$file = imagecreate_wrapper($x_min, $x_min / $ratio);
-				imagecopyresized($file, $incoming, 0, 0, 0, 0, $x_min, ($x_min / $ratio), $size[0], $size[1]);
+				$file = imagecreate_wrapper($img_min, $img_min / $ratio);
+				imagecopyresized($file, $incoming, 0, 0, 0, 0, $img_min, ($img_min / $ratio), $size[0], $size[1]);
 			} else {
 				// create a file the same size
 				$file = imagecreate_wrapper($size[0], $size[1]);
@@ -243,6 +242,13 @@
 			$border = ($thumbh - $thumbh / $ratio) / 2;
 			imagecopyresized($thumb, $incoming, 0, $border, 0, 0, $thumbw, ($thumbh / $ratio), $size[0], $size[1]);
 		}
+
+		if (!$file)
+			return false;;
+
+		$iquery = "INSERT INTO ".$tblprefix."images (person_id, title, date, description) VALUES ('".$_REQUEST["person"]."', '".htmlspecialchars($_POST["frmTitle"], ENT_QUOTES)."', '".$_POST["frmDate"]."', '".htmlspecialchars($_POST["frmDesc"], ENT_QUOTES)."')";;
+		$iresult = mysql_query($iquery) or die($err_image_insert);
+		$image = str_pad(mysql_insert_id(), 5, 0, STR_PAD_LEFT);
 
 		// set as interlaced and save to paths
 		imageinterlace($thumb, 1);
