@@ -110,7 +110,7 @@
 	</table>
 
 <!--BDM-->
-	<table>
+	<table width="100%">
 		<tr>
 			<th width="5%" valign="top"><?php echo $strBorn; ?>:</th>
 			<td width="38%" class="tbl_odd" valign="top"><?php
@@ -213,7 +213,7 @@
 
 <!--marriages-->
 <hr />
-	<table>
+	<table width="100%">
 		<tr>
 			<th valign="top" width="5%"><?php echo $strMarried; ?>:</th>
 			<td valign="top" width="80%" class="tbl_even">
