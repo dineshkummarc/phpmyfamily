@@ -42,11 +42,14 @@
 <ol>
   <li>Uncompress the archive to the directory of your choice.  </li>
   <li>Amend inc/config.inc.php to the correct values for your system and database. </li>
-  <li>Point your browser at http://www.yoursite.com/phpmyfamily-1.3.0/admin/install.php.  This will populate your database with the needed tables and install the default user name and password combination (admin/admin).  It is highly recommended that you change these values as soon as possible.  Additionally, a blank record is created for the first male in your tree.</li>
+  <li>Point your browser at http://www.yoursite.com/phpmyfamily-1.4.0/admin/install.php.  This will populate your database with the needed tables and install the default user name and password combination (admin/admin).  It is highly recommended that you change these values as soon as possible.  Additionally, a blank record is created for the first male in your tree.</li>
   <li>The default Alpha Male is your starting point.  Edit this record to represent the point at which you wish to start recording your family tree.  At any point you can add a new person into the database by clicking the "Add a new person" link at the top of the page.  The tree structure is made by linking individuals to their parents and spouses - links to siblings and children are automatically maintained.</li>
 </ol>
 
 <p>The source archives are available from the <a href="downloads.php">downloads</a> page.</p>
+
+<h4>upgrading from 1.3.1</h4>
+<p>There have been several database changes since 1.3.1 to support the extra functionality.  To execute these changes, poit your browser at http://www.yoursite.com/phpmyfamily-1.4.0/admin/upgrade-1.3.1-1.4.0.php.  There is no need to run admin/install.php (it will fail if you try to).</p>
 
 <h4>upgrading from 1.2.5</h4>
 <p>There have been several database changes since 1.2.5 to support the extra functionality.  To execute these changes, poit your browser at http://www.yoursite.com/phpmyfamily-1.3.0/admin/upgrade-1.2.5-1.3.0.php.  There is no need to run admin/install.php (it will fail if you try to).</p>
