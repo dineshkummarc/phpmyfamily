@@ -1,3 +1,4 @@
+	Fixed bug #1095669 (Deleting non-existent images)
 	Fixed bug #1102093 (Duplicate translation string)
 	Added Polish translation (Thanks Mateusz)
 	Fixed bug #1100161 (Untranslated phrases)

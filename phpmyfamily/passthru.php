@@ -195,7 +195,9 @@
 					echo "<meta http-equiv=refresh content='0; url=people.php?person=".$_REQUEST["person"]."' />\n";
 					break;
 				case "image":
-					if (@unlink("images/tn_".$_REQUEST["image"].".jpg") && @unlink("images/".$_REQUEST["image"].".jpg")){
+					$imgFile = "images/".$_REQUEST["image"].".jpg";
+					$tnFile = "images/tn_".$_REQUEST["image"].".jpg";
+					if ((@unlink($tnFile) && @unlink($imgFile)) || !file_exists($tnFile) || !file_exists($imgFile)) {
 						$dquery = "DELETE FROM ".$tblprefix."images WHERE image_id = '".$_REQUEST["image"]."'";
 						$dresult = mysql_query($dquery) or die($err_image_delete);
 						stamppeeps($_REQUEST["person"]);
