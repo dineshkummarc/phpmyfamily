@@ -35,7 +35,9 @@
 	echo "<h2>Upgrading phpmyfamily database</h2>\n";
 
 	// alter the users table
-	$uquery = "ALTER TABLE `".$tblprefix."users` ADD `edit` ENUM( 'Y', 'N' ) DEFAULT 'N' NOT NULL";
+	$uquery = "ALTER TABLE `".$tblprefix."users` ADD `edit` ENUM('Y','N') DEFAULT 'N' NOT NULL, ADD `restrictdate` DATE NOT NULL, ADD `style` VARCHAR(40) NOT NULL";
+	$uresult = mysql_query($uquery) or die("phpmyfamily: Error altering users table!!!");
+	$uquery = "UPDATE `"$tblprefix."users` SET `style` = `default.css.php`";
 	$uresult = mysql_query($uquery) or die("phpmyfamily: Error altering users table!!!");
 	echo "users table altered<br>\n";
 

@@ -193,6 +193,7 @@
 	$strEmailSent		= "Your email has been sent to the webmaster.";
 	$strExecute			= "Execution time";
 	$strSeconds			= "seconds";
+	$strStyle			= "Style";
 
 //=====================================================================================================================
 //  email definitions

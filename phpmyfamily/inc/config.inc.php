@@ -25,13 +25,14 @@
 
 //=====================================================================================================================
 // General details
-	$email 		= "simesb@giric.com";					// Contact email address
-	$mailto		= true;									// bool for use of mailto form
-	$desc  		= "My Family";
-	$tblprefix 	= "family_";
-	$style		= "styles/default.css.php";				// See styles directory for options
-	$lang		= "lang/en-uk.inc.php";					// Translations welcome!
-	$timing		= true;									// Wether we want execution time
+	$email 			= "simesb@giric.com";					// Contact email address
+	$mailto			= true;									// bool for use of mailto form
+	$desc  			= "My Family";
+	$tblprefix 		= "family_";
+	$styledir		= "styles/";							// See styles directory for options
+	$defaultstyle	= "default.css.php"	;					// default style sheet
+	$lang			= "lang/en-uk.inc.php";					// Translations welcome!
+	$timing			= true;									// Wether we want execution time
 
 //=====================================================================================================================
 // Change tracking details
@@ -78,6 +79,7 @@
 	if (!isset($_SESSION["admin"])) $_SESSION["admin"] = 0;				// admin flag
 	if (!isset($_SESSION["lang"])) $_SESSION["lang"] = $lang;			// default language file
 	if (!isset($_SESSION["editable"])) $_SESSION["editable"] = "N";			// Edit permission flag
+	if (!isset($_SESSION["style"])) $_SESSION["style"] = $defaultstyle;	// set the default style sheet
 
 //=====================================================================================================================
 // Database connection routines

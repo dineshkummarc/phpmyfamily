@@ -1,6 +1,7 @@
 <?php
 	//phpmyfamily - opensource genealogy webbuilder
 	//Copyright (C) 2002 - 2004  Simon E Booth (simon.booth@giric.com)
+	//Parts (C) 2004 Ken Joyce (ken@poweringon.com)
 
 	//This program is free software; you can redistribute it and/or
 	//modify it under the terms of the GNU General Public License
@@ -112,6 +113,8 @@
 				<th><?php echo $strUsername; ?></th>
 				<th><?php echo ucwords($strAdmin); ?></th>
 				<th><?php echo $strEdit; ?></th>
+				<th><?php echo $strRestricted." ".$strDate; ?></th>
+				<th><?php echo $strStyle; ?></th>
 			</tr>
 <?php
 		$query = "SELECT * FROM ".$tblprefix."users WHERE id <> '".$_SESSION["id"]."' ORDER BY username";
@@ -128,6 +131,8 @@
 				<td class="<?php echo $class; ?>"><?php echo $row["username"]; ?></td>
 				<td class="<?php echo $class; ?>"><?php echo $row["admin"]; ?></td>
 				<td class="<?php echo $class; ?>"><?php echo $row["edit"]; ?></td>
+				<td class="<?php echo $class; ?>"><?php echo $row["restrictdate"]; ?></td>
+				<td class="<?php echo $class; ?>"><?php echo $row["style"]; ?></td>
 			</tr>
 <?php
 		$i++;
@@ -143,6 +148,8 @@
 					<tr><td><?php echo $strPassword; ?></td><td><input type="password" name="pwdPwd1" size="20" maxlength="30" /></td></tr>
 					<tr><td><?php echo $strRePassword; ?></td><td><input type="password" name="pwdPwd2" size="20" maxlength="30" /></td></tr>
 					<tr><td><?php echo ucwords($strEdit); ?></td><td><input type="checkbox" name="pwdEdit" checked="true" /></td></tr>
+					<tr><td><?php echo $strRestricted." ".$strDate; ?></td><td><input type="text" name="pwdRestricted" size="20" maxlength="20" /></td></tr>
+					<tr><td><?php echo $strStyle; ?></td><td><?php liststyles("pwdStyle", $defaultstyle); ?></td></tr>
 					<tr><td></td><td><input type="submit" name="<?php echo $strCreate; ?>" /></td></tr>
 					<tr><td><font color="red"><?php echo $err; ?></font></td></tr>
 				</form>

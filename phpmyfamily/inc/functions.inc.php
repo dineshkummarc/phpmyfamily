@@ -481,7 +481,7 @@
 	function do_headers($title) {
 		global $clang;
 		global $dir;
-		global $style;
+		global $styledir;
 		global $absurl;
 		global $charset;
 		global $desc;
@@ -492,7 +492,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $clang; ?>" lang="<?php echo $clang; ?>" dir="<?php echo $dir; ?>">
 <head>
-<link rel="stylesheet" href="<?php echo $style; ?>" type="text/css" />
+<link rel="stylesheet" href="<?php echo $styledir.$_SESSION["style"]; ?>" type="text/css" />
 <link rel="shortcut icon" href="images/favicon.ico" />
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $charset; ?>" />
 <meta name="description" content="<?php echo $desc; ?>" />
@@ -516,6 +516,28 @@
 		// make titles available for later,
 		$GLOBALS["title"] = $title;
 	}	// end of do_headers()
+
+	// function: liststyles
+	// list styles to choose
+	function liststyles($form, $style) {
+		global $strChange;
+		global $styledir;
+		
+		if ($handle = opendir($styledir)) {
+			echo "<select name=\"$form\">\n";
+			while (false !== ($file = readdir($handle)) ) {
+				if ( strrpos($file, "css.php")>1) {
+					$filebits = explode(".",$file);
+					echo "<option value='".$filebits[0]."'" ;
+					if ($style == $styledir.$file ) echo " SELECTED";
+					echo ">".$filebits[0]."</option>\n";
+				}
+			}
+		echo "</select>\n";
+		closedir($handle);
+		}
+	} // end of liststyles()
+
 
 	// function: fmod
 	// return the modulus of two numbers
