@@ -54,7 +54,7 @@
 	$strUnknown			= "unknown";
 	$strLoggedIn		= "You are logged in as ";
 	$strAdmin			= "admin";
-	$strLoggedOut		= "You are not logged in: ";
+	$strLoggedOut		= "You are not logged in";
 	$strYes				= "Yes";
 	$strNo				= "No";
 	$strSubmit			= "Submit";
@@ -126,7 +126,7 @@
 	$strChange			= "Change";
 	$strPwdChange		= "Password Change";
 	$strPwdChangeMsg	= "Please use this form if you wish to change your password.";
-	$strLogin			= "Login";
+	$strLogin			= "login";
 	$strUsername		= "Username";
 	$strPassword		= "Password";
 	$strRePassword		= "Re-enter Password";
@@ -194,6 +194,9 @@
 	$strExecute			= "Execution time";
 	$strSeconds			= "seconds";
 	$strStyle			= "Style";
+	$strPreferences		= "preferences";
+	$strRecoverPwd		= "recover password";
+	$strStop			= "stop";
 
 //=====================================================================================================================
 //  email definitions

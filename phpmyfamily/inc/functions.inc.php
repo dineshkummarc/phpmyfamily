@@ -541,15 +541,18 @@
 	// function: user_opts
 	// display option to users in banner
 	function user_opts($person = 0) {
-		global $strTrack, $strThisPerson, $tblprefix;
+		global $strTrack, $strTracking, $strThisPerson, $tblprefix;
+		global $strLoggedIn, $strHome, $strLogout, $strPreferences;
+		global $strAdd, $strNewPerson, $strLogin, $strRecoverPwd, $strStop;
+		global $strLoggedOut;
 
 		if ($_SESSION["id"] != 0) {
-			echo "You are logged in as ".$_SESSION["name"]."<br>\n";
-			echo "<a href=\"index.php\" class=\"hd_link\">home</a> |";
-			echo " <a href=\"passthru.php?func=logout\" class=\"hd_link\">logout</a> |";
-			echo " <a href=\"my.php\" class=\"hd_link\">preferences</a><br>\n";
+			echo $strLoggedIn."'".$_SESSION["name"]."'<br>\n";
+			echo "<a href=\"index.php\" class=\"hd_link\">".$strHome."</a> |";
+			echo " <a href=\"passthru.php?func=logout\" class=\"hd_link\">".$strLogout."</a> |";
+			echo " <a href=\"my.php\" class=\"hd_link\">".$strPreferences."</a><br>\n";
 			if ($_SESSION["editable"] == "Y") {
-				echo "<a href=\"edit.php?func=add&amp;area=detail\" class=\"hd_link\">add a new person</a>";
+				echo "<a href=\"edit.php?func=add&amp;area=detail\" class=\"hd_link\">".$strAdd." ".$strNewPerson."</a>";
 			}
 			if ($_SESSION["editable"] == "Y" && $person != 0)
 				echo " | ";
@@ -557,16 +560,16 @@
 				$query = "SELECT * FROM ".$tblprefix."tracking WHERE email = '".$_SESSION["email"]."' AND person_id = '".$person."'";
 				$result = mysql_query($query) or die(mysql_error());
 				if (mysql_num_rows($result) != 0) {
-					echo "stop tracking this person";
+					echo $strStop." ".strtolower($strTracking)." ".$strThisPerson;
 				} else {
-					echo "<a href=\"track.php?person=".$person."\" class=\"hd_link\">track this person</a>";
+					echo "<a href=\"track.php?person=".$person."\" class=\"hd_link\">".$strTrack." ".$strThisPerson."</a>";
 				}
 			}
 		} else {
-			echo "You are not logged in<br>\n";
-			echo "<a href=\"index.php\" class=\"hd_link\">home</a> |";
-			echo " <a href=\"my.php\" class=\"hd_link\">login</a> |";
-			echo " <a href=\"my.php?state=lost\" class=\"hd_link\">recover password</a> <br>\n";
+			echo $strLoggedOut."<br>\n";
+			echo "<a href=\"index.php\" class=\"hd_link\">".$strHome."</a> |";
+			echo " <a href=\"my.php\" class=\"hd_link\">".$strLogin."</a> |";
+			echo " <a href=\"my.php?state=lost\" class=\"hd_link\">".$strRecoverPwd."</a> <br>\n";
 			if ($person != 0) {
 				echo "<a href=\"track.php?person=".$person."\" class=\"hd_link\">".$strTrack." ".$strThisPerson." </a>\n";
 			}
