@@ -88,11 +88,11 @@
 		</tr>
 		<tr>
 			<td class="tbl_odd"><?php echo $strMother; ?></td>
-			<td class="tbl_even"><?php listpeeps("frmMother", $_REQUEST["person"], "F", $edrow["mother_id"], 0); ?></td>
+			<td class="tbl_even"><?php listpeeps("frmMother", $_REQUEST["person"], "F", $edrow["mother_id"], 0, $edrow["date_of_birth"]); ?></td>
 		</tr>
 		<tr>
 			<td class="tbl_odd"><?php echo $strFather; ?></td>
-			<td class="tbl_even"><?php listpeeps("frmFather", $_REQUEST["person"], "M", $edrow["father_id"], 0); ?></td>
+			<td class="tbl_even"><?php listpeeps("frmFather", $_REQUEST["person"], "M", $edrow["father_id"], 0, $edrow["date_of_birth"]); ?></td>
 		</tr>
 		<tr>
 			<td class="tbl_odd" valign="top"><?php echo $strNotes; ?></td>
@@ -151,9 +151,9 @@
 			<td class="tbl_odd"><?php echo $strSpouse; ?></td>
 			<td class="tbl_even"><?php
 				if ($prow["gender"] == "M")
-					listpeeps("frmSpouse", $_REQUEST["person"], "F", $_REQUEST["spouse"], 0);
+					listpeeps("frmSpouse", $_REQUEST["person"], "F", $_REQUEST["spouse"], 0, $edrow["marriage_date"]);
 				else
-					listpeeps("frmSpouse", $_REQUEST["person"], "M", $_REQUEST["spouse"], 0);
+					listpeeps("frmSpouse", $_REQUEST["person"], "M", $_REQUEST["spouse"], 0, $edrow["marriage_date"]);
 ?></td>
 		</tr>
 		<tr>
@@ -429,7 +429,7 @@
 
 				case "marriage":
 					// get the person to insert marriage for
-					$edquery = "SELECT * FROM ".$tblprefix."people WHERE person_id = '".$_REQUEST["person"]."'";
+					$edquery = "SELECT *, DATE_ADD(date_of_birth, INTERVAL 40 YEAR) AS child_snatcher FROM ".$tblprefix."people WHERE person_id = '".$_REQUEST["person"]."'";
 					$edresult = mysql_query($edquery) or die($err_person);
 
 					// fill out the form with retrieved data
@@ -454,9 +454,9 @@
 			<td class="tbl_odd"><?php echo $strSpouse; ?></td>
 			<td class="tbl_even"><?php
 				if ($edrow["gender"] == "M")
-					listpeeps("frmSpouse", 0, "F", 0, 0);
+					listpeeps("frmSpouse", 0, "F", 0, 0, $edrow["child_snatcher"]);
 				else
-					listpeeps("frmSpouse", 0, "M", 0, 0);
+					listpeeps("frmSpouse", 0, "M", 0, 0, $edrow["child_snatcher"]);
 ?></td>
 		</tr>
 		<tr>

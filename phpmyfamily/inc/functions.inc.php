@@ -1,6 +1,7 @@
 <?php
 	//phpmyfamily - opensource genealogy webbuilder
 	//Copyright (C) 2002 - 2004  Simon E Booth (simon.booth@giric.com)
+	//Contributions (C)2004 Ken Joyce (ken@poweringon.com)
 
 	//This program is free software; you can redistribute it and/or
 	//modify it under the terms of the GNU General Public License
@@ -45,7 +46,7 @@
 
 	// function: listpeeps
 	// list all people in database that current request has access to
-	function listpeeps($form, $omit = 0, $gender = "A", $default = 0, $auto = 1) {
+	function listpeeps($form, $omit = 0, $gender = "A", $default = 0, $auto = 1, $date = 0) {
 
 		// declare global variables used within
 		global $restrictdate;
@@ -73,6 +74,9 @@
 			default:
 				break;
 		}
+
+		if ($date != 0)
+			$query .= " AND date_of_birth <= '".$date."'";
 
 		// and sort the query
 		$query .= " ORDER BY surname, name";
