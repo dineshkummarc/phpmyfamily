@@ -191,6 +191,8 @@
 	$strSubject			= "Subject";
 	$strNoEmail			= "\"You must provide an email address\"";
 	$strEmailSent		= "Your email has been sent to the webmaster.";
+	$strExecute			= "Execution time";
+	$strSeconds			= "seconds";
 
 //=====================================================================================================================
 //  email definitions

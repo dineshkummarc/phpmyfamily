@@ -1,3 +1,4 @@
+	Added script execution time (for those that care)
 	First working version of transcript spoofing
 	Nasty fix for imagecreate_wrapper
 	ammendable max and min image size added
