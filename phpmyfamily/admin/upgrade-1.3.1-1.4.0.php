@@ -37,7 +37,7 @@
 	// alter the users table
 	$uquery = "ALTER TABLE `".$tblprefix."users` ADD `edit` ENUM('Y','N') DEFAULT 'N' NOT NULL, ADD `restrictdate` DATE NOT NULL, ADD `style` VARCHAR(40) NOT NULL";
 	$uresult = mysql_query($uquery) or die("phpmyfamily: Error altering users table!!!");
-	$uquery = "UPDATE `"$tblprefix."users` SET `style` = `default.css.php`";
+	$uquery = "UPDATE `".$tblprefix."users` SET `style` = `default.css.php`";
 	$uresult = mysql_query($uquery) or die("phpmyfamily: Error altering users table!!!");
 	$uquery = "ALTER TABLE `family_users` ADD `email` VARCHAR(128) NOT NULL";
 	$uresult = mysql_query($uquery) or die("phpmyfamily: Error altering users table!!!");
