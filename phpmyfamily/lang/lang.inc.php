@@ -20,6 +20,7 @@
 				<a href="passthru.php?func=lang&amp;trans=en-us"><img src="images/us.gif" alt="Change language to US English" width="20" height="20" border="0" /></a>
 				<a href="passthru.php?func=lang&amp;trans=it"><img src="images/it.gif" alt="Cambia la lingua all'Italiano" width="20" height="20" border="0" /></a>
 				<a href="passthru.php?func=lang&amp;trans=de"><img src="images/de.gif" alt="&#196;ndern Sie Sprache zum Deutschen" width="20" height="20" border="0" /></a>
+				<a href="passthru.php?func=lang&amp;trans=no"><img src="images/no.gif" alt="Change language to Norwegian" width="20" height="20" border="0" /></a>
 <?php
 	// eof
 ?>
