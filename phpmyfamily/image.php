@@ -62,8 +62,9 @@
 <?php
 		}
 		mysql_free_result($presult);
+		$size = getimagesize("images/".$irow["image_id"].".jpg");
 ?>
-<div align="center"><img src="<?php echo "images/".$irow["image_id"].".jpg"; ?>" alt="<?php echo $irow["description"]; ?>" /></div>
+<div align="center"><img src="<?php echo "images/".$irow["image_id"].".jpg"; ?>" alt="<?php echo $irow["description"]; ?>" <?php echo $size[3]; ?> /></div>
 
 <div align="center">
 	<p><?php if ($restricted)
