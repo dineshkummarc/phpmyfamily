@@ -91,7 +91,7 @@
 	$strAddress			= "Indirizzo";
 	$strCondition		= "Condizione";
 	$strOf				= "di";
-	$strAge				= "Et‡";
+	$strAge				= "Et√†";
 	$strProfession		= "Professione";
 	$strBirthPlace		= "Luogo di nascita";
 	$strDocTrans		= "Documenti Transcritti";
@@ -135,7 +135,7 @@
 	$strPassword		= "Password";
 	$strRePassword		= "Re-inserisci Password";
 	$strForbidden		= "Proibito";
-	$strForbiddenMsg	= "La pagina che hai richiesto riporta che non hai sufficienti diritta per visionarla.  Non ripetere la richiesta.  Per favore clicca <a href=\"index.php\">quÏ</a> per continuare.";
+	$strForbiddenMsg	= "La pagina che hai richiesto riporta che non hai sufficienti diritta per visionarla.  Non ripetere la richiesta.  Per favore clicca <a href=\"index.php\">qu√¨</a> per continuare.";
 	$strDelete			= "cancella";
 	$strFUpload			= "File da Uploadare";
 	$strFTitle			= "File Titolo";
@@ -154,8 +154,8 @@
 	$strCreate			= "Crea";
 	$strBack			= "Indietro";
 	$strToHome			= "all'homepage.";
-	$strNewMsg			= "Accertati che la persona non sia gi‡ presente nel database prima di crearla!";
-	$strIndex			= "Tutti i dettagli per le persone nate dopo $dispdate sono limitate a proteggere le loro identit‡.  Se sei un utente registrato puoi vedere i loro dettagli ed editarli.  Chiunque Ë libero di consultare i risultati non confidenziali. Se credi che qualcuno di questi appartenga al tuo albero genealogico, dei pregato <a href=\"$1\">d'informarmi</a>";
+	$strNewMsg			= "Accertati che la persona non sia gi√† presente nel database prima di crearla!";
+	$strIndex			= "Tutti i dettagli per le persone nate dopo $dispdate sono limitate a proteggere le loro identit√†.  Se sei un utente registrato puoi vedere i loro dettagli ed editarli.  Chiunque √® libero di consultare i risultati non confidenziali. Se credi che qualcuno di questi appartenga al tuo albero genealogico, dei pregato <a href=\"$1\">d'informarmi</a>";
 	$strNote			= "Note";
 	$strFooter			= "Scrivi al <a href=\"$1\">webmaster</a> senza problema.";
 	$strPowered			= "Powered by";
@@ -179,7 +179,7 @@
 	$strTracking		= "Tracciare";
 	$strTrack			= "traccia";
 	$strThisPerson		= "questa persona";
-	$strTrackSpeel		= "Usa il form sottostante per tracciare questa persona.  Ti verr‡ inviata automaticamente una e-mail ogni volta che il record sar‡ aggionato";
+	$strTrackSpeel		= "Usa il form sottostante per tracciare questa persona.  Ti verr√† inviata automaticamente una e-mail ogni volta che il record sar√† aggionato";
 	$strEmail			= "Email";
 	$strSubscribe		= "iscriviti";
 	$strUnSubscribe		= "cancellati";
@@ -194,7 +194,7 @@
 	$strMailTo			= "Invia Messaggio";
 	$strSubject			= "Soggetto";
 	$strNoEmail			= "\"Devi inserire un indirizzo e-mail\"";
-	$strEmailSent		= "La tua e-mail, Ë stata inviata al Webmaster.";
+	$strEmailSent		= "La tua e-mail, √® stata inviata al Webmaster.";
 	$strExecute			= "Tempo di esecuzione";
 	$strSeconds			= "secondi";
 
@@ -202,12 +202,12 @@
 //  email definitions
 //=====================================================================================================================
 
-	$eTrackSubject		= "[phpmyfamily] $1 Ë stato aggiornato";
-	$eTrackBodyTop		= "Questo Ë un messaggio automatico.  $1 a $2 Ë stato aggiornato.  Clicca quÏ sotto per vedere il record aggiornato\n\n";
-	$eTrackBodyBottom	= "Questo messaggio Ë stato inviato perchË hai precedentemente richiesto di monitorare questa persona.  Clicca quÏ sotto per rimuovere da solo questo monitoraggio\n\n";
+	$eTrackSubject		= "[phpmyfamily] $1 √® stato aggiornato";
+	$eTrackBodyTop		= "Questo √® un messaggio automatico.  $1 a $2 √® stato aggiornato.  Clicca qu√¨ sotto per vedere il record aggiornato\n\n";
+	$eTrackBodyBottom	= "Questo messaggio √® stato inviato perch√® hai precedentemente richiesto di monitorare questa persona.  Clicca qu√¨ sotto per rimuovere da solo questo monitoraggio\n\n";
 	$eSubSubject		= "[phpmyfamily] richiesta monitoraggio";
-	$eSubBody			= "Questo Ë un messaggio automatico.  Hai ricevuto questo messaggio perchË hai scelto di monitorare il record di $1.  Per confermare la sottoscrizione, clicca il collegamente quÏ sotto nella prossime 24 ore.\n\n";
-	$eUnSubBody			= "Questo Ë un messaggio automatico.  Hai ricevuto questo messaggio perchË hai scelto di cessare di monitorare il record di $1.  Per confermare la cancellazione, clicca il collegamente quÏ sotto nella prossime 24 ore.\n\n";
+	$eSubBody			= "Questo √® un messaggio automatico.  Hai ricevuto questo messaggio perch√® hai scelto di monitorare il record di $1.  Per confermare la sottoscrizione, clicca il collegamente qu√¨ sotto nella prossime 24 ore.\n\n";
+	$eUnSubBody			= "Questo √® un messaggio automatico.  Hai ricevuto questo messaggio perch√® hai scelto di cessare di monitorare il record di $1.  Per confermare la cancellazione, clicca il collegamente qu√¨ sotto nella prossime 24 ore.\n\n";
 
 //=====================================================================================================================
 //  error definitions
@@ -240,7 +240,7 @@
 	$err_images			= "Errore richiamando immagini dal database";
 	$err_person			= "Errore richiamando la persona dal database";
 	$err_new_user		= "Errore inserendo il nuovo utente nel database";
-	$err_user_exist		= "Errore - l'utente gi‡ esiste";
+	$err_user_exist		= "Errore - l'utente gi√† esiste";
 	$err_pwd			= "Errore richiamando la password dal database";
 	$err_delete_user	= "Errore cancellando l'utente dal database";
 	$err_users			= "Errore richiamando gli utenti dal database";
