@@ -637,7 +637,7 @@
 	// function: send password
 	// sends a new password to a user who has forgotten
 	function send_password($email) {
-		global $tblprefix;
+		global $tblprefix, $trackemail;
 
 		// check we have a valid email address
 		// just drop out if we don't
@@ -654,7 +654,7 @@
 		// just drop out if it doesn't work out right
 		$uquery = "UPDATE ".$tblprefix."users SET password = '".$password."' WHERE email = '".$email."'";
 		$uresult = mysql_query($uquery) or die(mysql_error());
-		if (mysql_affected_rows($uresult) != 1)
+		if (mysql_affected_rows() != 1)
 			return 0;
 
 		// email to user
