@@ -1,3 +1,6 @@
+v 1.3.1
+	Fixed bug #973962
+	Table widths fixed in Konqueror
 v 1.3.0
 	Auto version checking added to admin page
 	SQL optomized
