@@ -39,8 +39,11 @@
   `id` smallint(6) NOT NULL auto_increment,
   `username` varchar(10) NOT NULL default '',
   `password` varchar(32) NOT NULL default '',
+  `email` varchar(128) NOT NULL default '',
   `admin` enum('Y','N') NOT NULL default 'N',
-  `edit` enum('Y','N') NOT NULL default 'Y',
+  `edit` enum('Y','N') NOT NULL default 'N',
+  `restrictdate` date NOT NULL default '0000-00-00',
+  `style` varchar(40) NOT NULL default '',
   PRIMARY KEY  (`id`)
 )";
 	$rusers = mysql_query($fusers) or die("phpmyfamily: Error creating user table!!!");
@@ -54,6 +57,7 @@
   `person_id` smallint(5) unsigned zerofill NOT NULL auto_increment,
   `name` varchar(50) NOT NULL default '',
   `surname` varchar(20) NOT NULL default '',
+  `suffix` varchar(10) NOT NULL default '',
   `date_of_birth` date NOT NULL default '0000-00-00',
   `birth_cert` enum('Y','N') NOT NULL default 'N',
   `birth_place` varchar(50) NOT NULL default '',
