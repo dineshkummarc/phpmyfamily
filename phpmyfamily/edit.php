@@ -17,14 +17,14 @@
 	echo "<HEAD>";
 	css_site();
 
-	switch ($_GET["func"]) {
+	switch ($_REQUEST["func"]) {
 
 		// user wants to edit a record
 		case "edit":
-			switch ($_GET["area"]) {
+			switch ($_REQUEST["area"]) {
 				case "detail":
 					// get the person to edit
-					$edquery = "SELECT * FROM people WHERE person_id = '".$_GET["person"]."'";
+					$edquery = "SELECT * FROM people WHERE person_id = '".$_REQUEST["person"]."'";
 					$edresult = mysql_query($edquery) or die("Editing query failed");
 
 					// fill out the form with retrieved data
@@ -33,11 +33,12 @@
 						// fill out the header
 						echo "<title>Editing: ".$edrow["name"]."</title>";
 						echo "</HEAD>";
+						echo "<BODY>\n";
 
 						echo "<h2>".$edrow["name"]."</h2>";
 						echo "<hr>";
 						
-						echo "<form method=post action=people.php?func=update&person=".$_GET["person"]."&area=detail>";
+						echo "<form method=post action=people.php?func=update&person=".$_REQUEST["person"]."&area=detail&spouse=&year=>";
 							echo "<table>";
 								echo "<tr>";
 									echo "<td>Name</td>";
@@ -64,7 +65,7 @@
 								echo "<tr>";
 									echo "<td>Mother</td>";
 									echo "<td><select name=frmMother size=1>";
-									$mquery = "SELECT person_id, SUBSTRING_INDEX(name, ' ', -1) AS surname, name FROM people WHERE gender = 'F' AND person_id <> '".$_GET["person"]."' ORDER BY surname, name";
+									$mquery = "SELECT person_id, SUBSTRING_INDEX(name, ' ', -1) AS surname, name FROM people WHERE gender = 'F' AND person_id <> '".$_REQUEST["person"]."' ORDER BY surname, name";
 									$mresult = mysql_query($mquery) or die("Mother query failed");
 							
 									if ($edrow["mother_id"] == 0)
@@ -82,7 +83,7 @@
 								echo "<tr>";
 									echo "<td>Father</td>";
 									echo "<td><select name=frmFather size=1>";
-									$fquery = "SELECT person_id, SUBSTRING_INDEX(name, ' ', -1) AS surname, name FROM people WHERE gender = 'M' AND person_id <> '".$_GET["person"]."' ORDER BY surname, name";
+									$fquery = "SELECT person_id, SUBSTRING_INDEX(name, ' ', -1) AS surname, name FROM people WHERE gender = 'M' AND person_id <> '".$_REQUEST["person"]."' ORDER BY surname, name";
 									$fresult = mysql_query($fquery) or die("Father query failed");
 							
 									if ($edrow["father_id"] == 0)
@@ -112,10 +113,10 @@
 
 				case "marriage":
 					// get the person to edit
-					$pquery = "SELECT * FROM people WHERE person_id = '".$_GET["person"]."'";
+					$pquery = "SELECT * FROM people WHERE person_id = '".$_REQUEST["person"]."'";
 					$presult = mysql_query($pquery) or die("Editing query failed");
 
-					$squery = "SELECT name FROM people WHERE person_id = '".$_GET["spouse"]."'";
+					$squery = "SELECT name FROM people WHERE person_id = '".$_REQUEST["spouse"]."'";
 					$sresult = mysql_query($squery) or die("Spouse name query failed");
 					while ($srow = mysql_fetch_array($sresult)) {
 						$spousename = $srow["name"];
@@ -126,9 +127,9 @@
 					while ($prow = mysql_fetch_array($presult)) {
 
 						if ($prow["gender"] == "M")
-							$edquery = "SELECT * FROM spouses WHERE groom_id = '".$_GET["person"]."' AND bride_id = '".$_GET["spouse"]."'";
+							$edquery = "SELECT * FROM spouses WHERE groom_id = '".$_REQUEST["person"]."' AND bride_id = '".$_REQUEST["spouse"]."'";
 						else
-							$edquery = "SELECT * FROM spouses WHERE bride_id = '".$_GET["person"]."' AND groom_id = '".$_GET["spouse"]."'";
+							$edquery = "SELECT * FROM spouses WHERE bride_id = '".$_REQUEST["person"]."' AND groom_id = '".$_REQUEST["spouse"]."'";
 
 						$edresult = mysql_query($edquery) or die("Spouse query failed");
 
@@ -137,11 +138,12 @@
 							// fill out the header
 							echo "<title>Editing Marriage: ".$prow["name"]." & ".$spousename."</title>";
 							echo "</HEAD>";
+							echo "<BODY>\n";
 
 							echo "<h2>Marriage: ".$prow["name"]." & ".$spousename."</h2>";
 							echo "<hr>"; 
 
-							echo "<form method=post action=people.php?func=update&person=".$_GET["person"]."&area=marriage&oldspouse=".$_GET["spouse"]."&gender=".$prow["gender"].">";
+							echo "<form method=post action=people.php?func=update&person=".$_REQUEST["person"]."&area=marriage&oldspouse=".$_REQUEST["spouse"]."&gender=".$prow["gender"]."&spouse=&year=>";
 								echo "<table>";
 									echo "<tr>";
 										echo "<td>Spouse</td>";
@@ -151,7 +153,7 @@
 							
 											while ($srow = mysql_fetch_array($sresult)) {
 												echo "<option value=".$srow["person_id"];
-												if ($srow["person_id"] == $_GET["spouse"])
+												if ($srow["person_id"] == $_REQUEST["spouse"])
 													echo " selected=selected";
 												echo ">".$srow["surname"].", ".substr($srow["name"], 0, strlen($srow["name"]) - strlen($srow["surname"]))."</option>";
 											}
@@ -181,7 +183,7 @@
 
 				case "census":
 					// get the person to edit
-					$edquery = "SELECT * FROM people, census WHERE people.person_id = '".$_GET["person"]."' AND census.year = '".$_GET["year"]."' AND people.person_id = census.person_id";
+					$edquery = "SELECT * FROM people, census WHERE people.person_id = '".$_REQUEST["person"]."' AND census.year = '".$_REQUEST["year"]."' AND people.person_id = census.person_id";
 					$edresult = mysql_query($edquery) or die("Editing query failed");
 
 					// fill out the form with retrieved data
@@ -190,11 +192,12 @@
 						// fill out the header
 						echo "<title>Editing Census: ".$edrow["name"]." (".$edrow["year"].")</title>";
 						echo "</HEAD>";
+						echo "<BODY>\n";
 
 						echo "<h2> Census: ".$edrow["name"]." (".$edrow["year"].")</h2>";
 						echo "<hr>"; 
 
-						echo "<form method=post action=people.php?func=update&person=".$_GET["person"]."&area=census&year=".$_GET["year"].">";
+						echo "<form method=post action=people.php?func=update&person=".$_REQUEST["person"]."&area=census&year=".$_REQUEST["year"].">";
 							echo "<table>";
 								echo "<tr>";
 									echo "<td>Schedule</td>";
@@ -257,11 +260,12 @@
 
 		// user wants to create a new person
 		case "add":
-			switch($_GET["area"]) {
+			switch($_REQUEST["area"]) {
 				case "detail":
 					// fill out the header
 					echo "<title>Creating new family member</title>";
 					echo "</HEAD>";
+					echo "<BODY>\n";
 
 					echo "<h2>Create new person</h2>";
 					echo "<hr>";
@@ -298,7 +302,7 @@
 							echo "<tr>";
 								echo "<td>Mother</td>";
 								echo "<td><select name=frmMother size=1>";
-								$mquery = "SELECT person_id, SUBSTRING_INDEX(name, ' ', -1) AS surname, name FROM people WHERE gender = 'F' AND person_id <> '".$_GET["person"]."' ORDER BY surname, name";
+								$mquery = "SELECT person_id, SUBSTRING_INDEX(name, ' ', -1) AS surname, name FROM people WHERE gender = 'F' AND person_id <> '".$_REQUEST["person"]."' ORDER BY surname, name";
 								$mresult = mysql_query($mquery) or die("Mother query failed");
 							
 								echo "<option value=NULL selected=selected>Select mother</option>";
@@ -312,7 +316,7 @@
 							echo "<tr>";
 								echo "<td>Father</td>";
 								echo "<td><select name=frmFather size=1>";
-								$fquery = "SELECT person_id, SUBSTRING_INDEX(name, ' ', -1) AS surname, name FROM people WHERE gender = 'M' AND person_id <> '".$_GET["person"]."' ORDER BY surname, name";
+								$fquery = "SELECT person_id, SUBSTRING_INDEX(name, ' ', -1) AS surname, name FROM people WHERE gender = 'M' AND person_id <> '".$_REQUEST["person"]."' ORDER BY surname, name";
 								$fresult = mysql_query($fquery) or die("Father query failed");
 							
 								echo "<option value=null selected=selected>Select father</option>";
@@ -337,7 +341,7 @@
 
 				case "marriage":
 					// get the person to insert marriage for
-					$edquery = "SELECT * FROM people WHERE person_id = '".$_GET["person"]."'";
+					$edquery = "SELECT * FROM people WHERE person_id = '".$_REQUEST["person"]."'";
 					$edresult = mysql_query($edquery) or die("New marriage person query failed");
 
 					// fill out the form with retrieved data
@@ -346,11 +350,12 @@
 						// fill out the header
 						echo "<title>New Marriage: ".$edrow["name"]."</title>";
 						echo "</HEAD>";
+						echo "<BODY>\n";
 
 						echo "<h2> New Marriage: ".$edrow["name"]."</h2>";
 						echo "<hr>"; 
 
-						echo "<form method=post action=people.php?func=insert&person=".$_GET["person"]."&area=marriage&gender=".$edrow["gender"].">";
+						echo "<form method=post action=people.php?func=insert&person=".$_REQUEST["person"]."&area=marriage&gender=".$edrow["gender"].">";
 							echo "<table>";
 								echo "<tr>";
 									echo "<td>Spouse</td>";
@@ -384,7 +389,7 @@
 
 				case "census":
 					// get the person to insert census for
-					$edquery = "SELECT * FROM people WHERE person_id = '".$_GET["person"]."'";
+					$edquery = "SELECT * FROM people WHERE person_id = '".$_REQUEST["person"]."'";
 					$edresult = mysql_query($edquery) or die("New census person query failed");
 
 					// fill out the form with retrieved data
@@ -393,11 +398,12 @@
 						// fill out the header
 						echo "<title>New Census: ".$edrow["name"]."</title>";
 						echo "</HEAD>";
+						echo "<BODY>\n";
 
 						echo "<h2> New Census: ".$edrow["name"]."</h2>";
 						echo "<hr>"; 
 
-						echo "<form method=post action=people.php?func=insert&person=".$_GET["person"]."&area=census>";
+						echo "<form method=post action=people.php?func=insert&person=".$_REQUEST["person"]."&area=census>";
 							echo "<table>";
 								echo "<tr>";
 									echo "<td>Year</td>";
@@ -489,6 +495,14 @@
 			break;
 	}
 
+?>
+
+<script language="JavaScript" type="text/javascript" src="pphlogger.js"></script>
+<noscript><img alt="" src="http://logger.giric.com/pphlogger.php?id=giric&st=img"></noscript>
+
+<?php
+
+	echo "</BODY>\n";
 	echo "</html>";
 	// eof
 ?>

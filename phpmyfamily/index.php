@@ -18,6 +18,7 @@
 	css_site();
 	echo "<title>Family Tree</title>\n";
 	echo "</HEAD>\n";
+	echo "<BODY>\n";
 	
 	// query for everybody
 	$allquery = "SELECT person_id, SUBSTRING_INDEX(name, ' ', -1) AS surname, name FROM people ORDER BY surname, name";
@@ -29,7 +30,7 @@
 				echo "<h2>Family Tree</h2>\n";
 			echo "</td>\n";
 			echo "<td width=20% align=top>\n";
-				echo "<form method=post action=people.php?person=>";
+				echo "<form method=post action=people.php?person=&func=>";
 					echo mysql_num_rows($allresult)." people on file<br>\n";
 					echo "<select name=person size=1>\n";
 					echo "<option value=0 selected=selected>Jump to person</option>\n";
@@ -45,7 +46,14 @@
 	echo "</table>\n";
 
 	echo "<p>For everybody in the family.  Please feel free to update any records with any missing information.  Contact <a href=mailto:simon.booth@giric.com>me</a> if you have any problems or if you have any pictures you would like to include.</p>\n";
+?>
 
+<script language="JavaScript" type="text/javascript" src="pphlogger.js"></script>
+<noscript><img alt="" src="http://logger.giric.com/pphlogger.php?id=giric&st=img"></noscript>
+
+<?php
+
+	echo "</body>\n";
 	echo "</html>\n";
 
 	//eof

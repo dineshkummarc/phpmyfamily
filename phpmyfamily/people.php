@@ -13,27 +13,27 @@
 	include "css.inc.php";
 
 	// update the persons record
-	if ($_POST["func"] == "update") {
-		switch ($_POST["area"]) {
+	if ($_REQUEST["func"] == "update") {
+		switch ($_REQUEST["area"]) {
 			case "detail":
-				$uquery = "UPDATE people SET name = '".$_POST["frmName"]."', date_of_birth = '".$_POST["frmDOB"]."', birth_place = '".$_POST["frmBirthPlace"]."', date_of_death = '".$_POST["frmDOD"]."', death_reason = '".$_POST["frmDeathReason"]."', mother_id = '".$_POST["frmMother"]."', father_id = '".$_POST["frmFather"]."', narrative = '".$_POST["frmNarrative"]."' WHERE person_id = '".$_POST["person"]."'";
+				$uquery = "UPDATE people SET name = '".$_POST["frmName"]."', date_of_birth = '".$_POST["frmDOB"]."', birth_place = '".$_POST["frmBirthPlace"]."', date_of_death = '".$_POST["frmDOD"]."', death_reason = '".$_POST["frmDeathReason"]."', mother_id = '".$_POST["frmMother"]."', father_id = '".$_POST["frmFather"]."', narrative = '".$_POST["frmNarrative"]."' WHERE person_id = '".$_REQUEST["person"]."'";
 				break;
 
 			case "marriage":
-				$tquery = "UPDATE people SET updated = NOW() WHERE person_id = '".$_POST["person"]."'";
+				$tquery = "UPDATE people SET updated = NOW() WHERE person_id = '".$_REQUEST["person"]."'";
 				$tresult = mysql_query($tquery) or die("Timestamp update failed");
 
-				if ($_POST["gender" == "M")
-					$uquery = "UPDATE spouses SET bride_id = '".$_POST["frmSpouse"]."', marriage_date = '".$_POST["frmDate"]."', marriage_place = '".$_POST["frmPlace"]."' WHERE groom_id = '".$_POST["person"]."' AND bride_id = '".$_POST["oldspouse"]."'";
+				if ($_REQUEST["gender"] == "M")
+					$uquery = "UPDATE spouses SET bride_id = '".$_POST["frmSpouse"]."', marriage_date = '".$_POST["frmDate"]."', marriage_place = '".$_POST["frmPlace"]."' WHERE groom_id = '".$_REQUEST["person"]."' AND bride_id = '".$_REQUEST["oldspouse"]."'";
 				else
-					$uquery = "UPDATE spouses SET groom_id = '".$_POST["frmSpouse"]."', marriage_date = '".$_POST["frmDate"]."', marriage_place = '".$_POST["frmPlace"]."' WHERE bride_id = '".$_POST["person"]."' AND groom_id = '".$_POST["oldspouse"]."'";
+					$uquery = "UPDATE spouses SET groom_id = '".$_POST["frmSpouse"]."', marriage_date = '".$_POST["frmDate"]."', marriage_place = '".$_POST["frmPlace"]."' WHERE bride_id = '".$_REQUEST["person"]."' AND groom_id = '".$_REQUEST["oldspouse"]."'";
 				break;
 
 			case "census":
-				$tquery = "UPDATE people SET updated = NOW() WHERE person_id = '".$_POST["person"]."'";
+				$tquery = "UPDATE people SET updated = NOW() WHERE person_id = '".$_REQUEST["person"]."'";
 				$tresult = mysql_query($tquery) or die("Timestamp update failed");
 
-				$uquery = "UPDATE census SET schedule = '".$_POST["frmSchedule"]."', address = '".$_POST["frmAddress"]."', condition = '".$_POST["frmCondition"]."', age = '".$_POST["frmAge"]."', profession = '".$_POST["frmProfession"]."', where_born = '".$_POST["frmBirthPlace"]."' WHERE person_id = '".$_POST["person"]."' AND year = '".$_POST["year"]."'";
+				$uquery = "UPDATE census SET schedule = '".$_POST["frmSchedule"]."', address = '".$_POST["frmAddress"]."', condition = '".$_POST["frmCondition"]."', age = '".$_POST["frmAge"]."', profession = '".$_POST["frmProfession"]."', where_born = '".$_POST["frmBirthPlace"]."' WHERE person_id = '".$_REQUEST["person"]."' AND year = '".$_REQUEST["year"]."'";
 				break;
 
 			case "narrative";
@@ -47,8 +47,8 @@
 	}
 
 	// add a new person
-	if ($_POST["func"] == "insert") {
-		switch ($_POST["area"]) {
+	if ($_REQUEST["func"] == "insert") {
+		switch ($_REQUEST["area"]) {
 			case "detail":
 				$iquery = "INSERT INTO people (person_id, name, date_of_birth, birth_place, date_of_death, death_reason, gender, mother_id, father_id, narrative, updated) VALUES ('', '".$_POST["frmName"]."', '".$_POST["frmDOB"]."', '".$_POST["frmBirthPlace"]."', '".$_POST["frmDOD"]."', '".$_POST["frmDeathReason"]."', '".$_POST["frmGender"]."', '".$_POST["frmMother"]."', '".$_POST["frmFather"]."', '".$_POST["frmNarrative"]."', NOW())";
 				$iresult = mysql_query($iquery) or die("Detail nsert query failed");
@@ -56,21 +56,21 @@
 				break;
 			
 			case "marriage":
-				$tquery = "UPDATE people SET updated = NOW() WHERE person_id = '".$person."'";
+				$tquery = "UPDATE people SET updated = NOW() WHERE person_id = '".$_REQUEST["person"]."'";
 				$tresult = mysql_query($tquery) or die("Timestamp update failed");
 
-				if ($gender == "M")
-					$iquery = "INSERT INTO spouses (groom_id, bride_id, marriage_date, marriage_place) VALUES ('".$person."', '".$frmSpouse."', '".$frmDate."', '".$frmPlace."')";
+				if ($_REQUEST["gender"] == "M")
+					$iquery = "INSERT INTO spouses (groom_id, bride_id, marriage_date, marriage_place) VALUES ('".$_REQUEST["person"]."', '".$_POST["frmSpouse"]."', '".$_POST["frmDate"]."', '".$_POST["frmPlace"]."')";
 				else
-					$iquery = "INSERT INTO spouses (groom_id, bride_id, marriage_date, marriage_place) VALUES ('".$frmSpouse."', '".$person."', '".$frmDate."', '".$frmPlace."')";
+					$iquery = "INSERT INTO spouses (groom_id, bride_id, marriage_date, marriage_place) VALUES ('".$_POST["frmSpouse"]."', '".$_REQUEST["person"]."', '".$_POST["frmDate"]."', '".$_POST["frmPlace"]."')";
 				$iresult = mysql_query($iquery);
 				break;
 
 			case "census":
-				$tquery = "UPDATE people SET updated = NOW() WHERE person_id = '".$person."'";
+				$tquery = "UPDATE people SET updated = NOW() WHERE person_id = '".$_REQUEST["person"]."'";
 				$tresult = mysql_query($tquery) or die("Timestamp update failed");
 
-				$iquery = "INSERT INTO census (person_id, year, schedule, address, condition, age, profession, where_born) VALUES ('".$person."', '".$frmYear."', '".$frmSchedule."', '".$frmAddress."', '".$frmCondition."', '".$frmAge."', '".$frmProfession."', '".$frmWhereBorn."')";
+				$iquery = "INSERT INTO census (person_id, year, schedule, address, condition, age, profession, where_born) VALUES ('".$_REQUEST["person"]."', '".$_POST["frmYear"]."', '".$_POST["frmSchedule"]."', '".$_POST["frmAddress"]."', '".$_POST["frmCondition"]."', '".$_POST["frmAge"]."', '".$_POST["frmProfession"]."', '".$_POST["frmWhereBorn"]."')";
 				$iresult = mysql_query($iquery) or die("Census insert query failed");
 				break;
 
@@ -101,6 +101,7 @@
 		css_site();
 		echo "<title>".$prow["name"]."</title>";
 		echo "</HEAD>";
+		echo "<BODY>\n";
 
 		echo "<table>";
 			echo "<tr width=100%>";
@@ -109,7 +110,7 @@
 					echo "<h3>(".formatdbdate($prow["date_of_birth"])." - ".formatdbdate($prow["date_of_death"]).")</h3>";
 				echo "</td>";
 				echo "<td width=20%>";
-					echo "<form method=post action=".$PHP_SELF."?person=>";
+					echo "<form method=post action=people.php?person=&func=>";
 					// query for everybody
 					$allquery = "SELECT person_id, SUBSTRING_INDEX(name, ' ', -1) AS surname, name FROM people WHERE person_id <> '".$_REQUEST["person"]."' ORDER BY surname, name";
 					$allresult = mysql_query($allquery) or die("All people query failed");
@@ -148,7 +149,7 @@
 					$fquery = "SELECT * FROM people WHERE person_id = '".$father."'";
 					$fresult = mysql_query($fquery) or die("Father query failed");
 					while ($frow = mysql_fetch_array($fresult)) {
-						echo "<a href=".$PHP_SELF."?person=".$frow["person_id"].">".$frow["name"]." </a>(".formatdbdate($frow["date_of_birth"])." - ".formatdbdate($frow["date_of_death"]).")";
+						echo "<a href=people.php?person=".$frow["person_id"]."&func=>".$frow["name"]." </a>(".formatdbdate($frow["date_of_birth"])." - ".formatdbdate($frow["date_of_death"]).")";
 					}
 					mysql_free_result($fresult);
 				echo "</td>";
@@ -165,7 +166,7 @@
 					$mquery = "SELECT * FROM people WHERE person_id = '".$mother."'";
 					$mresult = mysql_query($mquery) or die("Mother query failed");
 					while ($mrow = mysql_fetch_array($mresult)) {
-						echo "<a href=".$PHP_SELF."?person=".$mrow["person_id"].">".$mrow["name"]."</a> (".formatdbdate($mrow["date_of_birth"])." - ".formatdbdate($mrow["date_of_death"]).")";
+						echo "<a href=people.php?person=".$mrow["person_id"]."&func=>".$mrow["name"]."</a> (".formatdbdate($mrow["date_of_birth"])." - ".formatdbdate($mrow["date_of_death"]).")";
 					}
 					mysql_free_result($mresult);
 				echo "</td>";
@@ -177,7 +178,7 @@
 					$cquery = "SELECT * FROM people WHERE (father_id = '".$_REQUEST["person"]."' OR mother_id = '".$_REQUEST["person"]."') ORDER BY date_of_birth";
 					$cresult = mysql_query($cquery) or die("Children query failed");
 					while ($crow = mysql_fetch_array($cresult)) {
-						echo "<a href=".$PHP_SELF."?person=".$crow["person_id"].">".$crow["name"]."</a> (".formatdbdate($crow["date_of_birth"])." - ".formatdbdate($crow["date_of_death"]).")<br>";
+						echo "<a href=people.php?person=".$crow["person_id"]."&func=>".$crow["name"]."</a> (".formatdbdate($crow["date_of_birth"])." - ".formatdbdate($crow["date_of_death"]).")<br>";
 					}
 					mysql_free_result($cresult);
 				echo "</td>";
@@ -187,7 +188,7 @@
 					$squery = "SELECT * FROM people WHERE (father_id = '".$father."' OR mother_id = '".$mother."') AND person_id <> '".$_REQUEST["person"]."' ORDER BY date_of_birth";
 					$sresult = mysql_query($squery) or die("Siblings query failed");
 					while ($srow = mysql_fetch_array($sresult)) {
-						echo "<a href=".$PHP_SELF."?person=".$srow["person_id"].">".$srow["name"]."</a> (".formatdbdate($srow["date_of_birth"])." - ".formatdbdate($srow["date_of_death"]).")<br>";
+						echo "<a href=people.php?person=".$srow["person_id"]."&func=>".$srow["name"]."</a> (".formatdbdate($srow["date_of_birth"])." - ".formatdbdate($srow["date_of_death"]).")<br>";
 					}
 					mysql_free_result($sresult);
 				echo "</td>";
@@ -202,7 +203,7 @@
 					$wquery = "SELECT * FROM people, spouses WHERE (bride_id = person_id OR groom_id = person_id) AND (groom_id = '".$_REQUEST["person"]."' OR bride_id = '".$_REQUEST["person"]."') AND person_id <> '".$_REQUEST["person"]."' ORDER BY marriage_date";
 					$wresult = mysql_query($wquery) or die("Marriage query failed");
 					while ($wrow = mysql_fetch_array($wresult)) {
-						echo "<a href=edit.php?func=edit&person=".$_REQUEST["person"]."&area=marriage&spouse=".$wrow["person_id"].">edit</a> <a href=".$PHP_SELF."?person=".$wrow["person_id"].">".$wrow["name"]."</a> on  ".formatdbdate($wrow["marriage_date"])." at ".$wrow["marriage_place"]."<br>";
+						echo "<a href=edit.php?func=edit&person=".$_REQUEST["person"]."&area=marriage&spouse=".$wrow["person_id"].">edit</a> <a href=people.php?person=".$wrow["person_id"]."&func=>".$wrow["name"]."</a> on  ".formatdbdate($wrow["marriage_date"])." at ".$wrow["marriage_place"]."<br>";
 					}
 					mysql_free_result($wresult);
 				echo "</td>";
@@ -267,7 +268,15 @@
 	}
 	
 	mysql_free_result($presult);
+	
+?>
 
+<script language="JavaScript" type="text/javascript" src="pphlogger.js"></script>
+<noscript><img alt="" src="http://logger.giric.com/pphlogger.php?id=giric&st=img"></noscript>
+
+<?php
+	
+	echo "</body>";
 	echo "</html>";
 
 	// eof
