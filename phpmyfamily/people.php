@@ -130,7 +130,7 @@
 				// or someones made a mistake with peoples parents
 				echo $frow["name"]." (<font class=\"restrict\">".$strRestricted."</font>)<br />\n";
 			else
-				echo "<a href=\"people.php?person=".$frow["person_id"]."\">".$frow["name"]."</a>(".formatdate($frow["DOB"])." - ".formatdate($frow["DOD"]).")";
+				echo "<a href=\"people.php?person=".$frow["person_id"]."\">".$frow["name"]."</a> (".formatdate($frow["DOB"])." - ".formatdate($frow["DOD"]).")";
 		}
 		mysql_free_result($fresult);
 ?></td>
@@ -154,7 +154,7 @@
 			// or someones made a mistake with peoples parents
 			echo $mrow["name"]." (<font class=\"restrict\">".$strRestricted."</font>)<br />\n";
 		else
-			echo "<a href=\"people.php?person=".$mrow["person_id"]."\">".$mrow["name"]."</a>(".formatdate($mrow["DOB"])." - ".formatdate($mrow["DOD"]).")";
+			echo "<a href=\"people.php?person=".$mrow["person_id"]."\">".$mrow["name"]."</a> (".formatdate($mrow["DOB"])." - ".formatdate($mrow["DOD"]).")";
 		}
 		mysql_free_result($mresult);
 ?></td>
@@ -170,12 +170,12 @@
 		while ($crow = mysql_fetch_array($cresult)) {
 			if ($crow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0) {
 ?>
-				<?php echo $crow["name"]; ?>(<font class="restrict"><?php echo $strRestricted; ?></font>)<br />
+				<?php echo $crow["name"]; ?> (<font class="restrict"><?php echo $strRestricted; ?></font>)<br />
 <?php
 			}
 			else {
 ?>
-				<a href="people.php?person=<?php echo $crow["person_id"]; ?>"><?php echo $crow["name"]; ?> </a><?php echo "(".formatdate($crow["DOB"])." - ".formatdate($crow["DOD"]).")"; ?><br />
+				<a href="people.php?person=<?php echo $crow["person_id"]; ?>"><?php echo $crow["name"]; ?></a> <?php echo "(".formatdate($crow["DOB"])." - ".formatdate($crow["DOD"]).")"; ?><br />
 <?php
 			}
 		}
@@ -192,12 +192,12 @@
 		while ($srow = mysql_fetch_array($sresult)) {
 			if ($srow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0) {
 ?>
-				<?php echo $srow["name"]; ?>(<font class="restrict"><?php echo $strRestricted; ?></font>)<br />
+				<?php echo $srow["name"]; ?> (<font class="restrict"><?php echo $strRestricted; ?></font>)<br />
 <?php
 			}
 			else {
 ?>
-				<a href="people.php?person=<?php echo $srow["person_id"]; ?>"><?php echo $srow["name"]; ?></a><?php echo "(".formatdate($srow["DOB"])." - ".formatdate($srow["DOD"]).")"; ?><br />
+				<a href="people.php?person=<?php echo $srow["person_id"]; ?>"><?php echo $srow["name"]; ?></a> <?php echo "(".formatdate($srow["DOB"])." - ".formatdate($srow["DOD"]).")"; ?><br />
 <?php
 			}
 		}
