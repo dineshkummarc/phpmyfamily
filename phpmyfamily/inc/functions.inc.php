@@ -532,8 +532,8 @@
 			while (false !== ($file = readdir($handle)) ) {
 				if ( strrpos($file, "css.php")>1) {
 					$filebits = explode(".",$file);
-					echo "<option value='".$filebits[0]."'" ;
-					if ($style == $styledir.$file ) echo " SELECTED";
+					echo "<option value=\"".$filebits[0]."\"" ;
+					if ($style == $file ) echo " selected=\"selected\"";
 					echo ">".$filebits[0]."</option>\n";
 				}
 			}
