@@ -60,6 +60,7 @@ function css_site() {
 	A.menusxxs:hover { text-decoration: none; color: #FF6666; background: #ffa; font-size: <?php echo $font_smallest; ?>; }
 	-->
 	</STYLE>
+	<link rel="SHORTCUT ICON" href="images/favicon.ico">
 	<?php
 }
 
