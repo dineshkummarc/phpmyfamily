@@ -21,11 +21,45 @@
 
 	// do different things for those not logged in
 	if ($_SESSION["id"] != 0) {
-		echo "Logged in";
+		do_headers("Logged in to phpmyfamily");
+?>
+<table width="100%" class="header">
+	<tr>
+		<td width="65%" align="center">
+			<h1>phpmyfamily</h1>
+			<h3><?php echo $desc; ?></h3>
+		</td>
+		<td width="35%" valign="top" align="right">
+			<form method="get" action="people.php">
+				<?php listpeeps("person"); ?>
+			</form>
+<?php user_opts(); ?>
+		</td>
+	</tr>
+</table>
+<?php
 	} else {
 		do_headers("Login to phpmyfamily");
+?>
+<table width="100%" class="header">
+	<tr>
+		<td width="65%" align="center">
+			<h1>phpmyfamily</h1>
+			<h3><?php echo $desc; ?></h3>
+		</td>
+		<td width="35%" valign="top" align="right">
+			<form method="get" action="people.php">
+				<?php listpeeps("person"); ?>
+			</form>
+<?php user_opts(); ?>
+		</td>
+	</tr>
+</table>
+<?php
 		include "inc/loginform.inc.php";
 	}
+
+	include "inc/footer.inc.php";
 
 	// eof
 ?>
