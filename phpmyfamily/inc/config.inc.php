@@ -65,7 +65,7 @@
 // Language routines
 //=====================================================================================================================
 	// include the language file
-	include $_SESSION["lang"];
+	@include $_SESSION["lang"];
 
 	// eof
 ?>
