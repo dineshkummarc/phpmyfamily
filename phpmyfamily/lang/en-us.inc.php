@@ -171,6 +171,7 @@
 	$strNewPerson		= "a new person";
 	$strPedigree		= "pedigree";
 	$strToDetails		= "to details";
+	$strSurnameIndex	= "Index of Surnames";
 
 //=====================================================================================================================
 //  error definitions

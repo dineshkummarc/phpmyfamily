@@ -89,7 +89,7 @@
 						<th width="50"><?php echo $strNo; ?></th>
 					</tr>
 					<tr>
-						<td class="tbl_odd"><?php echo ucwords($strOnFile); ?></td>
+						<td class="tbl_odd"><a href="surnames.php"><?php echo ucwords($strOnFile); ?></a></td>
 						<td class="tbl_odd" align="right">
 <?php
 					$query = "SELECT count(*) as number FROM ".$tblprefix."people";
