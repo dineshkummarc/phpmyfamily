@@ -265,11 +265,24 @@
 	// detect if magic_quotes is off, and quote a string if needed
 	function add_quotes($str) {
 
+		// chck to see if quotes are on
 		if (get_magic_quotes_gpc())
 			return $str;
+		// and add slashes if not
 		else
 			return addslashes($str);
 	}	// end of add_quotes()
+
+	// function: mysql_connect_wrapper
+	// use _pconnect if poss, if not invisibly choose _connect
+	function mysql_connect_wrapper($server, $username, $password) {
+
+		// see if we have _pconnect available
+		if (function_exists("mysql_pconnect"))
+			return mysql_pconnect($server, $username, $password);
+		else
+			return mysql_connect($server, $username, $password);
+	}	// end of mysql-connect_wrapper()
 
 	// eof
 ?>
