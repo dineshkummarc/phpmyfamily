@@ -25,7 +25,7 @@
 	$charset			= "ISO-8859-1";
 	$clang				= "en";
 	$dir				= "ltr";
-	$datefmt 			= "'%d/%m/%Y'";
+	$datefmt 			= "'%m/%d/%Y'";
 	// flags are from http://flags.sourceforge.net
 	// I can't find a copyrigh to credit
 	// but I'm sure somebody has it

@@ -1,3 +1,5 @@
+	All fields are now editable
+	Can now delete anything (subject to permission)
 	census re-written to allow multiple countries
 	anniversaries added to index
 	image upload bug fixed
