@@ -75,7 +75,7 @@
 
 <table width="100%">
 	<tr>
-		<td width="50%" valign="top">
+		<td width="33%" valign="top">
 <?php
 			// include login form if not logged in
 			if ($_SESSION["id"] == 0)
@@ -144,7 +144,112 @@
 				</table>
 
 			</td>
-			<td width="50%" align="right">
+			<td width="33%" valign="top">
+				<table width="100%">
+					<thead>
+						<tr>
+							<th scope="col" colspan="3"><?php echo $strUpcoming; ?></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th><?php echo $strBirths; ?></th>
+							<th><?php echo $strDate; ?></th>
+							<th><?php echo $strAnniversary; ?></th>
+						</tr>
+<?php
+	// find out what the current day and month are.
+	$nquery = "SELECT DAYOFMONTH(NOW()) AS day, MONTH(NOW()) AS month";
+	$nresult = mysql_query($nquery) or die("Errrororororororo");
+	while ($nrow = mysql_fetch_array($nresult)) {
+		$day = $nrow["day"];
+		$month = $nrow["month"];
+	}
+	mysql_free_result($nresult);
+
+	// get the births in the next n days
+	$bquery = "SELECT *, CONCAT_WS('-', YEAR(NOW()), LPAD(MONTH(date_of_birth), 2, '0'), LPAD(DAYOFMONTH(date_of_birth), 2, '0')) AS year_birth, DATE_FORMAT(date_of_birth, ".$datefmt.") AS DOB FROM family_people";
+	if ($_SESSION["id"] == 0)
+		$bquery .= " WHERE date_of_birth < '".$restrictdate."'";
+	$bquery .= " HAVING year_birth >= NOW() AND year_birth <= date_add(NOW(), INTERVAL 21 DAY) ORDER BY year_birth LIMIT 0,6";
+	$bresult = mysql_query($bquery) or die($err_person);
+	$i = 0;
+	while ($brow = mysql_fetch_array($bresult)) {
+		if ($i == 0 || fmod($i, 2) == 0)
+			$class = "tbl_odd";
+		else
+			$class = "tbl_even";
+?>
+						<tr>
+							<td class="<?php echo $class; ?>"><a href="people.php?person=<?php echo $brow["person_id"]; ?>"><?php echo $brow["name"]; ?></a></td>
+							<td class="<?php echo $class; ?>"><?php echo $brow["DOB"]; ?></td>
+							<td class="<?php echo $class; ?>"><?php echo $brow["year_birth"] - $brow["date_of_birth"]; ?> years</td>
+						</tr>
+<?php
+	$i++;
+	}
+	mysql_free_result($bresult);
+?>
+						<tr>
+							<th><?php echo $strMarriages; ?></th>
+						</tr>
+<?php
+	// get the marriages in the next n days
+	$mquery = "SELECT concat_ws('-', year(now()), lpad(month(marriage_date), 2, '0'), lpad(dayofmonth(marriage_date), 2, '0')) AS year_marriage, DATE_FORMAT(marriage_date, ".$datefmt.") AS DOM, marriage_date, tbl_male.name AS male, tbl_female.name AS female, tbl_male.person_id AS groom, tbl_female.person_id AS bride FROM family_spouses, family_people AS tbl_male, family_people AS tbl_female";
+	if ($_SESSION["id"] == 0)
+		$mquery .= " WHERE (tbl_male.date_of_birth < '".$restrictdate."' AND tbl_female.date_of_birth < '".$restrictdate."') AND";
+	else
+		$mquery .= " WHERE";
+	$mquery .= " groom_id = tbl_male.person_id AND bride_id = tbl_female.person_id HAVING year_marriage >= now() AND year_marriage <= date_add(now(), INTERVAL 21 DAY) LIMIT 0,6";
+	$mresult = mysql_query($mquery) or die($err_marriage);
+	$i = 0;
+	while ($mrow = mysql_fetch_array($mresult)) {
+		if ($i == 0 || fmod($i, 2) == 0)
+			$class = "tbl_odd";
+		else
+			$class = "tbl_even";
+?>
+						<tr>
+							<td class="<?php echo $class; ?>"><a href="people.php?person=<?php echo $mrow["groom"]; ?>"><?php echo $mrow["male"]; ?></a> & <a href="people.php?person=<?php echo $mrow["bride"]; ?>"><?php echo $mrow["female"]; ?></a></td>
+							<td class="<?php echo $class; ?>"><?php echo $mrow["DOM"]; ?></td>
+							<td class="<?php echo $class; ?>"><?php echo $mrow["year_marriage"] - $mrow["marriage_date"]; ?> years</td>
+						</tr>
+<?php
+	$i++;
+	}
+	mysql_free_result($mresult);
+?>
+						<tr>
+							<th><?php echo $strDeaths; ?></th>
+						</tr>
+<?php
+	// get the deaths in the next n days
+	$dquery = "SELECT *, concat_ws('-', year(now()), lpad(month(date_of_death), 2, '0'), lpad(dayofmonth(date_of_death), 2, '0')) AS year_death, DATE_FORMAT(date_of_death, ".$datefmt.") AS DOD FROM family_people";
+	if ($_SESSION["id"] == 0)
+		$dquery .= " WHERE date_of_birth < '".$restrictdate."'";
+	$dquery .= " HAVING year_death >= now() AND year_death <= date_add(now(), INTERVAL 21 DAY) ORDER BY year_death LIMIT 0,6";
+	$dresult = mysql_query($dquery) or die($err_person);
+	$i = 0;
+	while ($drow = mysql_fetch_array($dresult)) {
+		if ($i == 0 || fmod($i, 2) == 0)
+			$class = "tbl_odd";
+		else
+			$class = "tbl_even";
+?>
+						<tr>
+							<td class="<?php echo $class; ?>"><a href="people.php?person=<?php echo $drow["person_id"]; ?>"><?php echo $drow["name"]; ?></a></td>
+							<td class="<?php echo $class; ?>"><?php echo $drow["DOD"]; ?></td>
+							<td class="<?php echo $class; ?>"><?php echo $drow["year_death"] - $drow["date_of_death"]; ?> years</td>
+						</tr>
+<?php
+	$i++;
+	}
+	mysql_free_result($dresult);
+?>
+					</tbody>
+				</table>
+			</td>
+			<td width="33%" align="right">
 				<!--list of last 20 updated people-->
 				<table width="80%">
 					<tr>
@@ -189,6 +294,6 @@
 <?php
 
 	include "inc/footer.inc.php";
-	
+
 	//eof
 ?>

@@ -26,6 +26,10 @@
 	$clang				= "en";
 	$dir				= "ltr";
 	$datefmt 			= "'%d/%m/%Y'";
+	// flags are from http://flags.sourceforge.net
+	// I can;t find a copyrigh to credit
+	// but I'm sure somebody has it
+	$flag				= "images/gb.gif";
 
 //=====================================================================================================================
 // some date stuff
@@ -151,6 +155,12 @@
 	$strNote			= "Note";
 	$strFooter			= "Email the <a href=\"mailto:$email\">webmaster</a> with any problems.";
 	$strPowered			= "Powered by";
+	$strPedigreeOf		= "Pedigree of";
+	$strBirths			= "Births";
+	$strAnniversary		= "Anniversary";
+	$strUpcoming		= "Upcoming Anniversaries";
+	$strMarriages		= "Marriages";
+	$strDeaths			= "Deaths";
 
 //=====================================================================================================================
 //  error definitions
