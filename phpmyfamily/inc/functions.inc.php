@@ -646,6 +646,9 @@
 		$result = mysql_query($query) or die(mysql_error());
 		if (mysql_num_rows($result) != 1)
 			return 0;
+		while ($qrow = mysql_fetch_array($result)) {	
+			$username = $qrow["username"];
+		}
 		mysql_free_result($result);
 
 		// generate a new password
@@ -664,7 +667,7 @@
 		$headers .= "From: <".$trackemail.">\r\n";
 		$headers .= "X-Mailer: PHP/" . phpversion();
 		$subject = $ePwdSubject;
-		$body = str_replace("$1", $password, $ePwdBody);
+		$body = str_replace("$1", $username."/".$password, $ePwdBody);
 
 		// fire off the email
 		mail($email, $subject, $body, $headers);

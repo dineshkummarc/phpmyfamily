@@ -1,3 +1,4 @@
+	Username added to password recovery email
 	Improvements to installation scripts to avoid warnings
 	Implemented RFE # 1068906 (dynamic date restriction)
 v 1.4.0
