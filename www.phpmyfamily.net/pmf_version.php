@@ -18,7 +18,7 @@
 
 	// format is
 	// major.minor.patch.release_id
-	echo "1.3.0.xxxxxx";
+	echo "1.3.1.247139";
 
 	// eof
 ?>

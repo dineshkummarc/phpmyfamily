@@ -25,7 +25,7 @@
     </tr>
 	<tr>
 		<td colspan="2">
-<img src="images/filler.png" width="10" height="540" border="0" align="left" alt="" />
+<img src="images/filler.png" width="10" height="545" border="0" align="left" alt="" />
 
 <!--start main-->
 <br />
@@ -34,6 +34,8 @@
 <p><em>phpmyfamily</em> is now hosted by <a href="sourceforge.net" target="_blank">sourceforge.net</a>.  Click <a href="http://sourceforge.net/projects/phpmyfamily/">here</a> to visit the project page and access bug trackers etc.</p>
 
 <h3>news</h3>
+
+<p><strong><em>phpmyfamily</em> 1.3.1 released (19 June 2004)</strong><br />The latest version of <em>phpmyfamily</em> is now available for <a href="downloads.php">download</a>.This is a security release following the discovery of a bug which allowed a user to gain edit capability when the application was running on a server with the php ini setting of "register_globals = On"</p>
 
 <p><strong><em>phpmyfamily</em> 1.3.0 released (27 May 2004)</strong><br />The latest version of <em>phpmyfamily</em> is now available for <a href="downloads.php">download</a>.  This release has many new features and enhancements over previous versions and it is recommended that all users upgrade as soon as possible.  The major new features include email monitoring of individuals, new surname listings, new image gallery and new census views.  All database queries have be revisited and optomized for performance.</p>
 

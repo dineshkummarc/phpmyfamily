@@ -41,19 +41,19 @@
   </thead>
   <tbody>
     <tr>
-      <td class="tbl_odd"><a href="http://prdownloads.sourceforge.net/phpmyfamily/phpmyfamily-1.3.0.tar.gz?download">phpmyfamily-1.3.0.tar.gz</a>  </td>
-      <td class="tbl_odd">54,977 bytes  </td>
-      <td class="tbl_odd">4cae5ca0b4274dfbf220de8736a88d1d</td>
+      <td class="tbl_odd"><a href="http://prdownloads.sourceforge.net/phpmyfamily/phpmyfamily-1.3.1.tar.gz?download">phpmyfamily-1.3.1.tar.gz</a>  </td>
+      <td class="tbl_odd">55,013 bytes  </td>
+      <td class="tbl_odd">e664305544735d5456004169984a9726</td>
     </tr>
     <tr>
-      <td class="tbl_even"><a href="http://prdownloads.sourceforge.net/phpmyfamily/phpmyfamily-1.3.0.zip?download">phpmyfamily-1.3.0.zip</a>  </td>
-      <td class="tbl_even">86,074 bytes  </td>
-      <td class="tbl_even">12e32a546f83f747b7f7abf0c4dfdefb</td>
+      <td class="tbl_even"><a href="http://prdownloads.sourceforge.net/phpmyfamily/phpmyfamily-1.3.1.zip?download">phpmyfamily-1.3.1.zip</a>  </td>
+      <td class="tbl_even">86,108 bytes  </td>
+      <td class="tbl_even">5854030425c00d59c9ead15c9eebb720</td>
     </tr>
 	<tr>
-		<td class="tbl_odd"><a href="http://prdownloads.sourceforge.net/phpmyfamily/phpmyfamily-1.3.0.tar.bz2?download">phpmyfamily-1.3.0.bz2</a></td>
-		<td class="tbl_odd">47,452 bytes</td>
-		<td class="tbl_odd">1edf0334f5c88d5a51d960c3174f2f8d</td>
+		<td class="tbl_odd"><a href="http://prdownloads.sourceforge.net/phpmyfamily/phpmyfamily-1.3.1.tar.bz2?download">phpmyfamily-1.3.1.bz2</a></td>
+		<td class="tbl_odd">47,523 bytes</td>
+		<td class="tbl_odd">bf3dd9e10749edc49ba3a7d5f5e9ca59</td>
 	</tr>
   </tbody>
 </table>
@@ -61,8 +61,11 @@
 <!--end of main-->
 
 <h3>changelog</h3>
+<strong><em>phpmyfamily</em> v1.3.1 (Released 19/06/2004)</strong>
+<p>The latest release of <em>phpmyfamily</em> has a major security fix. </p>
+
 <strong><em>phpmyfamily</em> v1.3.0 (Released 26/05/2004)</strong>
-<p>The latest release of <em>phpmyfamily</em> has many feature enhancements.  New to this version are;</p>
+<p>This release of <em>phpmyfamily</em> has many feature enhancements.  New to this version are;</p>
 <ul>
 	<li>Surname List - View all names on one page; great for search engines</li>
 	<li>Email monitoring - sign up and be informed of any changes to an individual</li>
