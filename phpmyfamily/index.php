@@ -239,7 +239,7 @@
 				</table>
 
 			</td>
-			<td width="33%" align="right">
+			<td width="33%" align="right" valign="top">
 				<!--list of last 20 updated people-->
 				<table width="80%">
 					<tr>
