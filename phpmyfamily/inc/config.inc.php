@@ -100,6 +100,7 @@
 // Language routines
 //=====================================================================================================================
 	// include the language file
+	include_once("lang/en-uk.inc.php");
 	@include $_SESSION["lang"];
 
 	// eof
