@@ -8,8 +8,8 @@
 
 	// send the headers
 	ini_set("arg_separator.output", "&amp;");
-	header('Content-Type: text/html; charset=ISO-8859-1');
-	header('Content-Language: en');
+	header('content-Type: text/html; charset=ISO-8859-1');
+	header('content-Language: en');
 
 	// include the database parameters
 	include "inc/session.inc.php";
@@ -21,48 +21,48 @@
 	include "inc/css.inc.php";
 
 	// fill out the header
-	echo "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"\n\t\"http://www.w3.org/TR/html4/loose.dtd\">\n";
-	echo "<HTML>\n";
-	echo "<HEAD>\n";
 ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+	"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
 
-	<META NAME="author" CONTENT="Simon E Booth">
-	<META NAME="publisher" CONTENT="Giric">
-	<META NAME="copyright" CONTENT="2002-2003 Simon E Booth">
-	<META NAME="keywords" CONTENT="Genealogy Ambler Bate Bickle Birtwistle Booth Bridgewater Chaffe Clegg Eveleigh Grainger Granger Jenkins Jones Kitching Kitchen Knight Parry Platt Raistrick Thorne Vann Verity Virr Willcocks">
-	<META NAME="description" CONTENT="Family tree for me, starting with Booths and Ambler and going who knows where?">
-	<META NAME="page-topic" CONTENT="Genealogy">
-	<META NAME="audience" CONTENT="All">
-	<META NAME="expires" CONTENT="0">
-	<META NAME="page-type" CONTENT="Private homepage">
-	<META NAME="robots" CONTENT="INDEX,FOLLOW">
+<meta name="author" content="Simon E Booth">
+<meta name="publisher" content="Giric">
+<meta name="copyright" content="2002-2003 Simon E Booth">
+<meta name="keywords" content="Genealogy Ambler Bate Bickle Birtwistle Booth Bridgewater Chaffe Clegg Eveleigh Grainger Granger Jenkins Jones Kitching Kitchen Knight Parry Platt Raistrick Thorne Vann Verity Virr Willcocks">
+<meta name="description" content="Family tree for me, starting with Booths and Ambler and going who knows where?">
+<meta name="page-topic" content="Genealogy">
+<meta name="audience" content="All">
+<meta name="expires" content="0">
+<meta name="page-type" content="Private homepage">
+<meta name="robots" content="INDEX,FOLLOW">
 
+<?php css_site(); ?>
+<title>Family Tree</title>
+</head>
+<body>
+	
+<table>
+	<tr>
+		<td width="80%" align="center">
+			<h2>Family Tree</h2>
+		</td>
+		<td width="20%" valign="top">
+			<form method="post" action="passthru.php?func=jump">
+				<?php listpeeps("person"); ?>
+				<input type="submit" name="Submit1" value="Go">
+			</form>
+		</td>
+	</tr>
+</table>
+	
+<hr>
+
+<table width="100%">
+	<tr>
+		<td width="70%" valign="top">
 <?php
-	css_site();
-	echo "<title>Family Tree</title>\n";
-	echo "</HEAD>\n";
-	echo "<BODY>\n";
-	
-	echo "<table>\n";
-		echo "<tr>\n";
-			echo "<td width=\"80%\" align=\"center\">\n";
-				echo "<h2>Family Tree</h2>\n";
-			echo "</td>\n";
-			echo "<td width=\"20%\" valign=\"top\">\n";
-				echo "<form method=post action=passthru.php?func=jump>";
-					listpeeps("person");
-					echo "<INPUT TYPE=SUBMIT NAME=Submit1 VALUE=Go>\n";
-				echo "</form>\n";
-			echo "</td>\n";
-		echo "</tr>\n";
-	echo "</table>\n";
-	
-	echo "<hr>\n";
-
-	echo "<table width=\"100%\">\n";
-		echo "<tr>\n";
-			echo "<td width=\"70%\" valign=\"top\">";
-
 			// include login form if not logged in
 			if ($_SESSION["id"] == 0)
 				include "inc/loginform.inc.php";
@@ -79,7 +79,7 @@
 				echo "<tr>\n";
 					echo "<td bgcolor=\"#CCCCCC\">People on file</td>\n";
 					echo "<td bgcolor=\"#CCCCCC\" align=\"right\">";
-					$query = "SELECT count(*) as number FROM people";
+					$query = "SELECT count(*) as number FROM family_people";
 					$result = mysql_query($query);
 					while ($row = mysql_fetch_array($result))
 						echo $row["number"];
@@ -89,7 +89,7 @@
 				echo "<tr>\n";
 					echo "<td bgcolor=\"#DDDDDD\">Census Records</td>\n";
 					echo "<td bgcolor=\"#DDDDDD\" align=\"right\">";
-					$query = "SELECT count(*) as number FROM census";
+					$query = "SELECT count(*) as number FROM family_census";
 					$result = mysql_query($query);
 					while ($row = mysql_fetch_array($result))
 						echo $row["number"];
@@ -99,7 +99,7 @@
 				echo "<tr>\n";
 					echo "<td bgcolor=\"#CCCCCC\">Images</td>\n";
 					echo "<td bgcolor=\"#CCCCCC\" align=right>";
-					$query = "SELECT count(*) as number FROM images";
+					$query = "SELECT count(*) as number FROM family_images";
 					$result = mysql_query($query);
 					while ($row = mysql_fetch_array($result))
 						echo $row["number"];
@@ -109,7 +109,7 @@
 				echo "<tr>\n";
 					echo "<td bgcolor=\"#DDDDDD\">Document Transcripts</td>\n";
 					echo "<td bgcolor=\"#DDDDDD\" align=\"right\">";
-					$query = "SELECT count(*) as number FROM documents";
+					$query = "SELECT count(*) as number FROM family_documents";
 					$result = mysql_query($query);
 					while ($row = mysql_fetch_array($result))
 						echo $row["number"];
@@ -131,15 +131,15 @@
 			echo "</td>\n";
 			echo "<td width=\"30%\" align=\"right\">";
 				// list of last updated people
-				echo "<TABLE>\n";
-					echo "<TR>\n";
-						echo "<TH COLSPAN=\"2\">Last 20 People Updated</TH>\n";
-					echo "</TR>\n";
-					echo "<TR>\n";
-						echo "<TH>Person</TH>\n";
-						echo "<TH>Updated</TH>\n";
-					echo "</TR>\n";
-					$query = "SELECT person_id, name, updated FROM people"; 
+				echo "<table>\n";
+					echo "<tr>\n";
+						echo "<th colspan=\"2\">Last 20 People Updated</th>\n";
+					echo "</tr>\n";
+					echo "<tr>\n";
+						echo "<th>Person</th>\n";
+						echo "<th>Updated</th>\n";
+					echo "</tr>\n";
+					$query = "SELECT person_id, name, updated FROM family_people"; 
 					if ($_SESSION["id"] == 0)
 						$query .= " WHERE date_of_birth < '".$restrictdate."'";
 					$query .= " ORDER BY updated DESC LIMIT 0,20";
@@ -150,24 +150,24 @@
 							$bgcolor = "#CCCCCC";
 						else
 							$bgcolor = "#DDDDDD";
-						echo "<TR>\n";
-							echo "<TD bgcolor=\"".$bgcolor."\"><a ";
+						echo "<tr>\n";
+							echo "<td bgcolor=\"".$bgcolor."\"><a ";
 							echo htmlspecialchars("href='people.php?person=".$row["person_id"]."'");
 							echo ">".$row["name"]."</a>";
-							echo "</TD>\n";
-							echo "<TD bgcolor=\"".$bgcolor."\">".date('H:i d/m/Y', convertstamp($row["updated"]))."</TD>\n";
-						echo "</TR>\n";
+							echo "</td>\n";
+							echo "<td bgcolor=\"".$bgcolor."\">".date('H:i d/m/Y', convertstamp($row["updated"]))."</td>\n";
+						echo "</tr>\n";
 						$i++;
 					}
 					mysql_free_result($result);
-				echo "</TABLE>\n";
+				echo "</table>\n";
 				
 			echo "</td>\n";
 		echo "</tr>\n";
 	echo "</table>\n";
 
 	// insert footer and copyright here
-	echo "<HR>\n";
+	echo "<hr>\n";
 	echo "<table width=\"100%\">\n";
 		echo "<tr>\n";
 			echo "<td width=\"15%\" align=\"center\" valign=\"middle\">";

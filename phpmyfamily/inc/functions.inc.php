@@ -37,7 +37,7 @@
 		global $restrictdate;
 
 		// create the query based on the parameters
-		$query = "SELECT person_id, SUBSTRING_INDEX(name, ' ', -1) AS surname, name FROM people WHERE person_id <> '".$omit."'";
+		$query = "SELECT person_id, SUBSTRING_INDEX(name, ' ', -1) AS surname, name FROM family_people WHERE person_id <> '".$omit."'";
 		if ($_SESSION["id"] == 0)
 			$query .= " AND date_of_birth < '".$restrictdate."'";
 
@@ -59,16 +59,16 @@
 			echo mysql_num_rows($result)." people on file<BR>\n";
 		if ($gender == "A" && $omit <> 0)
 			echo (mysql_num_rows($result) + 1)." people on file<BR>\n";
-		echo "<SELECT NAME=".$form." SIZE=1>\n";
+		echo "<select name=\"".$form."\" size=\"1\">\n";
 		if ($default == 0)
-			echo "<OPTION VALUE=0>Select person</OPTION>\n";
+			echo "<option value=\"0\">Select person</option>\n";
 		while ($row = mysql_fetch_array($result)) {
-			echo "<OPTION VALUE=".$row["person_id"];
+			echo "<option value=\"".$row["person_id"]."\"";
 			if ($row["person_id"] == $default)
-				echo " SELECTED=SELECTED";
-			echo ">".$row["surname"].", ".substr($row["name"], 0, strlen($row["name"]) - strlen($row["surname"]))."</OPTION>\n";
+				echo " selected=\"selected\"";
+			echo ">".$row["surname"].", ".substr($row["name"], 0, strlen($row["name"]) - strlen($row["surname"]))."</option>\n";
 		}
-		echo "</SELECT>";
+		echo "</select>";
 
 		// clean up after self
 		mysql_free_result($result);
@@ -76,7 +76,7 @@
 
 	// timestamp a particular person for last updated
 	function stamppeeps($person) {
-		$query = "UPDATE people SET updated = NOW() WHERE person_id = '".$person."'";
+		$query = "UPDATE family_people SET updated = NOW() WHERE person_id = '".$person."'";
 		$result = mysql_query($query);
 	}	// end of stamppeeps()
 
@@ -91,7 +91,7 @@
 				$incoming = imagecreatefromjpeg($_FILES["userfile"]["tmp_name"]);
 				break;
 			default:
-				$query = "DELETE FROM images WHERE image_id = '".$image."'";
+				$query = "DELETE FROM family_images WHERE image_id = '".$image."'";
 				$result = mysql_query($query);
 				return false;
 				break;

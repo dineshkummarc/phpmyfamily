@@ -23,7 +23,7 @@
 	if(!isset($_REQUEST["person"])) $person = 1;
 
 	// the query for the database
-	$pquery = "SELECT * FROM people WHERE person_id = '".$_REQUEST["person"]."'";
+	$pquery = "SELECT * FROM family_people WHERE person_id = '".$_REQUEST["person"]."'";
 	$presult = mysql_query($pquery) or die("Person query failed");
 
 	while ($prow = mysql_fetch_array($presult)) {
@@ -100,7 +100,7 @@
 				echo "<th width=\"5%\" valign=\"top\">Father:</th>\n";
 				echo "<td width=\"40%\" bgcolor=\"#CCCCCC\" valign=top>";
 					// the query for father
-					$fquery = "SELECT * FROM people WHERE person_id = '".$father."'";
+					$fquery = "SELECT * FROM family_people WHERE person_id = '".$father."'";
 					$fresult = mysql_query($fquery) or die("Father query failed");
 					while ($frow = mysql_fetch_array($fresult)) {
 						if ($frow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0) 
@@ -129,7 +129,7 @@
 				echo "<th valign=\"top\">Mother:</th>\n";
 				echo "<td bgcolor=\"#CCCCCC\" valign=\"top\">\n";
 					// the query for mother
-					$mquery = "SELECT * FROM people WHERE person_id = '".$mother."'";
+					$mquery = "SELECT * FROM family_people WHERE person_id = '".$mother."'";
 					$mresult = mysql_query($mquery) or die("Mother query failed");
 					while ($mrow = mysql_fetch_array($mresult)) {
 						if ($mrow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0) 
@@ -148,7 +148,7 @@
 				echo "<th valign=\"top\">Children:</th>\n";
 				echo "<td valign=\"top\" bgcolor=\"#DDDDDD\" colspan=\"2\">";
 					// query for children
-					$cquery = "SELECT * FROM people WHERE (father_id = '".$_REQUEST["person"]."' OR mother_id = '".$_REQUEST["person"]."') ORDER BY date_of_birth";
+					$cquery = "SELECT * FROM family_people WHERE (father_id = '".$_REQUEST["person"]."' OR mother_id = '".$_REQUEST["person"]."') ORDER BY date_of_birth";
 					$cresult = mysql_query($cquery) or die("Children query failed");
 					while ($crow = mysql_fetch_array($cresult)) {
 						if ($crow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0) 
@@ -163,7 +163,7 @@
 				echo "<th valign=\"top\">Siblings:</th>\n";
 				echo "<td valign=\"top\" bgcolor=\"#DDDDDD\">";
 					// the query for siblings
-					$squery = "SELECT * FROM people WHERE (father_id = '".$father."' OR mother_id = '".$mother."') AND person_id <> '".$_REQUEST["person"]."' ORDER BY date_of_birth";
+					$squery = "SELECT * FROM family_people WHERE (father_id = '".$father."' OR mother_id = '".$mother."') AND person_id <> '".$_REQUEST["person"]."' ORDER BY date_of_birth";
 					$sresult = mysql_query($squery) or die("Siblings query failed");
 					while ($srow = mysql_fetch_array($sresult)) {
 						if ($srow["date_of_birth"] > $restrictdate && $_SESSION["id"] == 0) 
@@ -183,7 +183,7 @@
 				echo "<th valign=\"top\" width=\"5%\">Married:</th>\n";
 				echo "<td valign=\"top\" width=\"71%\" bgcolor=\"#DDDDDD\">";
 					// query for weddings
-					$wquery = "SELECT * FROM people, spouses WHERE (bride_id = person_id OR groom_id = person_id) AND (groom_id = '".$_REQUEST["person"]."' OR bride_id = '".$_REQUEST["person"]."') AND person_id <> '".$_REQUEST["person"]."' ORDER BY marriage_date";
+					$wquery = "SELECT * FROM family_people, family_spouses WHERE (bride_id = person_id OR groom_id = person_id) AND (groom_id = '".$_REQUEST["person"]."' OR bride_id = '".$_REQUEST["person"]."') AND person_id <> '".$_REQUEST["person"]."' ORDER BY marriage_date";
 					echo "<table width=\"100%\">\n";
 					$wresult = mysql_query($wquery) or die("Marriage query failed");
 					while ($wrow = mysql_fetch_array($wresult)) {
@@ -242,7 +242,7 @@
 		if ($restricted)
 			echo $restrictmsg."\n";
 		else {
-			$iquery = "SELECT * FROM images WHERE person_id = '".$_REQUEST["person"]."' ORDER BY date";
+			$iquery = "SELECT * FROM family_images WHERE person_id = '".$_REQUEST["person"]."' ORDER BY date";
 			$iresult = mysql_query($iquery) or die("image fetch failed");
 
 			if (mysql_num_rows($iresult) == 0)
@@ -292,7 +292,7 @@
 		if ($restricted)
 			echo $restrictmsg."\n";
 		else {
-			$cquery = "SELECT * FROM census WHERE person_id = '".$_REQUEST["person"]."' ORDER BY year";
+			$cquery = "SELECT * FROM family_census WHERE person_id = '".$_REQUEST["person"]."' ORDER BY year";
 			$cresult = mysql_query($cquery) or die("Census query failed");
 			if (mysql_num_rows($cresult) == 0)
 				echo "No information available\n";
@@ -349,7 +349,7 @@
 		if ($restricted)
 			echo $restrictmsg."\n";
 		else {
-			$dquery = "SELECT * FROM documents WHERE person_id = '".$_REQUEST["person"]."'";
+			$dquery = "SELECT * FROM family_documents WHERE person_id = '".$_REQUEST["person"]."'";
 			$dresult = mysql_query($dquery) or die("Document query failed");
 			if (mysql_num_rows($dresult) == 0) {
 				echo "No documents available<BR>\n";

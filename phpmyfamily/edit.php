@@ -29,7 +29,7 @@
 			switch ($_REQUEST["area"]) {
 				case "detail":
 					// get the person to edit
-					$edquery = "SELECT * FROM people WHERE person_id = '".$_REQUEST["person"]."'";
+					$edquery = "SELECT * FROM family_people WHERE person_id = '".$_REQUEST["person"]."'";
 					$edresult = mysql_query($edquery) or die("Editing query failed");
 
 					// fill out the form with retrieved data
@@ -94,10 +94,10 @@
 
 				case "marriage":
 					// get the person to edit
-					$pquery = "SELECT * FROM people WHERE person_id = '".$_REQUEST["person"]."'";
+					$pquery = "SELECT * FROM family_people WHERE person_id = '".$_REQUEST["person"]."'";
 					$presult = mysql_query($pquery) or die("Editing query failed");
 
-					$squery = "SELECT name FROM people WHERE person_id = '".$_REQUEST["spouse"]."'";
+					$squery = "SELECT name FROM family_people WHERE person_id = '".$_REQUEST["spouse"]."'";
 					$sresult = mysql_query($squery) or die("Spouse name query failed");
 					while ($srow = mysql_fetch_array($sresult)) {
 						$spousename = $srow["name"];
@@ -108,9 +108,9 @@
 					while ($prow = mysql_fetch_array($presult)) {
 
 						if ($prow["gender"] == "M")
-							$edquery = "SELECT * FROM spouses WHERE groom_id = '".$_REQUEST["person"]."' AND bride_id = '".$_REQUEST["spouse"]."'";
+							$edquery = "SELECT * FROM family_spouses WHERE groom_id = '".$_REQUEST["person"]."' AND bride_id = '".$_REQUEST["spouse"]."'";
 						else
-							$edquery = "SELECT * FROM spouses WHERE bride_id = '".$_REQUEST["person"]."' AND groom_id = '".$_REQUEST["spouse"]."'";
+							$edquery = "SELECT * FROM family_spouses WHERE bride_id = '".$_REQUEST["person"]."' AND groom_id = '".$_REQUEST["spouse"]."'";
 
 						$edresult = mysql_query($edquery) or die("Spouse query failed");
 
@@ -158,7 +158,7 @@
 
 				case "census":
 					// get the person to edit
-					$edquery = "SELECT * FROM people, census WHERE people.person_id = '".$_REQUEST["person"]."' AND census.year = '".$_REQUEST["year"]."' AND people.person_id = census.person_id";
+					$edquery = "SELECT * FROM family_people, family_census WHERE family_people.person_id = '".$_REQUEST["person"]."' AND family_census.year = '".$_REQUEST["year"]."' AND family_people.person_id = family_census.person_id";
 					$edresult = mysql_query($edquery) or die("Editing query failed");
 
 					// fill out the form with retrieved data
@@ -185,7 +185,7 @@
 								echo "<tr>\n";
 									echo "<td>Condition</td>\n";
 									echo "<td>\n";
-									list_enums("census", "condition", "frmCondition", $edrow["condition"]);
+									list_enums("family_census", "condition", "frmCondition", $edrow["condition"]);
 									echo "</td>\n";
 								echo "</tr>\n";
 								echo "<tr>\n";
@@ -283,7 +283,7 @@
 				
 				case "transcript":
 					// get the person to insert marriage for
-					$edquery = "SELECT * FROM people WHERE person_id = '".$_REQUEST["person"]."'";
+					$edquery = "SELECT * FROM family_people WHERE person_id = '".$_REQUEST["person"]."'";
 					$edresult = mysql_query($edquery) or die("New marriage person query failed");
 
 					// fill out the form with retrieved data
@@ -327,7 +327,7 @@
 
 				case "image":
 					// get the person to insert marriage for
-					$edquery = "SELECT * FROM people WHERE person_id = '".$_REQUEST["person"]."'";
+					$edquery = "SELECT * FROM family_people WHERE person_id = '".$_REQUEST["person"]."'";
 					$edresult = mysql_query($edquery) or die("New marriage person query failed");
 
 					// fill out the form with retrieved data
@@ -372,7 +372,7 @@
 
 				case "marriage":
 					// get the person to insert marriage for
-					$edquery = "SELECT * FROM people WHERE person_id = '".$_REQUEST["person"]."'";
+					$edquery = "SELECT * FROM family_people WHERE person_id = '".$_REQUEST["person"]."'";
 					$edresult = mysql_query($edquery) or die("New marriage person query failed");
 
 					// fill out the form with retrieved data
@@ -417,7 +417,7 @@
 
 				case "census":
 					// get the person to insert census for
-					$edquery = "SELECT * FROM people WHERE person_id = '".$_REQUEST["person"]."'";
+					$edquery = "SELECT * FROM family_people WHERE person_id = '".$_REQUEST["person"]."'";
 					$edresult = mysql_query($edquery) or die("New census person query failed");
 
 					// fill out the form with retrieved data
@@ -436,7 +436,7 @@
 								echo "<tr>\n";
 									echo "<td>Year</td>\n";
 									echo "<td>\n";
-									list_enums("census", "year", "frmYear");
+									list_enums("family_census", "year", "frmYear");
 									echo "</td>\n";
 								echo "</tr>\n";
 								echo "<tr>\n";
@@ -450,7 +450,7 @@
 								echo "<tr>\n";
 									echo "<td>Condition</td>\n";
 									echo "<td>\n";
-									list_enums("census", "condition", "frmCondition");
+									list_enums("family_census", "condition", "frmCondition");
 									echo "</td>\n";
 								echo "</tr>\n";
 								echo "<tr>\n";

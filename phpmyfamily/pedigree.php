@@ -16,7 +16,7 @@
 	if (!isset($_GET["person"])) $person = 1;
 
 	// the query for the database
-	$pquery = "SELECT * FROM people WHERE person_id = '".$_GET["person"]."'";
+	$pquery = "SELECT * FROM family_people WHERE person_id = '".$_GET["person"]."'";
 	$presult = mysql_query($pquery) or die("Person query failed");
 
 	while ($prow = mysql_fetch_array($presult)) {
@@ -40,7 +40,7 @@
 
 		echo $prow["name"];
 
-		$query = "SELECT * FROM people WHERE person_id = '".$prow["father_id"]."'";
+		$query = "SELECT * FROM family_people WHERE person_id = '".$prow["father_id"]."'";
 		$row = 
 
 
