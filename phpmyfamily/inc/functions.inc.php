@@ -589,6 +589,7 @@
 			$query = "SELECT * FROM ".$tblprefix."users WHERE username = '".$_COOKIE["fam_name"]."' AND password = '".$_COOKIE["fam_passwd"]."'";
 			$result = mysql_query($query) or die(mysql_error());
 			while ($row = mysql_fetch_array($result)) {
+				// if we're in here then the user/passwd in good
 				$_SESSION["id"] = $row["id"];
 				$_SESSION["name"] = $row["username"];
 				if ($row["admin"] == "Y")
@@ -598,6 +599,8 @@
 				$_SESSION["editable"] = $row["edit"];
 				$_SESSION["style"] = $row["style"];
 				$_SESSION["email"] = $row["email"];
+				setcookie("fam_name", $_COOKIE["fam_name"], time() + 2592000);
+				setcookie("fam_passwd", $_COOKIE["fam_passwd"], time() + 2592000);
 			}
 		}
 	}	// end of check_cookies()
