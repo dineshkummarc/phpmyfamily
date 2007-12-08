@@ -503,7 +503,7 @@
 <head>
 <link rel="stylesheet" href="<?php echo $styledir.$_SESSION["style"]; ?>" type="text/css" />
 <link rel="shortcut icon" href="images/favicon.ico" />
-<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $charset; ?>" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="description" content="<?php echo $desc; ?>" />
 <meta name="page-topic" content="Genealogy" />
 <meta name="audience" content="All" />
