@@ -1,6 +1,6 @@
 <?php
 	//phpmyfamily - opensource genealogy webbuilder
-	//Copyright (C) 2002 - 2005  Simon E Booth (simon.booth@giric.com)
+	//Copyright (C) 2002 - 2007  Simon E Booth (simon.booth@giric.com)
 
 	//This program is free software; you can redistribute it and/or
 	//modify it under the terms of the GNU General Public License
@@ -85,6 +85,10 @@
 // Session routines
 //=====================================================================================================================
 	// call to start a new session or resume if exists
+	if (session_id()=="") {
+		session_id(" ");
+	}
+	
 	session_start();
 
 	// set default variables
