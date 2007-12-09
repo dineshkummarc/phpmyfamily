@@ -518,11 +518,12 @@
 			echo " ".$row["surname"];
 	}
 ?>" />
+
 <script src="inc/tabs.js" type="text/javascript"></script>
 <title><?php echo $title; ?></title>
 </head>
 
-<body onload='setupPanes("container1", "tab1");'>
+
 <?php
 		// make titles available for later,
 		$GLOBALS["title"] = $title;

@@ -50,6 +50,8 @@
 
 ?>
 
+<body onload='setupPanes("container1", "tab1");'>
+
 <script language="JavaScript" type="text/javascript">
  <!--
  function confirm_delete(year, section, url) {
