@@ -105,3 +105,10 @@ td.tbl_odd   {
 .rt	{
 	background: url('../images/rt.png') no-repeat center;
 }
+.tabs {position:relative; height: 27px; margin: 0; padding: 0; background:url("bar_off.gif") repeat-x; overflow:hidden}
+.tabs li {display:inline;}
+.tabs a:hover, .tabs a.tab-active {background:#fff url("bar_on.gif") repeat-x; border-right: 1px solid #fff} 
+.tabs a  {height: 27px; font:12px verdana, helvetica, sans-serif;font-weight:bold;
+    position:relative; padding:6px 10px 10px 10px; margin: 0px -4px 0px 0px; color:#2B4353;text-decoration:none;border-left:1px solid #fff; border-right:1px solid #6D99B6;}
+.tab-container {background: #fff; border:1px solid #6D99B6;}
+.tab-panes { margin: 3px }

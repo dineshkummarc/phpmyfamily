@@ -310,9 +310,16 @@
 ?>
 <br /><br />
 
-<!--images-->
-<hr />
-	<table width="100%">
+<div class="tab-container" id="container1">
+  <ul class="tabs">
+    <li><a href="#" onClick="return showPane('pane1', this)" id="tab1">Image Gallery</a></li>
+    <li><a href="#" onClick="return showPane('pane2', this)">Census</a></li>
+    <li><a href="#" onClick="return showPane('pane3', this)">Document Transcripts</a></li>
+  </ul>
+
+  <div class="tab-panes">  
+    <div id="pane1">
+      <table width="100%">
 		<tr>
 			<td width="80%"><h4><?php echo $strGallery; ?></h4></td>
 			<td align="right"><?php
@@ -322,10 +329,10 @@
 		</tr>
 	</table>
 <?php show_gallery($_REQUEST["person"]); ?>
-
-<!--census-->
-<hr />
-	<table width="100%">
+    </div>
+    
+    <div id="pane2">
+      <table width="100%">
 		<tr>
 			<td width="80%"><h4><?php echo $strCensusDetails; ?></h4></td>
 			<td width="20%" valign="top" align="right"><?php
@@ -388,10 +395,10 @@
 			}
 		}
 ?>
-
-<!--document transcripts-->
-<hr />
-	<table width="100%">
+    </div>
+    
+    <div id="pane3">
+      <table width="100%">
 		<tr>
 			<td width="80%"><h4><?php echo $strDocTrans; ?></h4></td>
 			<td width="20%" valign="top" align="right"><?php
@@ -453,6 +460,12 @@
 			}
 			mysql_free_result($dresult);
 		}
+?>
+    </div>    
+  </div>
+</div>
+	
+<?php
 	}
 
 	mysql_free_result($presult);
