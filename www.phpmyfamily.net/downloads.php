@@ -1,6 +1,6 @@
 <?php
 		// download.giric.com
-		// Copyright(c)2004 Simon E Booth
+		// Copyright(c)2004-2007 Simon E Booth
 		// All Rights Reserved
 
 		// page title
@@ -30,37 +30,13 @@
 <!--start of main-->
 <br />
 <h3>downloads</h3>
-<p><em>phpmyfamily</em> is available in either gzip or zip format.  Please select the archive you require from the table below.  Installation instructions are included in the packages, or are available <a href="install.php">here</a>.  Please make sure that you understand the GPL software LICENSE and it's implications before continuing.</p>
-<table>
-  <thead>
-    <tr>
-      <th scope="col">Filename  </th>
-      <th scope="col">Size  </th>
-      <th scope="col">md5 Sum  </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td class="tbl_odd"><a href="http://prdownloads.sourceforge.net/phpmyfamily/phpmyfamily-1.4.1.tar.gz?download">phpmyfamily-1.4.1.tar.gz</a>  </td>
-      <td class="tbl_odd">83,361 bytes  </td>
-      <td class="tbl_odd">e4663442761631a439b0085c8bb06adc</td>
-    </tr>
-    <tr>
-      <td class="tbl_even"><a href="http://prdownloads.sourceforge.net/phpmyfamily/phpmyfamily-1.4.1.zip?download">phpmyfamily-1.4.1.zip</a>  </td>
-      <td class="tbl_even">130,713 bytes  </td>
-      <td class="tbl_even">3ea9c590dde91f84bcd9a7e4c292b275</td>
-    </tr>
-	<tr>
-		<td class="tbl_odd"><a href="http://prdownloads.sourceforge.net/phpmyfamily/phpmyfamily-1.4.1.tar.bz2?download">phpmyfamily-1.4.1.bz2</a></td>
-		<td class="tbl_odd">73,713 bytes</td>
-		<td class="tbl_odd">021ada415891fd0658273a2e693bf2d6</td>
-	</tr>
-  </tbody>
-</table>
-<p>You may need to shift and click to download the files.</p>
+<p>The current release can be downloaded from the <a href="https://sourceforge.net/project/showfiles.php?group_id=110402&package_id=119221&release_id=560275">SourceForge download page</a>.</p>
 <!--end of main-->
 
 <h3>changelog</h3>
+<strong><em>phpmyfamily</em> v1.4.2 (Released 9/11/2007)</strong>
+<p>This is a minor security release and all users are urged to upgrade when possible.</p>
+
 <strong><em>phpmyfamily</em> v1.4.1 (Released 24/03/2005)</strong>
 <p>This is an important security release and all users are urged to upgrade as soon as possible.</p>
 

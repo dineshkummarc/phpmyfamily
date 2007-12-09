@@ -1,6 +1,6 @@
 <?php
 	//phpmyfamily - opensource genealogy webbuilder
-	//Copyright (C) 2002 - 2004  Simon E Booth (simon.booth@giric.com)
+	//Copyright (C) 2002 - 2007  Simon E Booth (simon.booth@giric.com)
 
 	//This program is free software; you can redistribute it and/or
 	//modify it under the terms of the GNU General Public License
@@ -18,7 +18,7 @@
 
 	// format is
 	// major.minor.patch.release_id
-	echo "1.4.1.315310";
+	echo "1.4.2.560275";
 
 	// eof
 ?>

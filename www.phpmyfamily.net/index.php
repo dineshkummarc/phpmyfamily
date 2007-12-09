@@ -1,6 +1,6 @@
 <?php
 		// download.giric.com
-		// Copyright(c)2004 Simon E Booth
+		// Copyright(c)2004-2007 Simon E Booth
 		// All Rights Reserved
 
 		// page title
@@ -34,6 +34,8 @@
 <p><em>phpmyfamily</em> is now hosted by <a href="http://sourceforge.net" target="_blank">sourceforge.net</a>.  Click <a href="http://sourceforge.net/projects/phpmyfamily/">here</a> to visit the project page and access bug trackers etc.</p>
 
 <h3>news</h3>
+
+<p><strong><em>phpmyfamily</em> 1.4.2 released (9 December 2007)</strong><br />The latest version of <em>phpmyfamily</em> is now available for <a href="downloads.php">download</a>.  This is a minor security release and it is suggested that users upgrade when possible.</p>
 
 <p><strong><em>phpmyfamily</em> 1.4.1 released (24 March 2005)</strong><br />The latest version of <em>phpmyfamily</em> is now available for <a href="downloads.php">download</a>.  This is an important security release and all users are urged to upgrade as soon as possible.</p>
 
