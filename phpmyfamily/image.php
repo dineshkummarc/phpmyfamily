@@ -57,6 +57,8 @@
 
 <hr />
 
+<a href="people.php?person=<?php echo $irow["person_id"]; ?>">Return to <?php echo $prow["name"]." ".$suffix; ?></a>
+
 <?php
 		}
 		mysql_free_result($presult);
