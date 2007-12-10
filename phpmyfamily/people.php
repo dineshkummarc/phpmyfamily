@@ -1,6 +1,6 @@
 <?php
 	//phpmyfamily - opensource genealogy webbuilder
-	//Copyright (C) 2002 - 2005  Simon E Booth (simon.booth@giric.com)
+	//Copyright (C) 2002 - 2007  Simon E Booth (simon.booth@giric.com)
 
 	//This program is free software; you can redistribute it and/or
 	//modify it under the terms of the GNU General Public License
@@ -322,16 +322,7 @@
 
   <div class="tab-panes">  
     <div id="pane1">
-      <table width="100%">
-		<tr>
-			<td width="80%"><h4><?php echo $strGallery; ?></h4></td>
-			<td align="right"><?php
-		if ($_SESSION["editable"] == "Y")
-			echo "<a href=\"edit.php?func=add&amp;area=image&amp;person=".$_REQUEST["person"]."\">".$strUpload."</a> ".$strNewImage;
-?></td>
-		</tr>
-	</table>
-<?php show_gallery($_REQUEST["person"]); ?>
+      <?php include("modules/imagegallery/index.php"); ?>
     </div>
     
     <div id="pane2">
