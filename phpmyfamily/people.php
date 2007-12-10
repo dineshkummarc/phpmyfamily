@@ -102,14 +102,14 @@
 			<th width="85%"><h4><?php echo $strDetails; ?></h4></th>
 			<td width="15%" class="tbl_odd" align="center"><?php
 				if ($_SESSION["editable"] == "Y") {
-?><a href="pedigree.php?person=<?php echo $prow["person_id"]; ?>"><?php echo $strPedigree; ?></a>::<a href="edit.php?func=edit&amp;area=detail&amp;person=<?php echo $prow["person_id"]; ?>"><?php echo $strEdit; ?></a>::<a href="JavaScript:confirm_delete('<?php echo $prow["name"]; ?>', '<?php echo strtolower($strPerson); ?>', 'passthru.php?func=delete&amp;area=person&amp;person=<?php echo $_REQUEST["person"]; ?>')" class="delete"><?php echo $strDelete; ?></a>
+?><a href="edit.php?func=edit&amp;area=detail&amp;person=<?php echo $prow["person_id"]; ?>"><?php echo $strEdit; ?></a>::<a href="JavaScript:confirm_delete('<?php echo $prow["name"]; ?>', '<?php echo strtolower($strPerson); ?>', 'passthru.php?func=delete&amp;area=person&amp;person=<?php echo $_REQUEST["person"]; ?>')" class="delete"><?php echo $strDelete; ?></a>
 <?php 
 					if ($gedcom == true)
 						echo "<br /><a href=\"gedcom.php?person=".$_REQUEST["person"]."\">".$strGedCom."</a>\n";
 
 					echo "</td>\n";
 				} 
-				else echo "<a href=\"pedigree.php?person=".$prow["person_id"]."\">".$strPedigree."</a></td>"; ?>
+				else echo "</td>"; ?>
 		</tr>
 	</table>
 
@@ -317,6 +317,7 @@
     <li><a href="#" onClick="return showPane('pane1', this)" id="tab1">Image Gallery</a></li>
     <li><a href="#" onClick="return showPane('pane2', this)">Census</a></li>
     <li><a href="#" onClick="return showPane('pane3', this)">Document Transcripts</a></li>
+	<li><a href="#" onClick="return showPane('pane4', this)">Pedigree</a></li>
   </ul>
 
   <div class="tab-panes">  
@@ -463,8 +464,12 @@
 			mysql_free_result($dresult);
 		}
 ?>
-    </div>    
-  </div>
+       
+	</div>
+	<div id="pane4">
+<?php include("pedigree.php"); ?>
+	</div>
+  </div> 
 </div>
 	
 <?php

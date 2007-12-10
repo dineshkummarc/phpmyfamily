@@ -17,19 +17,19 @@
 	//Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 	// include the configuration parameters and functions
-	include "inc/config.inc.php";
+//	include "inc/config.inc.php";
 
 	// check to see if we have a person
 	if (!isset($_GET["person"])) $person = 1;
 
 	// the query for the database
-	$pquery = "SELECT *, DATE_FORMAT(date_of_birth, ".$datefmt.") AS DOB, DATE_FORMAT(date_of_death, ".$datefmt.") AS DOD FROM ".$tblprefix."people WHERE person_id = ".quote_smart($_GET["person"]);
-	$presult = mysql_query($pquery) or die($err_person);
+	$pedquery = "SELECT *, DATE_FORMAT(date_of_birth, ".$datefmt.") AS DOB, DATE_FORMAT(date_of_death, ".$datefmt.") AS DOD FROM ".$tblprefix."people WHERE person_id = ".quote_smart($_GET["person"]);
+	$pedresult = mysql_query($pedquery) or die($err_person);
 
-	while ($prow = mysql_fetch_array($presult)) {
+	while ($pedrow = mysql_fetch_array($pedresult)) {
 
 		// set security for living people (born after 01/01/1910)
-		if ($_SESSION["id"] == 0 && $prow["date_of_birth"] > $restrictdate)
+		if ($_SESSION["id"] == 0 && $pedrow["date_of_birth"] > $restrictdate)
 			$restricted = true;
 		else
 			$restricted = false;
@@ -41,8 +41,8 @@
 		// Use an array to get people references
 		$ids = array_fill(1, 15, 0);
 		$ids[1] = $_GET["person"];
-		$ids[2] = $prow["father_id"];
-		$ids[3] = $prow["mother_id"];
+		$ids[2] = $pedrow["father_id"];
+		$ids[3] = $pedrow["mother_id"];
 
 		for ($i = 2; $i < 8; $i++) {
 			$tquery = "SELECT * FROM ".$tblprefix."people WHERE person_id = '".$ids[$i]."'";
@@ -71,7 +71,7 @@
 				$class = "tbl_even";
 
 			echo "<td bgcolor=\"#FFFFFF\" width=\"22%\" class=\"".$class."\">";
-			echo "<a href=\"pedigree.php?person=".$dip."\">".$drow["name"]." ".$drow["suffix"]."</a><br />";
+			echo "<a href=\"people.php?person=".$dip."\">".$drow["name"]." ".$drow["suffix"]."</a><br />";
 
 			// display birth details
 			if ($drow["date_of_birth"] != "0000-00-00" && $drow["birth_place"] != "") {
@@ -96,35 +96,7 @@
 		mysql_free_result($dresult);
 	}
 
-	// Fill out the headers
-	do_headers($strPedigreeOf." ".$prow["name"]." ".$prow["suffix"]);
-
 ?>
-
-<!--titles-->
-	<table width="100%" class="header">
-		<tr>
-			<td width="65%" align="center" valign="top">
-				<h2><?php echo $strPedigreeOf." ".$prow["name"]." ".$prow["suffix"]; ?></h2>
-				<h3><?php
-					if ($prow["date_of_birth"] != "0000-00-00" && $prow["date_of_death"] != "0000-00-00") {
-						echo "(".$prow["DOB"]." - ".$prow["DOD"].")";
-					} elseif ($prow["date_of_birth"] != "0000-00-00") {
-						echo "(".$strBorn." ".$prow["DOB"].")";
-					} elseif ($prow["date_of_death"] != "0000-00-00") {
-						echo "(".$strDied." ".$prow["DOD"].")";
-					}
-				?></td>
-			<td width="35%" valign="top" align="right">
-				<form method="get" action="pedigree.php">
-				<?php listpeeps("person", 0, "A", $_REQUEST["person"]); ?>
-				</form>
-<?php user_opts(); if ($_SESSION["id"] != 0) echo " | "; echo "<a href=\"people.php?person=".$_REQUEST["person"]."\">".strtolower($strBack)." ".$strToDetails."</a>\n"; ?>
-			</td>
-		</tr>
-	</table>
-
-<hr />
 
 <!--Main body-->
 
@@ -392,9 +364,9 @@
 	}
 
 	// close of the file
-	mysql_free_result($presult);
+	mysql_free_result($pedresult);
 
-	include "inc/footer.inc.php";
+//	include "inc/footer.inc.php";
 
 	// eof
 ?>
