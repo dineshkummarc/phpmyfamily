@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 	//phpmyfamily - opensource genealogy webbuilder
 	//Copyright (C) 2002 - 2007  Simon E Booth (simon.booth@giric.com)
 
@@ -40,6 +40,7 @@
 		$restrictdate = date("Y")-$restrictyears.date("-n-j");
 	else
 		$restrictdate = "1910-01-01";						// date for restricting people
+	$usepconnect	= true;
 
 //=====================================================================================================================
 // Change tracking details
@@ -78,7 +79,11 @@
 // Database connection routines
 //=====================================================================================================================
 	// connect to database
-	$mysql_connect = mysql_connect_wrapper($dbhost, $dbuser, $dbpwd) or die("phpmyfamily cannot access the database server (".$dbhost.")");
+	if ($usepconnect)
+		$mysql_connect = mysql_pconnect($dbhost, $dbuser, $dbpwd) or die("phpmyfamily cannot access the database server (".$dbhost.")");
+	else
+		$mysql_connect = mysql_connect($dbhost, $dbuser, $dbpwd) or die("phpmyfamily cannot access the database server (".$dbhost.")");
+
 	$database_select = mysql_select_db($dbname) or die("phpmyfamily cannot access the database (".$dbname.")");
 
 //=====================================================================================================================

@@ -1,6 +1,6 @@
-<?php
+﻿<?php
 	//phpmyfamily - opensource genealogy webbuilder
-	//Copyright (C) 2002 - 2005  Simon E Booth (simon.booth@giric.com)
+	//Copyright (C) 2002 - 2007  Simon E Booth (simon.booth@giric.com)
 	//Contributions (C)2004 Ken Joyce (ken@poweringon.com)
 
 	//This program is free software; you can redistribute it and/or
@@ -341,17 +341,6 @@
 		else
 			return addslashes($str);
 	}	// end of add_quotes()
-
-	// function: mysql_connect_wrapper
-	// use _pconnect if poss, if not invisibly choose _connect
-	function mysql_connect_wrapper($server, $username, $password) {
-
-		// see if we have _pconnect available
-		if (function_exists("mysql_pconnect"))
-			return mysql_pconnect($server, $username, $password);
-		else
-			return mysql_connect($server, $username, $password);
-	}	// end of mysql-connect_wrapper()
 
 	// function: show_gallery
 	// show the image gallery for a person
