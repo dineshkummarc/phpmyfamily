@@ -1,6 +1,6 @@
 <?php
 	//phpmyfamily - opensource genealogy webbuilder
-	//Copyright (C) 2002 - 2005  Simon E Booth (simon.booth@giric.com)
+	//Copyright (C) 2002 - 2007  Simon E Booth (simon.booth@giric.com)
 
 	//This program is free software; you can redistribute it and/or
 	//modify it under the terms of the GNU General Public License
@@ -26,6 +26,7 @@
 				<a href="passthru.php?func=lang&amp;trans=nl-be"><img src="images/be.gif" alt="Nederlandse vertaling (Belgi&euml;)" width="20" height="20" border="0" /></a>
 				<a href="passthru.php?func=lang&amp;trans=pl"><img src="images/pl.gif" alt="Zmieñ jêzyk na polski" width="20" height="20" border="0" /></a>
 				<a href="passthru.php?func=lang&amp;trans=cz"><img src="images/cz.gif" alt="Change language to Czech" width="20" height="20" border="0" /></a>
+				<a href="passthru.php?func=lang&amp;trans=nl"><img src="images/nl.gif" alt="Wijzig de taal in Nederlands" width="20" height="20" border="0" /></a>
 <?php
 	// eof
 ?>
