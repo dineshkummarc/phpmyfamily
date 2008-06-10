@@ -1,0 +1,41 @@
+<?php
+include_once "modules/db/DAOFactory.php";
+include_once "inc/header.inc.php";
+include_once "inc/list.inc.php";
+include_once "modules/people/show.php";
+
+if ($_SESSION["id"] == 0 || $_SESSION["editable"] == "N") {
+	die(include "inc/forbidden.inc.php");
+}
+
+$area = $_REQUEST["area"];
+
+if ($area == "marriage") { $area = "relations"; }
+
+include_once "modules/".$area."/editForm.php";
+
+$data = setup_edit();
+$extra = '<script type="text/javascript" src="inc/edit.js.php"></script>';
+do_headers_dojo(get_edit_title($data), $extra);
+
+	$config = Config::getInstance();
+	if ($config->dojo) {		
+?>
+<div dojoType="dojox.data.QueryReadStore" jsId="LocationStore"
+			url="services/LocationQueryReadStore.php" requestMethod="post"></div>
+	<?php }?>
+<table class="header" width="100%">
+  <tbody>
+    <tr>
+      <td><h2><?php echo get_edit_header($data); ?></h2>  </td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+<?php
+	get_edit_form($data);
+?>
+<?php
+include "inc/footer.inc.php";
+?>
