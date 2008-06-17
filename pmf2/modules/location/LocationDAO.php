@@ -69,7 +69,6 @@ class LocationDAO extends MyFamilyDAO {
 			} else {
 				$location->text = $location->getEditLink().'<br/>';
 				$new = true;
-				$places[$place] = $location;
 				$p = $location;
 			}
 			$p->text .= $descrip;
@@ -102,9 +101,9 @@ class LocationDAO extends MyFamilyDAO {
 		$config = Config::getInstance();
 		
 		if (!isset($config->gmapskey) || strlen($config->gmapskey) == 0) {
-			$location->lat = 'null';
-			$location->lng = 'null';
-			return;
+			$location->lat = '';
+			$location->lng = '';
+			return false;
 		}
 		// Initialize delay in geocode speed
 		$delay = 0;
@@ -160,7 +159,7 @@ class LocationDAO extends MyFamilyDAO {
 			" JOIN ".$tblprefix."people p ON p.person_id=e.person_id".
 			" JOIN ".$tblprefix."locations l ON e.location_id=l.location_id ".
 			PersonDetail::getJoins().
-			" WHERE (e.etype < 4 OR e.etype > 5) AND e.location_id is not null"; 
+			" WHERE (e.etype < 4 OR e.etype =".OTHER_EVENT.") AND e.location_id is not null"; 
 		$pquery .= $this->addPersonRestriction(" AND ");
 		
 		if ($locations->location_id > 0) {
@@ -243,6 +242,7 @@ class LocationDAO extends MyFamilyDAO {
 	
     	function getAttendeePlaces(&$locations, $person = null) {
 		global $tblprefix, $strEvent, $datefmt;
+		global $strBirthPlace, $strAddress;
 	
 		$query = "SELECT ".Attendee::getFields('a').",".PersonDetail::getFields('p').", ".
 			Event::getFields("e").
@@ -260,7 +260,7 @@ class LocationDAO extends MyFamilyDAO {
 		$query .= $this->addPersonRestriction(" AND ");
 
 		if ($locations->location_id > 0) {
-			$query .= " AND a.location_id = ".$locations->location_id;
+			$query .= " AND (a.location_id = ".$locations->location_id." OR e.location_id = ".$locations->location_id.")";
 		}
 
 		$presult = $this->runQuery($query, "");
@@ -271,23 +271,34 @@ class LocationDAO extends MyFamilyDAO {
 			$per->setPermissions();
 			$e = new Event();
 			$e->loadFields($prow, "e_");
-			$e->location->loadFields($prow,"l_");
-			$e->location->setPermissions();
-			if ($per->isViewable() && $e->location->place <> '') {
-				$text = $per->getLink().' '.$strEvent[$e->type].' '.$e->getDate1();
-				$p = $this->createPlace($locations, $e->location, $text);
-				if ($p != null) {
-					$p->census = true;
+			$loc = new Location();
+			$loc->loadFields($prow,"l_");
+			$loc->setPermissions();
+			if ($per->isViewable() && $loc->hasData()) {
+				$text = $per->getLink().' ';
+				switch($e->type) {
+				case CENSUS_EVENT:
+					$text .= $strEvent[$e->type]." ".$strBirthPlace;
+					break;
+				default:
+					$text .= $strAddress;
+					break;
 				}
+				$text .= ' '.$e->getDate1();
+				if (($locations->location_id > 0 && $loc->location_id == $locations->location_id) || 
+					$locations->location_id <= 0) {
+						$p = $this->createPlace($locations, $loc, $text);
+					}
 			}
+			
 			$e->location->loadFields($prow,"el_");
 			$e->location->setPermissions();
-			if ($per->isViewable() && $e->location->place <> '') {
+			if ($per->isViewable() && $e->location->hasData()) {
 				$text = $per->getLink().' '.$strEvent[$e->type].' '.$e->getDate1();
-				$p = $this->createPlace($locations, $e->location, $text);
-				if ($p != null) {
-					$p->census = true;
-				}
+				if (($locations->location_id > 0 && $e->location->location_id == $locations->location_id) || 
+					$locations->location_id <= 0) {
+						$p = $this->createPlace($locations, $e->location, $text);
+					}
 			}
 		}
 		$this->freeResultSet($presult);
