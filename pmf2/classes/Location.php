@@ -35,7 +35,7 @@ class Location extends Base {
 	function getEditLink() {
 		$ret = $this->getDisplayPlace();
 		if ($this->isEditable()) {
-			$ret = '<a href="/edit.php?func=edit&amp;area=location&amp;location='.$this->location_id.'">'.$ret.'</a>';
+			$ret = '<a href="edit.php?func=edit&amp;area=location&amp;location='.$this->location_id.'">'.$ret.'</a>';
 		}
 		return ($ret);
 	}
