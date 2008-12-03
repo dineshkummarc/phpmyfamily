@@ -85,7 +85,7 @@
 	$dao = getPeopleDAO();
 	$dao->getPersonDetails($peep);
 	if ($peep->numResults != 1) {
-		die("error");
+		die("Could not find person");
 	}
 	$per = $peep->results[0];
 
@@ -169,19 +169,21 @@
 
  function get_parent($parent) {
      global $datefmt, $tblprefix, $strBorn, $strDied, $restrictdate, $level, $err_father, $err_mother, $grid, $strLivingPerson, $countlines, $outputstring, $htmlstring, $gridsize;
-// check if there is a parent
-    $level +=1;
+
 
     $peep = new PersonDetail();
 	$peep->person_id = $parent;
 	$peep->queryType = Q_IND;
 	$dao = getPeopleDAO();
 	$dao->getPersonDetails($peep);
+// check if there is a parent
 	if ($peep->numResults != 1) {
-		die("error");
-	}
-	$per = $peep->results[0];
+		return;
+	} else {
+	        $per = $peep->results[0];
+        }
 
+    $level +=1;
 // ---- position father
             $fhtmlstring = "<div style=\"position: absolute; left: ".a2p($level)."px;\">";
             $fhtmlstring .= "(".$level.") ";
