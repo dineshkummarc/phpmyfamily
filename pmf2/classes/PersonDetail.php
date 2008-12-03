@@ -148,8 +148,14 @@ class PersonDetail extends Base {
 	
 	function getJoins($type = '', $tbl = 'p', $name = 'n', $birth = 'b', $death = 'd') {
 		global $tblprefix;
+		$config = Config::getInstance();
+		$restrictdate = $config->restrictdate;
+		
 		$ret = $type." JOIN ".$tblprefix."names ".$name." ON ".$name.".person_id = ".$tbl.".person_id ";
 		$ret .= "LEFT JOIN  ".$tblprefix."event ".$birth." ON ".$birth.".person_id = " .$tbl.".person_id AND ".$birth.".etype = ".BIRTH_EVENT;
+		if ($_SESSION["id"] == 0) {
+			$ret .= " AND ".$birth.".date1 < '".$restrictdate."'";
+		}
 		$ret .= " LEFT JOIN  ".$tblprefix."event ".$death." ON ".$death.".person_id = " .$tbl.".person_id AND ".$death.".etype = ".DEATH_EVENT." ";
 		return ($ret);
 	}
