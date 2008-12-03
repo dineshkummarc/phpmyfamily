@@ -203,13 +203,10 @@ class PeopleDAO extends MyFamilyDAO {
 		" LEFT JOIN ".$tblprefix."people dad ON dad.person_id = p.father_id ".
 		PersonDetail::getJoins("LEFT","dad","ndad","bdad","ddad");
 		$q .= " WHERE p.person_id=".$per->person_id;
-		$q .= $this->addPersonRestriction(" AND ","bdad","ddad");
-		$q .= $this->addPersonRestriction(" AND ","bmum","dmum");
 		
 		$result = $this->runQuery($q, $err_father);
-
 		while ($row = $this->getNextRow($result)) {
-			
+		
 			$dad = new PersonDetail();
 			$dad->loadFields($row, L_HEADER, "dad_");
 			$dad->name->loadFields($row, "ndad_");
