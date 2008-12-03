@@ -8,7 +8,7 @@ class LocationDAO extends MyFamilyDAO {
 		$res = array();
 		$squery = "SELECT ".Location::getFields("l").
 			" FROM ".$tblprefix."locations l ";
-		
+
 		if (isset($location->location_id) && $location->location_id <> '') {
 			$squery .= "WHERE location_id = ".quote_smart($location->location_id);
 		} else if (isset($location->place) && $location->place <> '%') {
@@ -17,7 +17,7 @@ class LocationDAO extends MyFamilyDAO {
 			} else {
 				$squery .= "WHERE place = ".quote_smart($location->place);
 			}
-		} 
+		}
 		$squery .= " ORDER BY place";
 		$this->addLimit($location, $squery);
 		//TODO - error message
@@ -54,7 +54,7 @@ class LocationDAO extends MyFamilyDAO {
 
 		return($rowsChanged);
 	}
-	
+
 	function createPlace(&$locations, $location, $descrip) {
 		$p = null;
 		$new = false;
@@ -85,49 +85,60 @@ class LocationDAO extends MyFamilyDAO {
 					$found = false;
 				}
 			}
-			
+				
 			if ($found) {
 				$locations->places[$place] = $p;
 			} else {
 				$locations->notFound[$place] = $p;
 			}
-			
+				
 		}
 		return ($p);
 	}
-	
+
 	function lookupLocation(&$location) {
-		
+
 		$config = Config::getInstance();
-		
+
 		if (!isset($config->gmapskey) || strlen($config->gmapskey) == 0) {
 			$location->lat = '';
 			$location->lng = '';
 			return false;
 		}
+
 		// Initialize delay in geocode speed
 		$delay = 0;
 		$found = false;
-		$base_url = "http://" . $config->gmapshost . "/maps/geo?output=csv&key=" . $config->gmapskey;
+		$base_url = "http://" . $config->gmapshost . "/maps/geo?output=xml&key=" . $config->gmapskey;
 
 		// Iterate through the rows, geocoding each address
 
 		$geocode_pending = true;
 
 		while ($geocode_pending) {
-			$request_url = $base_url . "&q=" . urlencode($location->place);
-			$csv = file_get_contents($request_url) or die("url not loading");
-			$csvSplit = split(",", $csv);
-			$status = $csvSplit[0];
-			$lat = $csvSplit[2];
-			$lng = $csvSplit[3];
-			if (strcmp($status, "200") == 0) {
-				// successful geocode
-				$geocode_pending = false;
-				$found = true;
-				$lat = $csvSplit[2];
-				$lng = $csvSplit[3];
 
+			$request_url = $base_url . "&q=" . urlencode($location->place);
+			if(ini_get("allow_url_fopen") && ini_get("allow_url_include")) {
+				$xml = simplexml_load_file($request_url);
+			} else if (extension_loaded("curl")) {
+	 		$ch = curl_init($request_url);
+	 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	 		$response = curl_exec($ch);
+	 		curl_close($ch);
+	 		$xml = simplexml_load_string($response);
+			} else {
+				//Security prevents lookup
+				return false;
+			}
+			$status = $xml->Response->Status->code;
+			if (strcmp($status, "200") == 0) {
+				// Successful geocode
+				$geocode_pending = false;
+				$coordinates = $xml->Response->Placemark->Point->coordinates;
+				$coordinatesSplit = split(",", $coordinates);
+				// Format: Longitude, Latitude, Altitude
+				$lat = $coordinatesSplit[1];
+				$lng = $coordinatesSplit[0];
 				$location->lat = $lat;
 				$location->lng = $lng;
 
@@ -139,10 +150,15 @@ class LocationDAO extends MyFamilyDAO {
 				$geocode_pending = false;
 			}
 			usleep($delay);
+
+
+
+
+
 		}
 		return($found);
 	}
-	
+
 	function getPlaces(&$locations, $person = null) {
 		$this->getEventPlaces($locations, $person);
 		$this->getMarriagePlaces($locations, $person);
@@ -151,17 +167,17 @@ class LocationDAO extends MyFamilyDAO {
 
 	function getEventPlaces(&$locations, $person = null) {
 		global $tblprefix, $restrictdate, $strEvent, $datefmt;
-	
+
 		$pquery = "SELECT ".Event::getFields("e").
 			",".PersonDetail::getFields("p").
 			",".Location::getFields("l").
 			" FROM ".$tblprefix."event e".
 			" JOIN ".$tblprefix."people p ON p.person_id=e.person_id".
 			" JOIN ".$tblprefix."locations l ON e.location_id=l.location_id ".
-			PersonDetail::getJoins().
+		PersonDetail::getJoins().
 			" WHERE (e.etype < 4 OR e.etype =".OTHER_EVENT.") AND e.location_id is not null"; 
 		$pquery .= $this->addPersonRestriction(" AND ");
-		
+
 		if ($locations->location_id > 0) {
 			$pquery .= " AND l.location_id = ".$locations->location_id;
 		}
@@ -187,12 +203,12 @@ class LocationDAO extends MyFamilyDAO {
 		}
 		$this->freeResultSet($presult);
 	}
-	
-     	function getMarriagePlaces(&$locations, $person = null) {
+
+	function getMarriagePlaces(&$locations, $person = null) {
 		global $tblprefix, $strEvent, $currentRequest;
-	
+
 		$pquery = "select relation.event_id,"
-			.PersonDetail::getFields("groom","ng","bg","dg").
+		.PersonDetail::getFields("groom","ng","bg","dg").
 			",".PersonDetail::getFields("bride","nb","bb","db").
 			",".Event::getFields("e").
 			", relation.dissolve_date, relation.dissolve_reason,".
@@ -203,17 +219,17 @@ class LocationDAO extends MyFamilyDAO {
 			" JOIN ".$tblprefix."locations l ON e.location_id=l.location_id ".
 			" LEFT JOIN ".$tblprefix."people bride ON relation.bride_id = bride.person_id ".
 			" LEFT JOIN ".$tblprefix."people groom ON relation.groom_id = groom.person_id ".
-			PersonDetail::getJoins("LEFT","groom","ng","bg","dg").
-			PersonDetail::getJoins("LEFT","bride","nb","bb","db").
+		PersonDetail::getJoins("LEFT","groom","ng","bg","dg").
+		PersonDetail::getJoins("LEFT","bride","nb","bb","db").
 			" WHERE (e.etype = ".BANNS_EVENT." OR e.etype=".MARRIAGE_EVENT.") AND e.location_id is not null";
 
 		$pquery .= $this->addPersonRestriction(" AND ","bg","dg");
 		$pquery .= $this->addPersonRestriction(" AND ","bb","db");
-		
+
 		if ($locations->location_id > 0) {
 			$pquery .= " AND l.location_id = ".$locations->location_id;
 		}
-		
+
 		$presult = $this->runQuery($pquery, "");
 
 		while ($row = $this->getNextRow($presult)) {
@@ -239,13 +255,13 @@ class LocationDAO extends MyFamilyDAO {
 		}
 		$this->freeResultSet($presult);
 	}
-	
-    	function getAttendeePlaces(&$locations, $person = null) {
+
+	function getAttendeePlaces(&$locations, $person = null) {
 		global $tblprefix, $strEvent, $datefmt;
 		global $strBirthPlace, $strAddress;
-	
+
 		$query = "SELECT ".Attendee::getFields('a').",".PersonDetail::getFields('p').", ".
-			Event::getFields("e").
+		Event::getFields("e").
 			",".Location::getFields("l").
 			",".Location::getFields("el").
 			" FROM ".$tblprefix."attendee a".
@@ -253,7 +269,7 @@ class LocationDAO extends MyFamilyDAO {
 			" JOIN ".$tblprefix."event e ON a.event_id = e.event_id".
 			" LEFT JOIN ".$tblprefix."locations el ON el.location_id = e.location_id".
 			" LEFT JOIN ".$tblprefix."locations l ON l.location_id = a.location_id".
-			PersonDetail::getJoins().
+		PersonDetail::getJoins().
 			" WHERE (a.location_id is not null OR e.location_id is not null)".
 			" AND (NOT (e.etype = ".BANNS_EVENT." OR e.etype=".MARRIAGE_EVENT."))";
 			
@@ -277,28 +293,28 @@ class LocationDAO extends MyFamilyDAO {
 			if ($per->isViewable() && $loc->hasData()) {
 				$text = $per->getLink().' ';
 				switch($e->type) {
-				case CENSUS_EVENT:
-					$text .= $strEvent[$e->type]." ".$strBirthPlace;
-					break;
-				default:
-					$text .= $strAddress;
-					break;
+					case CENSUS_EVENT:
+						$text .= $strEvent[$e->type]." ".$strBirthPlace;
+						break;
+					default:
+						$text .= $strAddress;
+						break;
 				}
 				$text .= ' '.$e->getDate1();
-				if (($locations->location_id > 0 && $loc->location_id == $locations->location_id) || 
-					$locations->location_id <= 0) {
-						$p = $this->createPlace($locations, $loc, $text);
-					}
+				if (($locations->location_id > 0 && $loc->location_id == $locations->location_id) ||
+				$locations->location_id <= 0) {
+					$p = $this->createPlace($locations, $loc, $text);
+				}
 			}
-			
+				
 			$e->location->loadFields($prow,"el_");
 			$e->location->setPermissions();
 			if ($per->isViewable() && $e->location->hasData()) {
 				$text = $per->getLink().' '.$strEvent[$e->type].' '.$e->getDate1();
-				if (($locations->location_id > 0 && $e->location->location_id == $locations->location_id) || 
-					$locations->location_id <= 0) {
-						$p = $this->createPlace($locations, $e->location, $text);
-					}
+				if (($locations->location_id > 0 && $e->location->location_id == $locations->location_id) ||
+				$locations->location_id <= 0) {
+					$p = $this->createPlace($locations, $e->location, $text);
+				}
 			}
 		}
 		$this->freeResultSet($presult);
@@ -306,10 +322,10 @@ class LocationDAO extends MyFamilyDAO {
 
 	function getLocationCount() {
 		global $tblprefix;
-		
+
 		$squery = "SELECT count(location_id) as number ".
 			" FROM ".$tblprefix."locations l ";
-		
+
 		$result = $this->runQuery($squery, '');
 
 		while ($row = $this->getNextRow($result)) {
@@ -318,50 +334,50 @@ class LocationDAO extends MyFamilyDAO {
 		$this->freeResultSet($result);
 		return ($ret);
 	}
-	
+
 	function saveLocation(&$location) {
-	    global $tblprefix;
-	    
-	    $rowsChanged = 0;
-	    
-	    if (isset($location->location_id) && $location->location_id > 0) {
-		    $query = sprintf("UPDATE ".$tblprefix."locations " .
+		global $tblprefix;
+	  
+		$rowsChanged = 0;
+	  
+		if (isset($location->location_id) && $location->location_id > 0) {
+			$query = sprintf("UPDATE ".$tblprefix."locations " .
 			" SET name=%s, place=%s, lat=%s, lng=%s, centre = %d WHERE location_id =".$location->location_id,
 			quote_smart($location->place),
 			quote_smart($location->place),
 			(strlen($location->lat) > 0)?quote_smart($location->lat):'null',
 			(strlen($location->lng) > 0)?quote_smart($location->lng):'null',
 			$location->centre);
-		    error_log($query);
-		    $update_result = $this->runQuery($query, "");
-		    $rowsChanged += $this->rowsChanged();
-	    } else {
-		    $this->lockTable($tblprefix."locations");
-		    $query = sprintf("INSERT INTO ".$tblprefix."locations " .
+			error_log($query);
+			$update_result = $this->runQuery($query, "");
+			$rowsChanged += $this->rowsChanged();
+		} else {
+			$this->lockTable($tblprefix."locations");
+			$query = sprintf("INSERT INTO ".$tblprefix."locations " .
 			" (name, place, lat, lng, centre) VALUES (%s,%s,%s, %s, %d) ;",
 			quote_smart($location->place),
 			quote_smart($location->place),
 			(strlen($location->lat) > 0)?quote_smart($location->lat):'null',
 			(strlen($location->lng) > 0)?quote_smart($location->lng):'null',
 			$location->centre);
-		    $update_result = $this->runQuery($query, "");
-		    $rowsChanged += $this->rowsChanged();
-		    $location->location_id = $this->getInsertId();
-		    $this->unlockTable($tblprefix."locations");
-	    }
-	    return ($rowsChanged);
+			$update_result = $this->runQuery($query, "");
+			$rowsChanged += $this->rowsChanged();
+			$location->location_id = $this->getInsertId();
+			$this->unlockTable($tblprefix."locations");
+		}
+		return ($rowsChanged);
 	}
-	
+
 	function deleteLocation($loc) {
 		global $tblprefix;
 		$this->startTrans();
 		//TODO error messages
 		$dquery = "UPDATE ".$tblprefix."event SET location_id = NULL WHERE location_id = ".$loc->location_id;
 		$dresult = $this->runQuery($dquery, '');
-		
+
 		$dquery = "UPDATE ".$tblprefix."attendee SET location_id = NULL WHERE location_id = ".$loc->location_id;
 		$dresult = $this->runQuery($dquery, '');
-		
+
 		$dquery = "DELETE FROM ".$tblprefix."locations WHERE location_id = ".$loc->location_id;
 		$dresult = $this->runQuery($dquery, '');
 		$this->commitTrans();
