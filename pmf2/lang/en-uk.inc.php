@@ -96,6 +96,7 @@
 	$strLongitude = "Longitude";
 	$strCentre = "Centre of map";
 	
+	$strInvalidPerson   = "Invalid person name";
 	$strDeceasedPerson  = "Deceased Person";    // EN-UK
   	$strOnFile			= "people on file";
 	$strSelect			= "Select person";
