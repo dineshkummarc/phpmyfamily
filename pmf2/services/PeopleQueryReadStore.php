@@ -2,14 +2,13 @@
 set_include_path("..");
 include_once("modules/db/DAOFactory.php");
 
-header("Content-Type", "text/json-comment-filtered");
+//header("Content-Type", "text/json");
 
 function printPeopleOption($search, $per) {
 
 }
 ?>
-/*
-{identifier:"personid",
+{}&&{identifier:"personid",
 items: [
 <?php
 
@@ -17,7 +16,10 @@ items: [
 	$search->queryType = Q_TYPE;
 	$search->person_id = 0;
 	$search->gender = 'A';
-	//if (isset($_POST["id"])) { $search->person_id = $_POST["id"]; }
+	if (isset($_POST["id"])) { 
+		$search->person_id = $_POST["id"]; 
+		$search->queryType = Q_IND;
+	}
 	if (isset($_POST["gender"])) { $search->gender = $_POST["gender"]; }
 	if (isset($_POST["start"])) { $search->start = $_POST["start"]; }
 	if (isset($_POST["count"])) {
@@ -53,4 +55,4 @@ items: [
 	}
 
 ?>
-]}*/
+]}

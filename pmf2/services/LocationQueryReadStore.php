@@ -2,11 +2,10 @@
 set_include_path("..");
 include_once("modules/db/DAOFactory.php");
 
-header("Content-Type", "text/json-comment-filtered");
+header("Content-Type", "text/json");
 
 ?>
-/*
-{identifier:"locationid",
+{}&&{identifier:"locationid",
 items: [
 <?php
 
@@ -36,4 +35,4 @@ items: [
 		if ($i < $p->numResults) { echo ","; }
 	}
 
-?>]}*/
+?>]}
