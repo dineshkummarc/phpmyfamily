@@ -10,7 +10,7 @@ function displayPersonOption($param, $per) {
 // function: listpeeps
 // list all people in database that current request has access to
 function selectPeople($form, $omit = 0, $gender = "A", $default = 0, $auto = 1, $date = 0, $type = 0) {
-	global $strOnFile, $strSelect;
+	global $strOnFile, $strSelect, $strInvalidPerson;
 /**
 <!-- assumes
     <style type="text/css">
@@ -35,7 +35,7 @@ function selectPeople($form, $omit = 0, $gender = "A", $default = 0, $auto = 1, 
 	$config = Config::getInstance();
 	$dojo = false;
 	
-	if ($config->dojo && $default == 0 && $type > 0) {
+	if ($config->dojo) {
 		$dojo = true;
 	}
 		
@@ -83,21 +83,20 @@ function selectPeople($form, $omit = 0, $gender = "A", $default = 0, $auto = 1, 
 	<div dojoType="dojox.data.QueryReadStore" jsId="<?php echo $store;?>"
 			url="services/PeopleQueryReadStore.php" requestMethod="post"></div>
 
-	<input searchAttr="name" id="<?php echo $form;?>" 
-	dojoType="dijit.form.FilteringSelect" 
-		store="<?php echo $store;?>"
-		name="<?php echo $form;?>" autoComplete="false"
-		pageSize="10"
-		invalidMessage="Invalid person name"
-				<?php 	
-				if ($auto == 1) { echo " onChange=\"dojo.byId('".$form."').form.submit();\" "; }
-				if ($default > 0) { echo " value=\"".$default."\""; }
-				?>
-	></input>
-	<script type="text/javascript">
-	console.log(dojo.byId("<?php echo $form;?>"));
-	console.log(dijit.byId("<?php echo $form;?>"));
-	</script>
+<input searchAttr="name" id="<?php echo $form;?>"
+	dojoType="dijit.form.FilteringSelect" style="width: 300px;"
+	<?php
+	if ($auto == 1) { echo " onChange=\"dojo.byId('".$form."').form.submit();\" "; }
+	if ($default > 0) { echo " value=\"".$default."\""; }
+	$query = "";
+	if ($gender != "A") { $query = "gender:'$gender'";
+	if ($date <> 0) { $query .= ","; }
+	}
+	if ($date <> 0) { $query .= "date: $date"; }
+	if ($query != "") {echo 'query="{'.$query.'}"';}
+	?>
+	store="<?php echo $store;?>" name="<?php echo $form;?>"
+	autoComplete="false" pageSize="10" invalidMessage="<?php echo $strInvalidPerson;?>"></input>
 <?php
 	}
 	echo "<br/>";
