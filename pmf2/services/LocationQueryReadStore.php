@@ -2,7 +2,7 @@
 set_include_path("..");
 include_once("modules/db/DAOFactory.php");
 
-header("Content-Type", "text/json");
+//header("Content-Type", "text/json");
 
 ?>
 {}&&{identifier:"locationid",
