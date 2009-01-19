@@ -16,11 +16,24 @@ include_once "modules/".$area."/editForm.php";
 
 $data = setup_edit();
 $extra = '<script type="text/javascript" src="inc/edit.js.php"></script>';
+$extra .= '<script type="text/javascript">
+		dojo.require("dijit.Editor");
+		dojo.require("dijit._editor.plugins.TextColor");
+		dojo.require("dijit._editor.plugins.LinkDialog");
+		dojo.require("dojo.parser");	// scan page for widgets and instantiate them
+
+		function setEditorValue(id, args){
+			if (args[0] != \'\') {
+				dojo.byId(id).value=args[0];
+			} 
+		}
+</script>';
 do_headers_dojo(get_edit_title($data), $extra);
 
 	$config = Config::getInstance();
 	if ($config->dojo) {		
 ?>
+<body class="tundra">
 <div dojoType="dojox.data.QueryReadStore" jsId="LocationStore"
 			url="services/LocationQueryReadStore.php" requestMethod="post"></div>
 	<?php }?>

@@ -47,6 +47,21 @@ function get_edit_form($per) {
 	global $strNewMsg, $strTitle, $strName, $strFirstNames, $strLinkNames, $strLastName, $strAKA,$strSuffix, 
 	$strEvent, $strCauseDeath, $strGender, $strFaB,
 	$strMale, $strFemale, $strMother, $strFather, $strNotes, $strSubmit, $strReset;
+	$config = Config::getInstance();
+	if ($config->dojo) {
+	?><script  type="text/javascript">
+	dojo.addOnLoad(function() {
+                        var widget = dijit.byId('notes');
+                        widget.name = 'frmNarrative';
+                        dojo.connect(widget, 'onChange', function(){
+                        widget.endEditing();
+                        var desc = widget.getValue();
+                        var stext = dojo.byId('frmNarrative');
+                        stext.value = desc;
+                        });
+                });
+	</script><?php
+	}	
 $mid = 0;
 $fid = 0;
 $gender = "M";
@@ -145,7 +160,14 @@ if (!isset($per->person_id)) {
 		</tr>
 		<tr>
 			<td class="tbl_odd" valign="top"><?php echo $strNotes; ?></td>
-			<td colspan="2" class="tbl_even"><textarea name="frmNarrative" rows="10" cols="80"><?php echo $per->narrative; ?></textarea></td>
+			<td colspan="2" class="tbl_even"><?php if ($config->dojo) { ?>
+			<input type="hidden" name="frmNarrative" id="frmNarrative"/>
+			<div id="notes" dojoType="dijit.Editor" minHeight="5em" 
+			plugins="['undo', 'redo', 'cut', 'copy', 'paste', '|', 'bold', 'italic', 'underline', 'strikethrough', 'subscript', 'superscript', '|', 'removeFormat', 'indent', 'outdent', 'justifyCenter', 'justifyFull', 'justifyLeft', 'justifyRight', 'delete', 'insertOrderedList', 'insertUnorderedList', 'createLink', 'foreColor','hiliteColor']">
+			<?php echo $per->narrative; ?></div>
+			<?php } else {?>
+			<textarea name="frmNarrative" id="frmNarrative" rows="10" cols="80"><?php echo $per->narrative; ?></textarea>
+			<?php }?></td>
 		</tr>
 		<tr>
 		<td colspan="3">
