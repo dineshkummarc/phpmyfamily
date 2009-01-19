@@ -73,7 +73,7 @@ if(!mysql_query($q)) {
 include_once "admin/nameTable.php";
 
 $q = "INSERT INTO `".$tblprefix."names` (person_id, forenames, surname, suffix) ".
-    "SELECT person_id, TRIM(TRAILING surname FROM name) AS forenames, surname, suffix ".
+    "SELECT person_id, TRIM(TRIM(TRAILING surname FROM name)) AS forenames, TRIM(surname), TRIM(suffix) ".
     "FROM `".$tblprefix."people`";
     
 if(!mysql_query($q)) {
