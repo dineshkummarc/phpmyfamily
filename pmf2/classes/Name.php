@@ -1,4 +1,5 @@
 <?php
+define(NAME_SEP,"\t");
 
 class Name extends Base {
 	
@@ -13,12 +14,12 @@ class Name extends Base {
 	function setFromPost() {
 		if (isset($_POST["person"])) { $this->person_id = quote_smart($_POST["person"]);}		
 		
-		$this->title = htmlspecialchars($_POST["frmTitle"], ENT_QUOTES);
-		$this->forenames = htmlspecialchars($_POST["frmForenames"], ENT_QUOTES);
-		$this->link = htmlspecialchars($_POST["frmLink"], ENT_QUOTES);
-		$this->surname = htmlspecialchars($_POST["frmSurname"], ENT_QUOTES);
-		$this->knownas = htmlspecialchars($_POST["frmAKA"], ENT_QUOTES);
-		$this->suffix = $_POST["frmSuffix"];
+		$this->title = trim(htmlspecialchars($_POST["frmTitle"], ENT_QUOTES));
+		$this->forenames = trim(htmlspecialchars($_POST["frmForenames"], ENT_QUOTES));
+		$this->link = trim(htmlspecialchars($_POST["frmLink"], ENT_QUOTES));
+		$this->surname = trim(htmlspecialchars($_POST["frmSurname"], ENT_QUOTES));
+		$this->knownas = trim(htmlspecialchars($_POST["frmAKA"], ENT_QUOTES));
+		$this->suffix = trim(htmlspecialchars($_POST["frmSuffix"]));
 	}
 
 	
@@ -60,18 +61,52 @@ class Name extends Base {
 	function getReverseName() {
 		$ret = $this->surname;
 		if (strlen($this->suffix)) {
-			$ret .= " ".$this->suffix;
+			$ret .= NAME_SEP.$this->suffix;
 		}
-		$ret .=", ";
+		$ret .=",";
 		if (strlen($this->title)) {
-			$ret .= $this->title." ";
+			$ret .= NAME_SEP.$this->title.NAME_SEP;
+		} else {
+			$ret .= " ";
 		}
 		$ret .= $this->forenames;
 		if (strlen($this->link)) {
-			$ret .= " ".$this->link;
+			$ret .= NAME_SEP.$this->link;
 		}
 		return ($ret);
 	}
+
+	function parseReverseName($name) {
+		$names = explode(',', $name);
+		$lastname = $names[0];
+		
+		//Assume that there are no spaces in a valid last name
+		$lnames = explode(NAME_SEP, $lastname);
+		if (count($lnames) > 1) {
+			$lastname = $lnames[0];
+			$this->suffix = trim($lnames[1]);
+		}
+		
+		if (count($names) > 1) {
+		
+			$fnames = explode(NAME_SEP, $names[1]);
+			if (count($fnames) > 2) {
+			//tricky to parse - title and forenames can contain the same values e.g. Earl
+				$this->forenames = trim($fnames[2]);
+				$this->title = trim($fnames[1]);
+				if (count($fnames) > 3) {
+					$this->link = trim($fnames[3]);
+				}
+			} else if (count($fnames) > 0) {
+				$this->forenames = trim($fnames[0]);
+				$this->link = trim($fnames[1]);
+			} else {
+				$this->forenames = trim($fnames[0]);
+			}
+		}		
+		$this->surname = trim($lastname);
+	}
+
 }
 
 ?>

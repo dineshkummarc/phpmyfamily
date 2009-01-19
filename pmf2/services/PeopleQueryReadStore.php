@@ -2,11 +2,8 @@
 set_include_path("..");
 include_once("modules/db/DAOFactory.php");
 
-//header("Content-Type", "text/json");
+//header("Content-Type", "application/json");
 
-function printPeopleOption($search, $per) {
-
-}
 ?>
 {}&&{identifier:"personid",
 items: [
@@ -30,15 +27,14 @@ items: [
 		}
 		$search->limit = 10;	
 	}
-	
+	$pos = false;
 	if (isset($_POST["name"])) { 
-		$names = explode(',', str_replace("*", "%", $_POST["name"]));
-		$lastname = rtrim($names[0]);
-		if (count($names) > 1) {
-			$firstname = ltrim($names[1]);
-			$search->name->forenames = $firstname;
-		}	
-		$search->name->surname = $lastname;
+		$names = str_replace("*", "%", $_POST["name"],$count);
+		if ($count == 0) {
+			$names .= "%";
+		}
+		$search->parseSelectName($names);
+		$pos = strpos($names, '(');
 	}
 		
 	if (isset($_POST["date"])) { $search->date_of_birth = $_POST["date"]; }

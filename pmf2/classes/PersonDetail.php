@@ -172,6 +172,16 @@ class PersonDetail extends Base {
 		}
 		return ($this->name->getReverseName()." (b. ".$year.")");
 	}
+
+	function parseSelectName($str) {
+		$names = $str;
+		$pos = strrchr($str, "(");
+		if ($pos) {
+			$names = substr($str, 0, strlen($str) - strlen($pos));
+			$date = $pos; //not used
+		} 
+		$this->name->parseReverseName($names);
+	}
 	
 	function getURL() {
 		$ret = "";
