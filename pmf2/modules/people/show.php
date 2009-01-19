@@ -84,9 +84,10 @@ function selectPeople($form, $omit = 0, $gender = "A", $default = 0, $auto = 1, 
 			url="services/PeopleQueryReadStore.php" requestMethod="post"></div>
 
 <input searchAttr="name" id="<?php echo $form;?>"
-	dojoType="dijit.form.FilteringSelect" style="width: 300px;"
+	dojoType="dijit.form.FilteringSelect" style="width: 400px;" labelType="html" 
 	<?php
-	if ($auto == 1) { echo " onChange=\"dojo.byId('".$form."').form.submit();\" "; }
+	if ($auto == 1) { echo " onChange=\"dojo.byId('".$form."').form.submit();\""; } 
+
 	if ($default > 0) { echo " value=\"".$default."\""; }
 	$query = "";
 	if ($gender != "A") { $query = "gender:'$gender'";
@@ -99,6 +100,7 @@ function selectPeople($form, $omit = 0, $gender = "A", $default = 0, $auto = 1, 
 	autoComplete="false" pageSize="10" invalidMessage="<?php echo $strInvalidPerson;?>"></input>
 <?php
 	}
+
 	echo "<br/>";
 	// show the number of people in the list
 	if ($gender == "A" && $omit == 0) {
