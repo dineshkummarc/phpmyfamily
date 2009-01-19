@@ -35,7 +35,7 @@
 	}
 	$per = $peep->results[0];
 
-	do_headers($strPedigreeOf." ".$per->getDisplayName());
+	do_headers_dojo($strPedigreeOf." ".$per->getDisplayName());
 ?>	
 <!--titles-->
 	<table width="100%" class="header">

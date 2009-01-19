@@ -47,9 +47,10 @@
 	
 	// do different things for those not logged in
 	if ($_SESSION["id"] != 0) {
-		do_headers($strMyLoggedIn);
+		do_headers_dojo($strMyLoggedIn);
 		
 ?>
+<body style="tundra">
 <table width="100%" class="header">
 	<tr>
 		<td width="65%" align="center">
@@ -146,9 +147,10 @@
 </table>
 <?php
 	} else {
-		do_headers($strLogin);
+		do_headers_dojo($strLogin);
 
 ?>
+<body class="tundra">
 <table width="100%" class="header">
 	<tr>
 		<td width="65%" align="center">
