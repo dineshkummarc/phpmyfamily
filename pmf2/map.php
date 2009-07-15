@@ -15,11 +15,13 @@
 <?php    echo get_location_header($places);?>
   </head>
 
-  <body onload="initialize()" onunload="GUnload()">
+  <body<?php
+  if ($config->gmapskey != '') {
+  echo ' onload="initialize()" onunload="GUnload()"';
+  }
+   ?>>
  <?php
      echo show_location($p);
   ?>  
   </body>
 </html>
-
-
