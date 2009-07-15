@@ -30,7 +30,11 @@ function changeExample( id, fieldValue, searchExamples ) {
 	
 }
 
+<?php
+$config = Config::getInstance();
 
+if ($config->dojo) {
+?>
       dojo.require("dijit.form.ComboBox");
       dojo.require("dijit.form.FilteringSelect");
       dojo.require("dojox.data.QueryReadStore");
@@ -44,5 +48,6 @@ function changeExample( id, fieldValue, searchExamples ) {
 				return this.inherited("fetch", arguments);
 			}
       });
-
-
+<?php
+}
+?>
