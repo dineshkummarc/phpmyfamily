@@ -105,10 +105,96 @@ td.tbl_odd   {
 .rt	{
 	background: url('../images/rt.png') no-repeat center;
 }
-.tabs {position:relative; height: 27px; margin: 0; padding: 0; background:url("bar_off.gif") repeat-x; overflow:hidden}
-.tabs li {display:inline;}
-.tabs a:hover, .tabs a.tab-active {background:#fff url("bar_on.gif") repeat-x; border-right: 1px solid #fff} 
-.tabs a  {height: 27px; font:12px verdana, helvetica, sans-serif;font-weight:bold;
-    position:relative; padding:6px 10px 10px 10px; margin: 0px -4px 0px 0px; color:#2B4353;text-decoration:none;border-left:1px solid #fff; border-right:1px solid #6D99B6;}
-.tab-container {background: #fff; border:1px solid #6D99B6;}
-.tab-panes { margin: 3px }
+.label {
+font-style: oblique;
+display: inline;
+}
+#useroptions ul {
+margin: 1;
+padding: 0;
+}
+#useroptions li {
+float:left;
+list-style-image:none;
+list-style-position:outside;
+list-style-type:none;
+margin:5px;
+padding:0px;
+}
+#options {
+float: right;
+position: relative;
+}
+#options ul {
+margin: 0;
+padding: 0;
+}
+#options li {
+float:left;
+list-style-image:none;
+list-style-position:outside;
+list-style-type:none;
+margin:5px;
+padding:0px;
+}
+#name {
+text-align: center;
+}
+#name h2 {
+margin: 0;
+padding: 0;
+}
+div#bd {
+padding: 5px 5px;
+color:#000000;
+font-family:verdana,Arial,Helvetica,sans-serif;
+font-size: <?php echo $font_size; ?>;
+position: relative;
+left: 10%;
+width: 80%;
+display: block;
+}
+div.child {
+display: block;
+}
+div.birth {
+padding: 10px 10px;
+width:40%;
+top: 0;
+float: left;
+}
+div.baptism {
+width:40%;
+float: left;
+padding: 10px 10px;
+}
+div.death {
+float: right;
+top: 0;
+padding: 10px 10px;
+width:40%;
+}
+div.burial {
+float: right;
+width:40%;
+padding: 10px 10px;
+}
+div#parents {
+clear: both;
+padding: 10px 10px;
+margin-left: 15%;
+float: none;
+width: 70%;
+display: block;
+}
+div.children {
+padding: 10px 10px;
+margin-left: 35%;
+}
+div#siblings {
+padding: 10px 10px;
+margin-left: 35%;
+}
+div.insert {
+float: right;
+}
