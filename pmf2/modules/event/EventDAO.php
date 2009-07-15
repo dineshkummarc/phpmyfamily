@@ -5,6 +5,8 @@ include_once "classes/Attendee.php";
 define('Q_BD', 7);
 define('Q_REL', 8);
 define('Q_CEN', 9);
+define('Q_ALL', 10);
+define('Q_OTHER', 11);
 
 class EventDAO extends MyFamilyDAO {
 	
@@ -40,6 +42,18 @@ class EventDAO extends MyFamilyDAO {
 				return;
 			}
 			break;
+		case Q_OTHER:
+			$query .= " WHERE etype = ".OTHER_EVENT;
+			$query .= " AND e.person_id = ".$events->person->person_id;
+			if (!isset($events->person) || $events->person->person_id == '') {
+				return;
+			}
+			break;
+		case Q_ALL:
+			$query .= " WHERE e.event_id = ".$events->event_id;
+			if (!isset($events->event_id) || $events->event_id == '') {
+				return;
+			}
 		}
 		
 		//TODO error message
@@ -105,19 +119,19 @@ class EventDAO extends MyFamilyDAO {
 		if (isset($event->event_id) && $event->event_id > 0) {
 			$query = "UPDATE ".$tblprefix."event SET etype = ".$event->type.", descrip = ".quote_smart($event->descrip).", person_id = ".$event->person->person_id.
 			", location_id = ".$event->location->location_id.", d1type = ".$event->date1_modifier.", date1 = ".quote_smart($event->date1).", d2type = ".$event->date2_modifier.", date2 = ".quote_smart($event->date2).
-			", source = ".quote_smart($event->source).", reference = '".$event->reference."', certified = ".quote_smart($event->certified).", notes = ".quote_smart($event->notes).
+			", notes = ".quote_smart($event->notes).
 			" WHERE event_id = ".quote_smart($event->event_id);
 			$msg = $err_person_update;
 		} else {
 			$this->lockTable($tblprefix."event");
-			$query = "INSERT INTO ".$tblprefix."event (etype, descrip, person_id, location_id, d1type, date1, d2type, date2, source, reference, certified, notes) VALUES (".
+			$query = "INSERT INTO ".$tblprefix."event (etype, descrip, person_id, location_id, d1type, date1, d2type, date2, notes) VALUES (".
 			$event->type.", ".quote_smart($event->descrip).", ".$event->person->person_id.", ".$event->location->location_id.", ".$event->date1_modifier.", ".quote_smart($event->date1).
-			", ".$event->date2_modifier.", ".quote_smart($event->date2).", ".quote_smart($event->source).", ".quote_smart($event->reference).", ".quote_smart($event->certified).", ".
+			", ".$event->date2_modifier.", ".quote_smart($event->date2).", ".
 			quote_smart($event->notes).")";
 			$msg = $err_detail;
 			$insert = true;
 		}
-		
+
 		$ret = $this->runQuery($query, $msg);
 		
 		$rowsChanged += $this->rowsChanged();
@@ -131,6 +145,15 @@ class EventDAO extends MyFamilyDAO {
 			foreach ($event->attendees AS $a) {
 				$a->event->event_id = $event->event_id;
 				$rowsChanged += $this->saveAttendee($a);
+			}
+		}
+
+		if(count($event->sources) > 0) {
+			$sdao = getSourceDAO();
+			$sdao->deleteSourceEvent(null, $event);
+			foreach ($event->sources AS $s) {
+				$rowsChanged += $sdao->resolveSource($s);
+				$sdao->saveSourceEvent($s, $event);
 			}
 		}
 		return ($rowsChanged);
@@ -167,7 +190,7 @@ class EventDAO extends MyFamilyDAO {
 		}
 		
 		$ret = $this->runQuery($query, $msg);
-		
+
 		$rowsChanged += $this->rowsChanged();
 		
 		if ($insert) {
