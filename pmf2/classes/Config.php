@@ -8,6 +8,8 @@ class Config {
 	var $mailto;
 	var $desc;
 	var $styledir;
+	var $imagedir;
+	var $filedir;
 	var $defaultstyle;
 	var $lang;
 	var $timing;
@@ -38,7 +40,7 @@ class Config {
 	
 	//Singleton pattern which should always be used to access
 	//config variables
-	function getInstance() {
+	static function getInstance() {
 	   static $instance;
 	   
 	   if(!isset($instance)) {
@@ -49,7 +51,7 @@ class Config {
 	}
 
 	function getActiveModules() {
-	   $ret = array ("relations", "census", "note", "image", "transcript");
+	   $ret = array ("relations", "census", "note", "image", "transcript", "gedcom");
 	   return ($ret);
 	}
    
@@ -94,6 +96,8 @@ class Config {
 		if (isset($row["mailto"])) $this->mailto = $row["mailto"];
 	   	$this->desc = $row["desc"];
 		$this->styledir = $row["styledir"];
+		$this->imagedir = $row["imagedir"];
+		$this->filedir = $row["filedir"];
 		$this->defaultstyle = $row["defaultstyle"];
 		$this->lang = $row["lang"];
 		if (isset($row["timing"])) $this->timing = $row["timing"];
@@ -119,9 +123,9 @@ class Config {
 }
 
 #
-//error_reporting(E_ALL);
+error_reporting(E_ALL^E_STRICT);
 #Sends errors to the screen instead of the log file
-//ini_set('display_errors', true);
+ini_set('display_errors', true);
 
 include_once("inc/version.php");
 include_once("classes/CurrentRequest.php");
