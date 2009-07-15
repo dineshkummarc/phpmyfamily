@@ -107,10 +107,7 @@
 </table>
 
 <hr />
-<table width="100%">
-  <tbody>
-    <tr>
-      <td width="50%" valign="top">
+
 	  	<table width="80%">
 			<tr>
 				<th><?php echo $strAction; ?></th>
@@ -145,8 +142,7 @@
 		}
 ?>
 		</table>
-	  </td>
-      <td width="50%" valign="top">
+
       <?php $config = Config::getInstance();?>
 			<table>
 				<tr><h4><?php echo $strUserCreate; ?></h4></tr>
@@ -162,18 +158,15 @@
 					<tr><td><font color="red"><?php echo $err; ?></font></td></tr>
 				</form>
 			</table>
-	  </td>
-    </tr>
-    <tr><td>
+
     <?php
     include_once "modules/admin/editForm.php";
   
     echo get_options_edit();
     ?>
-    </td></tr>
+  
 	<!--Gedcom table-->
-	<tr>
-		<td>
+
 			<form action="admin.php?func=ged" method="POST" enctype="multipart/form-data" >
 				<table>
 					<tbody>
@@ -189,15 +182,12 @@
 							<td>  </td>
 						</tr>
 						<tr>
-							<td colspan="2" class="tbl_even">Warning - Highly experimental - Only tested on Version 5.5</td>
+							<td colspan="2" class="tbl_even">Warning - Highly experimental - Only tested on Version 5.5 - Use ANSI format</td>
 						</tr>
 					</tbody>
 				</table>
 			</form>
-		</td>
-	</tr>
-  </tbody>
-</table>
+	
 
 <hr />
 <a href="index.php"><?php echo $strBack; ?></a> <?php echo $strToHome; ?>
