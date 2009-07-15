@@ -13,7 +13,7 @@ class PeopleDAO extends MyFamilyDAO {
 		$res = array();
 
 		// create the query based on the parameters
-		$query = "SELECT ";
+		$query = "SELECT DISTINCT ";
 
 		switch ($search->queryType) {
 		case Q_COUNT:
@@ -22,7 +22,7 @@ class PeopleDAO extends MyFamilyDAO {
 		default:
 			$flds = array("death_reason", "mother_id", "father_id", "narrative", "updated");
 			$fields = PersonDetail::getFields().
-				", bl.place AS p_birth_place, b.certified AS p_birth_cert, d.certified AS p_death_cert".
+				", bl.place AS p_birth_place".
 				", YEAR(b.date1) AS p_year_of_birth".
 				", ".Base::addFields("p",$flds).", DATE_FORMAT(updated, ".$currentRequest->datefmt.") AS ddate";
 			break;
@@ -79,6 +79,11 @@ class PeopleDAO extends MyFamilyDAO {
 		}
 		$query .= $fields.$from.$where;
 		// and sort the query
+		if (strlen($callback) == 0) {
+			if (!isset($search->count)) {
+				$search->count = 10;
+			}
+		}
 
 		if ($search->queryType != Q_COUNT) {
 			if (isset($search->order)) {
@@ -167,20 +172,29 @@ class PeopleDAO extends MyFamilyDAO {
 		$search->results = $res;
 	}
 	
-	function getSurnames() {
+	function getSurnames($order = 0) {
 		global $tblprefix, $err_person;
 		// provide a list of surnames
-		$nquery = "SELECT p.person_id, n.surname FROM ".$tblprefix."people p ";
+		$nquery = "SELECT p.person_id, n.surname, count(p.person_id) as number FROM ".$tblprefix."people p ";
 		$nquery .= PersonDetail::getJoins();
 		$nquery .= $this->addPersonRestriction(" WHERE ");
 		$nquery .= " GROUP BY n.surname";
+		if ($order == 1) {
+			$nquery .= " ORDER BY number DESC";
+			$search = new Base();
+			$search->count = 10;
+			$this->addLimit($search, $nquery);
+		} else {
+			$nquery .= " ORDER BY n.surname";
+		}
 		$result = $this->runQuery($nquery, $err_person);
 		$ret = array();
-		$search->numResults = 0;
+		
 		while ($row = $this->getNextRow($result)) {
 			$per = new PersonDetail();
 			$per->loadFields($row, L_HEADER);
-			$per->surname = $row["surname"];
+			$per->name->surname = $row["surname"];
+			$per->count = $row["number"];
 			$ret[] = $per;
 		}
 		$this->freeResultSet($result);
@@ -333,7 +347,7 @@ class PeopleDAO extends MyFamilyDAO {
 	}
 	
 	function savePersonDetails(&$per) {
-		global $tblprefix, $err_person_update, $err_detail;
+		global $tblprefix, $err_person_update, $err_detail, $currentRequest;
 		
 		$rowsChanged = 0;
 		
@@ -348,8 +362,8 @@ class PeopleDAO extends MyFamilyDAO {
 			$msg = $err_person_update;
 		} else {
 			$this->lockTable($tblprefix."people");
-			$query = "INSERT INTO ".$tblprefix."people (death_reason, gender, mother_id, father_id, narrative, updated) VALUES (".
-			quote_smart($per->death_reason).", ".quote_smart($per->gender).", ".quote_smart($per->mother->person_id).", ".quote_smart($per->father->person_id).", ".quote_smart($per->narrative).", NOW())";
+			$query = "INSERT INTO ".$tblprefix."people (death_reason, gender, mother_id, father_id, narrative, updated, creator_id, created) VALUES (".
+			quote_smart($per->death_reason).", ".quote_smart($per->gender).", ".quote_smart($per->mother->person_id).", ".quote_smart($per->father->person_id).", ".quote_smart($per->narrative).", NOW(), ".$currentRequest->id.", NOW())";
 			$msg = $err_detail;
 			$insert = true;
 		}
