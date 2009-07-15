@@ -39,6 +39,7 @@
 			</form>
 <?php user_opts(); ?>
 		</td>
+
 	</tr>
 </table>
 
@@ -118,6 +119,20 @@ $search = new PersonDetail();
 						</td>
 					</tr>
 				</table>
+<?php
+	$search = new PersonDetail();
+	$search->person_id = 0;
+	$search->queryType = Q_TYPE;
+	
+	$dao = getPeopleDAO();
+	
+	$surnames = $dao->getSurnames(1);
+	echo "<hr />\n<h4>$strTopSurnames</h4>\n<ul>";
+	foreach($surnames AS $per) {
+		echo "<li>".$per->name->surname." (".$per->count.")</li> ";
+	}
+	?>
+				</ul>
 
 			</td>
 			<td width="33%" valign="top">
@@ -172,7 +187,7 @@ if ($img->numResults > 0) {
 			$class = "tbl_even";
 ?>
 		<tr>
-		<td class="<?php echo $class; ?>" align="left"><?php echo $per->getLink(); ?></a></td>
+		<td class="<?php echo $class; ?>" align="left"><?php echo $per->getLink(); ?></td>
 		<td class="<?php echo $class; ?>"><?php echo $per->dob; ?></td>
 		<td class="<?php echo $class; ?>"><?php echo $year - $per->year_of_birth; ?> years</td>
 		</tr>
@@ -198,7 +213,7 @@ if ($img->numResults > 0) {
 		list ($yom, $mom, $dom) = split("-",$rel->marriage_date);
 ?>
 		<tr>
-		<td class="<?php echo $class; ?>" align="left"><?php echo $rel->person->getLink()." &amp; ".$rel->relation->getLink() ?></a></td>
+		<td class="<?php echo $class; ?>" align="left"><?php echo $rel->person->getLink()." &amp; ".$rel->relation->getLink() ?></td>
 		<td class="<?php echo $class; ?>"><?php echo $rel->dom; ?></td>
 		<td class="<?php echo $class; ?>"><?php echo $year - $yom; ?> years</td>
 		</tr>
@@ -223,7 +238,7 @@ if ($img->numResults > 0) {
 			$class = "tbl_even";
 ?>
 		<tr>
-		<td class="<?php echo $class; ?>" align="left"><?php echo $per->getLink(); ?></a></td>
+		<td class="<?php echo $class; ?>" align="left"><?php echo $per->getLink(); ?></td>
 		<td class="<?php echo $class; ?>"><?php echo $per->dod; ?></td>
 		<td class="<?php echo $class; ?>"><?php echo $year - $per->year_of_death; ?> years</td>
 		</tr>
@@ -261,7 +276,7 @@ $search = new PersonDetail();
 			$class = "tbl_even";
 ?>
 		<tr>
-		<td class="<?php echo $class; ?>" align="left"><?php echo $per->getLink(); ?></a></td>
+		<td class="<?php echo $class; ?>" align="left"><?php echo $per->getLink(); ?></td>
 		<td class="<?php echo $class; ?>"><?php echo $per->dupdated; ?></td>
 		</tr>
 <?php
@@ -272,9 +287,7 @@ $search = new PersonDetail();
 
 			</td>
 		</tr>
-	</table>
-
-<?php
+	</table><?php
 
 	include "inc/footer.inc.php";
 
