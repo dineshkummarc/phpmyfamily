@@ -18,7 +18,7 @@ class Location extends Base {
 	var $centre = false; //Use to indicate the central point on the map
 	
 	function setFromRequest() {
-		$this->location_id = $_REQUEST["location"];
+		@$this->location_id = $_REQUEST["location"];
 	}
 	
 	function setFromPost($prefix) {
@@ -50,7 +50,7 @@ class Location extends Base {
 		return ($ret);
 	}
 	
-	function getFields($tbl) {		
+	static function getFields($tbl) {		
 		$fields = array("location_id", "name", "place", "lat", "lng", "centre");
 			
 		$ret = Base::addFields($tbl, $fields);
@@ -58,7 +58,7 @@ class Location extends Base {
 	}
 	
 	function loadFields($row, $prefix) {
-		$this->location_id = $row[$prefix."location_id"];
+		@$this->location_id = $row[$prefix."location_id"];
 		@$this->name = $row[$prefix."name"];
 		@$this->place = $row[$prefix."place"];
 		@$this->lat = $row[$prefix."lat"];

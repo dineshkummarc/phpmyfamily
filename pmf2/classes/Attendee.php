@@ -18,7 +18,7 @@ class Attendee extends Base {
 		$this->location = new Location();
 	}
 	
-	function getFields($prefix) {
+	static function getFields($prefix) {
 		
 		$fields = array("attendee_id", "event_id", "person_id", "age", "location_id", "profession",
 			"r_status", "loc_descrip", "certified", "notes");
@@ -38,7 +38,7 @@ class Attendee extends Base {
 	function loadFields($row, $prefix='') {
 		$this->attendee_id = $row[$prefix."attendee_id"];
   		$this->event->event_id = $row[$prefix."event_id"];
-  		$this->person->person_id = $row[$prefix."person_id"];
+  		@$this->person->person_id = $row[$prefix."person_id"];
   		@$this->age = $row[$prefix."age"];
   		$this->profession = $row[$prefix."profession"];
   		@$this->condition = $row[$prefix."r_status"];

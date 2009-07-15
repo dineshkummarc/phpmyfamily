@@ -34,7 +34,7 @@ class Name extends Base {
 	
 	//Minimum fields to display a person, and work out whether they should be 
 	//shown
-	function getFields($tbl) {
+	static function getFields($tbl) {
 		global $currentRequest;
 		
 		$fields = array("title", "forenames", "link", "surname", "suffix", "knownas");
@@ -99,7 +99,7 @@ class Name extends Base {
 				}
 			} else if (count($fnames) > 0) {
 				$this->forenames = trim($fnames[0]);
-				$this->link = trim($fnames[1]);
+				@$this->link = trim($fnames[1]);
 			} else {
 				$this->forenames = trim($fnames[0]);
 			}
