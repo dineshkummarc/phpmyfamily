@@ -19,13 +19,14 @@ items: [
 	}
 	if (isset($_POST["gender"])) { $search->gender = $_POST["gender"]; }
 	if (isset($_POST["start"])) { $search->start = $_POST["start"]; }
+	
+	$search->count = 10;
 	if (isset($_POST["count"])) {
 		if ($_POST["count"] == "Infinity") {
 			$search->count = 10;
 		} else {
 			$search->count = $_POST["count"];
 		}
-		$search->limit = 10;	
 	}
 	$pos = false;
 	if (isset($_POST["name"])) { 
