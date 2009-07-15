@@ -20,7 +20,9 @@
 	include_once "modules/db/DAOFactory.php";
 	include_once "inc/header.inc.php";
 	include_once "modules/people/show.php";
-	
+	include_once "modules/event/show.php";
+	include_once "modules/location/show.php";
+		
 	// check we have a person
 	if(!isset($_REQUEST["person"])) $person = 1;
 	@$person = $_REQUEST["person"];
@@ -31,7 +33,7 @@
 	$dao = getPeopleDAO();
 	$dao->getPersonDetails($peep);
 	if ($peep->numResults != 1) {
-		die("error");
+		//die("error");
 	}
 	$per = $peep->results[0];
 	
@@ -93,125 +95,118 @@ break;
 </script>
 
 <!--titles-->
-	<table width="100%" class="header">
-		<tr>
-			<td width="65%" align="center" valign="top">
-				<h2><?php echo $per->getDisplayName(); ?></h2>
-				<h3><?php
-					echo $per->getDates();
-				?></h3>
-			</td>
-			<td width="35%" valign="top" align="right">
+<?php user_opts($per->person_id); ?>
 				<form method="get" action="people.php">
 				<?php selectPeople("person", 0, "A", $per->person_id); ?>
 				</form>
-<?php user_opts($per->person_id); ?>
-			</td>
-		</tr>
-	</table>
+
 
 <hr />
-
-<!--links to relations table-->
-	<table width="100%">
-		<tr>
-			<th width="85%"><h4><?php echo $strDetails; ?></h4></th>
-			<td width="15%" class="tbl_odd" align="center">
-				<a href="pedigree.php?person=<?php echo $per->person_id; ?>"><?php echo $strPedigree; ?></a>
+<div id="options">
+<ul>
 <?php
 				if ($per->isEditable()) {
-?>::
-<a href="edit.php?func=edit&amp;area=people&amp;person=<?php echo $per->person_id; ?>"><?php echo $strEdit; ?></a>
+?>
+<li><a href="edit.php?func=edit&amp;area=people&amp;person=<?php echo $per->person_id; ?>"><?php echo $strEdit; ?></a></li>
 <?php
 				}
 				if ($per->isDeletable()) {
 ?>
-:: <a href="JavaScript:confirm_delete('<?php echo $per->getDisplayName(); ?>', '<?php echo strtolower($strPerson); ?>', 'passthru.php?func=delete&amp;area=people&amp;person=<?php echo $per->person_id; ?>')" class="delete"><?php echo $strDelete; ?></a>
+<li><a href="JavaScript:confirm_delete('<?php echo $per->getDisplayName(); ?>', '<?php echo strtolower($strPerson); ?>', 'passthru.php?func=delete&amp;area=people&amp;person=<?php echo $per->person_id; ?>')" class="delete"><?php echo $strDelete; ?></a></li>
 <?php
 				}
-				if ($config->gedcom == true && $per->isExportable()) {
-						echo "<br><a href=\"gedcom.php?person=".$_REQUEST["person"]."\">".$strGedCom."</a>\n";
-				}
-				if ($per->person_id) {
 					?>
-:: <a href="descendants.php?person=<?php echo $per->person_id;?>" class="hd_link"><?php echo $strDescendants;?></a>
-:: <a href="ancestors.php?person=<?php echo $per->person_id;?>" class="hd_link"><?php echo $strAncestors;?></a></td>
-			<?php
+<li><a href="descendants.php?person=<?php echo $per->person_id;?>" class="hd_link"><?php echo $strDescendants;?></a></li>
+<li><a href="pedigree.php?person=<?php echo $per->person_id; ?>"><?php echo $strPedigree; ?></a></li>
+<li><a href="ancestors.php?person=<?php echo $per->person_id;?>" class="hd_link"><?php echo $strAncestors;?></a></li>
+<?php
+				if ($config->gedcom == true && $per->isExportable()) {
+						echo "<li><a href=\"gedcom.php?person=".$per->person_id."\">".$strGedCom."</a></li>";
 				}
 				?>
-
-		</tr>
-	</table>
+</ul>
+</div>
+<div id="name">
+<h2><?php echo $per->getDisplayName(); ?></h2>
+			
+</div>
 
 <!--BDM-->
-	<table width="100%">
-		<tr>
-			<th width="5%" valign="top"><?php echo $strBorn; ?>:</th>
-			<td width="38%" class="tbl_odd" valign="top"><?php
-			if ($per->date_of_birth != "0000-00-00") {
-				echo $per->dob.$per->birth_place->getAtDisplayPlace();
-			} else {
-				echo $per->birth_place->getDisplayPlace();
+<?php
+	$edao = getEventDAO();
+	$e = new Event();
+	$e->person->person_id = $per->person_id;
+	$edao->getEvents($e, Q_BD, true);
+	$per->events = $e->results;
+	?>
+	<div id="bd">
+	<?php
+		$sdao = getSourceDAO();
+		$classes = array("birth","baptism","death","burial");
+		foreach ($per->events AS $e) {
+			if ($e->hasData()) {
+				$events[$e->type] = $e;
+				$sdao->getEventSources($e);
+				echo $e->getFullDisplay($classes[$e->type]);				
 			}
-			?></td>
-			<td class="tbl_odd" valign="top"><?php echo $strCertified; ?><input type="checkbox" name="birthcert" disabled="disabled"<?php if ($per->birth_cert == "Y") echo " checked=\"checked\"" ?> /></td>
-			<th width="5%" valign="top"><?php echo $strFather; ?>:</th>
-			<td width="40%" class="tbl_odd" valign="top"><?php
+		}
+			?>
+	</div>
+	<div id="parents">
+	<?php if ($per->gender == "M") { echo $strSon;} else { echo $strDaughter;}
+	echo ' '.$strOf.' ';
+
 		// the query for father
 		if ($per->father->hasRecord()) {
 			echo $per->father->getFullLink();
 		} else {
 			if ($per->isCreatable()) {?>
-<a href="edit.php?func=add&area=people&gender=M&cid=<?php echo $per->person_id;?>"><?php echo $strInsert." ".$strFather;?></a><?php } 
+<a href="edit.php?func=add&area=people&gender=M&cid=<?php echo $per->person_id;?>"><?php echo $strInsert." ".$strFather;?></a>
+			<?php } else { echo $strUnknown;}
 		}
-?></td>
-		</tr>
-		<tr>
-			<th width="5%" valign="top"><?php echo $strDied; ?>:</th>
-			<td width="20%" class="tbl_odd" valign="top"><?php
-				if ($per->date_of_death != "0000-00-00" && $per->death_reason != "")
-					echo $per->dod." ".$strOf." ".$per->death_reason;
-				elseif ($per->date_of_death != "0000-00-00")
-					echo $per->dod;
-				else
-					echo $per->death_reason;
-			?></td>
-			<td class="tbl_odd" valign="top"><?php echo $strCertified; ?><input type="checkbox" name="deathcert" disabled="disabled"<?php if ($per->death_cert == "Y") echo " checked=\"checked\""; ?> /></td>
-			<th valign="top"><?php echo $strMother; ?>:</th>
-			<td class="tbl_odd" valign="top"><?php
+		echo " ".$strAnd." ";
 		// the query for mother
 		if ($per->mother->hasRecord()) {
 			echo $per->mother->getFullLink();
 		} else {
 			if ($per->isCreatable()) {?>
-<a href="edit.php?func=add&area=people&gender=F&cid=<?php echo $per->person_id;?>"><?php echo $strInsert." ".$strMother;?></a><?php } 
+<a href="edit.php?func=add&area=people&gender=F&cid=<?php echo $per->person_id;?>"><?php echo $strInsert." ".$strMother;?></a>
+<?php } else { echo $strUnknown; }
 		}
-?></td>
-		</tr>
-		<tr>
-			<!--Children-->
-			<th valign="top"><?php echo $strChildren; ?>:</th>
-			<td valign="top" class="tbl_even" colspan="2">
+?>
+	</div>
+	<?php if (count($per->children) > 0) { ?>
 <?php
+	$i = 0;
+	$lastchild = $per;
 foreach ($per->children AS $child) {
-	echo $child->getFullLink();
-	echo "<br>\n";
+	$dao->getParents($child);
+	if (!($lastchild->mother == $child->mother && $lastchild->father == $child->father)) {
+		if ($i > 0) { echo "</div>"; }
+		echo '<div class="children"><div class="label">'.$strChildren." ".$strWith." </div>";
+		if ($per->gender == "M") {
+			echo $child->mother->getFullLink();
+		} else {
+			echo $child->father->getFullLink();
+		}
+	}
+	echo '<div class="child">'.$child->getFullLink().'</div>';
+	$lastchild = $child;
+	$i++;
 }
 ?>
-			</td>
-			<!--Siblings-->
-			<th valign="top"><?php echo $strSiblings; ?>:</th>
-			<td valign="top" class="tbl_even">
+	</div>
+	<?php }
+	if (count($per->siblings) > 0) { ?>
+	<div id="siblings">
+		<?php echo '<div class="label">'.$strSiblings; ?>:</div>
 <?php
 foreach ($per->siblings AS $sibling) {
-	echo $sibling->getFullLink();
-	echo "<br>\n";
+	echo '<div class="sibling">'.$sibling->getFullLink().'</div>';
 }
 ?>
-			</td>
-		</tr>
-	</table>
-
+	</div>
+<?php }?>
 	<div <?php echo $containerType;?>>
 <?php 
  $config = Config::getInstance();
@@ -249,4 +244,3 @@ foreach ($per->siblings AS $sibling) {
 
 	// eof
 ?>
-
