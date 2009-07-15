@@ -59,7 +59,6 @@ class RelationsDAO extends PeopleDAO {
 			$rel->event = new Event();
 			$rel->event->loadFields($row, "e_");
 			$rel->event->location->loadFields($row, "l_");
-			$rel->marriage_cert = $rel->event->certified;
 			$rel->marriage_date = $rel->event->date1;
 			$rel->dom = $rel->event->fdate1;
 			$rel->marriage_place = $rel->event->location;
@@ -84,7 +83,7 @@ class RelationsDAO extends PeopleDAO {
 		PersonDetail::getFields("groom","ng","bg","dg").",".
 			PersonDetail::getFields("bride","nb","bb","db").
 		", sp.dissolve_date, sp.dissolve_reason,".
-		" DATE_FORMAT(sp.dissolve_date, ".$currentRequest->datefmt.") AS DOD ".
+		" DATE_FORMAT(sp.dissolve_date, ".$currentRequest->datefmt.") AS DOD, e.event_id ".
 		" FROM ".$tblprefix."event e".
 		" JOIN ".$tblprefix."spouses sp ON sp.event_id = e.event_id".
 		" LEFT JOIN ".$tblprefix."people bride ON sp.bride_id = bride.person_id ".
@@ -140,8 +139,9 @@ class RelationsDAO extends PeopleDAO {
 		$insert = false;
 		
 		$dao = getEventDAO();
+
 		$rowsChanged += $dao->saveEvent($rel->event);
-		
+
 		if ($rel->oldRelation) {
 			$query = "UPDATE ".$tblprefix."spouses SET bride_id = ".quote_smart($brideId).", groom_id = ".quote_smart($groomId).
 					", dissolve_date = ".quote_smart($rel->dissolve_date).", dissolve_reason = ".quote_smart($rel->dissolve_reason).
@@ -160,7 +160,7 @@ class RelationsDAO extends PeopleDAO {
 		print_r($_POST);
 		error_log(ob_get_flush());
 		*/
-		
+
 		$ret = $this->runQuery($query, $msg);
 		$rowsChanged += $this->rowsChanged();
 				

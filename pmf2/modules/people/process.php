@@ -31,7 +31,7 @@ if (isset($_REQUEST["func"]) && $_REQUEST["func"] == "delete") {
 	$loc = "index.php";
 } else {
 	$peep->setFromPost();
-	
+
 	if (isset($peep->person_id)) {
 		$peep->name = new Name();
 		unset($peep->date_of_birth);
@@ -51,6 +51,7 @@ if (isset($_REQUEST["func"]) && $_REQUEST["func"] == "delete") {
 		$attendee = true;
 	}
 	$per->events = array();
+
 	for ($i = 0; $i < 4;$i++) {
 		$e = new Event();
 		$e->setFromPost($strEvent[$i]);
@@ -67,6 +68,16 @@ if (isset($_REQUEST["func"]) && $_REQUEST["func"] == "delete") {
 			if ($a->person->person_id != '') {
 				$e->attendees[] = $a;
 			}
+		}
+		$prefix = 'a';
+		$e->sources= array();
+		while (isset($_POST[$prefix."_".$strEvent[$i]."source"])) {
+			$s = new Source();
+			$s->setFromPost($prefix."_".$strEvent[$i]);
+			if ($s->hasData()) {
+				$e->sources[] = $s;
+			}
+			$prefix++;
 		}
 		if ($addEvent) {
 			$per->events[] = $e;

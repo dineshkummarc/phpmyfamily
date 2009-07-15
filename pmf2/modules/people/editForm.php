@@ -1,6 +1,7 @@
 <?php
 include_once("modules/event/show.php");
 include_once("modules/location/show.php");
+include_once("modules/source/show.php");
 
 function setup_edit() {
 	$per = new PersonDetail();

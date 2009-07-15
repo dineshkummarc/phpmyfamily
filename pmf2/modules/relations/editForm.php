@@ -61,7 +61,7 @@ function get_edit_header($rel) {
 
 function get_edit_form($rel) {
 	global $strSpouse, $strMarriageCert, $strSubmit, $strReset, $strDateFmt;
-	global $strDivorce, $strDate, $strEvent;
+	global $strDivorce, $strDate, $strEvent, $strEdit, $strDesc;
 	
 ?>
 <!--Fill out form -->
@@ -135,5 +135,6 @@ function get_edit_form($rel) {
 	</table>
 </form>
 <?php
+echo '<div id="image"><a href="edit.php?func=edit&amp;area=event&amp;event='.$rel->event->event_id.'">'.$strEdit.' '.$strDesc.'</a></div>';
 }
 ?>
