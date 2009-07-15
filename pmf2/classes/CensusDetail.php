@@ -10,6 +10,7 @@ class CensusDetail extends Base {
 	var $year;
 	var $country;
 	var $event;
+	var $schedule;
 	
 	function CensusDetail() {
 		$this->person = new PersonDetail();
@@ -31,6 +32,7 @@ class CensusDetail extends Base {
 		$this->person->setFromPost();
 	
 		$this->census = $_POST["frmYear"];
+		$this->schedule = htmlspecialchars($_POST["schedule"], ENT_QUOTES);
 		
 	}
 	
@@ -38,6 +40,7 @@ class CensusDetail extends Base {
 		$this->year = $row["year"];
 		$this->country = $row["country"];
 		$this->census = $row["census"];
+		$this->schedule= $row["schedule"];
 	}
 	
 	function getEditTitle() {
@@ -51,4 +54,3 @@ class CensusDetail extends Base {
 		return ($ret);
 	}
 }
-
