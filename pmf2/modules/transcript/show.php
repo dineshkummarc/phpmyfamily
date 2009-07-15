@@ -1,18 +1,31 @@
 <?php
 
-function show_transcript($per) {
+function show_transcript($per, $eid = -1, $sid = -1) {
 	$trans = new Transcript();
 	$trans->setFromRequest();
 	$dao = getTranscriptDAO();
-	$dao->getTranscripts($trans);
-	return(show_transcript_details($trans, !$per->isViewable(), $per->isEditable()));
+	$dao->getTranscripts($trans, $eid, $sid);
+	if ($trans->numResults > 0) {
+		foreach ($trans->results as $t) {
+			$t->person = $per;
+		}
+	}
+	return(show_transcript_details($trans));
 }
 
-function get_transcript_create_string($per) {
+function get_transcript_create_string($per, $eid = -1, $sid = -1) {
 	global $strUpload, $strNewTrans;
 	$ret = "";
 	if ($per->isEditable()) {
-		$ret = "<a href=\"edit.php?func=add&amp;area=transcript&amp;person=".$per->person_id."\">".
+		$ret = "<a href=\"edit.php?func=add&amp;area=transcript&amp;person=".$per->person_id;
+		if ($eid > 0) {
+			$ret .= "&amp;event=".$eid;
+		}
+		if ($sid > 0) {
+			$ret .= "&amp;source=".$sid;
+		}
+		
+		$ret .= "\">".
 		$strUpload."</a> ".
 		$strNewTrans; 
 	}
@@ -35,56 +48,59 @@ function show_transcript_title($per) {
 	</table>
 <?php
 }
-function show_transcript_details($trans, $restricted, $editable) {
-	global $restrictmsg, $strNoInfo, $strTitle, $strDesc, $strDate, $strDelete, $strTranscript, $strRightClick, $strEdit ;
+function show_transcript_details($trans) {
+	global $strRestricted, $strNoInfo, $strTitle, $strDesc, $strDate, $strDelete, $strTranscript, $strRightClick, $strEdit ;
 	
-	if ($restricted) {
-		echo $restrictmsg."\n";
-	} else {
-		if ($trans->numResults == 0) {
+	$restricted = true;
+	$editable = true;
+
+	if ($trans->numResults == 0) {
 ?>
 	<?php echo $strNoInfo; ?><br />
 <?php
-		} else {
+	} else {
 ?>
 	<table>
 		<tr>
-			<td></td>
 			<th width="30%"><?php echo $strTitle; ?></th>
-			<th width="50%"><?php echo $strDesc; ?></th>
-			<th width="20%"><?php echo $strDate; ?></th>
+			<th width="60%"><?php echo $strDesc; ?></th>
+			<th width="10%"></th>
 		</tr>
 <?php
-			for ($i=0; $i < $trans->numResults; $i++) {
-				$doc = $trans->results[$i];
-				if ($i == 0 || fmod($i, 2) == 0) {
-					$class = "tbl_odd";
-				} else {
-					$class = "tbl_even";
-				}
+		for ($i=0; $i < $trans->numResults; $i++) {
+			$doc = $trans->results[$i];
+			if ($i == 0 || fmod($i, 2) == 0) {
+				$class = "tbl_odd";
+			} else {
+				$class = "tbl_even";
+			}
+			if (!($doc->person->isViewable() || $doc->source->isViewable())) {
+				echo '<tr><td colspan="3" class="'.$class.'">'.$strRestricted."</td></tr>\n";
+			} else {
 ?>
-		<tr><td class="<?php echo $class; ?>">
+		<tr>
+			<td class="<?php echo $class; ?>"><a href="document.php?docid=<?php echo $doc->transcript_id; ?>"><?php echo $doc->title; ?></a></td>
+			<td class="<?php echo $class; ?>"><?php echo $doc->event->getFullDisplay($class); ?></td>
+			<td class="<?php echo $class; ?>">
 <?php
-				if ($doc->person->isEditable()) {
-					echo "<a href=\"edit.php?func=add&amp;area=transcript&amp;person=".$trans->person->person_id."&amp;transcript=".$doc->transcript_id."\">".
-					$strEdit."</a> :: ";
+				if ($doc->person->isEditable() || $doc->source->isEditable()) {
+					echo "(<a href=\"edit.php?func=add&amp;area=transcript&amp;person=".$trans->person->person_id."&amp;transcript=".$doc->transcript_id."\">".
+					$strEdit."</a>) ";
 ?>
-				<a href="JavaScript:confirm_delete('<?php echo $doc->title; ?>', '<?php echo strtolower($strTranscript); ?>', 'passthru.php?func=delete&amp;area=transcript&amp;person=<?php echo $trans->person->person_id; ?>&amp;transcript=<?php echo $doc->transcript_id; ?>')" class="delete"><?php echo $strDelete; ?></a>
+				(<a href="JavaScript:confirm_delete('<?php echo $doc->title; ?>', '<?php echo strtolower($strTranscript); ?>', 'passthru.php?func=delete&amp;area=transcript&amp;person=<?php echo $trans->person->person_id; ?>&amp;transcript=<?php echo $doc->transcript_id; ?>')" class="delete"><?php echo $strDelete; ?></a>)
 <?php
 				} 
+			}
 ?>
 			</td>
-			<td class="<?php echo $class; ?>"><a href="document.php?docid=<?php echo $doc->transcript_id; ?>"><?php echo $doc->title; ?></a></td>
-			<td class="<?php echo $class; ?>"><?php echo $doc->description; ?></td>
-			<td class="<?php echo $class; ?>"><?php echo formatdate($doc->fdate); ?></td>
 		</tr>
 <?php
 			}
+			
 ?>
 	</table>
 <br /><?php echo $strRightClick; ?><br />
 <?php
-		}
 	}
 	return ($trans->numResults);
 }

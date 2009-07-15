@@ -12,11 +12,13 @@ $dao = getTranscriptDAO();
 
 if (isset($_REQUEST["func"]) && $_REQUEST["func"] == "delete") {
 	$peep->setFromRequest();
-	$pdao->getPersonDetails($peep);
-	$peep = $peep->results[0];
-	if (!$peep->isEditable()) {
-		die(include "inc/forbidden.inc.php");
-	}		
+	if ($peep->person_id > 0) {
+		$pdao->getPersonDetails($peep);
+		$peep = $peep->results[0];
+		if (!$peep->isEditable()) {
+			die(include "inc/forbidden.inc.php");
+		}		
+	} 
 
 	$docFile = $trans->getFileName();
 	if (@unlink($docFile) || !file_exists($docFile)) {
@@ -24,13 +26,45 @@ if (isset($_REQUEST["func"]) && $_REQUEST["func"] == "delete") {
 	}
 } else {
 	$peep->setFromPost();
-	$pdao->getPersonDetails($peep);
-	$peep = $peep->results[0];
-	if (!$peep->isEditable()) {
-		die(include "inc/forbidden.inc.php");
-	}		
-
+	if ($peep->person_id > 0) {
+		$pdao->getPersonDetails($peep);
+		$peep = $peep->results[0];
+		if (!$peep->isEditable()) {
+			die(include "inc/forbidden.inc.php");
+		}		
+	} 
+	
 	$trans->setFromPost();
+	$e = new Event();
+	$e->setFromPost();
+	if (!isset($e->event_id)) {
+		$e->type = DOC_EVENT;
+		$trans->event = $e;
+	} else {
+		$edao = getEventDAO();
+		$edao->getEvents($e, Q_ALL);
+		$trans->event = $e->results[0];
+	}
+	$e->person->person_id = $trans->person->person_id;
+	$s = new Source();
+	$s->setFromPost();
+	$sdao = getSourceDAO();
+
+	$sdao->resolveSource($s);
+
+	if ($s->source_id > 0) {
+		$e->person->person_id = 'null';
+		if (!$s->isEditable()) {
+			die(include "inc/forbidden.inc.php");
+		}	
+	} else {
+		$s->source_id = 'null';
+	}
+	$trans->source = $s;
+	
+	if ($e->person->person_id <= 0) {
+		$e->person->person_id = 'null';
+	}	
 	if(isset($trans->transcript_id)) {
 		$dao->updateTranscript($trans);
 	} else {
