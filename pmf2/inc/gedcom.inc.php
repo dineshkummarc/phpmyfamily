@@ -16,6 +16,11 @@
 	//along with this program; if not, write to the Free Software
 	//Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
+error_reporting(E_ALL ^ E_NOTICE);
+#Sends errors to the screen instead of the log file
+//ini_set('display_errors', false);
+
+
 	$gedname = $_FILES["gedfile"]["name"];
 	$gedfile = $_FILES["gedfile"]["tmp_name"];
 	$gedarray = array();
@@ -38,7 +43,7 @@
 	
 	ini_set("auto_detect_line_endings", TRUE);
 
-	function make_date($incoming) {
+	function make_date($incoming, &$event) {
 		// define the months
 		$months = array(1 => "JAN",
 						2 => "FEB",
@@ -57,11 +62,34 @@
 		$work = explode(" ", $incoming);
 
 		// if the first part is not numeric, then we don't really know what to do!...
-		if (!is_numeric($work[1])) {
+		if ($work && count($work) > 0 && !is_numeric($work[1])) {
 			$retval = "0000-00-00";
-				// ...if it isn't, check it's not a month
-				if (in_array($work[1], $months))
-					$retval = $work[2]."-".str_pad(array_search(strtoupper($work[1]), $months), 2, "0", STR_PAD_LEFT)."-00";
+			// ...if it isn't, check it's not a month
+			if (in_array($work[1], $months)) {
+				$retval = $work[2]."-".str_pad(array_search(strtoupper($work[1]), $months), 2, "0", STR_PAD_LEFT)."-00";
+			} else if (count($work) > 1) {
+				switch($work[1]) {
+					case "BEF":
+					$event->date1_modifier = 6;
+					break;
+					case "AFT":
+					$event->date1_modifier = 7;
+					break;
+					case "ABT":
+					$event->date1_modifier = 1;
+					break;
+					case "EST":
+					$event->date1_modifier = 3;
+					break;
+					case "CAL":
+					$event->date1_modifier = 5;
+					break;
+				}
+				unset($work[0]);
+				unset($work[1]);
+				$temp = implode(" ",array_values($work));
+				make_date($temp, $event);
+			}
 		} else {
 			// ...if it is, see if it's a year (anybody back to 31AD is a bit buggered)..
 			if ($work[1] > 31) {
@@ -78,7 +106,19 @@
 			$retval = "0000-00-00";
 
 		// return the string
+		$event->date1 = $retval;
 		return $retval;
+	}
+
+	class MiniEvent {
+		public $type;
+		public $date1;
+		public $date1_modifier = 0;
+		public $date2_modifier = 0;
+		public $location;
+		function MiniEvent() {
+			$this->location = new Location();
+		}
 	}
 
 ?>
@@ -131,22 +171,19 @@ Reading in file:<br>
 	$repos = 0;
 	$objes = 0;
 	$unkno = 0;
-	for ($i = 1; $i < $blocks; $i++) {
+	for ($i = 0; $i < $blocks; $i++) {
 		switch (substr($gedarray[$i][0], -4)) {
 			case "HEAD":
 				$heads++;
 				break;
 			case "INDI":
-				$indis++;
-				$people[$indis] = $gedarray[$i];
+				$people[$indis++] = $gedarray[$i];
 				break;
 			case "NOTE":
-				$notes++;
-				$text[$notes] = $gedarray[$i];
+				$text[$notes++] = $gedarray[$i];
 				break;
 			case " FAM":
-				$fams++;
-				$family[$fams] = $gedarray[$i];
+				$family[$fams++] = $gedarray[$i];
 				break;
 			case "TRLR":
 				$trlrs++;
@@ -203,7 +240,7 @@ Parsing notes data:
 <?php
 
 	// process each notes block in turn
-	for ($i = 1; $i < $notes; $i++) {
+	for ($i = 0; $i < $notes; $i++) {
 		$count = count($text[$i]);
 
 		// process each line ine the block
@@ -234,7 +271,7 @@ Parsing individual data:
 <?php
 
 	// process each individual in turn
-	for ($i = 1; $i <= $indis; $i++) {
+	for ($i = 0; $i < $indis; $i++) {
 		$count = count($people[$i]);
 
 		$indi[$i]["person_id"] = ($autoval + $i - 1);
@@ -255,15 +292,13 @@ Parsing individual data:
 					$indi[$i]["gender"] = substr($people[$i][$c], 6, strlen($people[$i][$c]) - 6);
 					break;
 				case "2 DATE":
-					if ($previous == "1 BIRT") {
-						$indi[$i]["dob"] = make_date(substr($people[$i][$c], 6, strlen($people[$i][$c]) - 6));
-					} elseif ($previous == "1 DEAT") {
-						$indi[$i]["dod"] = make_date(substr($people[$i][$c], 6, strlen($people[$i][$c]) - 6));
+					if ($e != null) {
+						make_date(substr($people[$i][$c], 6, strlen($people[$i][$c]) - 6),$e);
 					}
 					break;
 				case "2 PLAC":
-					if ($previous == "1 BIRT") {
-						$indi[$i]["birth_place"] = substr($people[$i][$c], 6, strlen($people[$i][$c]) - 6);
+					if ($e != null) {
+						$e->location->place = htmlentities(substr($people[$i][$c], 6, strlen($people[$i][$c]) - 6), ENT_QUOTES);
 					}
 					break;
 				case "1 NOTE":
@@ -280,11 +315,54 @@ Parsing individual data:
 				case "1 FAMS":
 					$indi[$i]["ged_fams"] = substr($people[$i][$c], 8, strlen($people[$i][$c]) - 9);
 					break;
+                                case "1 AFN": //permanent record file number of an individual record stored in Ancestral File
+				case "1 _UID":
+					$indi[$i]["uid"] = substr($people[$i][$c], 6, strlen($people[$i][$c]) - 6);
 				default:
 					break;
 			}
 
-			if (substr($people[$i][$c], 0, 1) == "1") $previous = substr($people[$i][$c], 0, 6);
+			if (substr($people[$i][$c], 0, 1) == "1") {
+				$previous = substr($people[$i][$c], 0, 6);
+				$e = null;				
+				switch ($previous) {
+					case "1 BIRT":
+						$e = new MiniEvent();
+						$e->type = BIRTH_EVENT;
+					break;
+					case "1 DEAT":
+						$e = new MiniEvent();
+						$e->type = DEATH_EVENT;
+					break;
+                                        case "1 CONF": //Confirmation
+                                        case "1 CHR": //Christening
+					case "1 BAPL": //LDS BAPM
+					case "1 BAPM":
+						$e = new MiniEvent();
+						$e->type = BAPTISM_EVENT;
+						$e->descrip = substr($previous, 2);
+					break;
+					case "1 CREM":
+					case "1 BURI":
+						$e = new MiniEvent();
+						$e->type = BURIAL_EVENT;
+						$e->descrip = substr($previous, 2);
+					break;
+                                        case "1 CENS":
+                                        case "1 EDUC":
+                                        case "1 EMIG":
+                                        case "1 EVEN":
+                                        case "1 OCCU":
+                                        case "1 EVEN":
+						$e = new Event();
+						$e->type = OTHER_EVENT;
+						$e->descrip = substr($previous, 2);
+					break;
+				}
+				if ($e != null) {
+					$indi[$i]["events"][] = $e;
+				}
+			}
 		}
 	}
 
@@ -297,7 +375,7 @@ Parsing marriage data:
 <?php
 
 	// process each family in turn
-	for ($i = 1; $i <= $fams; $i++) {
+	for ($i = 0; $i < $fams; $i++) {
 		$count = count($family[$i]);
 
 		// process each row in turn
@@ -318,107 +396,124 @@ Parsing marriage data:
 					break;
 				case "2 DATE":
 					if ($previous == "1 MARR")
-						$marriage[$i]["dom"] = make_date(substr($family[$i][$c], 6, strlen($family[$i][$c]) - 6));
+						make_date(substr($family[$i][$c], 6, strlen($family[$i][$c]) - 6), $e);
 					break;
 				case "2 PLAC":
 					if ($previous == "1 MARR")
-						$marriage[$i]["place"] = substr($family[$i][$c], 6, strlen($family[$i][$c]) - 6);
+						$e->location->place = substr($family[$i][$c], 6, strlen($family[$i][$c]) - 6);
 					break;
 				default:
 					break;
 			}
-			if (substr($family[$i][$c], 0, 1) == "1") $previous = substr($family[$i][$c], 0, 6);
+			if (substr($family[$i][$c], 0, 1) == "1") {
+				$previous = substr($family[$i][$c], 0, 6);
+				$e = new MiniEvent();
+				$marriage[$i]["event"] = $e;
+			}
 		}
+		$parents[$marriage[$i]["ged_fam_ref"]] = $marriage[$i];
 	}
 
 	echo " OK<br>\n";
 	flush();
 ?>
 
-<!--parentage-->
-Parsing parentage data:
-<?php
-
-	for ($i = 1; $i <= $fams; $i++) {
-		$count = count($family[$i]);
-
-		$father_ref = 0;
-		$mother_ref = 0;
-		$father_id = 0;
-		$mother_id = 0;
-		// process each row in turn
-		for ($c = 0; $c < $count; $c++) {
-			switch (substr($family[$i][$c], 0, 6)) {
-				case "1 HUSB":
-					$father_ref = substr($family[$i][$c], 8, strlen($family[$i][$c]) - 9);
-					$father_id = $pref[$father_ref];
-					break;
-				case "1 WIFE":
-					$mother_ref = substr($family[$i][$c], 8, strlen($family[$i][$c]) - 9);
-					$mother_id = $pref[$mother_ref];
-					break;
-				case "1 CHIL":
-					$temp = substr($family[$i][$c], 8, strlen($family[$i][$c]) - 9);
-					for ($m = 1; $m < $indis; $m++) {
-						if ($indi[$m]["ged_person_ref"] == $temp) {
-							$indi[$m]["father_id"] = $father_id;
-							$indi[$m]["mother_id"] = $mother_id;
-						}
-					}
-					break;
-				default:
-					break;
-			}
-		}
-	}
-	echo " OK<br>\n";
-	flush();
-?>
 <!--Sort and insert person data-->
 Inserting person data:
 <?php
-
+	$dao = getPeopleDAO();
 	$t = 0;
 	$idmap["0"] = "0";
-	for ($i = 1; $i <= $indis; $i++) {
+	$break = 0;
+	
+while ($indis > 0) {
+	for ($i = 0; $i < $indis; $i++) {
+		$person = $indi[$i];
 		// do some sanity checking
-		if (!array_key_exists("name", $indi[$i]))
-			$indi[$i]["name"] = "";
-		if (!array_key_exists("dob", $indi[$i]))
-			$indi[$i]["dob"] = "0000-00-00";
-		if (!array_key_exists("birth_place", $indi[$i]))
-			$indi[$i]["birth_place"] = "";
-		if (!array_key_exists("dod", $indi[$i]))
-			$indi[$i]["dod"] = "0000-00-00";
-		if (!array_key_exists("gender", $indi[$i]))
-			$indi[$i]["gender"] = "";
-		if (!array_key_exists("note", $indi[$i]))
-			$indi[$i]["note"] = "";
-		if (!array_key_exists("father_id", $indi[$i]))
-			$indi[$i]["father_id"] = "0";
-		if (!array_key_exists("mother_id", $indi[$i]))
-			$indi[$i]["mother_id"] = "0";
+		if (!array_key_exists("name", $person))
+			$person["name"] = "";
+		if (!array_key_exists("gender", $person))
+			$person["gender"] = "";
+		if (!array_key_exists("note", $person))
+			$person["note"] = "";
+		if (!array_key_exists("father_id", $person))
+			$person["father_id"] = "0";
+		if (!array_key_exists("mother_id", $person))
+			$person["mother_id"] = "0";
 		
 		$per = new PersonDetail();
-		$per->date_of_birth = $indi[$i]["dob"];
-		$per->birth_place->place = htmlspecialchars($indi[$i]["birth_place"], ENT_QUOTES);
-		$per->date_of_death = $indi[$i]["dod"];
-		//This makes the assumption the father/mother are loaded before children
-		$per->mother_id = $idmap[$indi[$i]["mother_id"]];
-		$per->father_id = $idmap[$indi[$i]["father_id"]];
-		$per->gender = $indi[$i]["gender"];
-		$per->narrative = htmlspecialchars($indi[$i]["note"], ENT_QUOTES);
-		list($per->name->forenames,$per->name->surname,$per->name->suffix) = explode("/", $indi[$i]["name"]);
-		
-		$dao->savePersonDetails($per);
-		//Should probably store this
-		$idmap[$indi[$i]["person_id"]] = $per->person_id;
-		
-		$t++;
-
+		if (isset($person["events"])) {
+			$per->events = $person["events"];
+		} else {
+			$per->events = array();
+		}
+	
+		$per->gender = $person["gender"];
+		$per->narrative = htmlspecialchars($person["note"], ENT_QUOTES);
+		list($per->name->forenames,$per->name->surname,$per->name->suffix) = explode("/", htmlentities($person["name"],ENT_QUOTES));
+		$per->name->forenames = trim($per->name->forenames);
+		$per->name->surname = trim($per->name->surname);
+		$per->name->suffix = trim($per->name->suffix);
+		if (isset($person["ged_famc"])) {
+			$fam = $parents[$person["ged_famc"]];
+			$mid = $fam["ged_wife_ref"];
+			$fid = $fam["ged_husb_ref"];
+			$missingParents = false;
+			if ((isset($fam["ged_wife_ref"]) && !isset($idmap[$mid])) ||
+				(isset($fam["ged_husb_ref"]) && !isset($idmap[$fid]))) {
+				if ($break < 2) {
+					continue;
+				} else {
+					$missingParents = true;
+				}
+			}
+			@$per->mother->person_id = $idmap[$mid];
+			@$per->father->person_id = $idmap[$fid];
+		}
+		$resave = false;
+		if (isset($idmap[$person["ged_person_ref"]])) {
+			$per->person_id = $idmap[$person["ged_person_ref"]];
+			$resave = true;
+		}
+//		print_r($per);
+		if ($dao->savePersonDetails($per)) {
+			$idmap[$person["ged_person_ref"]] = $per->person_id;
+			@$uid[$person["ged_person_ref"]] = $indi[$i]["uid"];
+			if (!$missingParents) {
+				unset($indi[$i]);
+			}
+			$t++;
+		} else {
+			if (!$resave) {
+				echo "Failed to save";
+				print_r($per);
+			}
+		}
 	}
+	$x = array_values($indi);
+	$indi = $x;
+	$x = null;
+	$oldindis = $indis;
+	$indis = count($indi);
 
-	echo " OK<br>\n";
+	if ($oldindis == $indis) {
+		if ($break <= 1) {
+			$x = array_reverse($indi);
+			$indi = $x;
+		}
+		if ($break > 3) {
+			break;
+		}
+		$break++;
+	} else {
+		$break = 0;
+	}
+}
+	echo "$t people inserted OK<br>\n";
+	if ($indis > 0) {
+		echo "$indis people failed to insert OK<br>\n";
+		print_r($indis);
+	}
 	flush();
 ?>
 
@@ -427,22 +522,34 @@ Inserting marriage data:
 <?php
 	$t = 0;
 
-	for ($i = 1; $i <= $fams; $i++) {
-		if (!array_key_exists("groom_id", $marriage[$i]))
-			break;
-		if (!array_key_exists("bride_id", $marriage[$i]))
-			break;
+	for ($i = 0; $i < $fams; $i++) {
+		if (!array_key_exists("groom_id", $marriage[$i])) {
+			print_r($marriage[$i]);
+			continue;
+		}
+		if (!array_key_exists("bride_id", $marriage[$i])) {
+			print_r($marriage[$i]);
+			continue;
+		}
 		if (!array_key_exists("dom", $marriage[$i]))
 			$marriage[$i]["dom"] = "0000-00-00";
 		if (!array_key_exists("place", $marriage[$i]))
 			$marriage[$i]["place"] = "";
-
+		if (!isset($idmap[$marriage[$i]["ged_husb_ref"]]) || !isset($idmap[$marriage[$i]["ged_wife_ref"]])) {
+			echo "Missing spouse data for:";
+			print_r($marriage[$i]);
+			continue;
+		}
 		$rel = new Relationship();
 		$rel->person->gender = "M";
-		$rel->person->groom_id = $idmap[$marriage[$i]["groom_id"]];
-		$rel->relation->person_id = $idmap[$marriage[$i]["bride_id"]];
-		$rel->marriage_date = $marriage[$i]["dom"];
-		$rel->place->place = htmlspecialchars($marriage[$i]["place"], ENT_QUOTES);
+		$rel->person->person_id = $idmap[$marriage[$i]["ged_husb_ref"]];
+		$rel->relation->person_id = $idmap[$marriage[$i]["ged_wife_ref"]];
+		$e = new Event();
+		$e->type = MARRIAGE_EVENT;
+		$e->person = $rel->person;
+		$e->date1 = $marriage[$i]["dom"];
+		$e->location->place = htmlspecialchars($marriage[$i]["place"], ENT_QUOTES);
+		$rel->event = $e;
 		
 		$dao = getRelationsDAO();
 		$dao->saveRelationshipDetails($rel);
@@ -451,6 +558,16 @@ Inserting marriage data:
 	}
 
 	echo " OK<br>\n";
+	echo " $t marriages inserted<br>\n";
+	
+	include_once "modules/gedcom/GedcomDAO.php";
+	$gdao = new GedcomDAO();
+	
+	foreach ($idmap as $ged => $db) {
+		if ($db > 0) {
+			$gdao->insertReference($ged, $idmap[$ged], $gedname, $uid[$ged]);
+		}
+	}
 ?>
 
 Done!!!!!!(Phew)<br>
