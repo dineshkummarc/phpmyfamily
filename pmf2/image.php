@@ -43,18 +43,17 @@
 
 <a href="people.php?person=<?php echo $img->person->person_id; ?>">Return to <?php echo $img->person->getDisplayName(); ?></a>
 
-<?php
-
-		$size = getimagesize($img->getImageFile());
-?>
-<div align="center"><img src="<?php echo $img->getImageFile(); ?>" alt="<?php echo $img->getDescription(); ?>" <?php echo $size[3]; ?> /></div>
+<div align="center"><img src="<?php echo $img->getImageFile(); ?>" alt="<?php echo $img->getDescription(); ?>" /></div>
 
 <div align="center">
-	<p><?php if (!$img->person->isViewable())
-		echo $restrictmsg;
-	else
-		echo formatdate($img->fdate); ?></p>
-	<p><?php echo $img->getDescription(); ?></p>
+	<?php if (!$img->person->isViewable())
+		echo "<p>".$restrictmsg."</p>";
+	else {
+		echo "<p>".$img->getDescription()."</p>";
+		echo "<p>".$img->event->getFullDisplay("event")."</p>";
+		echo "<p>".$img->source->getFullDisplay("source")."</p>";
+
+	}?>
 </div>
 
 <br /><br />
