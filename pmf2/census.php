@@ -32,7 +32,7 @@
 	$cnt = $search->numResults;
 	
 	// Fill out the headers
-	do_headers($strCensusDetails.": ".$search->event->reference);
+	do_headers($strCensusDetails.": ".$search->schedule);
 
 	if(isset($_SERVER["HTTP_REFERER"]))
 		$referer = $_SERVER["HTTP_REFERER"];
@@ -53,7 +53,7 @@
 <table class="header" width="100%">
 	<tbody>
 		<tr>
-			<td align="center" width="65%"><h2><?php echo $strCensusDetails.": ".$search->event->reference; ?></h2></td>
+			<td align="center" width="65%"><h2><?php echo $strCensusDetails.": ".$search->schedule; ?></h2></td>
 			<td width="35%" valign="top" align="right"><?php user_opts(); ?></td>
     </tr>
   </tbody>
@@ -100,4 +100,3 @@
 
 	// eof
 ?>
-
