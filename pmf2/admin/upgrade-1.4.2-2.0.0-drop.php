@@ -27,7 +27,7 @@ $query = "ALTER TABLE `".$tblprefix."spouses` DROP COLUMN `marriage_date`,
  $result = mysql_query($query) or die("phpmyfamily: Error dropping people columns");
 	echo "Old people columns dropped<br>\n";
 	
- $query = "ALTER TABLE `".$tblprefix."census` DROP COLUMN `schedule`,
+ $query = "ALTER TABLE `".$tblprefix."census`
  DROP COLUMN `address`,
  DROP COLUMN `condition`,
  DROP COLUMN `age`,
