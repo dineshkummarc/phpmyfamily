@@ -10,7 +10,7 @@ class CensusDAO extends PeopleDAO {
 		$res = array();
 		$input->results = $res;
 		
-		$edquery = "SELECT cen.census_id, cen.census, year, census_date, cy.country, ".Event::getFields('e').
+		$edquery = "SELECT cen.census_id, cen.census, schedule, year, census_date, cy.country, ".Event::getFields('e').
 				",".PersonDetail::getFields().
 				",".Attendee::getFields('a').
 				",".Location::getFields('l').
@@ -111,14 +111,16 @@ class CensusDAO extends PeopleDAO {
 		if ($insert == false) {
 			$msg = $err_census;
 			$query = "UPDATE ".$tblprefix."census SET census = ".$cen->census.
+			", schedule = ".quote_smart($cen->schedule).
 			" WHERE event_id = ".$cen->event->event_id;
 		} else {
-			$query = "INSERT INTO ".$tblprefix."census (person_id, census, event_id) VALUES ".
-					"(".$cen->event->person->person_id.", ".$cen->census.", ".$cen->event->event_id.")";
+			$query = "INSERT INTO ".$tblprefix."census (person_id, census, event_id, schedule) VALUES ".
+					"(".$cen->event->person->person_id.", ".$cen->census.", ".$cen->event->event_id.",".quote_smart($cen->schedule).")";
 			$msg = $err_person_update;
 		}
 		
 		$ret = $this->runQuery($query, $msg);
+		
 		$rowsChanged += $this->rowsChanged();
 		$this->commitTrans();
 		return ($rowsChanged);

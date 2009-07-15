@@ -2,6 +2,7 @@
 include_once "modules/db/DAOFactory.php";
 include_once("modules/location/show.php");
 include_once("modules/event/show.php");
+include_once("modules/source/show.php");
 
 function setup_edit() {
 	// get the person to edit
@@ -43,6 +44,7 @@ function get_edit_header($rel) {
 		$cquery = "SELECT census_id, country, year, census_date FROM ".$tblprefix."census_years WHERE available = 'Y' ORDER BY country, year";
 		$cresult = mysql_query($cquery) or die($err_list_census);
 		$dates = '';
+		$date[0] = '';
 		$i = 0;
 		// do the output
 		echo "<select name=".$name." onChange=\"changeCensusDate(this.selectedIndex)\">\n";
@@ -51,7 +53,7 @@ function get_edit_header($rel) {
 			echo "<option value=\"".$crow["census_id"]."\"";
 			if ($val == $crow["census_id"]) { echo " selected=\"selected\" ";}
 			echo ">".$crow["year"]." / ".$crow["country"]."</option>\n";
-			$dates .= "censusDates[$i] = '".$crow["census_date"]."';\n";
+			$dates .= "censusDates[$i+1] = '".$crow["census_date"]."';\n";
 			$i++;
 		}
 		echo "</select>\n";
@@ -72,13 +74,15 @@ function changeCensusDate(fieldValue) {
 	// change the display example
 	document.getElementById('date1').value = newDate;
 	
-}</script>
+}
+changeCensusDate(<?php echo $val;?>);
+</script>
 		<?php
 	}	// end of list_censuses()
 	
 	
 function get_edit_form($search) {
-	global $strYear;
+	global $strYear, $strSource, $strSchedule;
 	global $strSubmit, $strReset;
 	
 ?>
@@ -93,10 +97,11 @@ function get_edit_form($search) {
 	<input type="hidden" name="date1" id="date1" value="<?php echo $search->event->date1; ?>" size="30" />
 	<input type="hidden" name="etype" value="<?php echo CENSUS_EVENT;?>" />
 	<table>
-		<tr><td><table><tr><th></th><?php showEventHeaderFields(CENSUS_EVENT)?></td></tr>
+		<tr><td><table><tr><th></th><?php showEventHeaderFields(CENSUS_EVENT)?><th><?php echo $strSchedule;?></th></tr>
 		<tr><td class="tbl_even"><?php list_censuses("frmYear",$search->census); ?></td>
 		<?php
 		showEventEditCols($search->event, CENSUS_EVENT);?>
+		<td class="tbl_even"><input type="text" name="schedule" value="<?php echo $search->schedule;?>"/></td>
 		</tr>
 		</table>
 		</td></tr>
