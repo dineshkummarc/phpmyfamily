@@ -168,7 +168,7 @@ class LocationDAO extends MyFamilyDAO {
 	function getEventPlaces(&$locations, $person = null) {
 		global $tblprefix, $restrictdate, $strEvent, $datefmt;
 
-		$pquery = "SELECT ".Event::getFields("e").
+		$pquery = "SELECT DISTINCT ".Event::getFields("e").
 			",".PersonDetail::getFields("p").
 			",".Location::getFields("l").
 			" FROM ".$tblprefix."event e".
