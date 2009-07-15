@@ -44,10 +44,10 @@
 	
 	$dao = getPeopleDAO();
 	
-	$surnames = $dao->getSurnames();
+	$surnames = $dao->getSurnames(0);
 	echo "<hr />\n<h4 align=\"center\">";
 	foreach($surnames AS $per) {
-		echo "<a href=\"surnames.php#".$per->surname."\">".$per->surname."</a> ";
+		echo "<a href=\"surnames.php#".$per->name->surname."\">".$per->name->surname." (".$per->count.")</a> ";
 	}
 	echo "</h4>\n";
 	
@@ -56,8 +56,8 @@
 	function printName($search, $per) {
 		static $surname;
 		
-		if ($surname != $per->surname) {
-			$surname = $per->surname;
+		if ($surname != $per->name->surname) {
+			$surname = $per->name->surname;
 			$familyname = " name=\"".$surname."\"";
 		} else {
 			$familyname = "";
