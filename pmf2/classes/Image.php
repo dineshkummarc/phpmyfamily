@@ -10,11 +10,13 @@ class Image extends Archive {
 	}
 	
 	function getImageFile() {
-		return ("images/".$this->image_id.".jpg");
+		$config = Config::getInstance();
+		return ("output.php?image=".$this->image_id);
 	}
 	
 	function getThumbnailFile() {
-		return ("images/tn_".$this->image_id.".jpg");
+		$config = Config::getInstance();
+		return ($this->getImageFile()."&thumb=true");
 	}
 	
 	function getLink() {
