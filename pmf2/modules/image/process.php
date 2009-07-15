@@ -15,10 +15,13 @@ $tnFile = $img->getThumbnailFile();
 if (isset($_REQUEST["func"]) && $_REQUEST["func"] == "delete") {
 	$peep->setFromRequest();
 	$pdao->getPersonDetails($peep);
-	$peep = $peep->results[0];
-	if (!$peep->isEditable()) {
-		die(include "inc/forbidden.inc.php");
-	}		
+	if ($peep->person_id > 0) {
+		$pdao->getPersonDetails($peep);
+		$peep = $peep->results[0];
+		if (!$peep->isEditable()) {
+			die(include "inc/forbidden.inc.php");
+		}		
+	} 
 
 	$img->setFromRequest();
 	if ((@unlink($tnFile) && @unlink($imgFile)) || !file_exists($tnFile) || !file_exists($imgFile)) {
@@ -26,17 +29,48 @@ if (isset($_REQUEST["func"]) && $_REQUEST["func"] == "delete") {
 	} 
 } else {
 	$peep->setFromPost();
-	$pdao->getPersonDetails($peep);
-	$peep = $peep->results[0];
-	if (!$peep->isEditable()) {
-		die(include "inc/forbidden.inc.php");
-	}		
+	if ($peep->person_id > 0) {
+		$pdao->getPersonDetails($peep);
+		$peep = $peep->results[0];
+		if (!$peep->isEditable()) {
+			die(include "inc/forbidden.inc.php");
+		}		
+	} 
 	$img->setFromPost();
+	$e = new Event();
+	$e->setFromPost();
+	if (!isset($e->event_id)) {
+		$e->type = IMAGE_EVENT;
+		$img->event = $e;
+		$img->event->sources = array();
+	} else {
+		$edao = getEventDAO();
+		$edao->getEvents($e, Q_ALL);
+		$img->event = $e->results[0];
+		$sdao = getSourceDAO();
+		$sdao->getEventSources($img->event);
+		$img->event->sources = $img->event->results;
+	}
+	$e->person->person_id = $img->person->person_id;
+	$s = new Source();
+	$s->setFromPost();
+	$sdao = getSourceDAO();
+
+	$sdao->resolveSource($s);
 	
+	$img->source = $s;
+	
+	if ($s->source_id > 0) {
+		$e->person->person_id = 'null';
+		if (!$s->isEditable()) {
+			die(include "inc/forbidden.inc.php");
+		}	
+	}
+		
 	if (isset($img->image_id)) {
-		$dao = getImageDAO();
 		$chg = $dao->updateImage($img);
 	} else {
+		$e->date1_modifier = 0;
 		$chg = processimage($dao, $img);
 	}
 }
@@ -178,13 +212,32 @@ if (isset($_REQUEST["dest"]) && $_REQUEST["dest"] == "gallery") {
 			return false;;
 
 		$dao->createImage($img);
-		
+		$ret = true;
 		// set as interlaced and save to paths
-		imageinterlace($thumb, 1);
-		imagejpeg($thumb, $img->getThumbnailFile(), 100);
-		imageinterlace($file, 1);
-		imagejpeg($file, $img->getImageFile(), 95);
 
-		return true;
+		$root = dirname($_SERVER["SCRIPT_FILENAME"])."/".$config->imagedir;
+		$prefix = "";
+		$path =	$root.$prefix.$img->image_id.".jpg";
+
+		imageinterlace($file, 1);
+		if(!imagejpeg($file, $path, 95)) {
+			$ret = false;
+		}		
+		imagedestroy($file);
+		
+		$prefix = "tn_";
+		$path =	$root.$prefix.$img->image_id.".jpg";
+
+		imageinterlace($thumb, 1);
+		if(!imagejpeg($thumb, $path, 100)) {
+			$ret = false;
+		}
+
+
+		imagedestroy($thumb);
+		if (!$ret) {
+			error_log("failed to save image");
+		}
+		return $ret;
 	}	// end of processimage();
 ?>
