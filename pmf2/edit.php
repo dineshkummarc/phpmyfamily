@@ -15,7 +15,10 @@ if ($area == "marriage") { $area = "relations"; }
 include_once "modules/".$area."/editForm.php";
 
 $data = setup_edit();
+$config = Config::getInstance();
+
 $extra = '<script type="text/javascript" src="inc/edit.js.php"></script>';
+if ($config->dojo) {
 $extra .= '<script type="text/javascript">
 		dojo.require("dijit.Editor");
 		dojo.require("dijit._editor.plugins.TextColor");
@@ -28,14 +31,18 @@ $extra .= '<script type="text/javascript">
 			} 
 		}
 </script>';
+}
+
 do_headers_dojo(get_edit_title($data), $extra);
 
-	$config = Config::getInstance();
+	
 	if ($config->dojo) {		
 ?>
 <body class="tundra">
 <div dojoType="dojox.data.QueryReadStore" jsId="LocationStore"
 			url="services/LocationQueryReadStore.php" requestMethod="post"></div>
+<div dojoType="dojox.data.QueryReadStore" jsId="SourceStore"
+			url="services/SourceQueryReadStore.php" requestMethod="post"></div>
 	<?php }?>
 <table class="header" width="100%">
   <tbody>
