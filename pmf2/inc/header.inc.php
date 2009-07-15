@@ -4,7 +4,7 @@
 		
 		$config = Config::getInstance();
 		if ($config->dojo) {
-		$dojo = "dojo-release-1.2.2";
+		$dojo = "dojo-release-1.3.0";
 		$ext = " <style type=\"text/css\">
         @import \"".$dojo."/dijit/themes/tundra/tundra.css\";
         @import \"".$dojo."/dojo/dojo.css\"
@@ -14,8 +14,10 @@
     <script language=\"JavaScript\" type=\"text/javascript\">
             dojo.require(\"dojo.parser\");
     </script>";
-    		$ext .= $extra;
+		} else {
+			$ext = "";
 		}
+		$ext .= $extra;
 		do_headers($title, $ext);
 	}
 	// function: do_headers
@@ -25,14 +27,14 @@
 		global $dir;
 		global $charset;
 		$config = Config::getInstance();
-?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $clang; ?>" lang="<?php echo $clang; ?>" dir="<?php echo $dir; ?>">
 <head>
 <?php echo $extra;?>
+<link rel="stylesheet" href="<?php echo $config->styledir; ?>default.css.php" type="text/css" />
 <link rel="stylesheet" href="<?php echo $config->styledir.$_SESSION["style"]; ?>" type="text/css" />
 <link rel="shortcut icon" href="images/favicon.ico" />
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="description" content="<?php echo $config->desc; ?>" />
 <meta name="page-topic" content="Genealogy" />
 <meta name="audience" content="All" />
@@ -41,7 +43,7 @@
 	$dao = getPeopleDAO();
 	$surnames = $dao->getSurnames();
 	foreach($surnames AS $per) {
-		echo " ".$per->surname;
+		echo " ".$per->name->surname;
 	}
 ?>" />
 <title><?php echo $title; ?></title>
@@ -58,34 +60,34 @@
 		global $strAdd, $strNewPerson, $strLogin, $strRecoverPwd, $strStop;
 		global $strLoggedOut, $strReport, $currentRequest;
 
+echo '<div id="useroptions"><ul>';
 		if ($currentRequest->id != 0) {
-			echo $strLoggedIn."'".$currentRequest->name."'<br />\n";
-			echo "<a href=\"index.php\" class=\"hd_link\">".$strHome."</a> |";
-			echo " <a href=\"passthru.php?func=logout\" class=\"hd_link\">".$strLogout."</a> |";
-			echo " <a href=\"my.php\" class=\"hd_link\">".$strPreferences."</a><br />\n";
+			echo "<li>".$strLoggedIn."'".$currentRequest->name."'</li>";
+			echo "<li><a href=\"index.php\" class=\"hd_link\">".$strHome."</a></li>";
+			echo "<li><a href=\"passthru.php?func=logout\" class=\"hd_link\">".$strLogout."</a></li>";
+			echo "<li><a href=\"my.php\" class=\"hd_link\">".$strPreferences."</a></li>";
 			if ($_SESSION["editable"] == "Y") {
-				echo " <a href=\"report.php\" class=\"hd_link\">".$strReport."</a> |";
-				echo "<a href=\"edit.php?func=add&amp;area=people\" class=\"hd_link\">".$strAdd." ".$strNewPerson."</a>";
+				echo "<li><a href=\"report.php\" class=\"hd_link\">".$strReport."</a></li>";
+				echo "<li><a href=\"edit.php?func=add&amp;area=people\" class=\"hd_link\">".$strAdd." ".$strNewPerson."</a></li>";
 			}
-			if ($_SESSION["editable"] == "Y" && $person != 0)
-				echo " | ";
 			if ($person != 0) {
 				$query = "SELECT * FROM ".$tblprefix."tracking WHERE email = '".$currentRequest->email."' AND person_id = ".quote_smart($person);
 				$result = mysql_query($query) or die(mysql_error());
 				if (mysql_num_rows($result) != 0) {
-					echo "<a href=\"passthru.php?func=track&amp;action=dont&amp;person=".$person."\" class=\"hd_link\">".$strStop." ".strtolower($strTracking)." ".$strThisPerson."</a>";
+					echo "<li><a href=\"passthru.php?func=track&amp;action=dont&amp;person=".$person."\" class=\"hd_link\">".$strStop." ".strtolower($strTracking)." ".$strThisPerson."</a></li>";
 				} else {
-					echo "<a href=\"passthru.php?func=track&amp;action=do&amp;person=".$person."\" class=\"hd_link\">".$strTrack." ".$strThisPerson."</a>";
+					echo "<li><a href=\"passthru.php?func=track&amp;action=do&amp;person=".$person."\" class=\"hd_link\">".$strTrack." ".$strThisPerson."</a></li>";
 				}
 			}
 		} else {
-			echo $strLoggedOut."<br />\n";
-			echo "<a href=\"index.php\" class=\"hd_link\">".$strHome."</a> |";
-			echo " <a href=\"my.php\" class=\"hd_link\">".$strLogin."</a> |";
-			echo " <a href=\"my.php?state=lost\" class=\"hd_link\">".$strRecoverPwd."</a> <br />\n";
+			echo "<li>".$strLoggedOut."</li>";
+			echo "<li><a href=\"index.php\" class=\"hd_link\">".$strHome."</a></li>";
+			echo "<li><a href=\"my.php\" class=\"hd_link\">".$strLogin."</a></li>";
+			echo "<li><a href=\"my.php?state=lost\" class=\"hd_link\">".$strRecoverPwd."</a></li>";
 			if ($person != 0) {
-				echo "<a href=\"track.php?person=".$person."\" class=\"hd_link\">".$strTrack." ".$strThisPerson." </a>\n";
+				echo "<li><a href=\"track.php?person=".$person."\" class=\"hd_link\">".$strTrack." ".$strThisPerson." </a></li>";
 			}
 		}
+		echo "</ul></div>";
 	}	// end of user_opts()
 ?>
