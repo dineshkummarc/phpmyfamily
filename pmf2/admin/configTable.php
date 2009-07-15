@@ -5,6 +5,8 @@ $tconfig = "CREATE TABLE `".$tblprefix."config` (
 	`mailto` smallint(1) NOT NULL default 1,
 	`desc` varchar(40) NOT NULL default 'My Family',
 	`styledir` varchar(40) NOT NULL default 'styles/',
+	`imagedir` varchar(40) NOT NULL default 'images/',
+	`filedir` varchar(40) NOT NULL default 'docs/',
 	`layout` smallint(3) NOT NULL default 0,
 	`defaultstyle` varchar(40) NOT NULL default 'default.css.php',
 	`lang` varchar(40) NOT NULL default 'en-uk',
@@ -21,7 +23,7 @@ $tconfig = "CREATE TABLE `".$tblprefix."config` (
 	`gmapskey` varchar(90) NOT NULL default '',
 	`gmapshost` varchar(20) NOT NULL default 'maps.google.com',
 	`img_max` int(8) NOT NULL default '700',
-	`img_min` int(8) NOT NULL default '300')";
+	`img_min` int(8) NOT NULL default '300') ENGINE = InnoDB";
 	
 	if($rconfig = mysql_query($tconfig)) {
 		echo "User config created<br>\n";
