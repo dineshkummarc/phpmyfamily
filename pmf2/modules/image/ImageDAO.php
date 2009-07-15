@@ -6,27 +6,46 @@ class ImageDAO extends MyFamilyDAO {
 	
 	function updateImage($img) {
 		global $tblprefix, $err_image_insert;
-		
+		$this->startTrans();
 		$iquery = "UPDATE ".$tblprefix."images SET title=".quote_smart($img->title).
-			", date = ".quote_smart($img->date).
-			", description = ".quote_smart($img->description).
-			"WHERE image_id = ".quote_smart($img->image_id);
+			", source_id=".$img->source->source_id;
+		$iquery .= " WHERE image_id = ".quote_smart($img->image_id);
 		$iresult = $this->runQuery($iquery, $err_image_insert);
+		
+		$rowsChanged = $this->rowsChanged();
+		
+		$dao = getEventDAO();
+
+		$rowsChanged += $dao->saveEvent($img->event);
+		$this->commitTrans();
 		return ($iresult);
 	}
 	
 	function createImage(&$img) {
 		global $tblprefix, $err_image_insert;
-		$iquery = "INSERT INTO ".$tblprefix."images (person_id, title, date, description) VALUES ".
-			"('".$img->person->person_id."', ".quote_smart($img->title).", '".$img->date."', ".quote_smart($img->description).")";;
+		$dao = getEventDAO();
+
+		$this->startTrans();
+		$rowsChanged = $dao->saveEvent($img->event);
+
+		$sid = $img->source->source_id;
+		if ($sid < 0) {
+			$sid = 'null';
+		}
+		$iquery = "INSERT INTO ".$tblprefix."images (event_id, title, source_id) VALUES ".
+			"('".$img->event->event_id."', ".quote_smart($img->title).",".$sid.")";;
 		$iresult = $this->runQuery($iquery, $err_image_insert);
 		$img->image_id = str_pad($this->getInsertId(), 5, 0, STR_PAD_LEFT);
+		$this->commitTrans();
+		
+		return ($rowsChanged + 1);
 	}
 	
 	function deleteImage($img) {
 		global $tblprefix, $err_image_delete, $err_image_file;
 		$dresult = false;
 		
+		$this->startTrans();
 		$imgFile = $img->getImageFile();		
 		$tnFile = $img->getThumbnailFile();
 
@@ -38,16 +57,22 @@ class ImageDAO extends MyFamilyDAO {
 		} else {
 			die ($err_image_file);
 		}
+		$this->commitTrans();
 		return ($dresult);
 	}
 	
 	
-	function getImages(&$img) {
+	function getImages(&$img, $eid = -1, $sid = -1) {
 		global $tblprefix, $err_images;
 		
-		$iquery = "SELECT image_id, i.title, description, date, p.person_id as p_person_id, ".PersonDetail::getFields().
+		$iquery = "SELECT image_id, i.title, p.person_id as p_person_id, i.event_id, ".
+			Event::getFields("e").",".
+			PersonDetail::getFields().",".
+			Source::getFields("s").", s.source_id as s_source_id".
 			" FROM ".$tblprefix."images i ".
-			" LEFT JOIN ".$tblprefix."people p ON p.person_id = i.person_id ".
+			" LEFT JOIN ".$tblprefix."event e ON e.event_id = i.event_id ".
+			" LEFT JOIN ".$tblprefix."people p ON p.person_id = e.person_id ".
+			" LEFT JOIN ".$tblprefix."source s ON s.source_id = i.source_id ".
 			PersonDetail::getJoins();
 			
 			switch ($img->queryType) {
@@ -57,14 +82,18 @@ class ImageDAO extends MyFamilyDAO {
 				
 				break;
 			default:
-				if (isset($img->person->person_id)) {
+				if ($sid > 0) {
+					$iquery .= " WHERE s.source_id = ".quote_smart($sid);
+				} else if ($eid > 0) {
+					$iquery .= " WHERE e.event_id = ".quote_smart($eid);
+				} else if (isset($img->person->person_id)) {
 					$iquery .= " WHERE ";
 					$iquery .= "p.person_id = ".quote_smart($img->person->person_id);
 					$iquery .= $this->addPersonRestriction(" AND ");
 					if (isset($img->image_id)) {
 						$iquery .= " AND image_id=".$img->image_id;
 					}
-					$iquery .= " ORDER BY date";
+					$iquery .= " ORDER BY e.date1";
 				} else {
 					$bool = " WHERE ";
 					if (isset($img->image_id)) {
@@ -78,8 +107,9 @@ class ImageDAO extends MyFamilyDAO {
 			}
 		$this->addLimit($img, $query);
 		$iresult = $this->runQuery($iquery, $err_images);
+
 		$res = array();
-		
+
 		$img->numResults = 0;
 		while($row = $this->getNextRow($iresult)) {
 			$image = new Image();
@@ -88,8 +118,12 @@ class ImageDAO extends MyFamilyDAO {
 			$image->person->name->loadFields($row, "n_");
 			$image->image_id = $row["image_id"];
 			$image->title = $row["title"];
-			$image->description = $row["description"];
-			$image->date = $row["date"];
+			$image->event = new Event();
+			$image->event->loadFields($row, "e_");
+			$image->source = new Source();
+			$image->source->loadFields($row, "s_");
+			$image->description = $image->event->descrip;
+			$image->date = $image->event->date1;
 			$res[] = $image;
 			$img->numResults++;
 		}

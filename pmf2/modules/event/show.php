@@ -25,12 +25,7 @@ function showEventHeaderFields($type = 0) {
 		<?php } //!= census event 
 		?>
 		<th class="tbl_odd"><?php echo $strPlace; ?></th>
-			<?php if ($type != CENSUS_EVENT) {?>
-		<th class="tbl_odd"><?php echo $strCert; ?></th>
 		<th class="tbl_odd"><?php echo $strSource; ?></th>
-		<?php } //!= census event 
-		?>
-		<th class="tbl_odd"><?php echo $strReference; ?></th>
 		<th class="tbl_odd"><?php echo $strNotes; ?></th>
 		<?php
 }
@@ -59,14 +54,22 @@ function showEventEditCols($event, $type = 0, $prefix = '', $class = 'tbl_even')
 		?>
 		<?php selectPlace($prefix,$event->location);?>
 		</td>
-		<?php if ($type != CENSUS_EVENT) { ?>
-		<td class="<?php echo $class;?>">
-		<input type="checkbox" <?php if ($event->certified == "Y") { echo 'checked="checked"';}?> name="<?php echo $prefix;?>certified" value="Y" />
-		</td>
-		<td class="<?php echo $class;?>"><input type="text" name="<?php echo $prefix;?>source" value="<?php echo $event->source; ?>" size="30" /></td>
-		<?php } //!= census event 
+		<td class="<?php echo $class;?>"><?php
+		$dao = getSourceDAO();
+		$dao->getEventSources($event);
+		$sp = "a";
+
+		if ($event->numResults > 0) {
+			foreach ($event->results as $source) {
+				selectSource($sp."_".$prefix,$source, $event);
+				$sp++;
+			}
+		} 
+		//Always add a blank one
+		$source = new Source();
+		selectSource($sp."_".$prefix, $source, $event);
 		?>
-		<td class="<?php echo $class;?>"><input type="text" name="<?php echo $prefix;?>reference" value="<?php echo $event->reference; ?>" size="30" /></td>
+		</td>
 		<td class="<?php echo $class;?>"><input type="text" name="<?php echo $prefix;?>notes" value="<?php echo $event->notes; ?>" size="30" /></td>
 		<?php
 }
@@ -155,7 +158,9 @@ function showAttendeeEditCols($attendee, $type, $prefix = '', $class = "tbl_even
 	<td class="<?php echo $class;?>">
 		<input type="hidden" name="<?php echo $prefix;?>event_id" value="<?php echo $attendee->event->event_id; ?>" />
 		<input type="hidden" name="<?php echo $prefix;?>attendee_id" value="<?php echo $attendee->attendee_id; ?>" />
+<?php		if (isset($attendee->person->person_id)) {?>
 		<input type="hidden" name="<?php echo $prefix;?>person_id" value="<?php echo $attendee->person->person_id; ?>" />
+		<?php } ?>
 		<input type="text" name="<?php echo $prefix;?>profession" value="<?php echo $attendee->profession; ?>" size="30" />
 	</td>
 	<?php if ($type == MARRIAGE_EVENT || $type == CENSUS_EVENT) { ?>

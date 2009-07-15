@@ -4,21 +4,27 @@ function show_image($per) {
 	return(show_gallery($per->isEditable()));
 }
 
-function show_gallery($editable, $dest = "people") {
+function show_gallery($editable, $dest = "people", $eid = -1, $sid = -1) {
 	$img = new Image();
 	$img->setFromRequest();
 	$dao = getImageDAO();
-	$dao->getImages($img);
+	$dao->getImages($img, $eid, $sid);
 	return(show_gallery_images($img, $editable, $dest));
 }
 
-function get_image_create_string($per) {
+function get_image_create_string($per, $eid = -1, $sid = -1) {
 	global $strUpload, $strNewImage;
 	$ret = "";
+
 	if ($per->isEditable()) {
-		$ret = "<a href=\"edit.php?func=add&amp;area=image&amp;person=".$per->person_id."\">".
-		$strUpload."</a> ".
-		$strNewImage;
+		$ret = "<a href=\"edit.php?func=add&amp;area=image&amp;person=".$per->person_id;
+		if ($eid > 0) {
+			$ret .= "&amp;event=".$eid;
+		}
+		if ($sid > 0) {
+			$ret .= "&amp;source=".$sid;
+		}
+		$ret .= "\">".$strUpload."</a> ".$strNewImage;
 	}
 	return ($ret);
 }
@@ -53,7 +59,7 @@ function show_gallery_images($images, $editable = false, $dest = "people") {
 		echo "\t".$strNoImages;
 	} else {
 ?>
-	<table width="100%">
+	<table>
 <?php
 		$rows = ceil($images->numResults / 5);
 		$current = 0;
