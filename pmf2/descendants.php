@@ -32,7 +32,7 @@
     //  $strDescendants     = "Afstammelingen"; // NL
 	//  $strDescendants     = "Afstammelingen"; // NL-BE
 	//  $strDescendants     = "Decendants";     // FR
-	//  $strDescendants     = "Abkömlingen";    // DE
+	//  $strDescendants     = "Abk&#246;mlingen";    // DE
 
 	//  $strLivingPerson    = "Living person";    // EN-UK
     //  $strLivingPerson    = "Levend persoon";   // NL
@@ -142,7 +142,7 @@ $peep = new PersonDetail();
 	$dao = getPeopleDAO();
 	$dao->getPersonDetails($peep);
 	if ($peep->numResults != 1) {
-		die("error");
+		 die(include "inc/forbidden.inc.php");
 	}
 	$per = $peep->results[0];
 	
