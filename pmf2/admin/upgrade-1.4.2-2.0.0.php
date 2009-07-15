@@ -2,6 +2,11 @@
 set_include_path('..');
 require_once "inc/database.inc.php";
 
+class tmp {
+function setDateFormat() {
+}
+}
+$currentRequest = new tmp();
 
 function check_cookies() {
 }
@@ -33,6 +38,7 @@ include_once "admin/configTable.php";
 if(!$usepconnect) {
 	mysql_close();
 }
+
 include_once "modules/db/DAOFactory.php";
 
 list($dir,$file) = explode('/',$lang);
@@ -73,7 +79,7 @@ if(!mysql_query($q)) {
 include_once "admin/nameTable.php";
 
 $q = "INSERT INTO `".$tblprefix."names` (person_id, forenames, surname, suffix) ".
-    "SELECT person_id, TRIM(TRIM(TRAILING surname FROM name)) AS forenames, TRIM(surname), TRIM(suffix) ".
+    "SELECT person_id, TRIM(TRAILING surname FROM name) AS forenames, surname, suffix ".
     "FROM `".$tblprefix."people`";
     
 if(!mysql_query($q)) {
@@ -337,8 +343,8 @@ if(!mysql_query($q)) {
 	$cyvresult = mysql_query($cyvquery) or die("phpmyfamily: Error creating census years values!!!");
 	echo "Census years values created<br>\n";
 
-$q = "INSERT INTO `".$tblprefix."event` (etype, person_id, date1, d1type, location_id, census_id, reference) ".
-    " SELECT ".CENSUS_EVENT.", person_id, census_date, 0, location_id, c.census_id, schedule ".
+$q = "INSERT INTO `".$tblprefix."event` (etype, person_id, date1, d1type, location_id, census_id) ".
+    " SELECT ".CENSUS_EVENT.", person_id, census_date, 0, location_id, c.census_id ".
     " FROM ".$tblprefix."census c".
     " JOIN ".$tblprefix."census_years cy ON cy.census_id = c.census".
     " LEFT JOIN ".$tblprefix."locations l ON c.address = l.place";
