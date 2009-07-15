@@ -51,18 +51,17 @@ function selectPeople($form, $omit = 0, $gender = "A", $default = 0, $auto = 1, 
 		if ($default <= 0) {
 			echo "<option value=\"0\">".$strSelect."</option>\n";
 		}
-
-	}
 	
-	$search->queryType = Q_TYPE;
-	$search->person_id = $default;
-	$dao->getPersonDetails($search, $callback);
+		$search->queryType = Q_TYPE;
+		$search->person_id = $default;
+		$dao->getPersonDetails($search, $callback);
 	
-	if (!$dojo) {	
 		echo "</select>\n";
-	} 
+	} else {
+		$search->queryType = Q_COUNT;
+		$dao->getPersonDetails($search);
 	
-	if ($dojo) {
+
 		$store = $form."_peopleStore";
 ?>
     <script type="text/javascript">
@@ -104,10 +103,10 @@ function selectPeople($form, $omit = 0, $gender = "A", $default = 0, $auto = 1, 
 	echo "<br/>";
 	// show the number of people in the list
 	if ($gender == "A" && $omit == 0) {
-		echo $search->numResults." ".$strOnFile."<br />\n";
+		echo $search->numResults." ".$strOnFile;
 	}
 	if ($gender == "A" && $omit <> 0) {
-		echo ($search->numResults + 1)." ".$strOnFile."<br />\n";
+		echo ($search->numResults + 1)." ".$strOnFile;
 	}
 }	// end of selectPeople()
 ?>
