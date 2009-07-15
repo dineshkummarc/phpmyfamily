@@ -46,7 +46,15 @@ define('LIST_CENSUS',1);
 ?>
 			<td class="<?php echo $class; ?>"><?php echo $cen->year." (".$cen->country.")"; ?></td>
 			<td class="<?php echo $class; ?>">
-				<a href="census.php?event=<?php echo $cen->event->event_id;?>"><?php echo $cen->event->reference; ?></a>
+				<a href="census.php?event=<?php echo $cen->event->event_id;?>">full details</a><?php 
+				$sdao = getSourceDAO();
+				$sdao->getEventSources($cen->event);
+				if (is_array($cen->event->results) && count($cen->event->results) > 0) {
+			foreach ($cen->event->results as $src) {
+				echo $src->getFullDisplay();
+			}
+		}
+		?>
 			</td>
 <?php	
 		}
