@@ -7,6 +7,8 @@ include_once "modules/image/ImageDAO.php";
 include_once "modules/admin/AdminDAO.php";
 include_once "modules/location/LocationDAO.php";
 include_once "modules/event/EventDAO.php";
+include_once "modules/gedcom/GedcomDAO.php";
+include_once "modules/source/SourceDAO.php";
 include_once "inc/database.inc.php";
 
 //=====================================================================================================================
@@ -56,16 +58,24 @@ function getEventDAO() {
 	return (new EventDAO());
 }
 
+function getGedcomDAO() {
+	return (new GedcomDAO());
+}
+
+function getSourceDAO() {
+	return (new SourceDAO());
+}
+
 	// function: stamppeeps
 	// timestamp a particular person for last updated
 	function stamppeeps($person) {
 		// declare globals used within
-		global $tblprefix;
+		global $tblprefix, $currentRequest;
 		$config = Config::getInstance();
 		
 
 		// update the updated column
-		$query = "UPDATE ".$tblprefix."people SET updated = NOW() WHERE person_id = '".$person->person_id."'";
+		$query = "UPDATE ".$tblprefix."people SET updated = NOW(), editor_id=".$currentRequest->id." WHERE person_id = '".$person->person_id."'";
 		$result = mysql_query($query);
 
 		// If we allow tracking by email
