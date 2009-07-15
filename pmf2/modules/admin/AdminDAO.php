@@ -4,14 +4,13 @@ class AdminDAO extends MyFamilyDAO {
 	function getConfig(&$c) {
 		global $tblprefix;
 		$query = "SELECT ";
-		$query .= "email,mailto,`desc`,styledir,defaultstyle,lang,timing,gedcom,restricttype,".
+		$query .= "email,mailto,`desc`,styledir,imagedir,filedir,defaultstyle,lang,timing,gedcom,restricttype,".
 			"restrictyears,restrictdate,tracking,trackemail,absurl,bbtracking,".
 			"layout, gmapskey, gmapshost, img_max,img_min";
 		$query .= " FROM ".$tblprefix."config ";
 		//TODO - add a proper error message
 		$result = $this->runQuery($query, "Error retrieving config");
 		
-		$img->numResults = 0;
 		while($row = $this->getNextRow($result)) {
 			$c->loadFields($row);
 		}
@@ -24,6 +23,8 @@ class AdminDAO extends MyFamilyDAO {
 		"`mailto` = ".($c->mailto?1:0).",".
 			"`desc` = ".quote_smart($c->desc).",".
 			"`styledir` = ".quote_smart($c->styledir).",".
+			"`imagedir` = ".quote_smart($c->imagedir).",".
+			"`filedir` = ".quote_smart($c->filedir).",".
 			"`defaultstyle` = ".quote_smart($c->defaultstyle).",".
 			"`lang` = ".quote_smart($c->lang).",".
 			"`timing` = ".($c->timing?1:0).",".
