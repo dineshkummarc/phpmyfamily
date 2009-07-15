@@ -79,23 +79,20 @@
 	$strCert = "Certified";
 	$strSource = "Source";
 	$strReference = "Reference";
-	
-	$strEvent[0] = "Birth";
-	$strEvent[1] = "Baptism";
-	$strEvent[2] = "Death";
-	$strEvent[3] = "Burial";
-	$strEvent[4] = "Banns read";
-	$strEvent[5] = "Marriage";
-	$strEvent[6] = "Census";
-	$strEvent[7] = "Other";
+	$strURL = "URL";
 	
 	$strFaB = "Details of father at birth";
+	$strSon = "Son";
+	$strDaughter = "Daughter";
+	$strWith = "with";
 	
 	$strPlace = "Place";
 	$strLatitude = "Latitude";
 	$strLongitude = "Longitude";
 	$strCentre = "Centre of map";
 	
+	$strCertainty = array("Unreliable evidence or estimated data", "Questionable reliability of evidence (interviews, census, oral genealogies, or potential for bias for example, an autobiography)", "Secondary evidence, data officially recorded sometime after event", "Direct and primary evidence used, or by dominance of the evidence");
+
 	$strInvalidPerson   = "Invalid person name";
 	$strDeceasedPerson  = "Deceased Person";    // EN-UK
   	$strOnFile			= "people on file";
@@ -136,6 +133,7 @@
 	$strAddress			= "Address";
 	$strCondition		= "Condition";
 	$strOf				= "of";
+	$strAnd				= "and";
 	$strAge				= "Age";
 	$strProfession		= "Profession";
 	$strBirthPlace		= "Place of Birth";
@@ -215,6 +213,7 @@
 	$strPedigree		= "pedigree";
 	$strToDetails		= "to details";
 	$strSurnameIndex	= "Index of Surnames";
+	$strTopSurnames		= "Top 10 Surnames";
 	$strTracking		= "Tracking";
 	$strTrack			= "track";
 	$strThisPerson		= "this person";
@@ -253,6 +252,18 @@
 	$strCreateFamily	= "Creating new family member";
 	$strCreatePerson	= "Create new person";
 
+	$strEvent[0] = "Birth";
+	$strEvent[1] = "Baptism";
+	$strEvent[2] = "Death";
+	$strEvent[3] = "Burial";
+	$strEvent[4] = "Banns read";
+	$strEvent[5] = "Marriage";
+	$strEvent[6] = "Census";
+	$strEvent[7] = "Other";
+	$strEvent[8] = "Image";
+	$strEvent[9] = "Transcript";
+	
+	$strEventVerb = array($strBorn,"Baptised",$strDied,"Buried",$strEvent[4],$strMarried,"Census","Other", "Image", "Transcript");
 //=====================================================================================================================
 //  email definitions
 //=====================================================================================================================
