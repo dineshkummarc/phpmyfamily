@@ -17,7 +17,8 @@ class Transcript extends Archive {
 		if (isset($_POST["transcript_id"])) { $this->transcript_id = $_POST["transcript_id"]; }
 	}
 	function getFileName() {
-		return("docs/".$this->transcript_id);
+		$config = Config::getInstance();
+		return($config->filedir.$this->transcript_id);
 	}
 }
 ?>
