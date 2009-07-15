@@ -112,10 +112,9 @@ class PersonDetail extends Base {
 		
 		$this->year_of_birth = $edrow[$prefix."year_of_birth"];
 		
-		$this->birth_cert = $edrow[$prefix."birth_cert"];
 		$this->birth_place = new Location();
 		$this->birth_place->place = $edrow[$prefix."birth_place"];
-		$this->death_cert = $edrow[$prefix."death_cert"];
+		
 		$this->death_reason = $edrow[$prefix."death_reason"];
 		if (!isset($this->mother)) { $this->mother = new PersonDetail(); }
 		$this->mother->person_id = $edrow[$prefix."mother_id"];
@@ -126,7 +125,7 @@ class PersonDetail extends Base {
 	
 	//Minimum fields to display a person, and work out whether they should be 
 	//shown
-	function getFields($tbl = 'p', $name = 'n', $birth = 'b', $death = 'd') {
+	static function getFields($tbl = 'p', $name = 'n', $birth = 'b', $death = 'd') {
 		global $currentRequest;
 		
 		$fields = array("person_id","gender");
@@ -146,7 +145,7 @@ class PersonDetail extends Base {
 		return ($ret);
 	}
 	
-	function getJoins($type = '', $tbl = 'p', $name = 'n', $birth = 'b', $death = 'd') {
+	static function getJoins($type = '', $tbl = 'p', $name = 'n', $birth = 'b', $death = 'd') {
 		global $tblprefix;
 		$config = Config::getInstance();
 		$restrictdate = $config->restrictdate;
@@ -195,7 +194,7 @@ class PersonDetail extends Base {
 		global $strRestricted;
 		$ret = "";
 		if ($this->isViewable()) {
-			$ret = "<a href=\"".$this->getURL()."\">".$this->getDisplayName()."</a> ";
+			$ret = "<a ".$anchor." href=\"".$this->getURL()."\">".$this->getDisplayName()."</a> ";
 		} else {
 			$ret = " (<font class=\"restrict\">".$strRestricted."</font>)";
 		}
