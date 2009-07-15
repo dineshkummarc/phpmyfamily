@@ -33,6 +33,17 @@ if (isset($_REQUEST["func"]) && $_REQUEST["func"] == "delete") {
 	
 	$e = new Event();
 	$e->setFromPost();
+
+	$prefix = 'a';
+	$e->sources= array();
+	while (isset($_POST[$prefix."_title"])) {
+		$s = new Source();
+		$s->setFromPost($prefix."_");
+		if ($s->hasData()) {
+			$e->sources[] = $s;
+		}
+		$prefix++;
+	}
 	
 	$prefix = 'a';
 	$e->attendees = array();
@@ -42,7 +53,7 @@ if (isset($_REQUEST["func"]) && $_REQUEST["func"] == "delete") {
 		$l = new Location();
 		$l->setFromPost($prefix);
 		$a->location = $l;
-		if ($a->hasData()) {
+		if ($a->hasData() || $a->person->person_id == $e->person->person_id) {
 			$e->attendees[] = $a;
 		}
 		$prefix++;
@@ -58,4 +69,3 @@ if (isset($_REQUEST["func"]) && $_REQUEST["func"] == "delete") {
 
 header("Location: people.php?person=".$cen->person->person_id);
 ?>
-
