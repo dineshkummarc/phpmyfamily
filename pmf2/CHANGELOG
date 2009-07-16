@@ -2,19 +2,19 @@ v 2.0.0 pre release
 	Massive refactoring exercise
 		Introduces classes and modules
 		
-	Fix for MySQL 5 (still compatible with MySQL 4)
+	Fix for MySQL 5 (probably still compatible with MySQL 4)
 	Add links to insert father, mother and children from person.php
 	Enable editing of whole household on census edit page
 	Move configuration to database and database.inc.php
 	Editing for image and transcript descriptions
 	Consistent display of names
-	Includes ancestor and descendent trees from Kees
+	Includes ancestor and descendant trees from Kees
 	RSS feed of 20 latest changes
 	People drop down changed to search box when dojo used
 	Add dissolve date to marriage form
 	Layout configurable via admin page to get dojo panes or tabs
 	Don't show name for restricted people
-	Name now split into 5 fields (existing fields not dropped but not updated)
+	Name now split into 5 fields
 	All places, addresses etc now held in location table
 	Most information now held in the event table (in conjunction with the attendee table)
 	Possible to record information about father at birth and parents at marriage
@@ -25,6 +25,14 @@ v 2.0.0 pre release
 		are being looked up
 		Google maps shown if key entered on admin page, otherwise list
 	Various reports on missing info linked from index.php
+	Documents and images directory now configurable (relative paths) and can be placed outside the document root
+	Top 10 most common surnames on front page and counts included on surname index page
+	Images and transcripts linked to events
+	Sources more detailed and separated into a separate table - certification tied to source not event
+	Improved gedcom import
+	Events can be edited directly
+	Multiple notes (as events) possible
+	Significant formatting changes
 -------------------------------------------------------------------------------
 Added Dutch translation (thanks Kees)
 v 1.4.2
