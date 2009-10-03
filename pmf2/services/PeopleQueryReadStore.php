@@ -16,6 +16,10 @@ items: [
 	if (isset($_POST["id"])) { 
 		$search->person_id = $_POST["id"]; 
 		$search->queryType = Q_IND;
+	} else {
+	?>
+{name:"", label:"",personid:"-1"},
+	<?php
 	}
 	if (isset($_POST["gender"])) { $search->gender = $_POST["gender"]; }
 	if (isset($_POST["start"])) { $search->start = $_POST["start"]; }
