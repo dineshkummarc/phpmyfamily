@@ -65,6 +65,8 @@ if (isset($_REQUEST["func"]) && $_REQUEST["func"] == "delete") {
 		if (!$s->isEditable()) {
 			die(include "inc/forbidden.inc.php");
 		}	
+	} else {
+		$s->source_id = 'null';
 	}
 		
 	if (isset($img->image_id)) {
