@@ -16,7 +16,7 @@ class Image extends Archive {
 	
 	function getThumbnailFile() {
 		$config = Config::getInstance();
-		return ($this->getImageFile()."&thumb=true");
+		return ($this->getImageFile()."&amp;thumb=true");
 	}
 	
 	function getLink() {
