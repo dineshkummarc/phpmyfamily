@@ -57,6 +57,7 @@
   `style` varchar(40) NOT NULL default '',
   PRIMARY KEY  (`id`)
 ) Engine = InnoDB";
+
 	$rusers = mysql_query($fusers) or die("phpmyfamily: Error creating user table!!!");
 	echo "User table created<br>\n";
 	$fadmin = "INSERT INTO ".$tblprefix."users VALUES('43', 'admin', '21232f297a57a5a743894a0e4a801fc3','', 'Y', 'Y', '1910-01-01', 'default.css.php')";
@@ -72,9 +73,20 @@
   `father_id` smallint(5) unsigned zerofill NOT NULL default '00000',
   `narrative` longtext NOT NULL,
   `updated` timestamp(14) NOT NULL,
-  PRIMARY KEY  (`person_id`),
-  KEY `gender` (`gender`)
+  `creator_id` SMALLINT NULL ,
+  `created` DATETIME NOT NULL ,
+  `editor_id` SMALLINT NULL,
+   INDEX `creator` ( `creator_id` ),
+   INDEX `editor` ( `editor_id` ),
+   FOREIGN KEY ( `creator_id` ) REFERENCES `".$tblprefix."users` (`id`),
+   FOREIGN KEY ( `editor_id` ) REFERENCES `".$tblprefix."users` (`id`),
+   PRIMARY KEY  (`person_id`),
+   KEY `gender` (`gender`),
+   KEY `idx_list_peeps1` USING BTREE (`person_id`),
+   KEY `idx_list_peeps2` USING BTREE (`gender`,`person_id`),
+   KEY `idx_children` USING BTREE (`mother_id`,`father_id`,`person_id`)
 ) Engine = InnoDB";
+
 	$rpeople = mysql_query($fpeople) or die("phpmyfamily: Error creating people table!!!");
 	echo "People table created<br>\n";
 	include_once "admin/nameTable.php";
@@ -102,6 +114,7 @@
 	$fcensus = "CREATE TABLE `".$tblprefix."census` (
   `person_id` smallint(5) unsigned zerofill NOT NULL default '00000',
   `census` mediumint(4) NOT NULL default '0',
+  `schedule` varchar(20) NOT NULL default '',
   `census_id` int(10) unsigned NOT NULL auto_increment,
   `event_id` int(10) unsigned NOT NULL,
   PRIMARY KEY  (`census_id`),
@@ -113,7 +126,7 @@
 
 	// install ",$tblprefix."census_years
 	$cyquery = "CREATE TABLE `".$tblprefix."census_years` (
-  `census_id` mediumint(9) NOT NULL auto_increment,
+  `census_id` mediumint(4) NOT NULL auto_increment,
   `country` varchar(20) NOT NULL default '',
   `year` smallint(4) NOT NULL default '0',
   `census_date` DATE NOT NULL,
@@ -125,7 +138,7 @@
 	echo "Census years table created<br>\n";
 
 	// install ".$tblprefix."census_years values
-	$cyvquery = "INSERT INTO ".$tblprefix."census_years (country, year, census_date) VALUES ('British Isles', '1841', '1841-06-06'), ('British Isles', '1851', '1851-03-30'), ('British Isles', '1861', '1861-04-07'), ('British Isles', '1871', '1871-04-02'), ('British Isles', '1881', '1881-04-03'), ('British Isles', '1891', '1891-04-05'), ('British Isles', '1901', '1901-03-31'), 
+	$cyvquery = "INSERT INTO ".$tblprefix."census_years (country, year, census_date) VALUES ('British Isles', '1841', '1841-06-06'), ('British Isles', '1851', '1851-03-30'), ('British Isles', '1861', '1861-04-07'), ('British Isles', '1871', '1871-04-02'), ('British Isles', '1881', '1881-04-03'), ('British Isles', '1891', '1891-04-05'), ('British Isles', '1901', '1901-03-31'), ('British Isles', 1911, '1911-04-02'),
 		('USA', '1790', '1790-08-02'), ('USA', '1800', '1800-08-04'), ('USA', '1810', '1810-08-06'), ('USA', '1820', '1820-08-07'), ('USA', '1830', '1830-06-01'), ('USA', '1840', '1840-06-01'), ('USA', '1850', '1850-06-01'), ('USA', '1860', '1860-06-01'), ('USA', '1870', '1870-06-01'), ('USA', '1880', '1880-06-01'), ('USA', '1890', '1890-06-02'), ('USA', '1900', '1900-06-01'),
 		('USA', '1910', '1910-04-15'), ('USA', '1920', '1920-01-01'), ('USA', '1930', '1930-04-01'),
 		('Canada', '1842', '1842-02-01'), ('Canada', '1848', '1848-01-01'), ('Canada', '1851', '1851-01-12'), ('Canada', '1861', '1861-01-14'), ('Canada', '1871', '1871-04-02'), ('Canada', '1881', '1881-04-04'), ('Canada', '1891', '1891-04-06'), ('Canada', '1901', '1901-03-31')";
@@ -135,12 +148,10 @@
 	// install ".$tblprefix."images
 	$fimages = "CREATE TABLE `".$tblprefix."images` (
   `image_id` smallint(5) unsigned zerofill NOT NULL auto_increment,
-  `person_id` smallint(5) unsigned zerofill NOT NULL default '00000',
   `title` varchar(30) NOT NULL default '',
-  `date` date NOT NULL default '0000-00-00',
-  `description` varchar(255) NOT NULL default '',
-  PRIMARY KEY  (`image_id`),
-  KEY `idx_show_gallery` (`person_id`,`date`)
+  `event_id` INTEGER UNSIGNED DEFAULT NULL,
+  `source_id` INTEGER UNSIGNED DEFAULT NULL,
+  PRIMARY KEY  (`image_id`)
 ) Engine = InnoDB";
 	$rimages = mysql_query($fimages) or die("phpmyfamily: Error creating images table!!!");
 	echo "Images table created<br>\n";
@@ -151,13 +162,11 @@
 	// install ".$tblprefix."documents
 	$fdocs = "CREATE TABLE `".$tblprefix."documents` (
   `id` smallint(5) unsigned zerofill NOT NULL auto_increment,
-  `person_id` smallint(5) unsigned zerofill NOT NULL default '00000',
-  `doc_date` date NOT NULL default '0000-00-00',
   `doc_title` varchar(30) NOT NULL default '',
-  `doc_description` varchar(60) NOT NULL default '',
   `file_name` varchar(128) NOT NULL default '',
-  PRIMARY KEY  (`id`),
-  KEY `person_id` (`person_id`)
+  `event_id` INTEGER UNSIGNED DEFAULT NULL,
+  `source_id` INTEGER UNSIGNED DEFAULT NULL,
+  PRIMARY KEY  (`id`)
 ) Engine = InnoDB";
 	$rdocs = mysql_query($fdocs) or die("phpmyfamily: Error creating documents table!!!");
 	echo "Documents table created<br>\n";
@@ -194,7 +203,8 @@ if(!mysql_query($q)) {
 }
 
 $q = "ALTER TABLE `".$tblprefix."census` 
- ADD CONSTRAINT `FK_".$tblprefix."census_2` FOREIGN KEY `FK_".$tblprefix."census_2` (`event_id`)
+  ADD CONSTRAINT `FK_".$tblprefix."census_1` FOREIGN KEY (`person_id`) REFERENCES `".$tblprefix."people` (`person_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_".$tblprefix."census_2` FOREIGN KEY `FK_".$tblprefix."census_2` (`event_id`)
     REFERENCES `".$tblprefix."event` (`event_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
@@ -207,6 +217,56 @@ if(!mysql_query($q)) {
 } else {
 	echo "changed census table<br/>";
 }
+
+$q = "ALTER TABLE `".$tblprefix."documents` ADD INDEX `sourceidx` ( `source_id` ),ADD INDEX `eventidx` ( `event_id` )";
+if(!mysql_query($q)) {
+	mysql_error();
+	echo $q;
+	die("phpmyfamily: Error changing documents table");
+} else {
+	echo "Added indexes to documents table<br/>";
+}  
+
+include_once("sourceTable.php");
+$q = "ALTER TABLE `".$tblprefix."documents` 
+ ADD CONSTRAINT `FK_".$tblprefix."documents_1` FOREIGN KEY `FK_".$tblprefix."documents_1` (`event_id`)
+    REFERENCES `".$tblprefix."event` (`event_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+    ADD CONSTRAINT `FK_".$tblprefix."documents_2` FOREIGN KEY `FK_".$tblprefix."documents_2` (`source_id`)
+    REFERENCES `".$tblprefix."source` (`source_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+    ENGINE = InnoDB;";
+    
+if(!mysql_query($q)) {
+	mysql_error();
+	echo $q;
+	die("phpmyfamily: Error changing documents table");
+} else {
+	echo "Changed documents table<br/>";
+}
+
+$q = "ALTER TABLE `".$tblprefix."images` 
+ ADD CONSTRAINT `FK_".$tblprefix."images_1` FOREIGN KEY `FK_".$tblprefix."images_1` (`event_id`)
+    REFERENCES `".$tblprefix."event` (`event_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+    ADD CONSTRAINT `FK_".$tblprefix."images_2` FOREIGN KEY `FK_".$tblprefix."images_2` (`source_id`)
+    REFERENCES `".$tblprefix."source` (`source_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+    ENGINE = InnoDB;";
+    
+if(!mysql_query($q)) {
+	mysql_error();
+	echo $q;
+	die("phpmyfamily: Error changing images table");
+} else {
+	echo "Changed images table<br/>";
+}
+
+include_once("gedcomTable.php");
 
 	// give a link to continue
 	echo "<h3>Finished!!</h3>\n";
