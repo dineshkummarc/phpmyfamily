@@ -70,8 +70,9 @@ if (isset($_REQUEST["func"]) && $_REQUEST["func"] == "delete") {
 			}
 		}
 		$prefix = 'a';
+		
 		$e->sources= array();
-		while (isset($_POST[$prefix."_".$strEvent[$i]."source"])) {
+		while (isset($_POST[$prefix."_".$strEvent[$i]."title"])) {
 			$s = new Source();
 			$s->setFromPost($prefix."_".$strEvent[$i]);
 			if ($s->hasData()) {

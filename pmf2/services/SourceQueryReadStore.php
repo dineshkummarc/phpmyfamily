@@ -11,7 +11,7 @@ items: [
 
 	$sdao = getSourceDAO(); 
 	$s = new Source();
-	if (isset($_POST["title"])) { 
+	if (isset($_POST["name"])) { 
 		$name = str_replace("*", "%", $_POST["name"]);
 		$s->title= $name;
 	}
