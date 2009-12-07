@@ -53,7 +53,7 @@ class Base {
 		return $this->exportable;
 	}
 	
-	function addFields($tbl, $fields) {
+	static function addFields($tbl, $fields) {
 			
 		$addComma = false;
 		$prefix = "";
