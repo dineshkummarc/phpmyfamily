@@ -162,7 +162,7 @@
     // end page head --------------------------------------------------
       
         $grid = array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-        $countlines = 1;
+        $countlines = 0;
         $level = -1;
 
 // get parent -----------------------------------
@@ -236,7 +236,7 @@
 
     get_parent ($per->person_id);
     $i = 0;
-    while ($i <= $countlines){
+    while ($i < $countlines){
     echo $outputstring[$i];
     $i += 1;
     }
@@ -253,4 +253,3 @@
 //  include $our_path."inc/footer.inc.php";
   include "inc/footer.inc.php";
 ?>
-
