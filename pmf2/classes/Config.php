@@ -29,6 +29,7 @@ class Config {
 	var $dojo;
 	
 	function setupConfig() {
+		date_default_timezone_set("Europe/London");
 		$dao = getAdminDAO();
 		$dao->getConfig($this);
 		switch($this->restricttype) {
@@ -123,9 +124,10 @@ class Config {
 }
 
 #
-error_reporting(E_ALL^E_STRICT);
+#error_reporting(E_ALL^E_STRICT);
+error_reporting(E_ALL);
 #Sends errors to the screen instead of the log file
-ini_set('display_errors', true);
+#ini_set('display_errors', true);
 
 include_once("inc/version.php");
 include_once("classes/CurrentRequest.php");
