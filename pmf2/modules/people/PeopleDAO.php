@@ -347,7 +347,7 @@ class PeopleDAO extends MyFamilyDAO {
 	}
 	
 	function savePersonDetails(&$per) {
-		global $tblprefix, $err_person_update, $err_detail, $currentRequest;
+		global $tblprefix, $err_person_update, $err_detail, $currentRequest, $err_child_update;
 		
 		$rowsChanged = 0;
 		
