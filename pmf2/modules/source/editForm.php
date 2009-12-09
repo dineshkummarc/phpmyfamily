@@ -114,18 +114,20 @@ function get_edit_form($s) {
 </form>
 
 <?php
-	$per = new PersonDetail();
-	$per->editable = $s->isEditable();
-	$per->person_id = -1;
-	echo "<div id=\"images\">";
-	echo get_image_create_string($per, -1, $s->source_id);
-	echo "<br/>";
-	show_gallery($per, $dest = "people", -1, $s->source_id);
-	echo "</div><div id=\"transcripts\">";
-	echo get_transcript_create_string($per, -1, $s->source_id);
-	echo "<br/>";
-	show_transcript($per, -1, $s->source_id);
-	echo "</div>";
+	if ($s->source_id > 0) {
+		$per = new PersonDetail();
+		$per->editable = $s->isEditable();
+		$per->person_id = -1;
+		echo "<div id=\"images\">";
+		echo get_image_create_string($per, -1, $s->source_id);
+		echo "<br/>";
+		show_gallery($per, $dest = "people", -1, $s->source_id);
+		echo "</div><div id=\"transcripts\">";
+		echo get_transcript_create_string($per, -1, $s->source_id);
+		echo "<br/>";
+		show_transcript($per, -1, $s->source_id);
+		echo "</div>";
+	}
 	
 }
 ?>
