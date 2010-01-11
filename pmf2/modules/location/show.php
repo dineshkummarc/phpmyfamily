@@ -111,7 +111,7 @@ function selectPlace($field, $location) {
 <input type="hidden" name="<?php echo $field."location_id";?>" id="<?php echo $field."location_id";?>" value="<?php echo $location->location_id;?>" ></input>
 <?php
 	} else {
-		echo '<input name="'.$field.'" value="'.$location->place.'"></input>';
+		echo '<input name="'.$field.'name" value="'.$location->place.'"></input>';
 	}
 }
 ?>

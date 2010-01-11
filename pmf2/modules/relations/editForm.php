@@ -119,11 +119,13 @@ function get_edit_form($rel) {
 			}
 			for ($i = 0;$i<2;$i++) {
 				$p = $people[$i];
-				if (isset($p->father->person_id) && $p->father->person_id > 0 && $p->father->isEditable()) {
-					$people[] = $p->father;
-				}
-				if (isset($p->mother->person_id) && $p->mother->person_id > 0 && $p->father->isEditable()) {
-					$people[] = $p->mother;
+				if (isset($people[$i])) {
+					if (isset($p->father->person_id) && $p->father->person_id > 0 && $p->father->isEditable()) {
+						$people[] = $p->father;
+					}
+					if (isset($p->mother->person_id) && $p->mother->person_id > 0 && $p->father->isEditable()) {
+						$people[] = $p->mother;
+					}
 				}
 			}
 			attendeeEditTable($rel->event, MARRIAGE_EVENT, $people);

@@ -15,10 +15,12 @@ function show_pedigree($per) {
 	$ids[3] = $per->mother;
 
 	for ($i = 2; $i < 8; $i++) {
-		$p = $ids[$i];
-		$dao->getParents($p);
-		$ids[($i * 2)] 	   = $p->father;
-		$ids[($i * 2 + 1)] = $p->mother;
+		if(isset($ids[$i])) {
+			$p = $ids[$i];
+			$dao->getParents($p);
+			$ids[($i * 2)] 	   = $p->father;
+			$ids[($i * 2 + 1)] = $p->mother;
+		}
 	}
 
 	
