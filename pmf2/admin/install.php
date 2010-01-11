@@ -91,7 +91,7 @@
 	echo "People table created<br>\n";
 	include_once "admin/nameTable.php";
 	
-	$fpeeps = "INSERT INTO ".$tblprefix."people(person_id, narrative) VALUES ('1', '')";
+	$fpeeps = "INSERT INTO ".$tblprefix."people(person_id, narrative, created) VALUES ('1', '', NOW())";
 	$rpeeps = mysql_query($fpeeps) or die("phpmyfamily: Error creating alpha male!!!");
 	$fpeeps = "INSERT INTO ".$tblprefix."names(person_id, forenames, surname) VALUES ('1', 'Alpha Male', 'Male')";
 	$rpeeps = mysql_query($fpeeps) or die("phpmyfamily: Error creating alpha male!!!");
