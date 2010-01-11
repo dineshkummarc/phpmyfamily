@@ -61,9 +61,9 @@ class PersonDetail extends Base {
 		$this->name->setFromPost();
 		$this->death_reason = htmlspecialchars($_POST["frmDeathReason"], ENT_QUOTES);
 		$this->mother = new PersonDetail();
-		$this->mother->person_id = $_POST["frmMother"];
+		@$this->mother->person_id = $_POST["frmMother"];
 		$this->father = new PersonDetail();
-		$this->father->person_id = $_POST["frmFather"];
+		@$this->father->person_id = $_POST["frmFather"];
 		$this->narrative = add_quotes($_POST["frmNarrative"]);
 		
 	}

@@ -47,7 +47,7 @@ class Source extends Base {
 		
 	}
 	function loadFields($row, $prefix) {
-		$this->source_id = $row[$prefix."source_id"];
+		@$this->source_id = $row[$prefix."source_id"];
 		@$this->title = $row[$prefix."title"];
 		@$this->reference = $row[$prefix."reference"];
 		@$this->url = $row[$prefix."url"];		
