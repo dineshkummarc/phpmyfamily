@@ -340,23 +340,23 @@ class LocationDAO extends MyFamilyDAO {
 	  
 		$rowsChanged = 0;
 	  
+		$place = quote_smart(trim($location->place));
 		if (isset($location->location_id) && $location->location_id > 0) {
 			$query = sprintf("UPDATE ".$tblprefix."locations " .
 			" SET name=%s, place=%s, lat=%s, lng=%s, centre = %d WHERE location_id =".$location->location_id,
-			quote_smart($location->place),
-			quote_smart($location->place),
+			$place,
+			$place,
 			(strlen($location->lat) > 0)?quote_smart($location->lat):'null',
 			(strlen($location->lng) > 0)?quote_smart($location->lng):'null',
 			$location->centre);
-			error_log($query);
 			$update_result = $this->runQuery($query, "");
 			$rowsChanged += $this->rowsChanged();
 		} else {
 			$this->lockTable($tblprefix."locations");
 			$query = sprintf("INSERT INTO ".$tblprefix."locations " .
 			" (name, place, lat, lng, centre) VALUES (%s,%s,%s, %s, %d) ;",
-			quote_smart($location->place),
-			quote_smart($location->place),
+			$place,
+			$place,
 			(strlen($location->lat) > 0)?quote_smart($location->lat):'null',
 			(strlen($location->lng) > 0)?quote_smart($location->lng):'null',
 			$location->centre);
