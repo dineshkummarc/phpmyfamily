@@ -41,6 +41,7 @@ class LocationDAO extends MyFamilyDAO {
 		$rowsChanged = 0;
 		if ($location->place <> '') {
 			if($location->location_id == '') {
+				$location->place = trim($location->place);
 				$this->getLocations($location);
 				if ($location->numResults > 0) {
 					$location = $location->results[0];
@@ -340,7 +341,7 @@ class LocationDAO extends MyFamilyDAO {
 	  
 		$rowsChanged = 0;
 	  
-		$place = quote_smart(trim($location->place));
+		$place = quote_smart($location->place);
 		if (isset($location->location_id) && $location->location_id > 0) {
 			$query = sprintf("UPDATE ".$tblprefix."locations " .
 			" SET name=%s, place=%s, lat=%s, lng=%s, centre = %d WHERE location_id =".$location->location_id,
