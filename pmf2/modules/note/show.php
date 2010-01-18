@@ -25,7 +25,7 @@ function get_note_create_string($per) {
 	if ($per->isEditable()) {
 		$ret = "<a href=\"edit.php?func=add&amp;person=".$per->person_id."&amp;area=event\">".
 		$strInsert."</a> ".
-		mb_strtolower($strNotes)."</td>";
+		strtolower($strNotes)."</td>";
 	} 
 	return ($ret);
 }
