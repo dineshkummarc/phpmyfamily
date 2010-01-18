@@ -85,7 +85,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 					$event->date1_modifier = 5;
 					break;
 				}
-				unset($work[0]);
+				//unset($work[0]);
 				unset($work[1]);
 				$temp = implode(" ",array_values($work));
 				make_date($temp, $event);
@@ -105,8 +105,13 @@ error_reporting(E_ALL ^ E_NOTICE);
 		if (!ereg ("([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})", $retval))
 			$retval = "0000-00-00";
 
+		if (($event->date1_modifier == 0) and ($event->date1 != "0000-00-00")) {
+			$event->date1_modifier = 8 ;	// on
+		}
+		
 		// return the string
 		$event->date1 = $retval;
+		
 		return $retval;
 	}
 
@@ -115,6 +120,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 		public $date1;
 		public $date1_modifier = 0;
 		public $date2_modifier = 0;
+		public $date2 = '0000-00-00';
 		public $location;
 		function MiniEvent() {
 			$this->location = new Location();
@@ -202,6 +208,8 @@ Reading in file:<br>
 				break;
 			case "OBJE":
 				$objes++;
+				break;
+			case "":
 				break;
 			default:
 				$unkno++;
@@ -298,7 +306,7 @@ Parsing individual data:
 					break;
 				case "2 PLAC":
 					if ($e != null) {
-						$e->location->place = htmlentities(substr($people[$i][$c], 6, strlen($people[$i][$c]) - 6), ENT_QUOTES);
+						$e->location->place = trim(htmlentities(substr($people[$i][$c], 6, strlen($people[$i][$c]) - 6), ENT_QUOTES));
 					}
 					break;
 				case "1 NOTE":
@@ -400,7 +408,7 @@ Parsing marriage data:
 					break;
 				case "2 PLAC":
 					if ($previous == "1 MARR")
-						$e->location->place = substr($family[$i][$c], 6, strlen($family[$i][$c]) - 6);
+						$e->location->place = trim(substr($family[$i][$c], 6, strlen($family[$i][$c]) - 6));
 					break;
 				default:
 					break;
@@ -454,6 +462,8 @@ while ($indis > 0) {
 		$per->name->forenames = trim($per->name->forenames);
 		$per->name->surname = trim($per->name->surname);
 		$per->name->suffix = trim($per->name->suffix);
+		$per->mother->person_id = $person["mother_id"] ;
+		$per->father->person_id = $person["father_id"] ;
 		if (isset($person["ged_famc"])) {
 			$fam = $parents[$person["ged_famc"]];
 			$mid = $fam["ged_wife_ref"];
@@ -550,7 +560,7 @@ Inserting marriage data:
 		$e->date1 = $marriage[$i]["dom"];
 		$e->location->place = htmlspecialchars($marriage[$i]["place"], ENT_QUOTES);
 		$rel->event = $e;
-		
+		if ($rel->dissolve_date == "") $rel->dissolve_date = "0000-00-00" ;
 		$dao = getRelationsDAO();
 		$dao->saveRelationshipDetails($rel);
 		// inc the counter

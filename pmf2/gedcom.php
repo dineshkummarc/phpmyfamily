@@ -20,6 +20,37 @@ include_once "modules/db/DAOFactory.php";
 
 ini_set("auto_detect_line_endings", TRUE);
 
+function full_ged_date1($event) {
+	$date = "";
+	if ($event->date1 <> "0000-00-00") {
+		$date = "2 DATE ";
+		$mod = "";
+		switch($event->date1_modifier) {
+        	case 9:		//	"In"
+        	case 1:		//  "About"
+				$mod = "ABT ";
+            break;
+        	case 2:		// "Circa"
+        	case 3:		// "Estimated
+        	case 4:		// "Roughly"
+				$mod = "EST ";
+            break;
+            case 5:		// Calculated
+                $mod = "CAL ";
+             break;
+             case 6:		// "Before"
+                $mod = "BEF ";
+             break;
+             case 7:		// "After"
+                $mod = "AFT ";
+             break;
+		}
+		$date .= $mod;
+		$date .= ged_date($event->date1);
+		$date .= "\n";
+	}
+	return($date);
+}
 //convert date from yyyy-mm-dd database format to dd MMM yyyy gedcom format
 function ged_date($incoming) {
 	// define the months
@@ -31,6 +62,10 @@ function ged_date($incoming) {
 		// if  month or day unknown, just return year
 		if ($work[1] == "00" OR $work[2] == "00") {
 			$retval = "$work[0]";
+		} elseif ($work[1] != "00" AND $work[2] == "00") {
+            // year and month are known
+			$replacemonth = strtr($work[1], $months);
+			$retval = "$replacemonth $work[0]";
 		} else {
 			// reformat whole date to dd MMM yyyy
 			$replacemonth = strtr($work[1], $months);
@@ -90,15 +125,27 @@ function print_person($search, $per) {
 	
 	//get surename right for gedcom NAME field
 	//if there is just one name filled in name and surname
+	$surname = "";
+	if ($per->name->link != "") {
+		$surname = $per->name->link;
+	}
+	$surname .= $per->name->surname;
+	if ($per->name->suffix != "") {
+		$surname .= $per->name->suffix;
+	}
 	if ($per->name->forenames != ""){
-		$ged_name = $per->name->forenames." /".$per->name->surname."/";
+		$ged_name = $per->name->forenames." /".$surname."/";
 	} else {
-		$ged_name = $per->name->surname;
+		$ged_name = $surname;
 	}
 	echo "0 @".$per->person_id."@ INDI\n";
 	echo "1 NAME ".$ged_name."\n";
 	echo "2 GIVN ".$per->name->forenames."\n";
-	echo "2 SURN ".$per->name->surname."\n";
+	if ($per->name->link != "") { echo "2 SPFX ".$per->name->link."\n" ; }
+	echo "2 SURN ".$surname."\n";
+	if ($per->name->title != "") { echo "2 NPFX ".$per->name->title."\n" ; }
+	if ($per->name->suffix != "") { echo "2 NSFX ".$per->name->suffix."\n" ; }
+	if ($per->name->knownas != "") { echo "2 NICK ".$per->name->knownas."\n" ; }
 	echo "1 SEX ".$per->gender."\n";
 
 	$edao = getEventDAO();
@@ -114,32 +161,21 @@ function print_person($search, $per) {
 			echo $classes[$e->type]."\n";
 			$events[$e->type] = $e;
 #			$sdao->getEventSources($e);
-			$mod = "";
-			switch($e->date1_modifier) {
-				case 1:
-					$mod = "ABT ";
-				break;
-				case 3:
-					$mod = "EST ";
-				break;
-				case 5:
-					$mod = "CAL ";
-				break;
-				case 6:
-					$mod = "BEF ";
-				break;
-				case 7:
-					$mod = "AFT ";
-				break;
-			}
-			if ($e->date1 != "0000-00-00") {
-				echo "2 DATE ".$mod.ged_date($e->date1)."\n";
-			}
+			echo full_ged_date1($e);
 			if ($e->location->place != "") {
 				echo "2 PLAC ".$e->location->place."\n";
 			}
 			if ($e->type == DEATH_EVENT && $per->death_reason != "") {
 				 echo "2 CAUS ".$per->death_reason."\n";
+			}
+			if ($e->notes != "") {
+				echo "2 NOTE\n" ;
+				echo "3 CONT ".$e->notes."\n" ;
+    			if ($e->source != "") {
+    				echo "2 SOUR ".$e->source."\n" ;
+    			} else {
+    				echo "3 SOUR phpmyfamily\n" ;
+                }
 			}
 		}
 	}
@@ -210,9 +246,7 @@ foreach ($famarray as $famc => $fam) {
 			//write MARR line if an (even otherwise empty) record is found
 				echo "1 MARR\n";
 				//write DATE only when present
-				if ($rel->marriage_date <> "0000-00-00") {
-					echo "2 DATE ".ged_date($rel->marriage_date)."\n";
-				}
+				echo full_ged_date1($rel->event);
 				//write place only when present
 				if ($rel->marriage_place <> "") {
 					echo "2 PLAC ".$rel->marriage_place->place."\n";
