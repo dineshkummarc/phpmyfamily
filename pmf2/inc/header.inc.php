@@ -58,7 +58,7 @@
 		global $strTrack, $strTracking, $strThisPerson, $tblprefix;
 		global $strLoggedIn, $strHome, $strLogout, $strPreferences;
 		global $strAdd, $strNewPerson, $strLogin, $strRecoverPwd, $strStop;
-		global $strLoggedOut, $strReport, $currentRequest;
+		global $strLoggedOut, $strReport, $currentRequest, $strCompleteGedcom;
 
 echo '<div id="useroptions"><ul>';
 		if ($currentRequest->id != 0) {
@@ -69,6 +69,7 @@ echo '<div id="useroptions"><ul>';
 			if ($_SESSION["editable"] == "Y") {
 				echo "<li><a href=\"report.php\" class=\"hd_link\">".$strReport."</a></li>";
 				echo "<li><a href=\"edit.php?func=add&amp;area=people\" class=\"hd_link\">".$strAdd." ".$strNewPerson."</a></li>";
+				echo "<li><a href=\"gedcom.php\" class=\"hd_link\">".$strCompleteGedcom."</a></li>";
 			}
 			if ($person != 0) {
 				$query = "SELECT * FROM ".$tblprefix."tracking WHERE email = '".$currentRequest->email."' AND person_id = ".quote_smart($person);
