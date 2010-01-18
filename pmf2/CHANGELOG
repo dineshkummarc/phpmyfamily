@@ -1,4 +1,10 @@
-v 2.0.0 pre release
+v 2.0.2
+	Fix install script
+	Fix numerous strict php warnings and switch off strict reporting to screen
+	Fix locations not being saved
+	Numerous gedcom changes thanks to richardbrinegar
+	Add link to export all gedcom
+v 2.0.0
 	Massive refactoring exercise
 		Introduces classes and modules
 		
