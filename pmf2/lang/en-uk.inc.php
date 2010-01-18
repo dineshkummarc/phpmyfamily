@@ -41,7 +41,7 @@
 
 	$strDivorce = "Divorce";
 	$strFirstNames = "First Name(s)";
-	$strLinkNames = "";
+	$strLinkNames = "Last Name prefix";
 	$strLastName = "Last Name";
 	$strAKA = "Alias";
 	$strLocations = "Locations";
@@ -249,6 +249,7 @@
 	$strChangeStyle		= "Change your style";
 	$strChangeEmail		= "Change your email";
 	$strGedCom			= "gedcom";
+	$strCompleteGedcom	= "Complete gedcom";
 	$strCreateFamily	= "Creating new family member";
 	$strCreatePerson	= "Create new person";
 
