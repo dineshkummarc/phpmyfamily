@@ -87,7 +87,7 @@ $filename="$config->desc.ged";
 $today = date("d M Y");
 echo "0 HEAD
 1 SOUR phpmyfamily
-2 VERS 1.3.1
+2 VERS $version
 2 CORP phpmyfamily.sourceforge.net
 3 ADDR http://www.phpmyfamily.net
 1 DEST any		
@@ -112,6 +112,10 @@ if(isset($peep->person_id)) {
 }
 $dao = getPeopleDAO();
 $dao->getPersonDetails($peep, "print_person");
+
+function output_ged($level, $tag, $data, $suffix = "") {
+	echo $level." ".$tag.html_entity_decode($data, ENT_QUOTES).$suffix."\n";
+}
 
 #while ($row = mysql_fetch_array($result)) {
 function print_person($search, $per) { 
@@ -138,65 +142,75 @@ function print_person($search, $per) {
 	} else {
 		$ged_name = $surname;
 	}
-	echo "0 @".$per->person_id."@ INDI\n";
-	echo "1 NAME ".$ged_name."\n";
-	echo "2 GIVN ".$per->name->forenames."\n";
-	if ($per->name->link != "") { echo "2 SPFX ".$per->name->link."\n" ; }
-	echo "2 SURN ".$surname."\n";
-	if ($per->name->title != "") { echo "2 NPFX ".$per->name->title."\n" ; }
-	if ($per->name->suffix != "") { echo "2 NSFX ".$per->name->suffix."\n" ; }
-	if ($per->name->knownas != "") { echo "2 NICK ".$per->name->knownas."\n" ; }
-	echo "1 SEX ".$per->gender."\n";
+	//If this person was previously imported from a gedcom file then use that id
+	$id = $per->person_id;
+	$gdao = getGedcomDAO();
+	$gedids = $gdao->getReferences($id);
+	if (count($gedids) === 1) {
+		$id = $gedids[0]["gedrefid"];
+	}
+	output_ged(0, "@",$id,"@ INDI");
+	output_ged(1, "NAME ",$ged_name);
+	output_ged(2, "GIVN ",$per->name->forenames);
+	if ($per->name->link != "") { output_ged(2, "SPFX ",$per->name->link); }
+	output_ged(2, "SURN ",$surname);
+	if ($per->name->title != "") { output_ged(2, "NPFX ",$per->name->title); }
+	if ($per->name->suffix != "") { output_ged(2, "NSFX ",$per->name->suffix); }
+	if ($per->name->knownas != "") { output_ged(2, "NICK ",$per->name->knownas); }
+	output_ged(1, "SEX ",$per->gender);
 
+	
 	$edao = getEventDAO();
 	$e = new Event();
 	$e->person->person_id = $per->person_id;
 	$edao->getEvents($e, Q_BD, true);
-	$per->events = $e->results;
+	
+	
 	
 	$sdao = getSourceDAO();
 	$classes = array("1 BIRT","1 BAPM","1 DEAT","1 BURI");
-	foreach ($per->events AS $e) {
+	foreach ($e->results AS $e) {
 		if ($e->hasData()) {
 			echo $classes[$e->type]."\n";
 			$events[$e->type] = $e;
 #			$sdao->getEventSources($e);
 			echo full_ged_date1($e);
 			if ($e->location->place != "") {
-				echo "2 PLAC ".$e->location->place."\n";
+				output_ged(2, "PLAC ",$e->location->place);
 			}
 			if ($e->type == DEATH_EVENT && $per->death_reason != "") {
-				 echo "2 CAUS ".$per->death_reason."\n";
+				 output_ged(2, "CAUS ",$per->death_reason);
 			}
 			if ($e->notes != "") {
 				echo "2 NOTE\n" ;
-				echo "3 CONT ".$e->notes."\n" ;
+				output_ged(3, "CONT ",$e->notes);
     			if ($e->source != "") {
-    				echo "2 SOUR ".$e->source."\n" ;
+    				output_ged(2, "SOUR ",$e->source->title);
     			} else {
-    				echo "3 SOUR phpmyfamily\n" ;
+    				output_ged(3, "SOUR ","phpmyfamily");
                 }
 			}
 		}
 	}
-
+	
 	if ($per->mother->person_id <> "00000" and $per->father->person_id <> "00000") {
 		$famc = $per->father->person_id.$per->mother->person_id;
-		echo "1 FAMC @".$famc."@\n";
+		output_ged(1, "FAMC @",$famc."@");
 		if (!array_key_exists($famc, $famarray)) {
 			$famarray[$famc] = array();
 		}
 		$famarray[$famc][] = $per;
 	}
+	
 	if ($per->narrative <> "") {
 		//Textfield could have Returns, separate them in gedcom CONT lines
-		$narrative = ereg_replace("\n","2 CONT ",$per->narrative);
-		echo "1 NOTE ".$narrative."\n";
+		$narrative = ereg_replace("\n","\n2 CONT ",$per->narrative);
+		output_ged(1, "NOTE ",$narrative);
 	}
 	$exploded = explode(" ", $per->updated);
 	$updated = ged_date($exploded[0]);
 	echo "1 CHAN\n";
-	echo "2 DATE ".$updated."\n";
+	output_ged(2, "DATE ",$updated);
 	//find photos
 	$eid = -1; 
 	$sid = -1;
@@ -207,10 +221,10 @@ function print_person($search, $per) {
 	
 	for ($current = 0; $current < $images->numResults; $current++) {
 			$img = $images->results[$current];
-			echo "1 OBJE @img".$img->image_id."@\n";
-			echo "2 FILE ".$config->absurl.$img->getImageFile()."\n";
-			echo "2 FORM jpg\n";
-			echo "2 TITL ".$img->title."\n";
+			output_ged(1, "OBJE @img",$img->image_id,"@");
+			output_ged(2, "FILE ",$config->absurl.$img->getImageFile());
+			output_ged(2, "FORM ","jpg");
+			output_ged(2, "TITL ",$img->title);
 	}
 	
 	$trans = new Transcript();
@@ -219,21 +233,22 @@ function print_person($search, $per) {
 	$tdao->getTranscripts($trans);
 	for ($i=0; $i < $trans->numResults; $i++) {
 		$doc = $trans->results[$i];
-		echo "1 SOUR @doc".$doc->transcript_id."@\n";
+		output_ged(1, "SOUR @doc",$doc->transcript_id,"@");
 		//TITL not allowed here
-		echo "2 TEXT ".$doc->description."\n";
+		output_ged(2, "TEXT ",$doc->description);
 		//FILE not allowed here
 	}
 	echo "1 SUBM @phpmyfamily@\n";
+	
 } //end of INDIvidual
 
 // Gedcom Families
 foreach ($famarray as $famc => $fam) {
-	echo "0 @".$famc."@ FAM\n";
-	echo "1 HUSB @".$fam[0]->father->person_id."@\n";
-	echo "1 WIFE @".$fam[0]->mother->person_id."@\n";
+	output_ged(0, "@",$famc,"@ FAM");
+	output_ged(1, "HUSB @",$fam[0]->father->person_id,"@");
+	output_ged(1, "WIFE @",$fam[0]->mother->person_id,"@");
 	foreach ($fam as $child) {
-		echo "1 CHIL @".$child->person_id."@\n";
+		output_ged(1, "CHIL @",$child->person_id,"@");
 	}
 	
 	$search = new Relationship();
@@ -249,17 +264,17 @@ foreach ($famarray as $famc => $fam) {
 				echo full_ged_date1($rel->event);
 				//write place only when present
 				if ($rel->marriage_place <> "") {
-					echo "2 PLAC ".$rel->marriage_place->place."\n";
+					output_ged(2, "PLAC ",$rel->marriage_place->place);
 				}
 				$div = "";
 				if ($rel->dissolve_date <> "0000-00-00") {
-					echo "2 DATE ".ged_date($rel->dissolve_date)."\n";
+					output_ged(2, "DATE ",ged_date($rel->dissolve_date));
 				}
 				if ($rel->dissolve_reason <> "") {
-					echo "2 CAUS ".$rel->dissolve_reason."\n";
+					output_ged(2, "CAUS ",$rel->dissolve_reason);
 				}
 				if ($div != "") {
-					echo "1 DIV\n".$div;
+					output_ged(1, "DIV","");
 				}
 		}
 	}
@@ -277,13 +292,13 @@ $pnumber = mysql_num_rows($presult);
 $p = 0;
 while ($p < $pnumber) {
 	$prow = mysql_fetch_array($presult);
-	echo "0 @img".$prow["image_id"]."@ OBJE\n";
+	output_ged(0, "@img",$prow["image_id"]."@ OBJE\n";
 	//insertion of binary data would be here in gedcom < 5.5.1
-	//echo "1 FILE $absurl"."images/".$prow["image_id"].".jpg\n";
+	//output_ged(1, "FILE $absurl","images/".$prow["image_id"].".jpg\n";
 	//echo "2 FORM jpg\n";
-	//echo "2 TITL ".$prow["title"]."\n";
+	//output_ged(2, "TITL ",$prow["title"]);
 	//the above three lines are for 5.5.1, for now just fill the title
-	echo "1 TITL ".$prow["title"]."\n";
+	output_ged(1, "TITL ",$prow["title"]);
 	$p ++;
 }
 
@@ -294,11 +309,11 @@ $pnumber = mysql_num_rows($presult);
 $p = 0;
 while ($p < $pnumber) {
 	$prow = mysql_fetch_array($presult);
-	echo "0 @doc".$prow["id"]."@ SOUR\n";
-	echo "1 TITL ".$prow["doc_title"]."\n";
-	echo "1 TEXT ".$prow["doc_description"]."\n";
+	output_ged(0, "@doc",$prow["id"]."@ SOUR\n";
+	output_ged(1, "TITL ",$prow["doc_title"]);
+	output_ged(1, "TEXT ",$prow["doc_description"]);
 	echo "1 OBJE\n";
-	echo "2 FILE $absurl"."documents/".$prow["file_name"]."\n";
+	output_ged(2, "FILE $absurl","documents/".$prow["file_name"]);
 	$p ++;
 }
 */
