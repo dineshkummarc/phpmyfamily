@@ -68,29 +68,30 @@ $ret = "<script src=\"http://".$config->gmapshost."/maps?file=api&amp;v=2&key=".
 }
 
 function show_location($p) {
-	 $ret = "<table>".
-  "<tr><td>";
-  $config = Config::getInstance();
-  if (!isset($config->gmapskey) || strlen($config->gmapskey) == 0 || isset($_REQUEST["nomap"])) {
-	$places = $p->places;
-	foreach ($places as $place) {
-		$ret .= "<tr><td>".$place->text."</td></tr>\n";
-	}
-  } else {
-      $ret .= '<div id="map_canvas" style="width: 650px; height: 800px"></div>';
-      $ret .= "</td><td>".
-      "<h2>Places not found</h2>".
-      "<table>";
+	$places = array();
+	
+	$ret = "<table>".
+		"<tr><td>";
+	$config = Config::getInstance();
+	if (!isset($config->gmapskey) || strlen($config->gmapskey) == 0 || isset($_REQUEST["nomap"])) {
+		$places = array_merge($p->places, $p->notFound);
+	} else {
+      		$ret .= '<div id="map_canvas" style="width: 650px; height: 800px"></div>';
+	      	$ret .= "</td><td>".
+      			"<h2>Places not found</h2>";
+		$places = $p->notFound;
+  	}
+	$ret .= "<table>";
    
-      	$places = $p->notFound;
+      	ksort($places);
 	foreach ($places as $place) {
 		$ret .= "<tr><td>".$place->text."</td></tr>\n";
 	}
 	
 	$ret .="</table>".
-	"</td></tr>";
-  }
-  $ret .= "</table>";
+		"</td></tr>";
+  
+	$ret .= "</table>";
 	return $ret;
 }
 
@@ -115,4 +116,3 @@ function selectPlace($field, $location) {
 	}
 }
 ?>
-
