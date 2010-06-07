@@ -17,64 +17,11 @@
 //along with this program; if not, write to the Free Software
 //Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 include_once "modules/db/DAOFactory.php";
+include_once "inc/DateUtil.php";
 
 ini_set("auto_detect_line_endings", TRUE);
 
-function full_ged_date1($event) {
-	$date = "";
-	if ($event->date1 <> "0000-00-00") {
-		$date = "2 DATE ";
-		$mod = "";
-		switch($event->date1_modifier) {
-        	case 9:		//	"In"
-        	case 1:		//  "About"
-				$mod = "ABT ";
-            break;
-        	case 2:		// "Circa"
-        	case 3:		// "Estimated
-        	case 4:		// "Roughly"
-				$mod = "EST ";
-            break;
-            case 5:		// Calculated
-                $mod = "CAL ";
-             break;
-             case 6:		// "Before"
-                $mod = "BEF ";
-             break;
-             case 7:		// "After"
-                $mod = "AFT ";
-             break;
-		}
-		$date .= $mod;
-		$date .= ged_date($event->date1);
-		$date .= "\n";
-	}
-	return($date);
-}
-//convert date from yyyy-mm-dd database format to dd MMM yyyy gedcom format
-function ged_date($incoming) {
-	// define the months
-	$months = array ("00" => "00", "01" => "JAN", "02" => "FEB", "03" => "MAR", "04" => "APR", "05" => "MAY", "06" => "JUN", "07" => "JUL", "08" => "AUG", "09" => "SEP", "10" => "OCT", "11" => "NOV", "12" => "DEC");
-	// explode date
-	$work = explode("-", $incoming);
-	$retval = "";
-	if (count($work) > 1) {
-		// if  month or day unknown, just return year
-		if ($work[1] == "00" OR $work[2] == "00") {
-			$retval = "$work[0]";
-		} elseif ($work[1] != "00" AND $work[2] == "00") {
-            // year and month are known
-			$replacemonth = strtr($work[1], $months);
-			$retval = "$replacemonth $work[0]";
-		} else {
-			// reformat whole date to dd MMM yyyy
-			$replacemonth = strtr($work[1], $months);
-			$retval = "$work[2] $replacemonth $work[0]";
-		}
-	}
-	// return the string for gedcom DATE
-	return $retval;
-}
+
 
 $config = Config::getInstance();
 
@@ -174,7 +121,7 @@ function print_person($search, $per) {
 			echo $classes[$e->type]."\n";
 			$events[$e->type] = $e;
 #			$sdao->getEventSources($e);
-			echo full_ged_date1($e);
+			echo DateUtil::full_ged_date1($e);
 			if ($e->location->place != "") {
 				output_ged(2, "PLAC ",$e->location->place);
 			}
@@ -208,7 +155,7 @@ function print_person($search, $per) {
 		output_ged(1, "NOTE ",$narrative);
 	}
 	$exploded = explode(" ", $per->updated);
-	$updated = ged_date($exploded[0]);
+	$updated = DateUtil::ged_date($exploded[0]);
 	echo "1 CHAN\n";
 	output_ged(2, "DATE ",$updated);
 	//find photos
@@ -261,14 +208,14 @@ foreach ($famarray as $famc => $fam) {
 			//write MARR line if an (even otherwise empty) record is found
 				echo "1 MARR\n";
 				//write DATE only when present
-				echo full_ged_date1($rel->event);
+				echo DateUtil::full_ged_date1($rel->event);
 				//write place only when present
 				if ($rel->marriage_place <> "") {
 					output_ged(2, "PLAC ",$rel->marriage_place->place);
 				}
 				$div = "";
 				if ($rel->dissolve_date <> "0000-00-00") {
-					output_ged(2, "DATE ",ged_date($rel->dissolve_date));
+					output_ged(2, "DATE ",DateUtil::ged_date($rel->dissolve_date));
 				}
 				if ($rel->dissolve_reason <> "") {
 					output_ged(2, "CAUS ",$rel->dissolve_reason);

@@ -15,6 +15,8 @@
 	//You should have received a copy of the GNU General Public License
 	//along with this program; if not, write to the Free Software
 	//Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+require_once("inc/DateUtil.php");
+require_once("classes/MiniEvent.php");
 
 error_reporting(E_ALL ^ E_NOTICE);
 #Sends errors to the screen instead of the log file
@@ -43,89 +45,6 @@ error_reporting(E_ALL ^ E_NOTICE);
 	
 	ini_set("auto_detect_line_endings", TRUE);
 
-	function make_date($incoming, &$event) {
-		// define the months
-		$months = array(1 => "JAN",
-						2 => "FEB",
-						3 => "MAR",
-						4 => "APR",
-						5 => "MAY",
-						6 => "JUN",
-						7 => "JUL",
-						8 => "AUG",
-						9 => "SEP",
-						10 => "OCT",
-						11 => "NOV",
-						12 => "DEC");
-		// how long is the date string
-		$length = strlen($incoming);
-		$work = explode(" ", $incoming);
-
-		// if the first part is not numeric, then we don't really know what to do!...
-		if ($work && count($work) > 0 && !is_numeric($work[1])) {
-			$retval = "0000-00-00";
-			// ...if it isn't, check it's not a month
-			if (in_array($work[1], $months)) {
-				$retval = $work[2]."-".str_pad(array_search(strtoupper($work[1]), $months), 2, "0", STR_PAD_LEFT)."-00";
-			} else if (count($work) > 1) {
-				switch($work[1]) {
-					case "BEF":
-					$event->date1_modifier = 6;
-					break;
-					case "AFT":
-					$event->date1_modifier = 7;
-					break;
-					case "ABT":
-					$event->date1_modifier = 1;
-					break;
-					case "EST":
-					$event->date1_modifier = 3;
-					break;
-					case "CAL":
-					$event->date1_modifier = 5;
-					break;
-				}
-				//unset($work[0]);
-				unset($work[1]);
-				$temp = implode(" ",array_values($work));
-				make_date($temp, $event);
-			}
-		} else {
-			// ...if it is, see if it's a year (anybody back to 31AD is a bit buggered)..
-			if ($work[1] > 31) {
-				$retval = $work[1]."-00-00";
-			} else {
-				// ...so it must be a day
-				$retval = $work[3]."-".str_pad(array_search(strtoupper($work[2]), $months), 2, "0", STR_PAD_LEFT)."-".str_pad($work[1], 2, "0", STR_PAD_LEFT);
-			}
-		}
-
-		// check that the returning string isn't going to break the database
-		// must be 0000-00-00
-		if (!ereg ("([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})", $retval))
-			$retval = "0000-00-00";
-
-		if (($event->date1_modifier == 0) and ($event->date1 != "0000-00-00")) {
-			$event->date1_modifier = 8 ;	// on
-		}
-		
-		// return the string
-		$event->date1 = $retval;
-		
-		return $retval;
-	}
-
-	class MiniEvent {
-		public $type;
-		public $date1;
-		public $date1_modifier = 0;
-		public $date2_modifier = 0;
-		public $date2 = '0000-00-00';
-		public $location;
-		function MiniEvent() {
-			$this->location = new Location();
-		}
-	}
 
 ?>
 
@@ -301,7 +220,7 @@ Parsing individual data:
 					break;
 				case "2 DATE":
 					if ($e != null) {
-						make_date(substr($people[$i][$c], 6, strlen($people[$i][$c]) - 6),$e);
+						DateUtil::make_date(substr($people[$i][$c], 6, strlen($people[$i][$c]) - 6),$e);
 					}
 					break;
 				case "2 PLAC":
@@ -404,7 +323,7 @@ Parsing marriage data:
 					break;
 				case "2 DATE":
 					if ($previous == "1 MARR")
-						make_date(substr($family[$i][$c], 6, strlen($family[$i][$c]) - 6), $e);
+						DateUtil::make_date(substr($family[$i][$c], 6, strlen($family[$i][$c]) - 6), $e);
 					break;
 				case "2 PLAC":
 					if ($previous == "1 MARR")
