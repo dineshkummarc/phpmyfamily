@@ -1,4 +1,5 @@
 <?php
+include_once("inc/DateUtil.php");
 define('BIRTH_EVENT', 0);
 define('BAPTISM_EVENT', 1);
 define('DEATH_EVENT', 2);
@@ -9,6 +10,21 @@ define('CENSUS_EVENT', 6);
 define('OTHER_EVENT', 7);
 define('IMAGE_EVENT', 8);
 define('DOC_EVENT', 9);
+
+define('DATE_DEFAULT', 0);
+define('DATE_ABOUT', 1);
+define('DATE_CIRCA', 2);
+define('DATE_EST', 3);
+define('DATE_APPROX', 4);
+define('DATE_CALC', 5);
+define('DATE_BEFORE', 6);
+define('DATE_AFTER', 7);
+define('DATE_ON', 8);
+define('DATE_IN', 9);
+define('DATE_PROB', 10);
+define('DATE_FROM', 11);
+define('DATE_TO', 12);
+define('DATE_BETWEEN', 13);
 
 class Event extends Base {
 	var $event_id;
@@ -54,6 +70,9 @@ class Event extends Base {
 		$this->notes = htmlspecialchars($this->notes, ENT_QUOTES);
 		//Required in addition to the processing in loadFields
 		$this->location->setFromPost($prefix);
+		$this->date1 = DateUtil::resolveDate($this->date1);
+		$this->date2 = DateUtil::resolveDate($this->date2);
+		
 	}
 	function loadFields($row, $prefix) {
 		@$this->event_id = $row[$prefix."event_id"];
