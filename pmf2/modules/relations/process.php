@@ -56,6 +56,7 @@ if (isset($_REQUEST["func"]) && $_REQUEST["func"] == "delete") {
 		}
 		$prefix++;
 	}
+	$e->person = $rel->person;
 	$rel->event = $e;
 	$dao->saveRelationshipDetails($rel);
 	$edao = getEventDAO();
@@ -64,4 +65,3 @@ if (isset($_REQUEST["func"]) && $_REQUEST["func"] == "delete") {
 
 header("Location: people.php?person=".$rel->person->person_id);
 ?>
-
