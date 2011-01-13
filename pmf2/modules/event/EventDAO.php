@@ -235,6 +235,12 @@ class EventDAO extends MyFamilyDAO {
 		//TODO error message
 		$dresult = $this->runQuery($dquery, '');
 		
+		$dquery = "DELETE ".$tblprefix."source_event FROM ".$tblprefix."source_event".
+			" JOIN ".$tblprefix."event ON ".$tblprefix."event.event_id = ".$tblprefix."source_event.event_id".
+			" where ".$tblprefix."event.person_id = ".$person->person_id;
+		//TODO error message
+		$dresult = $this->runQuery($dquery, '');
+		
 		$dquery = "DELETE FROM ".$tblprefix."event WHERE person_id = ".$person->person_id;
 		
 		switch ($type) {

@@ -445,6 +445,10 @@ class PeopleDAO extends MyFamilyDAO {
 		$rdao = getRelationsDAO();
 		$rdao->deletePersonRelationshipDetails($per);
 		
+		// delete tracking
+		$dtquery = "DELETE FROM ".$tblprefix."tracking WHERE person_id = '".$per->person_id."'";
+		$dtresult = $this->runQuery($dtquery, $err_person_delete);
+
 		// update children to point to the right person
 		$ucquery = "UPDATE ".$tblprefix."people SET mother_id = '0' WHERE mother_id = '".$per->person_id."'";
 		$ucresult = $this->runQuery($ucquery, $err_child_update);
