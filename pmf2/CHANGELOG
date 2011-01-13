@@ -1,3 +1,10 @@
+v 2.0.3
+	Fix to ensure person associated with relationship
+	Fix display of locations when not found and enhance location editor
+	Change to date handling
+	Update dojo version
+	Fix deleting a person
+	Fix error handling in upgrade-1.4.2-2.0.0.php
 v 2.0.2
 	Fix install script
 	Fix numerous strict php warnings and switch off strict reporting to screen
