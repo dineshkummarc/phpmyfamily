@@ -83,7 +83,7 @@ $q = "INSERT INTO `".$tblprefix."names` (person_id, forenames, surname, suffix) 
     "FROM `".$tblprefix."people`";
     
 if(!mysql_query($q)) {
-	mysql_error();
+	echo mysql_error();
 	die("phpmyfamily: Error migrating names");
 } else {
 	echo "Names migrated<br/>";
@@ -100,7 +100,7 @@ $q = "INSERT INTO `".$tblprefix."locations` (place, name) ".
     " WHERE location_id IS NULL AND birth_place <> ''";
     
 if(!mysql_query($q)) {
-	mysql_error();
+	echo mysql_error();
 	echo $q;
 	die("phpmyfamily: Error migrating birth places");
 } else {
@@ -113,7 +113,7 @@ $q = "INSERT INTO `".$tblprefix."event` (person_id, etype, date1, d1type, locati
     " LEFT JOIN ".$tblprefix."locations l ON p.birth_place = l.place";
     
 if(!mysql_query($q)) {
-	mysql_error();
+	echo mysql_error();
 	echo $q;
 	die("phpmyfamily: Error migrating birth dates");
 } else {
@@ -126,7 +126,7 @@ $q = "INSERT INTO `".$tblprefix."event` (person_id, etype, date1, d1type, certif
     " FROM ".$tblprefix."people p";
     
 if(!mysql_query($q)) {
-	mysql_error();
+	echo mysql_error();
 	die("phpmyfamily: Error migrating death dates");
 } else {
 	echo "death dates migrated<br/>";
@@ -141,7 +141,7 @@ $q = "ALTER TABLE `".$tblprefix."spouses` ADD COLUMN `event_id` INTEGER UNSIGNED
     ENGINE = InnoDB;";
     
 if(!mysql_query($q)) {
-	mysql_error();
+	echo mysql_error();
 	echo $q;
 	die("phpmyfamily: Error changing spouses table");
 } else {
@@ -152,7 +152,7 @@ if(!mysql_query($q)) {
 $q = "ALTER TABLE `".$tblprefix."event` ADD COLUMN `marriage_id` INTEGER UNSIGNED DEFAULT NULL";
     
 if(!mysql_query($q)) {
-	mysql_error();
+	echo mysql_error();
 	die("phpmyfamily: Error adding marriage_id column to event");
 } else {
 	echo "added marriage_id column to event<br/>";
@@ -164,7 +164,7 @@ $q = "INSERT INTO `".$tblprefix."locations` (place, name) ".
     " WHERE location_id IS NULL  AND marriage_place <> ''";
     
 if(!mysql_query($q)) {
-	mysql_error();
+	echo mysql_error();
 	echo $q;
 	die("phpmyfamily: Error migrating marriage places");
 } else {
@@ -178,7 +178,7 @@ $q = "INSERT INTO `".$tblprefix."event` (etype, date1, d1type, location_id, cert
     
 if(!mysql_query($q)) {
 	echo $q;
-	mysql_error();
+	echo mysql_error();
 	die("phpmyfamily: Error migrating weddings");
 } else {
 	echo "weddings migrated<br/>";
@@ -187,7 +187,7 @@ if(!mysql_query($q)) {
 $q = "UPDATE ".$tblprefix."spouses,".$tblprefix."event SET ".$tblprefix."spouses.event_id=".$tblprefix."event.event_id WHERE ".$tblprefix."event.marriage_id = ".$tblprefix."spouses.marriage_id";
     
 if(!mysql_query($q)) {
-	mysql_error();
+	echo mysql_error();
 	echo $q;
 	die("phpmyfamily: Error moving marriage event ids");
 } else {
@@ -197,7 +197,7 @@ if(!mysql_query($q)) {
 $q = "ALTER TABLE `".$tblprefix."event` DROP COLUMN `marriage_id`";
     
 if(!mysql_query($q)) {
-	mysql_error();
+	echo mysql_error();
 	die("phpmyfamily: Error removing marriage_id column to event");
 } else {
 	echo "removed marriage_id column to event<br/>";
@@ -214,7 +214,7 @@ $q = "ALTER TABLE `".$tblprefix."census` ADD COLUMN `census_id` INTEGER UNSIGNED
   ENGINE = InnoDB;";
     
 if(!mysql_query($q)) {
-	mysql_error();
+	echo mysql_error();
 	echo $q;
 	die("phpmyfamily: Error changing census table");
 } else {
@@ -224,7 +224,7 @@ if(!mysql_query($q)) {
 $q = "ALTER TABLE `".$tblprefix."event` ADD COLUMN `census_id` INTEGER UNSIGNED DEFAULT NULL";
     
 if(!mysql_query($q)) {
-	mysql_error();
+	echo mysql_error();
 	die("phpmyfamily: Error adding census_id column to event");
 } else {
 	echo "added census_id column to event<br/>";
@@ -236,7 +236,7 @@ $q = "INSERT INTO `".$tblprefix."locations` (place, name) ".
     " WHERE location_id IS NULL  AND address <> ''";
     
 if(!mysql_query($q)) {
-	mysql_error();
+	echo mysql_error();
 	echo $q;
 	die("phpmyfamily: Error migrating census places");
 } else {
@@ -246,7 +246,7 @@ if(!mysql_query($q)) {
 
 $q = "ALTER TABLE `".$tblprefix."census_years` ADD COLUMN `census_date` DATE NOT NULL";
 if(!mysql_query($q)) {
-	mysql_error();
+	echo mysql_error();
 	echo $q;
 	die("phpmyfamily: Error changing census years table");
 } else {
@@ -351,7 +351,7 @@ $q = "INSERT INTO `".$tblprefix."event` (etype, person_id, date1, d1type, locati
     
 if(!mysql_query($q)) {
 	echo $q;
-	mysql_error();
+	echo mysql_error();
 	die("phpmyfamily: Error migrating census");
 } else {
 	echo "census migrated<br/>";
@@ -360,7 +360,7 @@ if(!mysql_query($q)) {
 $q = "UPDATE ".$tblprefix."census,".$tblprefix."event SET ".$tblprefix."census.event_id=".$tblprefix."event.event_id WHERE ".$tblprefix."event.census_id = ".$tblprefix."census.census_id";
     
 if(!mysql_query($q)) {
-	mysql_error();
+	echo mysql_error();
 	echo $q;
 	die("phpmyfamily: Error moving census event ids");
 } else {
@@ -370,7 +370,7 @@ if(!mysql_query($q)) {
 $q = "ALTER TABLE `".$tblprefix."event` DROP COLUMN `census_id`";
     
 if(!mysql_query($q)) {
-	mysql_error();
+	echo mysql_error();
 	die("phpmyfamily: Error removing census_id column from event");
 } else {
 	echo "removed census_id column from event<br/>";
@@ -384,7 +384,7 @@ $q = "ALTER TABLE `".$tblprefix."census`
 , ENGINE = InnoDB;";
     
 if(!mysql_query($q)) {
-	mysql_error();
+	echo mysql_error();
 	echo $q;
 	die("phpmyfamily: Error changing census table");
 } else {
@@ -397,7 +397,7 @@ $q = "INSERT INTO `".$tblprefix."locations` (place, name) ".
     " WHERE location_id IS NULL  AND where_born <> ''";
     
 if(!mysql_query($q)) {
-	mysql_error();
+	echo mysql_error();
 	echo $q;
 	die("phpmyfamily: Error migrating census birth places");
 } else {
@@ -411,7 +411,7 @@ $q = "INSERT INTO `".$tblprefix."attendee` (event_id,person_id, age,profession,r
     
 if(!mysql_query($q)) {
 	echo $q;
-	mysql_error();
+	echo mysql_error();
 	die("phpmyfamily: Error migrating people");
 } else {
 	echo "census people migrated<br/>";
