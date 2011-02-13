@@ -4,10 +4,10 @@
 		
 		$config = Config::getInstance();
 		if ($config->dojo) {
-		$dojo = "dojo-release-1.3.0";
+		$dojo = "dojo-release-1.4.3";
 		$ext = " <style type=\"text/css\">
         @import \"".$dojo."/dijit/themes/tundra/tundra.css\";
-        @import \"".$dojo."/dojo/dojo.css\"
+        @import \"".$dojo."/dojo/resources/dojo.css\"
     </style>
     <script type=\"text/javascript\" src=\"".$dojo."/dojo/dojo.js\"
     djConfig=\"parseOnLoad: true\"></script>
