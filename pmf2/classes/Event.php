@@ -91,13 +91,14 @@ class Event extends Base {
 	}
 	
 	function hasData() {
+		$ret = true;
 		if ((isset($this->event_id) && $this->event_id > 0) || $this->location->hasData()) {
-			return (true);
+			$ret = true;
 		}
-		if ($this->location->place == '' && $this->date1 == '0000-00-00' && $this->notes == '') {
-			return (false);
+		if ($this->location->hasData() == false && $this->date1 == '0000-00-00' && $this->notes == '') {
+			$ret = false;
 		}
-		return (true);
+		return ($ret);
 	}
 	
 	function getDate1() {

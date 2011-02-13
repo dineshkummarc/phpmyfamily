@@ -5,6 +5,7 @@ v 2.0.3
 	Update dojo version
 	Fix deleting a person
 	Fix error handling in upgrade-1.4.2-2.0.0.php
+	Fix to Event->hasData which means that date unknown events are not shown 
 v 2.0.2
 	Fix install script
 	Fix numerous strict php warnings and switch off strict reporting to screen
