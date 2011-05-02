@@ -1,3 +1,5 @@
+v 2.0.4
+	Fix a couple of places, upgrade script and census report where family_ was used instead of $tblprefix
 v 2.0.3
 	Fix to ensure person associated with relationship
 	Fix display of locations when not found and enhance location editor

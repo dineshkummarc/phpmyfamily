@@ -418,9 +418,9 @@ if(!mysql_query($q)) {
 }
 
 $q = "SELECT f.attendee_id,f.event_id, e.reference, e.location_id, e.date1 FROM ".$tblprefix."attendee f
-JOIN family_census c ON f.event_id = c.event_id
-JOIN family_event e ON f.event_id = e.event_id
-LEFT JOIN family_event b ON b.person_id = f.person_id AND b.etype = 0
+JOIN ".$tblprefix."census c ON f.event_id = c.event_id
+JOIN ".$tblprefix."event e ON f.event_id = e.event_id
+LEFT JOIN ".$tblprefix."event b ON b.person_id = f.person_id AND b.etype = 0
 where e.reference <> '' OR e.location_id is not null
 order by e.reference, e.location_id, e.date1, b.date1";
 

@@ -207,7 +207,7 @@ class CensusDAO extends PeopleDAO {
 		$tquery = "SELECT DISTINCT ".PersonDetail::getFields().
 			 " FROM ".$tblprefix."people p ".
 			 " LEFT JOIN ".$tblprefix."attendee a ON p.person_id = a.person_id".
-			 " LEFT JOIN family_census c ON a.event_id = c.event_id AND census = ".$cen->census_id.
+			 " LEFT JOIN ".$tblprefix."census c ON a.event_id = c.event_id AND census = ".$cen->census_id.
 			 " JOIN ".$tblprefix."census_years cy ON cy.census_id = ".$cen->census_id.
 			 PersonDetail::getJoins().
 			 "WHERE c.event_id is null AND (b.date1 <= cy.census_date AND d.date1 >= cy.census_date)";
