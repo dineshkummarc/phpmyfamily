@@ -72,7 +72,7 @@
   `mother_id` smallint(5) unsigned zerofill NOT NULL default '00000',
   `father_id` smallint(5) unsigned zerofill NOT NULL default '00000',
   `narrative` longtext NOT NULL,
-  `updated` timestamp(14) NOT NULL,
+  `updated` timestamp NOT NULL,
   `creator_id` SMALLINT NULL ,
   `created` DATETIME NOT NULL ,
   `editor_id` SMALLINT NULL,
