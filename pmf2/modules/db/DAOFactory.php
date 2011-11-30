@@ -10,6 +10,7 @@ include_once "modules/event/EventDAO.php";
 include_once "modules/gedcom/GedcomDAO.php";
 include_once "modules/source/SourceDAO.php";
 include_once "inc/database.inc.php";
+include_once "inc/class.phpmailer.php";
 
 //=====================================================================================================================
 // Database connection routines
@@ -107,18 +108,33 @@ function getSourceDAO() {
 		
 		$tresult = mysql_query($tquery) or die($err_person);
 		while ($trow = mysql_fetch_array($tresult)) {
-			$headers = "Content-type: text/plain; charset=iso-8859-1\r\n";
-			$headers .= "From: <".$config->trackemail.">\r\n";
-			$headers .= "X-Mailer: PHP/" . phpversion();
-			$subject = str_replace("$1", $person->getDisplayName(), $eTrackSubject);
-			$body = str_replace("$1", $person->getDisplayName(), $eTrackBodyTop);
-			$body = str_replace("$2", $config->absurl, $body);
-			$body = str_replace("$3", $currentRequest->name, $body);
-			$body .= $config->absurl."people.php?person=".$person->person_id."\n\n";
-			$body .= $eTrackBodyBottom;
-			$body .= $config->absurl."track.php?person=".$person->person_id."&action=unsub&email=".$trow["email"]."&name=".urlencode($person->name->getDisplayName())."\n";
+			
+			
+				$email = $config->email;
+				$mail = new PHPMailer();
+				$mail->IsSMTP();
+				$mail->SMTPAuth = true;     
+				// SMTP username
+				$mail->Host = $config->smtp_host;
+				$mail->Username = $config->smtp_user;
+				$mail->Password = $config->smtp_password;
 
-			mail($trow["email"], $subject, $body, $headers);
+				$mail->From=$config->trackemail;
+				$mail->AddAddress($trow["email"],'');
+				$mail->Subject=str_replace("$1", $person->getDisplayName(), $eTrackSubject);
+				$body = str_replace("$1", $person->getDisplayName(), $eTrackBodyTop);
+				$body = str_replace("$2", $config->absurl, $body);
+				$body = str_replace("$3", $currentRequest->name, $body);
+				$body .= $config->absurl."people.php?person=".$person->person_id."\n\n";
+				$body .= $eTrackBodyBottom;
+				$body .= $config->absurl."track.php?person=".$person->person_id."&action=unsub&email=".$trow["email"]."&name=".urlencode($person->name->getDisplayName())."\n";	
+				$mail->Body=$body;
+				if(!$mail->Send()) {
+		
+				} else { 
+		
+				}
+			
 		}
 		mysql_free_result($tresult);
 	}	// eod of track_person()

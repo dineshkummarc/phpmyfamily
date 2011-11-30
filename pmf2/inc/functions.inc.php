@@ -106,16 +106,27 @@
 		if (mysql_affected_rows() != 1)
 			return 0;
 
-		// email to user
-		// Set up the headers to be meaningful
-		$headers = "Content-type: text/plain; charset=iso-8859-1\r\n";
-		$headers .= "From: <".$config->trackemail.">\r\n";
-		$headers .= "X-Mailer: PHP/" . phpversion();
-		$subject = $ePwdSubject;
-		$body = str_replace("$1", $username."/".$password, $ePwdBody);
+			
+			
+			
+		$email = $config->email;
+		$mail = new PHPMailer();
+		$mail->IsSMTP();
+		$mail->SMTPAuth = true;     
+		// SMTP username
+		$mail->Host = $config->smtp_host;
+		$mail->Username = $config->smtp_user;
+		$mail->Password = $config->smtp_password;
 
-		// fire off the email
-		mail($email, $subject, $body, $headers);
+		$mail->From=$config->trackemail;
+		$mail->AddAddress($email,'');
+		$mail->Subject=$ePwdSubject;
+		$mail->Body=str_replace("$1", $username."/".$password, $ePwdBody);;
+		if(!$mail->Send()) {
+			echo "Message could not be sent. <p>";
+			echo "Mailer Error: " . $mail->ErrorInfo;
+			exit;
+		}
 	}	// end of send_password()
 
 
