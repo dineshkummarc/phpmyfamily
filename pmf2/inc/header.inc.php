@@ -4,7 +4,7 @@
 		
 		$config = Config::getInstance();
 		if ($config->dojo) {
-		$dojo = "dojo-release-1.4.3";
+		$dojo = "dojo-release-1.7.0";
 		$ext = " <style type=\"text/css\">
         @import \"".$dojo."/dijit/themes/tundra/tundra.css\";
         @import \"".$dojo."/dojo/resources/dojo.css\"
