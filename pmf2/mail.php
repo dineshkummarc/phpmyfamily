@@ -19,6 +19,8 @@
 	// include the configuration parameters and functions
 	include_once "modules/db/DAOFactory.php";
 	include_once "inc/header.inc.php";
+	include_once "inc/class.phpmailer.php";
+	require_once('inc/recaptchalib.php');
 	
 	$config = Config::getInstance();
 
@@ -62,13 +64,51 @@
 <?php
 
 	if ($action == "send") {
+  
+  $privatekey = $config->recaptcha_private;
+  $send = true;
+  if ($privatekey != '') {
+	  $resp = recaptcha_check_answer ($privatekey,
+                                $_SERVER["REMOTE_ADDR"],
+                                $_POST["recaptcha_challenge_field"],
+                                $_POST["recaptcha_response_field"]);
+        if (!$resp->is_valid) {
+        	$send = false;
+        }
+	
+  } else {
+  }                              
+
+  if (!$send) {
+    // What happens when the CAPTCHA was entered incorrectly
+    die ("The reCAPTCHA wasn't entered correctly. Go back and try it again." .
+         "(reCAPTCHA said: " . $resp->error . ")");
+  } else {
+    // Your code here to handle a successful verification
+ 
+ 
 		$email = $config->email;
-		$headers = "Content-type: text/plain; charset=iso-8859-1\r\n";
-		$headers .= "From: <".$email.">\r\n";
-		$headers .= "Reply-To: <".$_REQUEST["email"].">\r\n";
-		$headers .= "X-Mailer: PHP/" . phpversion();
-		mail($email, $_REQUEST["subject"], $_REQUEST["details"], $headers);
+		$mail = new PHPMailer();
+		$mail->IsSMTP();
+		$mail->SMTPAuth = true;     
+		// SMTP username
+		$mail->Host = $config->smtp_host;
+		$mail->Username = $config->smtp_user;
+		$mail->Password = $config->smtp_password;
+
+		$mail->From=$email;
+		$mail->AddReplyTo($_REQUEST["email"]);
+		$mail->AddAddress($email,$config->desc);
+		$mail->Subject=$_REQUEST["subject"];
+		$mail->Body=$_REQUEST["details"];
+		if(!$mail->Send()) {
+			echo "Message could not be sent. <p>";
+			echo "Mailer Error: " . $mail->ErrorInfo;
+			exit;
+		} else { 
 		echo $strEmailSent."<br /><br />\n";
+		}
+ }		
 	} else {
 ?>
 <form action="mail.php" method="post" name="mailform" onsubmit="return check_email();">
@@ -94,6 +134,12 @@
 			</tr>
 		</tbody>
 	</table>
+	<?php
+	  $publickey = $config->recaptcha_public; // you got this from the signup page
+	  if ($publickey != '') {
+		echo recaptcha_get_html($publickey);
+  	 }
+  ?>
 </form>
 <?php
 	}

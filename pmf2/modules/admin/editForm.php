@@ -68,6 +68,19 @@ $ret .='</select>
 <td><input type="text" name="img_max" value="'. $config->img_max.'"></input></td>
 <td><input type="text" name="img_min" value="'. $config->img_min.'"></input></td>
 <td></td></tr>
+<tr><th>smtp_host</th><th>smtp_user</th>
+ <th>smtp_password</th><th>recapt pub</th><th>recapt priv</th>
+ <th></th><th></th><th></th></tr>
+<tr>
+
+<td><input type="text" name="smtp_host" value="'. $config->smtp_host.'"></input></td>
+<td><input type="text" name="smtp_user" value="'. $config->smtp_user.'"></input></td>
+<td><input type="text" name="smtp_password" value="'. $config->smtp_password.'"></input></td>
+<td><input type="text" name="recaptcha_public" value="'. $config->recaptcha_public.'"></input></td>
+<td><input type="text" name="recaptcha_private" value="'. $config->recaptcha_private.'"></input></td>
+<td></td>
+<td></td>
+<td></td></tr>
 <tr><td></td><td><input type="submit" name="<?php echo $strEdit; ?>" /></td><td colspan="15"></td></tr>
     </table>
     </form>';

@@ -6,7 +6,8 @@ class AdminDAO extends MyFamilyDAO {
 		$query = "SELECT ";
 		$query .= "email,mailto,`desc`,styledir,imagedir,filedir,defaultstyle,lang,timing,gedcom,restricttype,".
 			"restrictyears,restrictdate,tracking,trackemail,absurl,bbtracking,".
-			"layout, gmapskey, gmapshost, img_max,img_min";
+			"layout, gmapskey, gmapshost, img_max,img_min,".
+			"smtp_user,smtp_password,smtp_host,recaptcha_private,recaptcha_public";
 		$query .= " FROM ".$tblprefix."config ";
 		//TODO - add a proper error message
 		$result = $this->runQuery($query, "Error retrieving config");
@@ -40,7 +41,12 @@ class AdminDAO extends MyFamilyDAO {
 			"`img_min` = ".$c->img_min.",".
 			"`layout` = ".$c->layout.",".
 			"`gmapshost` = ".quote_smart($c->gmapshost).",".
-			"`gmapskey` = ".quote_smart($c->gmapskey);
+			"`gmapskey` = ".quote_smart($c->gmapskey).",".
+			"`smtp_host` = ".quote_smart($c->smtp_host).",".
+			"`smtp_user` = ".quote_smart($c->smtp_user).",".
+			"`smtp_password` = ".quote_smart($c->smtp_password).",".
+			"`recaptcha_public` = ".quote_smart($c->recaptcha_public).",".
+			"`recaptcha_private` = ".quote_smart($c->recaptcha_private);
 			//TODO - add a proper error message
 		$ret = $this->runQuery($q, "Error updating config");
 		

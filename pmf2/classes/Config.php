@@ -27,6 +27,11 @@ class Config {
 	var $gmapskey;
 	var $gmapshost;
 	var $dojo;
+	var $smtp_host;
+	var $smtp_user;
+	var $smtp_password;
+	var $recaptcha_public;
+	var $recaptcha_private;
 	
 	function setupConfig() {
 		date_default_timezone_set("Europe/London");
@@ -120,6 +125,11 @@ class Config {
 		}
 		$this->gmapskey = $row["gmapskey"];
 		$this->gmapshost = $row["gmapshost"];
+		$this->smtp_host = $row["smtp_host"];
+		$this->smtp_user = $row["smtp_user"];
+		$this->smtp_password = $row["smtp_password"];
+		$this->recaptcha_public = $row["recaptcha_public"];
+		$this->recaptcha_private = $row["recaptcha_private"];
 	}
 }
 
