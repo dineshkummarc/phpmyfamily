@@ -25,8 +25,8 @@ class CurrentRequest {
 	function init() {
 		// call to start a new session or resume if exists
 		if (!session_id()) { 
-			ini_set("session.use_trans_sid", false);	// be nice to search engines
-			ini_set("arg_separator.output", "&amp;");	// keep w3c compiance
+		//	ini_set("session.use_trans_sid", false);	// be nice to search engines
+		//	ini_set("arg_separator.output", "&amp;");	// keep w3c compiance
 			session_start(); 
 		}
 		//=====================================================================================================================

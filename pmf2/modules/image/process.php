@@ -120,7 +120,7 @@ if (isset($_REQUEST["dest"]) && $_REQUEST["dest"] == "gallery") {
 		// image creation needs masses of memory
 		// this is set too large! but needs to be to process a 1MB jpg!
 		// if left as standard 8M, image creation fails and you get error messages and blank thumbnails
-		ini_set("memory_limit", "32M");
+		//ini_set("memory_limit", "32M");
 
 		// bit of error checking
 		if ($img_max < $img_min) {
