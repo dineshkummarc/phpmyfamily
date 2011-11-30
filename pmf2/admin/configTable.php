@@ -23,7 +23,12 @@ $tconfig = "CREATE TABLE `".$tblprefix."config` (
 	`gmapskey` varchar(90) NOT NULL default '',
 	`gmapshost` varchar(20) NOT NULL default 'maps.google.com',
 	`img_max` int(8) NOT NULL default '700',
-	`img_min` int(8) NOT NULL default '300') ENGINE = InnoDB";
+	`img_min` int(8) NOT NULL default '300',
+	`smtp_host` VARCHAR( 32 ) NOT NULL ,
+ 	`smtp_user` VARCHAR( 32 ) NOT NULL ,
+	`smtp_password` VARCHAR( 32 ) NOT NULL ,
+	`recaptcha_public` VARCHAR( 50 ) NOT NULL ,
+	`recaptcha_private` VARCHAR( 50 ) NOT NULL ) ENGINE = InnoDB";
 	
 	if($rconfig = mysql_query($tconfig)) {
 		echo "User config created<br>\n";
