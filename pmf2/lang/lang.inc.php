@@ -25,6 +25,7 @@
 				<a href="passthru.php?func=lang&amp;trans=es"><img src="images/es.gif" alt="Cambie la lengua al espa&#241;ol" width="20" height="20" border="0" /></a>
 				<a href="passthru.php?func=lang&amp;trans=nl-be"><img src="images/be.gif" alt="Nederlandse vertaling (Belgi&euml;)" width="20" height="20" border="0" /></a>
 				<a href="passthru.php?func=lang&amp;trans=pl"><img src="images/pl.gif" alt="Zmie&ntilde; j&ecirc;zyk na polski" width="20" height="20" border="0" /></a>
+				<a href="passthru.php?func=lang&amp;trans=se"><img src="images/se.gif" alt="Byt spr&aring;k till svenska" width="20" height="20" border="0" /></a>
 <?php
 	// eof
 ?>

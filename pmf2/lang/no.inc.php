@@ -164,6 +164,7 @@
 	$strPedigree		= "stamtre";
 	$strToDetails		= "til detaljer";
 	$strSurnameIndex	= "Oversikt over slektsnavn";
+	$strTopSurnames		= "Slektsnavn, topp-10";
 	$strTracking		= "Spore";
 	$strTrack			= "spor";
 	$strThisPerson		= "denne personen";
