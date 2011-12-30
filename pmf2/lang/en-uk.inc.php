@@ -111,6 +111,7 @@
 	$strAdd				= "add";
 	$strDetails			= "Details";
 	$strBorn			= "Born";
+	$strBornAbbrev		= "b.";
 	$strCertified		= "Certified";
 	$strFather			= "Father";
 	$strRestricted		= "<a href=\"restricted.php\">Restricted</a>";

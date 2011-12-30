@@ -164,12 +164,12 @@ class PersonDetail extends Base {
 	}
 
 	function getSelectName() {
-		global $strUnknown;
+		global $strUnknown, $strBornAbbrev;
 		$year = $this->year_of_birth;
 		if ($year == 0) {
 			$year = $strUnknown;
 		}
-		return ($this->name->getReverseName()." (b. ".$year.")");
+		return ($this->name->getReverseName()." (".$strBornAbbrev." ".$year.")");
 	}
 
 	function parseSelectName($str) {
