@@ -199,13 +199,18 @@ function show_pedigree($per) {
 				}
 				echo "></td>";
 			}
-			
+
+			$icona="";// MODIFICA 20120506
 			if ($per->gender == "M") {
 				$class = "tbl_odd";
+				$icona="<img border='0' src='images/smale.gif' alt='M' height='20' /> ";  // MODIFICA 20120506				
 			} else {
 				$class = "tbl_even";
+				$icona="<img border='0' src='images/sfemale.gif' alt='F' height='20' /> ";  // MODIFICA 20120506				
 			}
+			
 			echo "<td bgcolor=\"#FFFFFF\" width=\"22%\" class=\"".$class."\">";
+			echo $icona." ";
 			echo $per->getLink();
 			echo "<br />";
 			echo $per->getBirthDetails();

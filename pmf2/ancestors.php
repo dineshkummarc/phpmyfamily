@@ -205,11 +205,11 @@
            } }
            $fhtmlstring.= "<img alt=\"\" src=\"images/point-";
            if ($per->gender == "M") {
-           $fhtmlstring.= "f";
+           $fhtmlstring.= "&#9484;";
            $grid[($level)] = 1;
            }
            else  {
-           $fhtmlstring.= "m";
+           $fhtmlstring.= "&#9492;";
            $grid[$level] = 0;
            }
            $fhtmlstring.= ".gif\" height=\"16\" width=\"".($gridsize - 9)."\" style=\"position: absolute; left: ".(a2p($y-1)+7)."px;\" border=\"0\">\n";

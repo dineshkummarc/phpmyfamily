@@ -163,6 +163,16 @@ class PersonDetail extends Base {
 		return ($this->name->getDisplayName());
 	}
 
+	function getDisplayGender() {
+		$icona="";// MODIFICA 20120506
+		if ($this->gender=="M"){ // MODIFICA 20120506
+			$icona="<img border='0' src='images/male.gif' alt='M' height='20' /> ";  // MODIFICA 20120506
+		}elseif ($this->gender=="F"){
+			$icona="<img border='0' src='images/female.gif' alt='F' height='20' /> ";  // MODIFICA 20120506
+		}
+		return ($icona);
+	}
+
 	function getSelectName() {
 		global $strUnknown, $strBornAbbrev;
 		$year = $this->year_of_birth;

@@ -41,7 +41,9 @@
 	<table width="100%" class="header">
 		<tr>
 			<td width="65%" align="center" valign="top">
-				<h2><?php echo $strPedigreeOf." ".$per->getDisplayName(); ?></h2>
+				<h2><?php 
+				echo $strPedigreeOf." ".$per->getDisplayName()." ".$per->getDisplayGender(); // MODIFICA 20120506  
+				?></h2>
 				<h3><?php echo $per->getDates(); ?></td>
 			<td width="35%" valign="top" align="right">
 				<form method="get" action="pedigree.php">

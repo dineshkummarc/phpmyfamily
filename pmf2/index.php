@@ -30,17 +30,26 @@
 <table width="100%" class="header">
 	<tr>
 		<td width="65%" align="center">
-			<h1>phpmyfamily</h1>
+			<h1><?php 
+			echo $strPhpMyFamily; // MODIFICA 20120506 
+			?></h1>
 			<h3><?php echo $config->desc; ?></h3>
 		</td>
 		<td width="35%" valign="top" align="right">
 			<form method="get" action="people.php">
 				<?php selectPeople("person", 0, "A", 0, 1, 0, 1); ?>
 			</form>
-<?php user_opts(); ?>
+
 		</td>
 
 	</tr>
+	<tr>
+	<td colspan="2" valign="top" align="right">
+	<?php 
+	user_opts(); // MODIFICA 20120508  
+	?>
+	</td>
+	</tr>	
 </table>
 
 <hr />
@@ -51,7 +60,7 @@
 <?php
 			// include login form if not logged in
 			if ($_SESSION["id"] == 0) {
-				if($config->mailto) echo "<p>".str_replace("$1", "mail.php?subject=".$title, $strIndex)."</p>"; else echo "<p>".str_replace("$1", "mailto:".$config->email."?subject=".$title, $strIndex)."</p><br /><br />";
+				if($config->mailto) echo "<p>".str_replace("$1", "mail.php?subject=".$title, $strIndex)." <a href='schedafam.zip'>$strScheda</a></p>"; else echo "<p>".str_replace("$1", "mailto:".$config->email."?subject=".$title, $strIndex)." <a href='schedafam.zip'>$strScheda</a></p><br /><br />"; // MODIFICA 20120508
 			} 
 ?>
 				<table>
@@ -189,7 +198,13 @@ if ($img->numResults > 0) {
 		<tr>
 		<td class="<?php echo $class; ?>" align="left"><?php echo $per->getLink(); ?></td>
 		<td class="<?php echo $class; ?>"><?php echo $per->dob; ?></td>
-		<td class="<?php echo $class; ?>"><?php echo $year - $per->year_of_birth; ?> years</td>
+		<?php // MODIFICA 20120506 
+		$age=$year - $per->year_of_birth;
+		if (stripos($per->dob, "0000")>0){
+			$age="????";
+		}
+		?>
+		<td class="<?php echo $class; ?>"><?php echo $age." ".$strYears; ?></td>
 		</tr>
 <?php
 		$i++;
@@ -198,6 +213,8 @@ if ($img->numResults > 0) {
 
 						<tr>
 							<th><?php echo $strMarriages; ?></th>
+							<th><?php echo $strDate; ?></th>
+							<th><?php echo $strAnniversary; ?></th>
 						</tr>
 						<?php
 	$search = new Relationship();
@@ -215,7 +232,13 @@ if ($img->numResults > 0) {
 		<tr>
 		<td class="<?php echo $class; ?>" align="left"><?php echo $rel->person->getLink()." &amp; ".$rel->relation->getLink() ?></td>
 		<td class="<?php echo $class; ?>"><?php echo $rel->dom; ?></td>
-		<td class="<?php echo $class; ?>"><?php echo $year - $yom; ?> years</td>
+		<?php // MODIFICA 20120508 
+		$marr=$year - $yom;
+		if (stripos($marr, "0000")>0){
+			$marr="????";
+		}
+		?>
+		<td class="<?php echo $class; ?>"><?php echo $marr." ".$strYears; ?></td>
 		</tr>
 <?php
 		$i++;
@@ -223,6 +246,8 @@ if ($img->numResults > 0) {
 ?>
 						<tr>
 							<th><?php echo $strDeaths; ?></th>
+							<th><?php echo $strDate; ?></th>
+							<th><?php echo $strAnniversary; ?></th>
 						</tr>
 <?php
 	$search = new PersonDetail();
@@ -240,7 +265,13 @@ if ($img->numResults > 0) {
 		<tr>
 		<td class="<?php echo $class; ?>" align="left"><?php echo $per->getLink(); ?></td>
 		<td class="<?php echo $class; ?>"><?php echo $per->dod; ?></td>
-		<td class="<?php echo $class; ?>"><?php echo $year - $per->year_of_death; ?> years</td>
+		<?php // MODIFICA 20120508 
+		$memoriam=$year - $per->year_of_death;
+		if (stripos($memoriam, "0000")>0){
+			$memoriam="????";
+		}
+		?>
+		<td class="<?php echo $class; ?>"><?php echo $memoriam." ".$strYears; ?></td>
 		</tr>
 <?php
 		$i++;

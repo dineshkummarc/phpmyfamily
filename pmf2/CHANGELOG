@@ -1,6 +1,7 @@
 v 2.0.5
 	Swedish translation from Torkel Danielsson
 	Add $strBornAbbrev for b.
+	Italian translation and PDF of descendants from Nino V 
 v 2.0.4
 	Fix a couple of places, upgrade script and census report where family_ was used instead of $tblprefix
 	Add mail configuration for server and recaptcha

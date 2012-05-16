@@ -3,16 +3,22 @@ include_once "modules/db/DAOFactory.php";
 
 function insertChildrenLink($pid, $spid, $gender, $editable) {
 		global $strInsert, $strChildren;		
+                $icona="";		
 		if ($gender == "M") {
 			$mid = $spid;
 			$fid = $pid;
+			$icona="<img border='0' src='images/smale.gif' alt='M' height='20' /> M";  // MODIFICA 20120506				
 		} else {
 			$fid = $spid;
 			$mid = $pid;
+			$icona="<img border='0' src='images/sfemale.gif' alt='F' height='20' /> F";  // MODIFICA 20120506			
 		}
 		if ($editable) {
 ?>
- (<a href="edit.php?func=add&area=people&mid=<?php echo $mid;?>&fid=<?php echo $fid;?>"><?php echo $strInsert." ".$strChildren;?></a>) <?php 
+ (<a href="edit.php?func=add&area=people&mid=<?php
+ 	 echo $icona." ";
+ 	 echo $mid;
+ 	 ?>&fid=<?php echo $fid;?>"><?php echo $strInsert." ".$strChildren;?></a>) <?php 
 		}
 	}
 	

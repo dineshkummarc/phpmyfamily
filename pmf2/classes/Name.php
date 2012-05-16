@@ -1,5 +1,5 @@
 <?php
-define(NAME_SEP,"\t");
+define('NAME_SEP',"\t");
 
 class Name extends Base {
 	

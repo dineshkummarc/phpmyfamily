@@ -30,7 +30,8 @@
 	// I can't find a copyrigh to credit
 	// but I'm sure somebody has it
 	$flag				= "images/gb.gif";
-
+        $strPhpMyFamily                 ="PhpMyFamily"; // MODIFICA 20120506
+        $strMsgDescendants                  ="This module is EXPERIMENTAL - please report bugs and/or requests in the forum."; // MODIFICA 20120506         
 //=====================================================================================================================
 //=====================================================================================================================
 	$currentRequest->setDateFormat($datefmt);
@@ -197,13 +198,15 @@
 	$strBack			= "Back";
 	$strToHome			= "to the homepage.";
 	$strNewMsg			= "Please make sure that the person does not already exist in the database before creating!";
-	$strIndex			= "All details for people born after $currentRequest->dispdate are restricted to protect their identities.  If you are a registered user you can view these details and edit record.  Everybody is free to browse the unrestricted records.  If you think anybody here matches into your family tree, please <a href=\"$1\">let me know</a>";
+	$strIndex			= "All details for people born after $currentRequest->dispdate are restricted to protect their identities.  If you are a registered user you can view these details and edit record.  Everybody is free to browse the unrestricted records.<br /><b>If you think anybody here matches into your family tree, please <a href=\"$1\">let me know</a></b> or send me this "; // MODIFICA 20120508 
+	$strScheda                      = "worksheet."; // MODIFICA 20120508 
 	$strNote			= "Note";
 	$strFooter			= "Email the <a href=\"$1\">webmaster</a> with any problems.";
 	$strPowered			= "Powered by";
 	$strPedigreeOf		= "Pedigree of";
 	$strBirths			= "Births";
 	$strAnniversary		= "Anniversary";
+    $strYears           = "years"; // MODIFICA 20120506 	
 	$strUpcoming		= "Upcoming Anniversaries";
 	$strMarriages		= "Marriages";
 	$strDeaths			= "Deaths";
@@ -215,6 +218,7 @@
 	$strToDetails		= "to details";
 	$strSurnameIndex	= "Index of Surnames";
 	$strTopSurnames		= "Top 10 Surnames";
+        $strFounders            = "Founders";	
 	$strTracking		= "Tracking";
 	$strTrack			= "track";
 	$strThisPerson		= "this person";

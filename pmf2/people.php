@@ -127,7 +127,10 @@ break;
 </ul>
 </div>
 <div id="name">
-<h2><?php echo $per->getDisplayName(); ?></h2>
+<h2><?php 
+echo $per->getDisplayGender(); // MODIFICA 20120506 
+echo $per->getDisplayName(); 
+?></h2>
 			
 </div>
 
@@ -153,7 +156,12 @@ break;
 			?>
 	</div>
 	<div id="parents">
-	<?php if ($per->gender == "M") { echo $strSon;} else { echo $strDaughter;}
+	<?php 
+	if ($per->gender == "M") {
+		echo $strSon;
+	} else {
+		echo $strDaughter;
+	}
 	echo ' '.$strOf.' ';
 
 		// the query for father
@@ -190,7 +198,14 @@ foreach ($per->children AS $child) {
 			echo $child->father->getFullLink();
 		}
 	}
-	echo '<div class="child">'.$child->getFullLink().'</div>';
+                $icona="";
+		if ($child->gender == "M") {
+			$icona="<img border='0' src='images/smale.gif' alt='M' height='20' /> ";  // MODIFICA 20120506
+		} else {
+			$icona="<img border='0' src='images/sfemale.gif' alt='F' height='20' /> ";  // MODIFICA 20120506
+		}
+
+	echo '<div class="child">'.$icona.$child->getFullLink().'</div>';
 	$lastchild = $child;
 	$i++;
 }
@@ -202,7 +217,14 @@ foreach ($per->children AS $child) {
 		<?php echo '<div class="label">'.$strSiblings; ?>:</div>
 <?php
 foreach ($per->siblings AS $sibling) {
-	echo '<div class="sibling">'.$sibling->getFullLink().'</div>';
+	$icona="";// MODIFICA 20120506
+	if ($sibling->gender == "M") {
+		$icona="<img border='0' src='images/smale.gif' alt='M' height='20' /> ";  // MODIFICA 20120506
+	} else {
+		$icona="<img border='0' src='images/sfemale.gif' alt='F' height='20' /> ";  // MODIFICA 20120506
+	}
+			
+	echo '<div class="sibling">'.$icona.$sibling->getFullLink().'</div>';
 }
 ?>
 	</div>

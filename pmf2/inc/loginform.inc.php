@@ -19,7 +19,13 @@
 ?>
 	<!-- Warning Messages -->
 	<h4><?php echo $strNote; ?></h4>
-	<p><?php if($config->mailto) echo str_replace("$1", "mail.php?subject=".$title, $strIndex); else echo str_replace("$1", "mailto:".$config->email."?subject=".$title, $strIndex); ?></p>
+	<p><?php 
+	if($config->mailto){ // MODIFICA 20120508
+		echo str_replace("$1", "mail.php?subject=".$title, $strIndex)." <a href='schedafam.zip'>$strScheda</a>";
+	}else{
+		echo str_replace("$1", "mailto:".$config->email."?subject=".$title, $strIndex)." <a href='schedafam.zip'>$strScheda</a>";
+	}
+	?></p>
 
 	<!-- Form proper -->
 	<form method="post" action="passthru.php?func=login">

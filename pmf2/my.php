@@ -54,7 +54,7 @@
 <table width="100%" class="header">
 	<tr>
 		<td width="65%" align="center">
-			<h1>phpmyfamily</h1>
+			<h1><?php echo $strPhpMyFamily; ?></h1>
 			<h3><?php echo $config->desc; ?></h3>
 		</td>
 		<td width="35%" valign="top" align="right">
@@ -154,7 +154,9 @@
 <table width="100%" class="header">
 	<tr>
 		<td width="65%" align="center">
-			<h1>phpmyfamily</h1>
+			<h1><?php 
+			echo $strPhpMyFamily; // MODIFICA 20120506 
+			?></h1>			
 			<h3><?php echo $config->desc; ?></h3>
 		</td>
 		<td width="35%" valign="top" align="right">

@@ -46,6 +46,10 @@ $strDeceasedPerson  = "Overleden Persoon";
   // ATTENTION: Correct path to the inc directory
   include_once "modules/db/DAOFactory.php";
   include_once "inc/header.inc.php";
+if ( false === function_exists('lcfirst') ):
+    function lcfirst( $str )
+    { return (string)(strtolower(substr($str,0,1)).substr($str,1));}
+endif; 
 
     // --------------------------------------------------------------------
     // to make the grid and to place persons on the right place in the timeline:
@@ -103,7 +107,14 @@ $strDeceasedPerson  = "Overleden Persoon";
 // textposition
 	        echo "<div style=\"position: absolute; left: ".a2p($level)."px;\">";
                 echo "($level) ";
-		echo $child->getFullLink();
+		$icona="";// MODIFICA 20120506
+		if ($child->gender == "M") {
+			$icona="&#923;&nbsp;";
+		} else {
+			$icona="&#916;&nbsp;";
+		}
+                
+		echo $icona.$child->getFullLink();
 		echo get_spouse_string($child)."</div>\n";
                   
 // gridline
@@ -188,6 +199,15 @@ $peep = new PersonDetail();
 	echo "00000";
 	}
 	echo "\" class=\"hd_link\">".$strDescendants."</a>";
+
+echo " | <a href=\"tpdf.php?person=";
+if (isset($per->person_id)) {
+	echo $per->person_id;
+} else {
+	echo "00000";
+}
+echo "\" class=\"hd_link\">Stampa PDF</a>";
+
 	echo " | <a href=\"people.php?person=".$per->person_id."\">".strtolower($strBack)." ".$strToDetails."</a>\n";
 // Menu ends here
     ?>
@@ -204,14 +224,25 @@ $peep = new PersonDetail();
       <td style="vertical-align: top;">
       <font size="-1">
       <?php
-           echo "<div style=\"position: absolute; left: " . a2p(4) ."px ;\">"."This module is EXPERIMENTAL - please report bugs and/or requests in the forum.</div><br><br>\n";
+echo "<div style=\"position: absolute; left: " . a2p(4) ."px ;\">".$strMsgDescendants."</div><br><br>\n"; // MODIFICA 20120507 
+echo "<div style=\"position: absolute; left: " . a2p(4) ."px ;\">"."&#923;&nbsp;=&nbsp;".$strGender." ".lcfirst($strMale)."&nbsp;&nbsp;&#916;&nbsp;=&nbsp;".$strGender." ".lcfirst($strFemale)."</div><br><br>\n"; // MODIFICA 20120507
+
 
         // position
                 $level=0; // first generation         
 					echo "<div style=\"position: absolute; left: ".a2p($level)."px;\">";
         // person name, 
                     echo "($level)&nbsp;";
-		    echo $per->getFullLink();
+$icona="";// MODIFICA 20120506
+
+if ($per->gender == "M") {
+	$icona="&#923;&nbsp;";
+	// $icona="<img border='0' src='images/smale.gif' alt='M' height='20' /> ";  // MODIFICA 20120506				
+} else {
+	$icona="&#916;&nbsp;";
+	// $icona="<img border='0' src='images/sfemale.gif' alt='F' height='20' /> ";  // MODIFICA 20120506				
+}
+echo $icona.$per->getFullLink();
 	    //add spouse
 					echo "\n".get_spouse_string($per)."</div>\n";
 
