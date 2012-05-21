@@ -206,7 +206,7 @@ if (isset($per->person_id)) {
 } else {
 	echo "00000";
 }
-echo "\" class=\"hd_link\">Stampa PDF</a>";
+echo "\" class=\"hd_link\">".$strPDF."</a>";
 
 	echo " | <a href=\"people.php?person=".$per->person_id."\">".strtolower($strBack)." ".$strToDetails."</a>\n";
 // Menu ends here

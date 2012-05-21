@@ -40,6 +40,7 @@
 // strings for translation
 //=====================================================================================================================
 
+	$strPDF = "PDF";
 	$strDivorce = "Divorce";
 	$strFirstNames = "First Name(s)";
 	$strLinkNames = "Last Name prefix";
