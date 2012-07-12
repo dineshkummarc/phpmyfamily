@@ -227,7 +227,7 @@ if ($img->numResults > 0) {
 			$class = "tbl_odd";
 		else
 			$class = "tbl_even";
-		list ($yom, $mom, $dom) = split("-",$rel->marriage_date);
+		list ($yom, $mom, $dom) = preg_split("/-/",$rel->marriage_date);
 ?>
 		<tr>
 		<td class="<?php echo $class; ?>" align="left"><?php echo $rel->person->getLink()." &amp; ".$rel->relation->getLink() ?></td>
