@@ -23,6 +23,9 @@ many users working on separate trees aka familyreunited.com.  While there is no
 requirement for individuals in the database to be linked into a central structure,
 all users can see all records etc.
 
+Optional pre-requisites
+pear install Image_GraphViz
+apt-get install graphviz
 
 Installation
 ============
