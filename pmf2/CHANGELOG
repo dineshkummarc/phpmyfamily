@@ -1,3 +1,5 @@
+v 2.1.0
+	Introduce graph.php - see INSTALL
 v 2.0.5
 	Swedish translation from Torkel Danielsson
 	Add $strBornAbbrev for b.
@@ -92,7 +94,7 @@ v 1.4.0
 	Per user style sheets added, and user choice thereof
 	Fixed username bug in surnames.php
 	French translation added (Thanks Patrice)
-	Norwegian translation added (Thanks Pål)
+	Norwegian translation added (Thanks Pï¿½l)
 	German translation added (Thanks Karsten)
 	Italian translation added (Thanks FaberK)
 	Implemented RFE #973830 (Big Brother emails)
