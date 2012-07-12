@@ -10,6 +10,12 @@ class PeopleDAO extends MyFamilyDAO {
 		if($search->queryType == Q_IND && !isset($search->person_id)) {
 			return;
 		}
+		
+		$use_callback = false;
+		$numargs = func_num_args();
+		if ($numargs > 1) {
+			$use_callback = true;
+		}
 		$res = array();
 
 		// create the query based on the parameters
@@ -79,7 +85,7 @@ class PeopleDAO extends MyFamilyDAO {
 		}
 		$query .= $fields.$from.$where;
 		// and sort the query
-		if (strlen($callback) == 0) {
+		if (!$use_callback) {
 			if (!isset($search->count)) {
 				$search->count = 10;
 			}
@@ -110,7 +116,7 @@ class PeopleDAO extends MyFamilyDAO {
 				$per->name->person_id = $per->person_id;
 				$per->updated = $row["p_updated"];
 				$per->dupdated = $row["ddate"];
-				if (strlen($callback) > 0) {
+				if ($use_callback) {
 					call_user_func($callback, $search, $per);
 				} else {
 					$res[] = $per;
