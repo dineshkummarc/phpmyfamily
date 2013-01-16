@@ -45,6 +45,6 @@ class PmfGraphViz extends BaseGraph {
 	}
 	
 	function save($filename) {
-		$this->gv->save($filename);
+		return($this->gv->saveParsedGraph($filename));
 	}
 }?>

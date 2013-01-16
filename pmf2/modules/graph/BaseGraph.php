@@ -1,5 +1,4 @@
 <?php
-require_once 'Image/GraphViz.php';
 
 class BaseGraph {
 
@@ -28,7 +27,7 @@ class BaseGraph {
 			
 		
 		if ($per->father->person_id != "0000") {
-				$this->addLink($per->father, $per);	
+			$this->addLink($per->father, $per);	
 		}
 
 	}
@@ -38,6 +37,7 @@ class BaseGraph {
 
 		$search = new PersonDetail();
 		$search->queryType = Q_TYPE;
+		$search->order = "p_year_of_birth";
 		$dao = getPeopleDAO();
 	
 		$dao->getPersonDetails($search, $callback);
