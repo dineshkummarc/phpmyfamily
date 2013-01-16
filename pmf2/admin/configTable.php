@@ -28,7 +28,10 @@ $tconfig = "CREATE TABLE `".$tblprefix."config` (
  	`smtp_user` VARCHAR( 32 ) NOT NULL ,
 	`smtp_password` VARCHAR( 32 ) NOT NULL ,
 	`recaptcha_public` VARCHAR( 50 ) NOT NULL ,
-	`recaptcha_private` VARCHAR( 50 ) NOT NULL ) ENGINE = InnoDB";
+	`recaptcha_private` VARCHAR( 50 ) NOT NULL ,
+ 	`version` VARCHAR( 15 ) NOT NULL ,
+ 	`analytics_key` VARCHAR( 45 ) NOT NULL
+	) ENGINE = InnoDB";
 	
 	if($rconfig = mysql_query($tconfig)) {
 		echo "User config created<br>\n";
