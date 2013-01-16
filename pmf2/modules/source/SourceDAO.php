@@ -120,7 +120,7 @@ class SourceDAO extends MyFamilyDAO {
 			$query = sprintf("INSERT INTO ".$tblprefix."source_event (source_id, event_id) VALUES (%d, %d);",
 				$source->source_id, $event->event_id);
 			$update_result = $this->runQuery($query, "");
-			$rowsChanged = $this->rowsChanged();
+			$rowsChanged = $this->rowsChanged($update_result);
 		}
 		
 		return($rowsChanged);
@@ -141,7 +141,7 @@ class SourceDAO extends MyFamilyDAO {
 			quote_smart($source->notes),
 			$source->certainty);
 			$update_result = $this->runQuery($query, "");
-			$rowsChanged += $this->rowsChanged();
+			$rowsChanged += $this->rowsChanged($update_result);
 		} else {
 			$this->lockTable($tblprefix."source");
 			$query = sprintf("INSERT INTO ".$tblprefix."source" .
@@ -153,7 +153,7 @@ class SourceDAO extends MyFamilyDAO {
 			quote_smart($source->notes),
 			$source->certainty);
 			$update_result = $this->runQuery($query, "");
-			$rowsChanged += $this->rowsChanged();
+			$rowsChanged += $this->rowsChanged($update_result);
 			$source->source_id = $this->getInsertId();
 			$this->unlockTable($tblprefix."source");
 		}

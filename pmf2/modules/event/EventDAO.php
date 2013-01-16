@@ -134,7 +134,7 @@ class EventDAO extends MyFamilyDAO {
 
 		$ret = $this->runQuery($query, $msg);
 		
-		$rowsChanged += $this->rowsChanged();
+		$rowsChanged += $this->rowsChanged($ret);
 		
 		if ($insert) {
 			$event->event_id = $this->getInsertId();
@@ -191,7 +191,7 @@ class EventDAO extends MyFamilyDAO {
 		
 		$ret = $this->runQuery($query, $msg);
 
-		$rowsChanged += $this->rowsChanged();
+		$rowsChanged += $this->rowsChanged($ret);
 		
 		if ($insert) {
 			$attendee->attendee_id = $this->getInsertId();

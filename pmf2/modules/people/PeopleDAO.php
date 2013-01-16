@@ -58,7 +58,7 @@ class PeopleDAO extends MyFamilyDAO {
 			}
 		}
 
-		if (isset($search->date_of_birth)) {
+		if (isset($search->date_of_birth) && $search->date_of_birth != '') {
 			$where .= " AND b.date1 <= '".$search->date_of_birth."'";
 		}
 
@@ -188,8 +188,8 @@ class PeopleDAO extends MyFamilyDAO {
 		if ($order == 1) {
 			$nquery .= " ORDER BY number DESC";
 			$search = new Base();
-			$search->count = 10;
-			$this->addLimit($search, $nquery);
+		//	$search->count = 10;
+		//	$this->addLimit($search, $nquery);
 		} else {
 			$nquery .= " ORDER BY n.surname";
 		}
@@ -376,7 +376,7 @@ class PeopleDAO extends MyFamilyDAO {
 		
 		$ret = $this->runQuery($query, $msg);
 		
-		$rowsChanged += $this->rowsChanged();
+		$rowsChanged += $this->rowsChanged($ret);
 		
 		if ($insert) {
 			$per->person_id = $this->getInsertId();
@@ -393,7 +393,7 @@ class PeopleDAO extends MyFamilyDAO {
 			$ret = $this->runQuery($query, $msg);
 		}
 		
-		$rowsChanged += $this->rowsChanged();
+		$rowsChanged += $this->rowsChanged($ret);
 		
 		if (isset($per->child_id)) {
 			if ($per->gender == "M") {
