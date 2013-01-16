@@ -15,15 +15,15 @@ if ($_SESSION["editable"] == "N" && ($func != "login" && $func != "lang" && $fun
 
 	switch ($func) {
 		case "track":
+			$dao = getTrackingDAO();
 			switch ($_REQUEST["action"]) {
 				case "do":
-					$query = "INSERT INTO ".$tblprefix."tracking (person_id, email) VALUES ('".$_REQUEST["person"]."', '".$_SESSION["email"]."')";
+					$dao->trackByRegistered($_REQUEST["person"], $_SESSION["email"]);
 					break;
 				case "dont":
-					$query = "DELETE FROM ".$tblprefix."tracking WHERE person_id = '".$_REQUEST["person"]."' AND email = '".$_SESSION["email"]."'";
+					$dao->untrackByRegistered($_REQUEST["person"], $_SESSION["email"]);
 					break;
 			}
-			$result = mysql_query($query) or die(mysql_error());
 			echo "<meta http-equiv=refresh content='0; url=people.php?person=".$_REQUEST["person"]."' />\n";
 			break;
 		case "login":
@@ -42,15 +42,16 @@ if ($_SESSION["editable"] == "N" && ($func != "login" && $func != "lang" && $fun
 			echo "<meta http-equiv=refresh content='0; url=index.php' />\n";
 			break;
 		case "change":
-			$fcheck1 = "SELECT * FROM ".$tblprefix."users WHERE id = '".$_SESSION["id"]."' AND password = '".md5($_POST["pwdOld"])."'";
-			$rcheck1 = mysql_query($fcheck1) or die($err_change);
-			if (mysql_num_rows($rcheck1) == 0)
+			$loggedIn = $currentRequest->login($_SESSION[CR_NAME], md5($_POST["pwdOld"]));
+			if (!$loggedIn)
 				echo "<meta http-equiv=refresh content='0; url=my.php?reason=".$err_pwd_incorrect."' />\n";
 			elseif ($_POST["pwdPwd1"] <> $_POST["pwdPwd2"])
 				echo "<meta http-equiv=refresh content='0; url=my.php?reason=".$err_pwd_match."' />\n";
 			else {
-				$fchange = "UPDATE ".$tblprefix."users SET password = '".md5($_POST["pwdPwd1"])."' WHERE id = '".$_SESSION["id"]."'";
-				$rchange = mysql_query($fchange) or die($err_update);
+				$stmt = $pdo->prepare("UPDATE ".$tblprefix."users SET password = ? WHERE id = ?");
+				$stmt->bindParam(1, md5($_POST["pwdPwd1"]), PDO::PARAM_STR);
+				$stmt->bindParam(2, $_SESSION["id"], PDO::PARAM_STR);
+				$stmt->execute();
 				echo "<meta http-equiv=refresh content='0; url=my.php?reason=".$err_pwd_success."' />\n";
 			}
 			break;
