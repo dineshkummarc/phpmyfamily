@@ -41,23 +41,23 @@ function get_edit_header($rel) {
 		global $tblprefix;
 		global $err_list_census;
 
-		$cquery = "SELECT census_id, country, year, census_date FROM ".$tblprefix."census_years WHERE available = 'Y' ORDER BY country, year";
-		$cresult = mysql_query($cquery) or die($err_list_census);
+		$search = new CensusDetail();
+		$dao = getCensusDAO();
+		$cresult = $dao->getCensusYears('');
 		$dates = '';
 		$date[0] = '';
 		$i = 0;
 		// do the output
 		echo "<select name=".$name." onChange=\"changeCensusDate(this.selectedIndex)\">\n";
 		echo "<option value=\"0\"></option>";
-		while ($crow = mysql_fetch_array($cresult)) {
-			echo "<option value=\"".$crow["census_id"]."\"";
-			if ($val == $crow["census_id"]) { echo " selected=\"selected\" ";}
-			echo ">".$crow["year"]." / ".$crow["country"]."</option>\n";
-			$dates .= "censusDates[$i+1] = '".$crow["census_date"]."';\n";
+		foreach($cresult as $crow) {
+			echo "<option value=\"".$crow->census_id."\"";
+			if ($val == $crow->census_id) { echo " selected=\"selected\" ";}
+			echo ">".$crow->year." / ".$crow->country."</option>\n";
+			$dates .= "censusDates[$i+1] = '".$crow->census_date."';\n";
 			$i++;
 		}
 		echo "</select>\n";
-		mysql_free_result($cresult);
 		
 		?>
 <script language="javascript">
@@ -134,6 +134,7 @@ function get_edit_form($search) {
 					}
 				}
 			}
+
 			attendeeEditTable($search->event, CENSUS_EVENT, $people);
 			?></table></td>
 		</tr>
