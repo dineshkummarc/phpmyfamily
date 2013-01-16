@@ -74,7 +74,7 @@ function get_edit_form($per) {
 <form method="post" action="passthru.php?area=event&func=edit">
 	<input type="hidden" name="<?php echo $prefix;?>event_id" value="<?php echo $event->event_id; ?>" />
 	<input type="hidden" name="<?php echo $prefix;?>person" value="<?php echo $per->person_id; ?>" />
-	<input type="hidden" name="<?php echo $prefix;?>etype" value="<?php echo $event->type; ?>" />
+	<input type="hidden" name="<?php echo $prefix;?>etype" value="<?php if ($event->type < 0) echo OTHER_EVENT; else echo $event->type; ?>" />
 	<table>
 	<tr><td colspan="2">
 		<table>
