@@ -61,28 +61,30 @@ class CurrentRequest {
 	}	
 
 	function login($username, $password) {
-		global $tblprefix;
+		global $tblprefix, $pdo;
 		
-		$query = "SELECT * FROM ".$tblprefix."users WHERE username = ".quote_smart($username)." AND password = '".$password."'";
-			$result = mysql_query($query) or die(mysql_error());
-			if (mysql_num_rows($result) == 0) {
-				$ret = false;
-			}
-			while ($row = mysql_fetch_array($result)) {
-				// if we're in here then the user/passwd in good
-				$_SESSION["id"] = $row["id"];
-				$_SESSION[CR_NAME] = $row["username"];
-				if ($row["admin"] == "Y")
-					$_SESSION["admin"] = 1;
-				else
-					$_SESSION["admin"] = 0;
-				$_SESSION["editable"] = $row["edit"];
-				$_SESSION["style"] = $row["style"];
-				$_SESSION["email"] = $row["email"];
-				$ret = true;
+		$sth = $pdo->prepare('SELECT id, username, admin, edit, style, email, restrictdate FROM '.$tblprefix.'users WHERE username = ? and password = ?');
+		$sth->bindParam(1, $username, PDO::PARAM_STR, 10);
+		$sth->bindParam(2, $password, PDO::PARAM_STR, 32);
+		$sth->execute();
+		$result = $sth->fetchAll();
+		if (count($result) != 1) {
+			return (false);
+		}
+		$row = $result[0];
+		// if we're in here then the user/passwd in good
+		$_SESSION["id"] = $row["id"];
+		$_SESSION[CR_NAME] = $row["username"];
+		if ($row["admin"] == "Y")
+			$_SESSION["admin"] = 1;
+		else
+			$_SESSION["admin"] = 0;
+		$_SESSION["editable"] = $row["edit"];
+		$_SESSION["style"] = $row["style"];
+		$_SESSION["email"] = $row["email"];
+		$ret = true;
 				
-			}
-			mysql_free_result($result);
+		$sth->closeCursor();
 		return ($ret);
 	}
 	
