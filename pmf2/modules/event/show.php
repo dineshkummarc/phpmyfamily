@@ -153,7 +153,7 @@ function showAttendeeHeaderFields($type) {
 }
 
 function showAttendeeEditCols($attendee, $type, $prefix = '', $class = "tbl_even") {
-	global $strDateFmt, $tblprefix;
+	global $strDateFmt, $tblprefix, $strMarried, $strUnmarried, $strWidowed;
 	?>
 	<td class="<?php echo $class;?>">
 		<input type="hidden" name="<?php echo $prefix;?>event_id" value="<?php echo $attendee->event->event_id; ?>" />
@@ -177,7 +177,15 @@ function showAttendeeEditCols($attendee, $type, $prefix = '', $class = "tbl_even
 	</td>
 	<?php } ?>
 	<?php if ($type == CENSUS_EVENT) {?>
-		<td class="<?php echo $class;?>"><?php list_enums($tblprefix."attendee", "r_status", $prefix."r_status", $attendee->condition); ?></td>
+		<td class="<?php echo $class;?>">
+<select size="1" name="<?php echo $prefix;?>r_status">
+<option <?php if ($attendee->condition == "") { echo ' selected="selected" ';} ?>value=""></option>
+<option <?php if ($attendee->condition == "married") { echo ' selected="selected" ';} ?> value="married"><?php echo $strMarried;?></option>
+<option <?php if ($attendee->condition == "unmarried") { echo ' selected="selected" ';} ?>value="unmarried"><?php echo $strUnmarried;?></option>
+<option <?php if ($attendee->condition == "widowed") { echo ' selected="selected" ';} ?> value="widowed"><?php echo $strWidowed;?></option>
+</select>
+
+</td>
 	<?php } 
 		if (0) { ?>
 	<td class="<?php echo $class;?>">
