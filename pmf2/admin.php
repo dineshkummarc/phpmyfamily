@@ -46,18 +46,15 @@
 			else
 				$pwdEdit = "Y";
 			// carry out some simple checks to see if user already exists and if passwords match
-			$check1 = "SELECT * FROM ".$tblprefix."users WHERE username = ".quote_smart($_POST["pwdUser"]);
-			$result1 = mysql_query($check1) or die($err_pwd);
-			if (mysql_num_rows($result1) == 0) {
-				if ($_POST["pwdPwd1"] == $_POST["pwdPwd2"]) {
-					$query = "INSERT INTO ".$tblprefix."users (username, password, edit, style, email) VALUES ('".$_POST["pwdUser"]."', '".md5($_POST["pwdPwd1"])."', '".$pwdEdit."', '".$_POST["pwdStyle"].".css.php', '".$_POST["pwdEmail"]."')";
-					$result = mysql_query($query) or die($err_new_user);
+			if ($_POST["pwdPwd1"] == $_POST["pwdPwd2"]) {
+				$dao = getUserDAO();
+				$ret = $dao->addUser($_POST["pwdUser"],$_POST["pwdPwd1"], $_POST["pwdEmail"], $pwdEdit, $_POST["pwdStyle"]);
+				if ($ret == 1) {
+					$err = $err_user_exist;
 				}
-				else
-					$err = $err_pwd_match;
+			} else {
+				$err = $err_pwd_match;
 			}
-			else
-				$err = $err_user_exist;
 			break;
 		// delete an existing user
 		case "delete":
