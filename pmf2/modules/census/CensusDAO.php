@@ -46,7 +46,6 @@ class CensusDAO extends PeopleDAO {
 		$orderby = " ORDER BY e.date1, b.date1";	
 
 		$edquery .= $where.$orderby;
-
 		if (($edresult = $this->runQuery($edquery, $err_census_ret))) {
 		  $input->numResults = 0;
 		  $events = array();
@@ -121,7 +120,7 @@ class CensusDAO extends PeopleDAO {
 		
 		$ret = $this->runQuery($query, $msg);
 		
-		$rowsChanged += $this->rowsChanged();
+		$rowsChanged += $this->rowsChanged($ret);
 		$this->commitTrans();
 		return ($rowsChanged);
 	}
@@ -185,16 +184,21 @@ class CensusDAO extends PeopleDAO {
 	}
 	
 	function getCensusYears($country) {
-		global $tblprefix;
-		$tquery = "SELECT census_id, year, census_date FROM ".$tblprefix."census_years WHERE country =".quote_smart($country).
-		" AND available = 'Y'";
-		$tresult = $this->runQuery($tquery, "");
+		global $tblprefix,$err_list_census;
+		$tquery = "SELECT census_id, year, census_date, country FROM ".$tblprefix."census_years WHERE ";
+		if (strlen($country) > 0) {
+			$tquery .= "country =".quote_smart($country)." AND ";
+		}
+		$tquery .= " available = 'Y'";
+		$tquery .= " ORDER BY country, year";
+		$tresult = $this->runQuery($tquery, $err_list_census);
 		$ret = array();
 		while ($trow = $this->getNextRow($tresult)) {
 			$c = new CensusDetail();
 			$c->year = $trow["year"];
 			$c->census_date = $trow["census_date"];
 			$c->census_id = $trow["census_id"];
+			$c->country = $trow["country"];
 			$ret[] = $c;
 		}
 		$this->freeResultSet($tresult);
