@@ -126,7 +126,16 @@ class LocationDAO extends MyFamilyDAO {
 	 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	 		$response = curl_exec($ch);
 	 		curl_close($ch);
+	 		libxml_use_internal_errors(true);
 	 		$xml = simplexml_load_string($response);
+	 		
+			if (!$xml) {
+			    echo "Failed loading XML\n";
+			    echo $request_url;
+			    foreach(libxml_get_errors() as $error) {
+			        echo "\t", $error->message;
+			    }
+			}
 			} else {
 				//Security prevents lookup
 				return false;
@@ -351,7 +360,7 @@ class LocationDAO extends MyFamilyDAO {
 			(strlen($location->lng) > 0)?quote_smart($location->lng):'null',
 			$location->centre);
 			$update_result = $this->runQuery($query, "");
-			$rowsChanged += $this->rowsChanged();
+			$rowsChanged += $this->rowsChanged($update_result);
 		} else {
 			$this->lockTable($tblprefix."locations");
 			$query = sprintf("INSERT INTO ".$tblprefix."locations " .
@@ -362,7 +371,7 @@ class LocationDAO extends MyFamilyDAO {
 			(strlen($location->lng) > 0)?quote_smart($location->lng):'null',
 			$location->centre);
 			$update_result = $this->runQuery($query, "");
-			$rowsChanged += $this->rowsChanged();
+			$rowsChanged += $this->rowsChanged($update_result);
 			$location->location_id = $this->getInsertId();
 			$this->unlockTable($tblprefix."locations");
 		}
