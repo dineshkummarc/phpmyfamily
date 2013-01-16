@@ -28,25 +28,12 @@
 	@$key = $_REQUEST["key"];
 
 	$config = Config::getInstance();
-	
-	// bail out if we don't allow tracking
+
+	// bail out if we don't allow anonymous tracking
 	if (!$config->tracking)
 		die(include "inc/forbidden.inc.php");
 
-	// fnuction: delete_expired
-	// deletes timedout requests from database
-	function delete_expired() {
-		global $tblprefix;
-
-		// clear out subscription requests
-		$dquery = "DELETE FROM ".$tblprefix."tracking WHERE expires < NOW() and expires IS NOT NULL AND `action` = 'sub'";
-		$dresult = mysql_query($dquery) or die(mysql_error());
-
-		// clear out unsubscribe requests
-		$dquery = "UPDATE ".$tblprefix."tracking SET `key` = '', `expires` = NULL WHERE expires < NOW() and expires IS NOT NULL AND `action` = 'unsub'";
-		$dresult = mysql_query($dquery) or die(mysql_error());
-
-	}	// end of delete_expired()
+	$dao = getTrackingDAO();
 
 	// Fill out the headers
 	do_headers($strTracking);
@@ -78,22 +65,30 @@
 	// if we have a person and no email
 	// then show subscribe form
 	if (isset($person) && !isset($email)) {
-		// the query for the database
-		$pquery = "SELECT * FROM ".$tblprefix."people WHERE person_id = ".quote_smart($person);
-		$presult = mysql_query($pquery) or die($err_person);
-		while ($prow = mysql_fetch_array($presult)) {
 
-			// set security for living people (born after 01/01/1910)
-			if ($_SESSION["id"] == 0 && $prow["date_of_birth"] > $restrictdate)
-				die(include "inc/forbidden.inc.php");
+		$peep = new PersonDetail();
+        	$peep->setFromRequest();
+        	$peep->queryType = Q_IND;
+        	$pdao = getPeopleDAO();
+        	$pdao->getPersonDetails($peep);
+        	if ($peep->numResults != 1) {
+               	 die(include "inc/forbidden.inc.php");
+                //die("error");
+      		}
+        	$per = $peep->results[0];
+
+        // if trying to access a restriced person
+        	if (!$per->isViewable()) {
+               	 die(include "inc/forbidden.inc.php");
+        	}
 
 			echo "<hr />\n";
-			echo "<h3>".$prow["name"]." ".$prow["suffix"]."</h3>\n";
+			echo "<h3>".$per->getDisplayName()."</h3>\n";
 			echo $strTrackSpeel."<br /><br />\n";
 ?>
 	<form action="track.php" method="post" name="trackform" onsubmit="return check_email();">
 		<input type="hidden" name="person" value="<?php echo $person; ?>" />
-		<input type="hidden" name="name" value="<?php echo $prow["name"]; ?>" />
+		<input type="hidden" name="name" value="<?php echo $per->getDisplayName(); ?>" />
 		<table>
 			<tbody>
 				<tr>
@@ -112,95 +107,50 @@
 		</table>
 	</form>
 <?php
-		}
-		mysql_free_result($presult);
 	}
 
 	// we have a key then process
 	elseif (isset($key)) {
 		// Housekeeping
-		delete_expired();
+		$dao->delete_expired();
 		echo "<hr />\n";
 
-		// find out what we're supposed to do
-		$kquery = "SELECT * FROM ".$tblprefix."tracking WHERE `key` = ".quote_smart($key);
-		$kresult = mysql_query($kquery);
-		while ($krow = mysql_fetch_array($kresult)) {
-			$action = $krow["action"];
-		}
+		$ret = $dao->processTrackingAction($key, $action);
 
-		// if no rows are returned then probably a timedout request
-		if (mysql_num_rows($kresult) == 0) {
+		if ($ret == -1) {
 			echo $strMonError."\n";
-		}
-
-		// sub or un?
-		if ($action == "sub") {
-			// check we have key and action it
-			$pquery = "UPDATE ".$tblprefix."tracking SET `key` = '', expires = NULL WHERE `key` = '".$key."'";
-			$presult = mysql_query($pquery) or die(mysql_error());
-			if (mysql_affected_rows() != 0) {
-				// You are now monitoring this person
-				echo $strMonAccept."\n";
-			} else {
-				// Theres been a problem
-				echo $strMonError."\n";
-			}
-		} elseif ($action == "unsub") {
-			$uquery = "DELETE FROM ".$tblprefix."tracking WHERE `key` = '".$key."' AND `action` = 'unsub'";
-			$uresult = mysql_query($uquery) or die(mysql_error());
-			if (mysql_affected_rows() != 0) {
-				// You are now not monitoring this person
-				echo $strMonCease."\n";
-			} else {
-				// Theres been a problem
-				echo $strMonError."\n";
-			}
+		} elseif ($ret == 1) {
+			// You are now monitoring this person
+			echo $strMonAccept."\n";
+		} elseif ($ret == 2) {
+			// You are now not monitoring this person
+			echo $strMonCease."\n";
 		}
 	}
 
 	// we have a person & email & action so send subscribe message
 	elseif (isset($person) && isset($email) && isset($action)) {
 		// we want to subscribe
-		delete_expired();
+		$dao->delete_expired();
 		echo "<hr />\n";
 		echo "<h3>".htmlspecialchars($_REQUEST["name"])."</h3>\n";
 		// produce a new key (md5 hash of email and person requested)
 		$newkey = md5(str_rand(20));
 
 		if ($action == "sub") {
-			// insert into database
-			$iquery = "INSERT INTO ".$tblprefix."tracking (person_id, email, `key`, `action`, expires) VALUES ('".$person."', '".$email."', '".$newkey."', 'sub', DATE_ADD(NOW(), INTERVAL 24 HOUR))";
-			$iresult = mysql_query($iquery);
+			$ret = $dao->trackByUnregistered($person, $_REQUEST["name"], $newkey, $email);
 
 			// if we get this error then already tracking
-			if (mysql_errno() == 1062) {
+			if ($ret == 1) {
 				echo $strAlreadyMon."\n";
-			} else {
-				// and email to the subscriber
-				$headers = "Content-type: text/plain; charset=iso-8859-1\r\n";
-				$headers .= "From: <".$config->trackemail.">\r\n";
-				$headers .= "X-Mailer: PHP/" . phpversion();
-				$body = str_replace("$1", $_REQUEST["name"], $eSubBody);
-				$body .= $config->absurl."track.php?key=".$newkey."\n";
-				mail($email, $eSubSubject, $body, $headers);
+			} else if ($ret == 0){
 				echo $strMonRequest."\n";
 			}
 		}
 		// we want to unsubscribe
 		elseif ($action == "unsub") {
-			$uquery = "UPDATE ".$tblprefix."tracking SET `key` = '".$newkey."', `expires` = DATE_ADD(NOW(), INTERVAL 24 HOUR), `action` = 'unsub' WHERE person_id = '".$person."' AND email = '".$email."'";
-			$uresult = mysql_query($uquery);
-
-			// see if we have a row...
-			if (mysql_affected_rows() != 0) {
-				// email the unsubscriber
-				$headers = "Content-type: text/plain; charset=iso-8859-1\r\n";
-				$headers .= "From: <".$config->trackemail.">\r\n";
-				$headers .= "X-Mailer: PHP/" . phpversion();
-				$body = str_replace("$1", $_REQUEST["name"], $eUnSubBody);
-				$body .= $config->absurl."track.php?key=".$newkey."\n";
-				mail($email, $eSubSubject, $body, $headers);
+			$ret = $dao->untrackByUnregistered($person, $_REQUEST["name"], $newkey, $email);
+			if ($ret == 0) {
 				echo $strCeaseRequest."\n";
 			} else {
 				// cos if not, we are not subscribed
