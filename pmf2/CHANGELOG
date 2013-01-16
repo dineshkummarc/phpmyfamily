@@ -1,5 +1,9 @@
 v 2.1.0
-	Introduce graph.php - see INSTALL
+	Introduce graph.php - see INSTALL for setup
+	Name cloud on index page
+	Technical upgrades to use PDO instead of mysql_ and dojo 1.8.1
+	Use remote dojo instead of local
+	Google Analytics as part of config
 v 2.0.5
 	Swedish translation from Torkel Danielsson
 	Add $strBornAbbrev for b.
