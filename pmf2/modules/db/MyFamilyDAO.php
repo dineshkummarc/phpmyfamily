@@ -9,25 +9,33 @@ class MyFamilyDAO {
 	var $inTrans = 0;
 	
 	function startTrans() {
-		$this->runQuery("start transaction","");
+		global $pdo;
+		$pdo->beginTransaction();
 		$this->inTrans++;
 	}
 	
 	function commitTrans() {
+		global $pdo;
 		$this->inTrans--;
 		if ($this->inTrans == 0) {
 			//Because no nested transactions avoid premature commit
-			$this->runQuery("commit","");
+			$pdo->commit();
 		}
 	}
 	
 	function rollbackTrans() {
-		$this->runQuery("rollback","");
+		global $pdo;
+		$pdo->rollBack();
 		$this->inTrans = 0;
 	}
 	
-	function rowsChanged() {
-		return(mysql_affected_rows());
+	function rowsChanged($result) {
+		return($result->rowCount());
+	}
+//Not reliable for all databases see http://php.net/manual/en/pdostatement.rowcount.php	
+//TODO - don't use this
+	function rowsFetched($result) {
+		return($result->rowCount());
 	}
 	
 	function lockTable($table) {
@@ -37,15 +45,19 @@ class MyFamilyDAO {
 	}
 	
 	function runQuery($query, $msg) {
-
-		if (!($result = mysql_query($query))) {
-			error_log($query);
-			error_log(mysql_error());
+		global $pdo;
+	   try {
+		if (!($result = $pdo->query($query))) {
+			//error_log($query);
+			error_log($pdo->errorInfo());
 			if ($this->inTrans > 0) {
 				$this->rollbackTrans();
 			}
 			die($msg);
 		}
+	   } catch (PDOException $ex) {
+		error_log($ex->getMessage());
+	   }
 		//error_log($query);
 		//echo $query."<br/>";
 		return ($result);
@@ -78,17 +90,25 @@ class MyFamilyDAO {
 	}
 	
 	function getNextRow($result) {
-		$row = mysql_fetch_array($result);
+		$row = $result->fetch(PDO::FETCH_ASSOC);
 		return ($row);
 	}
 	
 	function freeResultSet($result) {
-		 mysql_free_result($result);
+		  $result->closeCursor();
 	}
 	
 	function getInsertId() {
-		return (mysql_insert_id());
+		global $pdo;
+		return ($pdo->lastInsertId());
 	}
-	
+
+	function getNumRows($table) {
+		global $tblprefix;
+		$res = $this->runQuery("SELECT COUNT(*) as number FROM $tblprefix$table",'');
+		$row = $this->getNextRow($res);
+		$this->freeResultSet($res);
+		return ($row["number"]);
+	}	
 }
 ?>
