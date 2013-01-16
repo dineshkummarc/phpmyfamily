@@ -12,7 +12,7 @@ class ImageDAO extends MyFamilyDAO {
 		$iquery .= " WHERE image_id = ".quote_smart($img->image_id);
 		$iresult = $this->runQuery($iquery, $err_image_insert);
 		
-		$rowsChanged = $this->rowsChanged();
+		$rowsChanged = $this->rowsChanged($iresult);
 		
 		$dao = getEventDAO();
 
