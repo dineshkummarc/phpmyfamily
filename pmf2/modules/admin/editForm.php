@@ -70,7 +70,7 @@ $ret .='</select>
 <td></td></tr>
 <tr><th>smtp_host</th><th>smtp_user</th>
  <th>smtp_password</th><th>recapt pub</th><th>recapt priv</th>
- <th></th><th></th><th></th></tr>
+ <th>analytics_key</th><th></th><th></th></tr>
 <tr>
 
 <td><input type="text" name="smtp_host" value="'. $config->smtp_host.'"></input></td>
@@ -78,7 +78,7 @@ $ret .='</select>
 <td><input type="text" name="smtp_password" value="'. $config->smtp_password.'"></input></td>
 <td><input type="text" name="recaptcha_public" value="'. $config->recaptcha_public.'"></input></td>
 <td><input type="text" name="recaptcha_private" value="'. $config->recaptcha_private.'"></input></td>
-<td></td>
+<td><input type="text" name="analytics_key" value="'. $config->analytics_key.'"></input></td>
 <td></td>
 <td></td></tr>
 <tr><td></td><td><input type="submit" name="<?php echo $strEdit; ?>" /></td><td colspan="15"></td></tr>

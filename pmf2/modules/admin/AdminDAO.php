@@ -2,12 +2,24 @@
 
 class AdminDAO extends MyFamilyDAO {
 	function getConfig(&$c) {
-		global $tblprefix;
+		global $tblprefix, $version,$pdo;
+		$query = "SELECT version FROM ".$tblprefix."config";
+		$result = $pdo->query($query);
+		if ($result === FALSE) {
+			//2.0 -> 2.1.0 upgrade
+			$pdo->exec("ALTER TABLE `".$tblprefix."config` ADD COLUMN `version` VARCHAR(15), ADD COLUMN `analytics_key` VARCHAR(45) NULL;");
+			$pdo->exec("UPDATE `".$tblprefix."config` SET version='$version'");
+		} else {
+			$row = $result->fetch();
+			if ($row["version"] != $version) {
+			$pdo->exec("UPDATE `".$tblprefix."config` SET version='$version'");
+			}
+		}
 		$query = "SELECT ";
 		$query .= "email,mailto,`desc`,styledir,imagedir,filedir,defaultstyle,lang,timing,gedcom,restricttype,".
 			"restrictyears,restrictdate,tracking,trackemail,absurl,bbtracking,".
 			"layout, gmapskey, gmapshost, img_max,img_min,".
-			"smtp_user,smtp_password,smtp_host,recaptcha_private,recaptcha_public";
+			"smtp_user,smtp_password,smtp_host,recaptcha_private,recaptcha_public, version, analytics_key";
 		$query .= " FROM ".$tblprefix."config ";
 		//TODO - add a proper error message
 		$result = $this->runQuery($query, "Error retrieving config");
@@ -46,7 +58,8 @@ class AdminDAO extends MyFamilyDAO {
 			"`smtp_user` = ".quote_smart($c->smtp_user).",".
 			"`smtp_password` = ".quote_smart($c->smtp_password).",".
 			"`recaptcha_public` = ".quote_smart($c->recaptcha_public).",".
-			"`recaptcha_private` = ".quote_smart($c->recaptcha_private);
+			"`recaptcha_private` = ".quote_smart($c->recaptcha_private).",".
+			"`analytics_key` = ".quote_smart($c->analytics_key);
 			//TODO - add a proper error message
 		$ret = $this->runQuery($q, "Error updating config");
 		
