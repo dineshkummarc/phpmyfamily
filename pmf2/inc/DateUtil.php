@@ -124,7 +124,7 @@ class DateUtil {
 
 		// check that the returning string isn't going to break the database
 		// must be 0000-00-00
-		if (!ereg ("([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})", $retval))
+		if (!preg_match("#([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})#", $retval))
 			$retval = "0000-00-00";
 
 		if (($event->date1_modifier == 0) and ($event->date1 != "0000-00-00")) {
@@ -146,9 +146,9 @@ class DateUtil {
 		global $currentRequest;
 		
 		$retval = "0000-00-00";
-		if (ereg ("([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})", $date)) {
+		if (preg_match("#([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})#", $date)) {
 			$retval = $date;
-		} else if (ereg ("([0-9]{1,2}) ([a-zA-Z]{3}) ([0-9]{4})", $date)) {
+		} else if (preg_match("#([0-9]{1,2}) ([a-zA-Z]{3}) ([0-9]{4})#", $date)) {
 			$event = new MiniEvent();
 			$upper = strtoupper($date);
 			$retval = DateUtil::make_date($upper, $event);
@@ -193,7 +193,7 @@ class DateUtil {
 	             	break;
 			}
 			$date .= $mod;
-			$date .= ged_date($event->date1);
+			$date .= DateUtil::ged_date($event->date1);
 			$date .= "\n";
 		}
 		return($date);
