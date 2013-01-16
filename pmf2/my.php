@@ -1,6 +1,6 @@
 <?php
 	//phpmyfamily - opensource genealogy webbuilder
-	//Coyright (C) 2002 - 2005  Simon E Booth (simon.booth@giric.com)
+	//Copyright (C) 2002 - 2005  Simon E Booth (simon.booth@giric.com)
 
 	//This program is free software; you can redistribute it and/or
 	//modify it under the terms of the GNU General Public License
@@ -24,23 +24,15 @@
 	
 	// wortk out if we have to do anything
 	@$work = $_REQUEST["func"];
+	$dao = getUserDAO();
 	switch ($work) {
 		case "style":
-			$query = "UPDATE ".$tblprefix."users SET style = '".$_POST["pwdStyle"].".css.php' WHERE id = '".$_SESSION["id"]."'";
-			$result = mysql_query($query) or die(mysql_error());
-			$_SESSION["style"] = $_POST["pwdStyle"].".css.php";
+			$dao->updateStyle($_POST["pwdStyle"]);
 			break;
 		case "email":
 			// update the users table
-			$query = "UPDATE ".$tblprefix."users SET email = '".$_POST["pwdEmail"]."' WHERE id = '".$_SESSION["id"]."'";
-			$result = mysql_query($query) or die(mysql_error());
-
-			// update the tracking table
-			$query = "UPDATE ".$tblprefix."tracking SET email = '".$_POST["pwdEmail"]."' WHERE email = '".$_SESSION["email"]."'";
-			$result = mysql_query($query) or die(mysql_error());
-
-			// update the session variables
-			$_SESSION["email"] = $_POST["pwdEmail"];
+			$dao->updateEmail($_POST["pwdEmail"]);
+			break;
 	}
 
 	$config = Config::getInstance();
@@ -50,7 +42,8 @@
 		do_headers_dojo($strMyLoggedIn);
 		
 ?>
-<body style="tundra">
+<body class="tundra">
+<?php include_once("inc/analyticstracking.php"); ?>
 <table width="100%" class="header">
 	<tr>
 		<td width="65%" align="center">
@@ -151,6 +144,7 @@
 
 ?>
 <body class="tundra">
+<?php include_once("inc/analyticstracking.php"); ?>
 <table width="100%" class="header">
 	<tr>
 		<td width="65%" align="center">
