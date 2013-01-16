@@ -4,15 +4,12 @@
 		
 		$config = Config::getInstance();
 		if ($config->dojo) {
-		$dojo = "dojo-release-1.7.0";
-		$ext = " <style type=\"text/css\">
-        @import \"".$dojo."/dijit/themes/tundra/tundra.css\";
-        @import \"".$dojo."/dojo/resources/dojo.css\"
-    </style>
-    <script type=\"text/javascript\" src=\"".$dojo."/dojo/dojo.js\"
-    djConfig=\"parseOnLoad: true\"></script>
+		$ext = "<link rel='stylesheet' href='http://ajax.googleapis.com/ajax/libs/dojo/1.8.1/dijit/themes/tundra/tundra.css'>
+<link rel='stylesheet' href='http://ajax.googleapis.com/ajax/libs/dojo/1.8.1/dojo/resources/dojo.css'>
+<script>dojoConfig = {parseOnLoad: true}</script>
+<script src=\"//ajax.googleapis.com/ajax/libs/dojo/1.8.1/dojo/dojo.js\"></script>
     <script language=\"JavaScript\" type=\"text/javascript\">
-            dojo.require(\"dojo.parser\");
+		require([\"dojo/parser\"]);
     </script>";
 		} else {
 			$ext = "";
@@ -72,9 +69,9 @@ echo '<div id="useroptions"><ul>';
 				echo "<li><a href=\"gedcom.php\" class=\"hd_link\">".$strCompleteGedcom."</a></li>";
 			}
 			if ($person != 0) {
-				$query = "SELECT * FROM ".$tblprefix."tracking WHERE email = '".$currentRequest->email."' AND person_id = ".quote_smart($person);
-				$result = mysql_query($query) or die(mysql_error());
-				if (mysql_num_rows($result) != 0) {
+				$tdao = getTrackingDAO();
+				
+				if ($tdao->isTracked($currentRequest->email, $person)) {
 					echo "<li><a href=\"passthru.php?func=track&amp;action=dont&amp;person=".$person."\" class=\"hd_link\">".$strStop." ".strtolower($strTracking)." ".$strThisPerson."</a></li>";
 				} else {
 					echo "<li><a href=\"passthru.php?func=track&amp;action=do&amp;person=".$person."\" class=\"hd_link\">".$strTrack." ".$strThisPerson."</a></li>";
