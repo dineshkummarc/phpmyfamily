@@ -85,30 +85,14 @@
 		
 		$config = Config::getInstance();
 
-		// check we have a valid email address
-		// just drop out if we don't
-		$query = "SELECT * FROM ".$tblprefix."users WHERE email = ".quote_smart($email);
-		$result = mysql_query($query) or die(mysql_error());
-		if (mysql_num_rows($result) != 1)
-			return 0;
-		while ($qrow = mysql_fetch_array($result)) {	
-			$username = $qrow["username"];
-		}
-		mysql_free_result($result);
-
 		// generate a new password
 		$password = str_rand();
 
-		// update the table
-		// just drop out if it doesn't work out right
-		$uquery = "UPDATE ".$tblprefix."users SET password = '".md5($password)."' WHERE email = '".$email."'";
-		$uresult = mysql_query($uquery) or die(mysql_error());
-		if (mysql_affected_rows() != 1)
-			return 0;
+		$dao = getUsersDAO();
+		if($dao->resetPassword() != 0) {
+			return (0);
+		}
 
-			
-			
-			
 		$email = $config->email;
 		$mail = new PHPMailer();
 		$mail->IsSMTP();
@@ -129,7 +113,10 @@
 		}
 	}	// end of send_password()
 
-
+if ( false === function_exists('lcfirst') ):
+    function lcfirst( $str )
+    { return (string)(strtolower(substr($str,0,1)).substr($str,1));}
+endif; 
 	// function: fmod
 	// return the modulus of two numbers
 //	function fmod($x, $y) {
