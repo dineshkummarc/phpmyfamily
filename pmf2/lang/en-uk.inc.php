@@ -122,6 +122,8 @@
 	$strChildren		= "Children";
 	$strSiblings		= "Siblings";
 	$strMarried			= "Married";
+	$strUnmarried			= "unmarried";
+	$strWidowed			= "widowed";
 	$strInsert			= "insert";
 	$strNewMarriage		= "new marriage";
 	$strNotes			= "Notes";
