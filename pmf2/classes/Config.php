@@ -32,7 +32,9 @@ class Config {
 	var $smtp_password;
 	var $recaptcha_public;
 	var $recaptcha_private;
-	
+	var $version;
+	var $analytics_key;
+
 	function setupConfig() {
 		date_default_timezone_set("Europe/London");
 		$dao = getAdminDAO();
@@ -130,6 +132,8 @@ class Config {
 		$this->smtp_password = $row["smtp_password"];
 		$this->recaptcha_public = $row["recaptcha_public"];
 		$this->recaptcha_private = $row["recaptcha_private"];
+		$this->version = $row["version"];
+		$this->analytics_key = $row["analytics_key"];
 	}
 }
 
