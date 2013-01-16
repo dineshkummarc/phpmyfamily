@@ -74,6 +74,9 @@ class RelationsDAO extends PeopleDAO {
 	}
 	
 	function getNearest(&$search) {
+		return $this->getMarriages($search, 21);
+	}
+	function getMarriages(&$search, $limit = 0) {
 		global $tblprefix, $err_marriage, $currentRequest;
 		
 		$res = array();
@@ -94,9 +97,10 @@ class RelationsDAO extends PeopleDAO {
 		// if the user is not logged in, only show people pre $restrictdate
 		$query .= $this->addPersonRestriction(" WHERE ", "bb","db");
 		$query .= $this->addPersonRestriction(" AND ", "bg","dg");
-		$query .= " AND (e.etype = ".BANNS_EVENT." OR e.etype = ".MARRIAGE_EVENT.") "; 
-		$query .= " HAVING fake_marriage >= now() AND fake_marriage <= DATE_ADD(NOW(), INTERVAL 21 DAY) ORDER BY fake_marriage";
-		
+		$query .= " AND (e.etype = ".BANNS_EVENT." OR e.etype = ".MARRIAGE_EVENT.") ";
+		if ($limit > 0) { 
+			$query .= " HAVING fake_marriage >= now() AND fake_marriage <= DATE_ADD(NOW(), INTERVAL $limit DAY) ORDER BY fake_marriage";
+		}
 		$this->addLimit($search, $query);
 		
 		$result = $this->runQuery($query, $err_marriage);
@@ -162,7 +166,7 @@ class RelationsDAO extends PeopleDAO {
 		*/
 
 		$ret = $this->runQuery($query, $msg);
-		$rowsChanged += $this->rowsChanged();
+		$rowsChanged += $this->rowsChanged($ret);
 				
 		$this->commitTrans();
 		return ($rowsChanged);
