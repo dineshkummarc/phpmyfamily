@@ -67,41 +67,46 @@ function selectPeople($form, $omit = 0, $gender = "A", $default = 0, $auto = 1, 
 		$store = $form."_peopleStore";
 ?>
     <script type="text/javascript">
-      dojo.require("dijit.form.FilteringSelect");
-		dojo.require("dojox.data.QueryReadStore");
 
-
-		dojo.provide("<?php echo $store;?>");
-		dojo.declare("<?php echo $store;?>", dojox.data.QueryReadStore, {
-			fetch:function(request) {
-				request.serverQuery = {q:request.query.name, start:request.start, count:request.count, gender:'<?php echo $gender;?>', 
-				date:'<?php echo $date;?>', omit:'<?php echo $omit;?>'};
-				return this.inherited("fetch", arguments);
-			}
-		});
-		
-    </script>
-	<div dojoType="dojox.data.QueryReadStore" jsId="<?php echo $store;?>"
-			url="services/PeopleQueryReadStore.php" requestMethod="post"></div>
-
-<input searchAttr="name" id="<?php echo $form;?>"
-	dojoType="dijit.form.FilteringSelect" style="width: 400px;" labelType="html" 
-	<?php
-	if ($auto == 1) { echo " onChange=\"dojo.byId('".$form."').form.submit();\""; } 
-
-	if ($default > 0) { echo " value=\"".$default."\""; }
-	$query = "";
-	if ($gender != "A") { $query = "gender:'$gender'";
-	if ($date <> 0) { $query .= ","; }
+require([
+    "dojo/ready", "dojo/store/JsonRest", "dijit/form/FilteringSelect", "dojo/on"
+], function(ready, JsonRest, FilteringSelect, on){
+	if (!peopleStore) {
+		var peopleStore = new Array();
 	}
-	if ($date <> 0) { $query .= "date: $date"; }
-	if ($query != "") {echo 'query="{'.$query.'}"';}
-	?>
-	store="<?php echo $store;?>" name="<?php echo $form;?>"
-	autoComplete="false" pageSize="10" invalidMessage="<?php echo $strInvalidPerson;?>"></input>
+   	peopleStore["<?php echo $form;?>"] = new JsonRest({ target:"services/peopleService/person/", idProperty: "personid"});
+    ready(function(){
+        var filteringSelect = new FilteringSelect({
+            id: "<?php echo $form;?>",
+            name: "<?php echo $form;?>",
+	    style: "width: 400px;",
+	    query: { gender:'<?php echo $gender;?>', 
+			date:'<?php echo $date;?>', 
+			omit:'<?php echo $omit;?>'
+		   },
+	<?php if ($default > 0) { echo " value:\"".$default."\","; } ?>
+            store: peopleStore["<?php echo $form;?>"],
+            searchAttr: "name",
+	    autoComplete: false
+        }, <?php echo $form;?>);
+/* Unfortunately onchange uses the new value instead of the event */
+	<?php if ($auto == 1) { ?>
+	on(filteringSelect, "change", function(val) {
+		if (val != "") {
+			require(["dojo/dom"], function (dom) {
+			dom.byId("<?php echo $form;?>").form.submit();
+			});
+		}
+	});
+	<?php } ?>
+    });
+});
+</script>
+
+<input id="<?php echo $form;?>" style="width: 400px;">
+
 <?php
 	}
-
 	echo "<br/>";
 	// show the number of people in the list
 	if ($gender == "A" && $omit == 0) {
