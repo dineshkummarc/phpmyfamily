@@ -1,7 +1,6 @@
 <?php
 include_once "modules/db/DAOFactory.php";
 include_once "inc/header.inc.php";
-include_once "inc/list.inc.php";
 include_once "modules/people/show.php";
 
 if ($_SESSION["id"] == 0 || $_SESSION["editable"] == "N") {
@@ -39,6 +38,7 @@ do_headers_dojo(get_edit_title($data), $extra);
 	if ($config->dojo) {		
 ?>
 <body class="tundra">
+<?php include_once("inc/analyticstracking.php"); ?>
 <div dojoType="dojox.data.QueryReadStore" jsId="LocationStore"
 			url="services/LocationQueryReadStore.php" requestMethod="post"></div>
 <div dojoType="dojox.data.QueryReadStore" jsId="SourceStore"

@@ -17,6 +17,7 @@
   echo ' onload="initialize()" onunload="GUnload()"';
   }
    ?>>
+<?php include_once("inc/analyticstracking.php"); ?>
  <?php
      echo show_location($p);
   ?>  

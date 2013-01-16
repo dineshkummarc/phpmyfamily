@@ -50,6 +50,7 @@
 	do_headers_dojo($per->getDisplayName());
 ?>
 <body class="tundra">
+<?php include_once("inc/analyticstracking.php"); ?>
 <script language="JavaScript" type="text/javascript">
  <!--
  function confirm_delete(year, section, url) {
