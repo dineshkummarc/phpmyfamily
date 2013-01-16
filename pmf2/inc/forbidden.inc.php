@@ -19,6 +19,7 @@
 	do_headers($strForbidden);
 ?>
 <body>
+<?php include_once("inc/analyticstracking.php"); ?>
 <table class="header" width="100%">
   <tbody>
     <tr>
