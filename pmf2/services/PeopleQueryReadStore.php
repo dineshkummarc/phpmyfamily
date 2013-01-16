@@ -2,51 +2,78 @@
 set_include_path("..");
 include_once("modules/db/DAOFactory.php");
 
-//header("Content-Type", "application/json");
+header("Content-Type", "application/json");
 
 ?>
-{}&&{identifier:"personid",
-items: [
-<?php
 
-	$search = new PersonDetail();
-	$search->queryType = Q_TYPE;
-	$search->person_id = 0;
-	$search->gender = 'A';
-	if (isset($_POST["id"])) { 
-		$search->person_id = $_POST["id"]; 
-		$search->queryType = Q_IND;
-	} else {
-	?>
-{name:"", label:"",personid:"-1"},
-	<?php
+<?php
+        $search = new PersonDetail();
+        $search->queryType = Q_TYPE;
+        $search->person_id = 0;
+        $search->gender = 'A';
+        $search->count = 10;
+$method = $_SERVER['REQUEST_METHOD'];
+
+switch ($method) {
+        case 'POST':
+	echo 'identifier:"personid",';
+	echo 'items: [';
+        if (isset($_POST["id"])) { $id = $_POST["id"];}
+        if (isset($_POST["gender"])) { $gender = $_POST["gender"];}
+        if (isset($_POST["start"])) { $start = $_POST["start"];}
+        if (isset($_POST["date"])) { $date = $_POST["date"];}
+        if (isset($_POST["count"])) { $count = $_POST["count"];}
+        if (isset($_POST["name"])) { $name = $_POST["name"];}
+        break;
+    case 'GET':
+        if (isset($_GET["id"])) { $id = $_GET["id"];}
+	else {
+		echo '[';
+        	if (isset($_GET["gender"])) { $gender = $_GET["gender"];}
+        	if (isset($_GET["start"])) { $start = $_GET["start"];}
+        	if (isset($_GET["date"]) && $_GET["date"] != "0") { $date = $_GET["date"];}
+        	if (isset($_GET["count"])) { $count = $_GET["count"];}
+        	if (isset($_GET["name"])) { $name = $_GET["name"];}
 	}
-	if (isset($_POST["gender"])) { $search->gender = $_POST["gender"]; }
-	if (isset($_POST["start"])) { $search->start = $_POST["start"]; }
-	
-	$search->count = 10;
-	if (isset($_POST["count"])) {
-		if ($_POST["count"] == "Infinity") {
-			$search->count = 10;
-		} else {
-			$search->count = $_POST["count"];
-		}
-	}
-	$pos = false;
-	if (isset($_POST["name"])) { 
-		$names = str_replace("*", "%", $_POST["name"],$count);
-		if ($count == 0) {
-			$names .= "%";
-		}
-		$search->parseSelectName($names);
-		$pos = strpos($names, '(');
+    break;
+}
+    $search = new PersonDetail();
+    $search->queryType = Q_TYPE;
+    $search->person_id = 0;
+    $search->gender = 'A';
+    if (isset($id)) { 
+        $search->person_id = $id; 
+        $search->queryType = Q_IND;
+    } else {
+    ?>
+    <?php
+//{name:"", label:"",personid:"-1"},
+    }
+    if (isset($gender)) { $search->gender = $gender; }
+    if (isset($start)) { $search->start = $start; }
+    
+    $search->count = 10;
+    if (isset($count)) {
+        if ($count == "Infinity") {
+            $search->count = 10;
+        } else {
+            $search->count = $count;
+        }
+    }
+    $pos = false;
+    if (isset($name)) { 
+        $names = str_replace("*", "%", $name,$count);
+        if ($count == 0) {
+            $names .= "%";
+        }
+        $search->parseSelectName($names);
+        $pos = strpos($names, '(');
 	}
 		
-	if (isset($_POST["date"])) { $search->date_of_birth = $_POST["date"]; }
-	
+	if (isset($date)) { $search->date_of_birth = $date; }
 	$dao = getPeopleDAO();
 	$dao->getPersonDetails($search);
-	
+
 	for($i=0;$i<$search->numResults;$i++) {
 		$per = $search->results[$i];
 ?>
@@ -55,5 +82,7 @@ items: [
 		if ($i + 1 < $search->numResults) { echo ","; }
 	}
 
+        if (!isset($_GET["id"])) {
+		echo "]";
+	}
 ?>
-]}
