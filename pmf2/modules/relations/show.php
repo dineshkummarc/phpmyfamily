@@ -16,7 +16,6 @@ function insertChildrenLink($pid, $spid, $gender, $editable) {
 		if ($editable) {
 ?>
  (<a href="edit.php?func=add&area=people&mid=<?php
- 	 echo $icona." ";
  	 echo $mid;
  	 ?>&fid=<?php echo $fid;?>"><?php echo $strInsert." ".$strChildren;?></a>) <?php 
 		}
