@@ -3,6 +3,7 @@
 	$search->queryType = Q_TYPE;
 	$search->person_id = 0;
 	$search->gender = 'A';
+	$search->count = 1000;
 	
 	$search->order = "b.date1, d.date1";
 	$type = "";
