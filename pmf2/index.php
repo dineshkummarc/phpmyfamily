@@ -23,10 +23,13 @@
 	
 	$config = Config::getInstance();
 	$rss = "<link rel=\"alternate\" type=\"application/rss+xml\" href=\"".$config->absurl."rss.php\" title=\"".$config->desc."\" />";
+	$script = '<script src="inc/d3/d3.v2.min.js"></script>
+<script src="inc/d3-cloud/d3.layout.cloud.js"></script>';
 	// Fill out the headers
-	do_headers_dojo($config->desc." :phpmyfamily", $rss);
+	do_headers_dojo($config->desc." :phpmyfamily", $rss . $script);
 ?>
 <body class="tundra">
+<?php include_once("inc/analyticstracking.php"); ?>
 <table width="100%" class="header">
 	<tr>
 		<td width="65%" align="center">
@@ -88,11 +91,7 @@ $search = new PersonDetail();
 						<td class="tbl_even"><?php echo $strCensusRecs; ?></td>
 						<td class="tbl_even" align="right">
 <?php
-					$query = "SELECT count(*) as number FROM ".$tblprefix."census";
-					$result = mysql_query($query);
-					while ($row = mysql_fetch_array($result))
-						echo $row["number"];
-					mysql_free_result($result);
+					echo $dao->getNumRows("census");
 ?>
 						</td>
 					</tr>
@@ -100,11 +99,7 @@ $search = new PersonDetail();
 						<td class="tbl_odd"><a href="gallery.php"><?php echo $strImages; ?></a></td>
 						<td class="tbl_odd" align="right">
 <?php
-					$query = "SELECT count(*) as number FROM ".$tblprefix."images WHERE image_id <> '10000'";
-					$result = mysql_query($query);
-					while ($row = mysql_fetch_array($result))
-						echo $row["number"];
-					mysql_free_result($result);
+					echo $dao->getNumRows("images");
 ?>
 						</td>
 					</tr>
@@ -112,11 +107,7 @@ $search = new PersonDetail();
 						<td class="tbl_even"><?php echo $strDocTrans; ?></td>
 						<td class="tbl_even" align="right">
 <?php
-					$query = "SELECT count(*) as number FROM ".$tblprefix."documents";
-					$result = mysql_query($query);
-					while ($row = mysql_fetch_array($result))
-						echo $row["number"];
-					mysql_free_result($result);
+					echo $dao->getNumRows("documents");
 ?>
 						</td>
 					</tr>
@@ -136,13 +127,61 @@ $search = new PersonDetail();
 	$dao = getPeopleDAO();
 	
 	$surnames = $dao->getSurnames(1);
-	echo "<hr />\n<h4>$strTopSurnames</h4>\n<ul>";
+	echo "<hr />\n";
+	echo '<div style="float:left"><h4>'.$strTopSurnames.'</h4><ul>';
+	$names = "";
+	$sizesData = "";
+	$totalCount = 0;
+	$count = 0;
 	foreach($surnames AS $per) {
-		echo "<li>".$per->name->surname." (".$per->count.")</li> ";
+		if ($count < 10) {
+			echo "<li>".$per->name->surname." (".$per->count.")</li> ";
+		}
+		$count++;
+		$names .= '"'.$per->name->surname.'",';
+		$sizesData .= 'sizes["'.$per->name->surname.'"] = '.$per->count.";";
+		$totalCount += $per->count;
 	}
 	?>
 				</ul>
+	</div><div style="float:right" id="cloud">
+<script>
+  var sizes = new Array(), totalCount;
+  <?php
+	echo $sizesData;
+	echo "var totalCount = $totalCount;";
+  ?>
+  var fill = d3.scale.category20();
 
+  d3.layout.cloud().size([300, 300])
+      .words([ <?php echo $names;?> ].map(function(d) {
+        return {text: d, size: 7 + (sizes[d]/totalCount) * 300};
+      }))
+      .rotate(function() { return ~~(Math.random() * 2) * 90; })
+      .font("Impact")
+      .fontSize(function(d) { return d.size; })
+      .on("end", draw)
+      .start();
+
+  function draw(words) {
+    d3.select("#cloud").append("svg")
+        .attr("width", 300)
+        .attr("height", 300)
+      .append("g")
+        .attr("transform", "translate(150,150)")
+      .selectAll("text")
+        .data(words)
+      .enter().append("text")
+        .style("font-size", function(d) { return d.size + "px"; })
+        .style("font-family", "Impact")
+        .style("fill", function(d, i) { return fill(i); })
+        .attr("text-anchor", "middle")
+        .attr("transform", function(d) {
+          return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+        })
+        .text(function(d) { return d.text; });
+  }
+</script></div>
 			</td>
 			<td width="33%" valign="top">
 				<table width="100%">
@@ -227,7 +266,7 @@ if ($img->numResults > 0) {
 			$class = "tbl_odd";
 		else
 			$class = "tbl_even";
-		list ($yom, $mom, $dom) = preg_split("/-/",$rel->marriage_date);
+		list ($yom, $mom, $dom) = explode("-",$rel->marriage_date);
 ?>
 		<tr>
 		<td class="<?php echo $class; ?>" align="left"><?php echo $rel->person->getLink()." &amp; ".$rel->relation->getLink() ?></td>
