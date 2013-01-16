@@ -38,9 +38,8 @@ if ($config->dojo) {
       dojo.require("dijit.form.ComboBox");
       dojo.require("dijit.form.FilteringSelect");
       dojo.require("dojox.data.QueryReadStore");
-      dojo.require("dojox.data.QueryReadStore");
 
-
+  dojo.addOnLoad(function() {
       dojo.provide("LocationStore");
       dojo.declare("LocationStore", dojox.data.QueryReadStore, {
 			fetch:function(request) {
@@ -48,6 +47,7 @@ if ($config->dojo) {
 				return this.inherited("fetch", arguments);
 			}
       });
+  });
 <?php
 }
 ?>
