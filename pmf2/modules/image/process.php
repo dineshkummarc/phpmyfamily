@@ -11,6 +11,7 @@ $img = new Image();
 
 $imgFile = $img->getImageFile();
 $tnFile = $img->getThumbnailFile();
+$error = '';
 
 if (isset($_REQUEST["func"]) && $_REQUEST["func"] == "delete") {
 	$peep->setFromRequest();
@@ -61,7 +62,7 @@ if (isset($_REQUEST["func"]) && $_REQUEST["func"] == "delete") {
 	$img->source = $s;
 	
 	if ($s->source_id > 0) {
-		$e->person->person_id = 'null';
+//		$e->person->person_id = 'null';
 		if (!$s->isEditable()) {
 			die(include "inc/forbidden.inc.php");
 		}	
@@ -74,6 +75,9 @@ if (isset($_REQUEST["func"]) && $_REQUEST["func"] == "delete") {
 	} else {
 		$e->date1_modifier = 0;
 		$chg = processimage($dao, $img);
+		if (!$chg) {
+			$error = "&error=image";
+		}
 	}
 }
 
@@ -84,7 +88,7 @@ if ($chg) {
 if (isset($_REQUEST["dest"]) && $_REQUEST["dest"] == "gallery") {
 	header("Location: gallery.php");
 } else {
-	header("Location: people.php?person=".$img->person->person_id);
+	header("Location: people.php?person=".$img->person->person_id.$error);
 }
 
 
