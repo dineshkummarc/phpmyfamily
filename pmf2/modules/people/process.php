@@ -22,8 +22,7 @@ if (isset($_REQUEST["func"]) && $_REQUEST["func"] == "delete") {
 	}
 	// If Big Brother is watching
 	// We need to call it here while we can!
-	if ($config->bbtracking)
-		bb_person($peep);
+	stamppeeps($per);
 	
 	$dao->deletePerson($per);
 	
