@@ -64,7 +64,6 @@ function output_ged($level, $tag, $data, $suffix = "") {
 	echo $level." ".$tag.html_entity_decode($data, ENT_QUOTES).$suffix."\n";
 }
 
-#while ($row = mysql_fetch_array($result)) {
 function print_person($search, $per) { 
 	global $famarray;
 	
@@ -131,7 +130,7 @@ function print_person($search, $per) {
 			if ($e->notes != "") {
 				echo "2 NOTE\n" ;
 				output_ged(3, "CONT ",$e->notes);
-    			if ($e->source != "") {
+    			if (isset($e->source) && $e->source != "") {
     				output_ged(2, "SOUR ",$e->source->title);
     			} else {
     				output_ged(3, "SOUR ","phpmyfamily");
@@ -151,7 +150,7 @@ function print_person($search, $per) {
 	
 	if ($per->narrative <> "") {
 		//Textfield could have Returns, separate them in gedcom CONT lines
-		$narrative = ereg_replace("\n","\n2 CONT ",$per->narrative);
+		$narrative = preg_replace("/\n/","\n2 CONT ",$per->narrative);
 		output_ged(1, "NOTE ",$narrative);
 	}
 	$exploded = explode(" ", $per->updated);
@@ -231,39 +230,6 @@ foreach ($famarray as $famc => $fam) {
 //just the empty objects and references are exported to make some older applications happy
 //photos are now just FILE entries in an INDI record and point to a web resource
 
-/*
-//find photos
-$pquery = "SELECT * FROM ".$tblprefix."images";
-$presult = mysql_query($pquery) or die(mysql_error());
-$pnumber = mysql_num_rows($presult);
-$p = 0;
-while ($p < $pnumber) {
-	$prow = mysql_fetch_array($presult);
-	output_ged(0, "@img",$prow["image_id"]."@ OBJE\n";
-	//insertion of binary data would be here in gedcom < 5.5.1
-	//output_ged(1, "FILE $absurl","images/".$prow["image_id"].".jpg\n";
-	//echo "2 FORM jpg\n";
-	//output_ged(2, "TITL ",$prow["title"]);
-	//the above three lines are for 5.5.1, for now just fill the title
-	output_ged(1, "TITL ",$prow["title"]);
-	$p ++;
-}
-
-//find documents
-$pquery = "SELECT * FROM ".$tblprefix."documents";
-$presult = mysql_query($pquery) or die(mysql_error());
-$pnumber = mysql_num_rows($presult);
-$p = 0;
-while ($p < $pnumber) {
-	$prow = mysql_fetch_array($presult);
-	output_ged(0, "@doc",$prow["id"]."@ SOUR\n";
-	output_ged(1, "TITL ",$prow["doc_title"]);
-	output_ged(1, "TEXT ",$prow["doc_description"]);
-	echo "1 OBJE\n";
-	output_ged(2, "FILE $absurl","documents/".$prow["file_name"]);
-	$p ++;
-}
-*/
 //find documents
 //Standard submitter, as the data is stored in the database an comes from one source
 //EMAIL and WWW are new in gedcom 5.5.1, for now disabled
