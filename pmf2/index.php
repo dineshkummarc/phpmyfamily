@@ -118,6 +118,14 @@ $search = new PersonDetail();
 						<?php $dao = getLocationDAO(); echo $dao->getLocationCount();?>
 						</td>
 					</tr>
+					<tr>
+						<td class="tbl_even" colspan="2">
+						<a href="timeline.php"><?php echo $strTimeline;?></a></td>
+					</tr>
+					<tr>
+						<td class="tbl_odd" colspan="2">
+						<a href="graph.php"><?php echo $strCharts;?></a></td>
+					</tr>
 				</table>
 <?php
 	$search = new PersonDetail();
