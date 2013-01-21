@@ -2,14 +2,11 @@
 <project name="pmf2" default="makezip" basedir=".">
 
 
-	<property name="version" value="v2-0-5"/>
+	<property name="version" value="v2-1-0-alpha-1"/>
 	<target name="makezip" description="Create a zip file based on the current directory">
 			<zip destfile="pmf${version}.zip" basedir="." excludes="dojo*/**,inc/database.inc.php,inc/config.inc.php,build.xml,*.zip,*.tar,*.tar.gz,*.tgz,images/*.jpg,doc/*,dojo*,CVS,pmf2.mwb,pmf2.mwb.bak" />
-			<zip destfile="pmf${version}-with-dojo.zip" basedir="." excludes="inc/database.inc.php,inc/config.inc.php,build.xml,*.zip,*.tar,*.tar.gz,*.tgz,images/*.jpg,doc/*,dojo*,CVS,pmf2.mwb,pmf2.mwb.bak" />
 			<tar destfile="pmf${version}.tar" basedir="." excludes="dojo*/**,inc/database.inc.php,inc/config.inc.php,build.xml,*.zip,*.tar,*.tar.gz,*.tgz,images/*.jpg,doc/*,dojo*,CVS,pmf2.mwb,pmf2.mwb.bak" />
 			<gzip src="pmf${version}.tar" destfile="pmf${version}.tar.gz"/>
-			<tar destfile="pmf${version}-with-dojo.tar" basedir="." excludes="inc/database.inc.php,inc/config.inc.php,build.xml,*.zip,*.tar,*.tar.gz,*.tgz,images/*.jpg,doc/*,dojo*,CVS,pmf2.mwb,pmf2.mwb.bak" />
-			<gzip src="pmf${version}-with-dojo.tar" destfile="pmf${version}-with-dojo.tar.gz" />
 	</target>
 
 </project>
