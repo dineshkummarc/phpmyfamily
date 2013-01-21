@@ -47,6 +47,8 @@
 	$strLastName = "Last Name";
 	$strAKA = "Alias";
 	$strLocations = "Locations";
+	$strTimeline = "Timeline";
+	$strCharts = "Charts";
 	$strReport = "Report";
 	$strMissing = "Missing";
 	$strDescendants     = "Decendants";
