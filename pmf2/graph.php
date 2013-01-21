@@ -41,7 +41,7 @@ $g->display($output);
 } else {
 ?>
 <dl>
-<dt><a href="?use=gv">GraphViz</a></dt>
+<dt>GraphViz</dt>
 <dd>
 <ul>
 <?php
