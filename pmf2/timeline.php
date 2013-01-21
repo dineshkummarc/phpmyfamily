@@ -1,4 +1,8 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+<?php
+include_once "modules/db/DAOFactory.php";
+
+include_once "modules/graph/PmfSimile.php";
+?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
 
  "http://www.w3.org/TR/html4/strict.dtd">
 
@@ -28,9 +32,6 @@
    <!-- Since we don't have our own server, we do something tricky and load our data here as if it were a library file -->
    <script type="text/javascript">
 <?php
-include_once "modules/db/DAOFactory.php";
-
-include_once "modules/graph/PmfSimile.php";
 
 	$g = new PmfSimile();
 	$g->addPeople();
