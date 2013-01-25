@@ -9,6 +9,7 @@ function get_options_edit() {
 	ob_end_clean();
 	
 	$ret = '<form method="POST" action="modules/admin/process.php">
+			<input type="hidden" name="version" value="'. $config->version.'"></input>
     <table>
     <tr><th>email</th><th>mailto</th><th>desc</th><th>styledir</th><th>defaultstyle</th>
  <th>layout</th><th>image dir</th><th>transcripts dir</th></tr>
