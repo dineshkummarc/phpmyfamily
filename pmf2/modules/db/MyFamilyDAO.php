@@ -49,7 +49,7 @@ class MyFamilyDAO {
 	   try {
 		if (!($result = $pdo->query($query))) {
 			//error_log($query);
-			error_log($pdo->errorInfo());
+			error_log(print_r($pdo->errorInfo(), true));
 			if ($this->inTrans > 0) {
 				$this->rollbackTrans();
 			}
