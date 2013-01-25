@@ -4,7 +4,7 @@ function displayPersonOption($param, $per) {
 	echo "<option value=\"".$per->person_id."\"";
 		if ($per->person_id == $param->person_id)
 			echo " selected=\"selected\"";
-	if ($per->father_id == "00000" && $per->gender == "M") // MODIFICA 20120508
+	if ($per->father->person_id == "00000" && $per->gender == "M") // MODIFICA 20120508
 	        echo "style='background-color:#FF0000;'";
 		echo ">".$per->getSelectName()."</option>\n";
 }
