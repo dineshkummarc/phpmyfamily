@@ -51,7 +51,7 @@
 	$strCharts = "Charts";
 	$strReport = "Report";
 	$strMissing = "Missing";
-	$strDescendants     = "Decendants";
+	$strDescendants     = "Descendants";
 	$strLivingPerson    = "Living person";
 	$strAncestors       = "Ancestors";  
 	$strDateDescr[0]    = "";    // Default for old entries without details
