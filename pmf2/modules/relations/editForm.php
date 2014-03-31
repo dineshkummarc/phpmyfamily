@@ -12,32 +12,40 @@ function setup_edit() {
 	
 	$pdao = getPeopleDAO();
 	if ($rel->person->person_id > 0) {
+            if ($_REQUEST["func"] == "edit") {
 		$dao = getRelationsDAO();
 		$dao->getRelationshipDetails($rel);
 		if ($rel->numResults > 0) {
 			$ret = $rel->results[0];
 			$pdao->getParents($ret->relation);
-		} 
+		}
+            } else {
+               $search = $rel->person;
+               $pdao->getPersonDetails($search);
+               $rel->person = $search->results[0];
+               $rel->relation->person_id = 0;
+               $ret = $rel;
+            } 
 	} else {
 		$ret = $rel;
 	}
-	
 	$pdao->getParents($ret->person);
 		
-			
-	$dao = getEventDAO();
-	$e = new Event();
-	$e->event_id = $ret->event->event_id;
-	$dao->getEvents($e,Q_REL, true);
+	if (isset($ret->event->event_id)) {		
+	    $dao = getEventDAO();
+	    $e = new Event();
+	    $e->event_id = $ret->event->event_id;
+	    $dao->getEvents($e,Q_REL, true);
 	
-	if ($e->numResults == 0) {
+	    if ($e->numResults == 0) {
 		$e = new Event();
 		$e->type = MARRIAGE_EVENT;
 		$ret->event = $e;
-	} else {
+	    } else {
 		$ret->event = $e->results[0];
-	}
-	$ret->event->person->person_id = 'null';
+	    }
+	    $ret->event->person->person_id = 'null';
+        }
 	return ($ret);
 }
 
@@ -118,14 +126,14 @@ function get_edit_form($rel) {
 				$people[] = $rel->relation;
 			}
 			for ($i = 0;$i<2;$i++) {
-				$p = $people[$i];
 				if (isset($people[$i])) {
-					if (isset($p->father->person_id) && $p->father->person_id > 0 && $p->father->isEditable()) {
+				    $p = $people[$i];
+				    if (isset($p->father->person_id) && $p->father->person_id > 0 && $p->father->isEditable()) {
 						$people[] = $p->father;
-					}
-					if (isset($p->mother->person_id) && $p->mother->person_id > 0 && $p->father->isEditable()) {
-						$people[] = $p->mother;
-					}
+				    }
+				    if (isset($p->mother->person_id) && $p->mother->person_id > 0 && $p->father->isEditable()) {
+					$people[] = $p->mother;
+				    }
 				}
 			}
 			attendeeEditTable($rel->event, MARRIAGE_EVENT, $people);
