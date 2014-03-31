@@ -15,16 +15,14 @@ include_once "modules/graph/PmfSimile.php";
 
    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
 
-
-   <!-- See http://developer.yahoo.com/yui/ for info on the reset, font and base css -->
-
-   <link rel="stylesheet" href="http://yui.yahooapis.com/2.7.0/build/reset-fonts-grids/reset-fonts-grids.css" type="text/css">
-   <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.7.0/build/base/base-min.css"> 
-
-
-   <!-- Load the Timeline library after reseting the fonts, etc -->
-
-   <script src="http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.js?bundle=true" type="text/javascript"></script>
+  <script>
+ Timeline_ajax_url="inc/timeline_2.3.0/timeline_ajax/simile-ajax-api.js";
+ Timeline_urlPrefix='inc/timeline_2.3.0/timeline_js/';
+ Timeline_parameters='bundle=true';
+ </script>
+ <script src="inc/timeline_2.3.0/timeline_js/timeline-api.js"
+ type="text/javascript">
+ </script> 
 
  
    <link rel="stylesheet" href="styles/simile/timeline.css" type="text/css">
@@ -94,22 +92,22 @@ include_once "modules/graph/PmfSimile.php";
 <div id="doc3" class="yui-t7">
 
    <div id="hd" role="banner">
-     <h1>Local Timeline Example</h1>
+     <h1>Timeline</h1>
    </div>
 
+	     <p>To move the Timeline: use the mouse scroll wheel, the arrow keys or grab and drag the Timeline.</p>
    <div id="bd" role="main">
 
 	   <div class="yui-g">
 
 	     <div id='tl'></div>
-	     <p>To move the Timeline: use the mouse scroll wheel, the arrow keys or grab and drag the Timeline.</p>
 
 	   </div>
 
 	 </div>
 
    <div id="ft" role="contentinfo">
-     <p>Thanks to the <a href=''>Simile Timeline project</a> Timeline version <span id='tl_ver'></span></p>
+     <p>Thanks to the <a href='http://simile-widgets.org/timeline/'>Simile Timeline project</a> Timeline version <span id='tl_ver'></span></p>
      <script>Timeline.writeVersion('tl_ver')</script> 
    </div>
 
