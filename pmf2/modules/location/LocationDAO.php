@@ -110,7 +110,8 @@ class LocationDAO extends MyFamilyDAO {
 		// Initialize delay in geocode speed
 		$delay = 0;
 		$found = false;
-		$base_url = "http://" . $config->gmapshost . "/maps/geo?output=xml&key=" . $config->gmapskey;
+		$base_url = "http://maps.googleapis.com/maps/api/geocode/xml";
+//&key=" . $config->gmapskey;
 
 		// Iterate through the rows, geocoding each address
 
@@ -118,7 +119,7 @@ class LocationDAO extends MyFamilyDAO {
 
 		while ($geocode_pending) {
 
-			$request_url = $base_url . "&q=" . urlencode($location->place);
+			$request_url = $base_url . "?sensor=false&address=" . urlencode($location->place);
 			if(ini_get("allow_url_fopen") && ini_get("allow_url_include")) {
 				$xml = simplexml_load_file($request_url);
 			} else if (extension_loaded("curl")) {
@@ -135,24 +136,23 @@ class LocationDAO extends MyFamilyDAO {
 			    foreach(libxml_get_errors() as $error) {
 			        echo "\t", $error->message;
 			    }
+			    return false;
 			}
 			} else {
 				//Security prevents lookup
 				return false;
 			}
-			$status = $xml->Response->Status->code;
-			if (strcmp($status, "200") == 0) {
+			$status = $xml->status;
+			if (strcmp($status, "OK") == 0) {
 				// Successful geocode
 				$geocode_pending = false;
-				$coordinates = $xml->Response->Placemark->Point->coordinates;
-				$coordinatesSplit = split(",", $coordinates);
+				$coordinates = $xml->result->geometry->location;
 				// Format: Longitude, Latitude, Altitude
-				$lat = $coordinatesSplit[1];
-				$lng = $coordinatesSplit[0];
+				$lat = (double) $coordinates->lat;
+				$lng = (double) $coordinates->lng;
 				$location->lat = $lat;
 				$location->lng = $lng;
-
-			} else if (strcmp($status, "620") == 0) {
+			} else if (strcmp($status, "OVER_QUERY_LIMIT") == 0) {
 				// sent geocodes too fast
 				$delay += 100000;
 			} else {
