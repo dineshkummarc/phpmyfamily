@@ -4,9 +4,15 @@ include_once("modules/db/DAOFactory.php");
 
 header("Content-Type", "application/json");
 
-?>
+foreach (getallheaders() as $header_name => $value) {
+	//X-Range required for Opera
+        if ($header_name == "Range" || $header_name == "X-Range") {
+                list($n,$v) = explode("=",$value);
+                list($start, $end) = explode("-",$v);
+                $count = $end - $start;
+        }
+}
 
-<?php
         $search = new PersonDetail();
         $search->queryType = Q_TYPE;
         $search->person_id = 0;
@@ -26,17 +32,25 @@ switch ($method) {
         if (isset($_POST["name"])) { $name = $_POST["name"];}
         break;
     case 'GET':
-        if (isset($_GET["id"])) { $id = $_GET["id"];}
+        if (isset($_GET["id"]) && $_GET["id"] != '') { 
+		if ($_GET["id"] != '') {
+			$id = $_GET["id"];
+		}
+	}
 	else {
 		echo '[';
         	if (isset($_GET["gender"])) { $gender = $_GET["gender"];}
-        	if (isset($_GET["start"])) { $start = $_GET["start"];}
+        	//if (isset($_GET["start"])) { $start = $_GET["start"];}
         	if (isset($_GET["date"]) && $_GET["date"] != "0") { $date = $_GET["date"];}
-        	if (isset($_GET["count"])) { $count = $_GET["count"];}
+        	//if (isset($_GET["count"])) { $count = $_GET["count"];}
         	if (isset($_GET["name"])) { $name = $_GET["name"];}
 	}
     break;
 }
+    	$csearch = new PersonDetail();
+    	$csearch->queryType = Q_COUNT;
+    $csearch->gender = 'A';
+
     $search = new PersonDetail();
     $search->queryType = Q_TYPE;
     $search->person_id = 0;
@@ -49,8 +63,14 @@ switch ($method) {
     <?php
 //{name:"", label:"",personid:"-1"},
     }
-    if (isset($gender)) { $search->gender = $gender; }
-    if (isset($start)) { $search->start = $start; }
+    if (isset($gender)) { 
+	$search->gender = $gender; 
+	$csearch->gender = $gender; 
+    }
+    if (!isset($start)) {
+      $start = 0;
+    }
+    $search->start = $start;
     
     $search->count = 10;
     if (isset($count)) {
@@ -67,12 +87,24 @@ switch ($method) {
             $names .= "%";
         }
         $search->parseSelectName($names);
+        $csearch->parseSelectName($names);
         $pos = strpos($names, '(');
-	}
+    }
 		
-	if (isset($date)) { $search->date_of_birth = $date; }
+    if (isset($date)) {
+	$search->date_of_birth = $date;
+	$csearch->date_of_birth = $date;
+    }
 	$dao = getPeopleDAO();
 	$dao->getPersonDetails($search);
+
+	$dao->getPersonDetails($csearch);
+	$total = $csearch->numResults;
+
+	$end = $start + $search->numResults;
+	
+        $resultsHeader = "Content-Range: items $start-$end/$total";
+	header($resultsHeader);
 
 	for($i=0;$i<$search->numResults;$i++) {
 		$per = $search->results[$i];
@@ -82,7 +114,7 @@ switch ($method) {
 		if ($i + 1 < $search->numResults) { echo ","; }
 	}
 
-        if (!isset($_GET["id"])) {
+        if (!isset($id)) {
 		echo "]";
 	}
 ?>

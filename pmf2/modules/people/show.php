@@ -74,12 +74,13 @@ require([
 	if (!peopleStore) {
 		var peopleStore = new Array();
 	}
-   	peopleStore["<?php echo $form;?>"] = new JsonRest({ target:"services/peopleService/person/", idProperty: "personid"});
+   	peopleStore["<?php echo $form;?>"] = new JsonRest({ target:"services/PeopleQueryReadStore.php?id=", idProperty: "personid"});
     ready(function(){
         var filteringSelect = new FilteringSelect({
             id: "<?php echo $form;?>",
             name: "<?php echo $form;?>",
 	    style: "width: 400px;",
+	    pageSize: 10,
 	    query: { gender:'<?php echo $gender;?>', 
 			date:'<?php echo $date;?>', 
 			omit:'<?php echo $omit;?>'
