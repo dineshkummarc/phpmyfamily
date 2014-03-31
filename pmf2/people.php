@@ -40,9 +40,8 @@
 	$dao->getParents($per);
 	$dao->getChildren($per);
 	$dao->getSiblings($per);
-	
 	// if trying to access a restriced person
-	if (!$per->isViewable()) {
+	if (!method_exists($per,'isViewable') || !$per->isViewable()) {
 		die(include "inc/forbidden.inc.php");
 	}
 		
