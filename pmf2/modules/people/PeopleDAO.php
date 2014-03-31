@@ -58,8 +58,8 @@ class PeopleDAO extends MyFamilyDAO {
 			}
 		}
 
-		if (isset($search->date_of_birth) && $search->date_of_birth != '') {
-			$where .= " AND b.date1 <= '".$search->date_of_birth."'";
+		if (isset($search->date_of_birth) && $search->date_of_birth != '' && $search->date_of_birth != '0000-00-00') {
+			$where .= " AND (b.date1 <= '".$search->date_of_birth."' OR b.date1 IS NULL)";
 		}
 
 		
