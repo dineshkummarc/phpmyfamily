@@ -24,13 +24,13 @@ $g = new PmfArbor();
 break;
 }
 
-$g->addRelationships();
 $g->addPeople();
+$g->addRelationships();
 if ($output === 'dot') {
   $file = $g->save('');
   header("Content-Type: text/vnd.graphviz");
   header("Content-Length: " . filesize($file));
-  header('Content-Disposition: inline; filename="phpmyfamily.gv"');
+  header('Content-Disposition: inline; filename="phpmyfamily.dot"');
   $fp = fopen($file, 'rb');
   fpassthru($fp);
   fclose($fp);
