@@ -38,9 +38,9 @@ $config = Config::getInstance();
       <title><?php echo htmlspecialchars(html_entity_decode($per->getDisplayName())); ?></title>
       <description><?php echo htmlspecialchars(html_entity_decode ($per->getFullLink())); ?></description>
       <link><?php echo htmlspecialchars(html_entity_decode ($per->getURL())); ?></link><?php
-		list($date, $hours) = split(' ', $per->updated); 
-		list($year,$month,$day) = split('-',$date); 
-		list($hour,$min,$sec) = split(':',$hours); 
+		list($date, $hours) = explode(' ', $per->updated); 
+		list($year,$month,$day) = explode('-',$date); 
+		list($hour,$min,$sec) = explode(':',$hours); 
 		//returns the date ready for the rss feed
 		$date = date('r',mktime($hour, $min, $sec, $month, $day, $year)); 
 ?>
