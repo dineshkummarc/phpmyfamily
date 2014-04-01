@@ -1,4 +1,13 @@
-v 2.1.0
+v 2.1.0-alpha2
+    Move timeline include file to local
+    Change graphviz output file extension
+    Fix error message trying to view a restricted person
+    Improve dojo compatibility with PeopleQueryReadStore
+    Fix inserting multiple marriages
+    Improve date filtering for people drop down
+    Update geocoding api
+    Fix for error logging
+v 2.1.0-alpha1
 	Introduce graph.php - see INSTALL for setup
 	Name cloud on index page
 	Technical upgrades to use PDO instead of mysql_ and dojo 1.8.1
