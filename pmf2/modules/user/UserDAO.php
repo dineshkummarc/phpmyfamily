@@ -61,10 +61,12 @@ class UserDAO extends MyFamilyDAO {
                 if ($stmt->rowCount() == 0) {
                 	$stmt = $pdo->prepare("INSERT INTO ".$tblprefix."users (username, password, edit, style, email) VALUES (?, ?, ?, ?, ?)");
                 	$stmt->bindParam(1, $user, PDO::PARAM_STR);
-                	$stmt->bindParam(2, md5($password), PDO::PARAM_STR);
+                        $pw = md5($password);
+                	$stmt->bindParam(2, $pw, PDO::PARAM_STR);
                 	$stmt->bindParam(3, $edit, PDO::PARAM_STR);
-                	$stmt->bindParam(4, $style.".css.php", PDO::PARAM_STR);
-                	$stmt->bindParam(3, $email, PDO::PARAM_STR);
+                        $css = $style.".css.php";
+                	$stmt->bindParam(4, $css, PDO::PARAM_STR);
+                	$stmt->bindParam(5, $email, PDO::PARAM_STR);
                 	$stmt->execute() or die($err_new_user);
                 } else {
                         $ret = 1;
