@@ -80,7 +80,7 @@ function show_transcript_details($trans) {
 ?>
 		<tr>
 			<td class="<?php echo $class; ?>"><a href="document.php?docid=<?php echo $doc->transcript_id; ?>"><?php echo $doc->title; ?></a></td>
-			<td class="<?php echo $class; ?>"><?php echo $doc->event->getFullDisplay($class); ?></td>
+			<td class="<?php echo $class; ?>"><?php echo $doc->source->getFullDisplay($class); ?></td>
 			<td class="<?php echo $class; ?>">
 <?php
 				if ($doc->person->isEditable() || $doc->source->isEditable()) {
