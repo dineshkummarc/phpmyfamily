@@ -53,7 +53,7 @@ if (isset($_REQUEST["func"]) && $_REQUEST["func"] == "delete") {
 	$sdao->resolveSource($s);
 
 	if ($s->source_id > 0) {
-		$e->person->person_id = 'null';
+		//$e->person->person_id = 'null';
 		if (!$s->isEditable()) {
 			die(include "inc/forbidden.inc.php");
 		}	
