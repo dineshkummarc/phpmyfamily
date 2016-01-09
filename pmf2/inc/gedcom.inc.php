@@ -76,9 +76,11 @@ Reading in file:<br>
 	$handle = fopen ($gedfile, "r");
 	while (!feof ($handle)) {
     	$buffer = fgets($handle, 4096);
+		// remove BOM if exists
+                $buffer = preg_replace('/\x{EF}\x{BB}\x{BF}/', '', $buffer);
 		// need to trim the annoying newline
 		// from end of buffer
-		if (substr($buffer, 0, 1) == "0")
+		if (substr($buffer, 0, 1) === "0")
 			$blocks++;
 		$gedarray[$blocks][] = rtrim($buffer);
 	}
