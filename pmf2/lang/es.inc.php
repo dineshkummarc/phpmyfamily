@@ -157,7 +157,7 @@
 	$strConfirmDelete	= "\"Estas seguro que quieres borrar la seccion del \\n'\" + year + \"' \" + section +\"?\"";
 	$strTranscript		= "transcript";
 	$strImage			= "imagen";
-	$strDoubleDelete	= "\"¿Estás realmente seguro de que desea ELIMINAR esta persona \\nEste proceso es IRREVERSIBLE!!"";
+	$strDoubleDelete	= "\"¿Estás realmente seguro de que desea ELIMINAR esta persona \\nEste proceso es IRREVERSIBLE!!\"";
 	$strBirthCert		= "¿Nacimiento Certificado?";
 	$strDeathCert		= "¿Defunción  Certificada?";
 	$strMarriageCert	= "¿Matrimonio  Certificado?";
