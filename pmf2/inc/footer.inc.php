@@ -31,7 +31,7 @@
 			<td width="15%" align="center" valign="top"></td>
 			<td width="70%" align="center" valign="top">
 <?php include "lang/lang.inc.php"; ?>
-				<h5><?php echo $strPowered; ?> <a href="http://www.phpmyfamily.net/" target="_blank" class="copyright">phpmyfamily v<?php echo $version; ?></a> &copy;2002-2008 SourceForge phpmyfamily developers<br /><?php if($config->mailto) echo str_replace("$1", "mail.php?subject=".$title, $strFooter); else echo str_replace("$1", "mailto:".$config->email."?subject=".$title, $strFooter); ?>
+				<h5><?php echo $strPowered; ?> <a href="http://www.phpmyfamily.net/" target="_blank" class="copyright">phpmyfamily v<?php echo $version; ?></a> &copy;2002-2008 SourceForge phpmyfamily developers<br /><?php if(!$config->mailto) echo str_replace("$1", "mail.php?subject=".$title, $strFooter); else echo str_replace("$1", "mailto:".$config->email."?subject=".$title, $strFooter); ?>
 <?php
 	if ($config->timing) {
 		$endtime = array_sum(explode(' ',microtime()));

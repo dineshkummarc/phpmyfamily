@@ -63,7 +63,7 @@
 <?php
 			// include login form if not logged in
 			if ($_SESSION["id"] == 0) {
-				if($config->mailto) echo "<p>".str_replace("$1", "mail.php?subject=".$title, $strIndex)." <a href='schedafam.zip'>$strScheda</a></p>"; else echo "<p>".str_replace("$1", "mailto:".$config->email."?subject=".$title, $strIndex)." <a href='schedafam.zip'>$strScheda</a></p><br /><br />"; // MODIFICA 20120508
+				if(!$config->mailto) echo "<p>".str_replace("$1", "mail.php?subject=".$title, $strIndex)." <a href='schedafam.zip'>$strScheda</a></p>"; else echo "<p>".str_replace("$1", "mailto:".$config->email."?subject=".$title, $strIndex)." <a href='schedafam.zip'>$strScheda</a></p><br /><br />"; // MODIFICA 20120508
 			} 
 ?>
 				<table>
