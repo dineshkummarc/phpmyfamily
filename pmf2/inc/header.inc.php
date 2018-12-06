@@ -4,8 +4,8 @@
 		
 		$config = Config::getInstance();
 		if ($config->dojo) {
-		$ext = "<link rel='stylesheet' href='http://ajax.googleapis.com/ajax/libs/dojo/1.8.1/dijit/themes/tundra/tundra.css'>
-<link rel='stylesheet' href='http://ajax.googleapis.com/ajax/libs/dojo/1.8.1/dojo/resources/dojo.css'>
+		$ext = "<link rel='stylesheet' href='https://ajax.googleapis.com/ajax/libs/dojo/1.8.1/dijit/themes/tundra/tundra.css'>
+<link rel='stylesheet' href='https://ajax.googleapis.com/ajax/libs/dojo/1.8.1/dojo/resources/dojo.css'>
 <script>dojoConfig = {parseOnLoad: true}</script>
 <script src=\"//ajax.googleapis.com/ajax/libs/dojo/1.8.1/dojo/dojo.js\"></script>
     <script language=\"JavaScript\" type=\"text/javascript\">
