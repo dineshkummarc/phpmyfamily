@@ -14,7 +14,7 @@ include_once "modules/db/DAOFactory.php";
 	$img = $images->results[0];
 	
 	if (!$img->person->isViewable())
-		error(403, $restrictmsg);
+		my_error(403, $restrictmsg);
 	else {
 	
 
@@ -30,16 +30,16 @@ include_once "modules/db/DAOFactory.php";
 
   //Make sure it exists
   if(!$file = realpath($path)) {
-    error(404, $path);
+    my_error(404, $path);
   }
   if(!is_file($file)) {
-    error(404, $file);
+    my_error(404, $file);
   }
   header(sprintf("Content-type: %s;",getMimeType($file)));
   readfile($file);
   exit;
 
-  function error ( $code = 401, $msg = null ) {
+  function my_error ( $code = 401, $msg = null ) {
     $msgs = array(
       400 => 'Bad Request',
       401 => 'Unauthorized',
