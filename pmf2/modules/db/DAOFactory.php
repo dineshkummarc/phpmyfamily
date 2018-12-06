@@ -19,14 +19,6 @@ include_once "inc/class.phpmailer.php";
 //=====================================================================================================================
 // connect to database
 
-if ($usepconnect) {
-	$mysql_connect = mysql_pconnect($dbhost, $dbuser, $dbpwd) or die("phpmyfamily cannot access the database server (".$dbhost.")");
-} else {
-	$mysql_connect = mysql_connect($dbhost, $dbuser, $dbpwd) or die("phpmyfamily cannot access the database server (".$dbhost.")");
-}
-
-$database_select = mysql_select_db($dbname) or die("phpmyfamily cannot access the database (".$dbname.")");
-
 $pdo = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpwd);
 //Has to be after the database setup as it reads stuff from the db
 include_once "classes/Config.php";
