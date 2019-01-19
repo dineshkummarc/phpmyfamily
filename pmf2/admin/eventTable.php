@@ -21,10 +21,10 @@ $tconfig = "CREATE TABLE `".$tblprefix."event` (
 ENGINE = InnoDB;
 ";
 	
-if($rconfig = mysql_query($tconfig)) {
+try {
+  $pdo->exec($tconfig);
 	echo "Event table created<br>\n";
-} else {
-	echo mysql_error();
+} catch (PDOException $e) { 
 	die("phpmyfamily: Error creating event table!!!");
 }
 
@@ -32,11 +32,10 @@ $tconfig = "ALTER TABLE `".$tblprefix."event`
   ADD CONSTRAINT `".$tblprefix."FK_event_1` FOREIGN KEY (`location_id`) REFERENCES `".$tblprefix."locations` (`location_id`),
   ADD CONSTRAINT `".$tblprefix."FK_event_2` FOREIGN KEY (`person_id`) REFERENCES `".$tblprefix."people` (`person_id`);";
 
-if($rconfig = mysql_query($tconfig)) {
+try {
+  $pdo->exec($tconfig);
 	echo "Event table foreign key<br>\n";
-} else {
-	echo mysql_error();
-	echo $tconfig;
+} catch (PDOException $e) { 
 	die("phpmyfamily: Error creating event table foreign key!!!");
 }
 ?>

@@ -16,10 +16,10 @@ $tconfig = "CREATE TABLE `".$tblprefix."attendee` (
 ENGINE = InnoDB;
 ";
 	
-if($rconfig = mysql_query($tconfig)) {
+try {
+  $pdo->exec($tconfig);
 	echo "attendee table created<br>\n";
-} else {
-	echo mysql_error();
+} catch (PDOException $e) { 
 	die("phpmyfamily: Error creating attendee table!!!");
 }
 
@@ -28,11 +28,10 @@ $tconfig = "ALTER TABLE `".$tblprefix."attendee`
   ADD CONSTRAINT `".$tblprefix."FK_attendee_2` FOREIGN KEY (`location_id`) REFERENCES `".$tblprefix."locations` (`location_id`),
   ADD CONSTRAINT `".$tblprefix."FK_attendee_3` FOREIGN KEY (`event_id`) REFERENCES `".$tblprefix."event` (`event_id`);";
 
-if($rconfig = mysql_query($tconfig)) {
+try {
+  $pdo->exec($tconfig);
 	echo "attendee table foreign key<br>\n";
-} else {
-	echo mysql_error();
-	echo $tconfig;
+} catch (PDOException $e) { 
 	die("phpmyfamily: Error creating attendee table foreign key!!!");
 }
 ?>

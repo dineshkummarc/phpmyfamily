@@ -15,20 +15,20 @@ $tconfig = "CREATE TABLE `".$tblprefix."names` (
   KEY `Index_3` (`forenames`)
   ) ENGINE=InnoDB;";
 	
-if($rconfig = mysql_query($tconfig)) {
-	echo "Name table created<br>\n";
-} else {
-	echo mysql_error();
-	die("phpmyfamily: Error creating name table!!!");
+try {
+  $pdo->exec($tconfig);
+  echo "Name table created<br>\n";
+} catch (PDOException $e) { 
+  die("phpmyfamily: Error creating name table!!!");
 }
 
 $tconfig = "ALTER TABLE `".$tblprefix."names`
   ADD CONSTRAINT `".$tblprefix."names_ibfk_1` FOREIGN KEY (`person_id`) REFERENCES `".$tblprefix."people` (`person_id`);";
 
-if($rconfig = mysql_query($tconfig)) {
+try {
+  $pdo->exec($tconfig);
 	echo "Name table foreign key<br>\n";
-} else {
-	echo mysql_error();
+} catch (PDOException $e) { 
 	die("phpmyfamily: Error creating name table!!!");
 }
 

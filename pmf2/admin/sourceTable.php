@@ -1,9 +1,6 @@
 <?php
 
-function createSourceTable() {
-    global $tblprefix;
-    
-$q = "CREATE TABLE `".$tblprefix."source` (
+$tconfig = "CREATE TABLE `".$tblprefix."source` (
   `source_id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
   `title` VARCHAR(255) NULL DEFAULT NULL,
   `reference` VARCHAR(255) NULL DEFAULT NULL,
@@ -17,31 +14,36 @@ $q = "CREATE TABLE `".$tblprefix."source` (
 ENGINE = InnoDB;
 ";
 
-	mysql_query($q) or die(mysql_error().$q);
+try {
+  $pdo->exec($tconfig);
 	echo "Sources table created<br/>\n";
+} catch (PDOException $e) { 
+	die("phpmyfamily: Error creating Sources table!!!");
+}
 
-$q = "CREATE TABLE `".$tblprefix."source_event` (
+$tconfig = "CREATE TABLE `".$tblprefix."source_event` (
   `source_id` INTEGER UNSIGNED NOT NULL,
   `event_id` INTEGER UNSIGNED NOT NULL
 )
 ENGINE = InnoDB;
 ";
 
-	mysql_query($q) or die(mysql_error().$q);
+try {
+  $pdo->exec($tconfig);
 	echo "Sources Event table created<br/>\n";
+} catch (PDOException $e) { 
+	die("phpmyfamily: Error creating Sources Event table!!!");
+}
 
 $tconfig = "ALTER TABLE `".$tblprefix."source_event`
   ADD CONSTRAINT `".$tblprefix."FK_se_1` FOREIGN KEY (`source_id`) REFERENCES `".$tblprefix."source` (`source_id`),
   ADD CONSTRAINT `".$tblprefix."FK_se_2` FOREIGN KEY (`event_id`) REFERENCES `".$tblprefix."event` (`event_id`);";
 
-if($rconfig = mysql_query($tconfig)) {
+try {
+  $pdo->exec($tconfig);
 	echo "sources event table foreign key<br>\n";
-} else {
-	echo mysql_error();
-	echo $tconfig;
+} catch (PDOException $e) { 
 	die("phpmyfamily: Error creating sources event table foreign key!!!");
 }
-}
 
-createSourceTable();
 ?>

@@ -33,14 +33,15 @@ $tconfig = "CREATE TABLE `".$tblprefix."config` (
  	`analytics_key` VARCHAR( 45 ) NOT NULL
 	) ENGINE = InnoDB";
 	
-	if($rconfig = mysql_query($tconfig)) {
+	try {
+		$pdo->exec($tconfig);
 		echo "User config created<br>\n";
+
 		$fconfig = "INSERT INTO ".$tblprefix."config (mailto) VALUES (1)";
-		$radmin = mysql_query($fconfig) or die("phpmyfamily: Error creating default config!!!");
+		$pdo->exec($fconfig);
 		echo "Default config created<br>\n";
-	} else {
-		echo mysql_error();
-		die("phpmyfamily: Error creating config table!!!");
+	} catch (PDOException $e) { 
+		die("phpmyfamily: ".$e->getMessage()); 
 	}
-	
+
 ?>
