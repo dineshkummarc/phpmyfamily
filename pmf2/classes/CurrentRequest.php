@@ -117,15 +117,18 @@ class CurrentRequest {
 	}	// end of check_cookies()
 	
 	function setDateFormat($df) {
+		global $tblprefix, $pdo;
+
 		$config = Config::getInstance();
 		$this->datefmt = $df;
-		$dquery = "SELECT DATE_FORMAT('0000-00-00', ".$df." ) , DATE_FORMAT( '".$config->restrictdate."', ".$df." )";
-		$dresult = mysql_query($dquery) or die("OOOOOppppps");
-		while ($row = mysql_fetch_array($dresult)) {
+		$sth = $pdo->prepare("SELECT DATE_FORMAT('0000-00-00', ".$df." ) , DATE_FORMAT( '".$config->restrictdate."', ".$df." )");
+		$sth->execute();
+		$dresult = $sth->fetchAll();
+		foreach ($dresult as $row) {
 			$this->nulldate = $row[0];
 			$this->dispdate = $row[1];
 		}
-		mysql_free_result($dresult);
+		$sth->closeCursor();
 	}
 }
 
