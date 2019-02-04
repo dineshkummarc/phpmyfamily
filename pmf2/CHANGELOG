@@ -1,3 +1,20 @@
+v 2.2.0
+    Support MySQL 5.7
+    Add docker-compose/docker
+    Convert CurrentRequest date format query to PDO (Twan Fox)
+    Convert install script to use PDO methods (Twan Fox)
+    Remove mysql_connect as it's no longer supported in PHP 7
+    Fetch dojo using https
+    Rename error function
+    Fix transcript errors
+    Move to git from CVS
+    reverse logic of mailto webmaster service in footer and other 2 places - bug #39 (seweryn626)
+    unbalanced quotas in spanish translation - bug #38 (seweryn626)
+    GEDCOM UTF-8 file with BOM mark crashes in import. This changes correct this. (seweryn626)
+    uploaded transcript with nonempty source does not properly linked to person - bug #34 (seweryn626)
+    convert polish translation to UTF-8 charset - bug #33 (seweryn626)
+    proper display of transcription description - bug #35 (seweryn626)
+    Fix adding users
 v 2.1.0-alpha2
     Move timeline include file to local
     Change graphviz output file extension
