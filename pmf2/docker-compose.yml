@@ -1,0 +1,41 @@
+version: '3'
+
+volumes:
+  mysql_data_local: {}
+  mysql_backup_local: {}
+#  django_local: {}
+
+services:
+  pmf2: &pmf2
+    build:
+      context: .
+      dockerfile: ./compose/local/pmf2/Dockerfile
+    image: pmf2_apache
+    depends_on:
+      - mysql
+      - mailhog
+    volumes:
+      - .:/app
+    env_file:
+      - ./.envs/.local/.pmf2
+      - ./.envs/.local/.mysql
+    ports:
+      - "8100:80"
+
+  mysql:
+    restart: always
+    build:
+      context: .
+      dockerfile: ./compose/production/mysql/Dockerfile
+    image: pmf2_mysql
+    volumes:
+      - mysql_data_local:/var/lib/mysql
+      - mysql_backup_local:/backups
+    env_file:
+      - ./.envs/.local/.mysql
+
+  mailhog:
+    image: mailhog/mailhog:v1.0.0
+    ports:
+      - "8025:8025"
+
