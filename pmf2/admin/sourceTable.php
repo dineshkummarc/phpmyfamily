@@ -5,7 +5,7 @@ $tconfig = "CREATE TABLE `".$tblprefix."source` (
   `title` VARCHAR(255) NULL DEFAULT NULL,
   `reference` VARCHAR(255) NULL DEFAULT NULL,
   `url` VARCHAR(255) NULL DEFAULT NULL,
-  `ref_date` date NOT NULL default '0000-00-00',
+  `ref_date` date NULL,
   `notes` longtext NULL DEFAULT NULL,
   `certainty` INTEGER NULL DEFAULT NULL,
   PRIMARY KEY (`source_id`),
@@ -18,7 +18,7 @@ try {
   $pdo->exec($tconfig);
 	echo "Sources table created<br/>\n";
 } catch (PDOException $e) { 
-	die("phpmyfamily: Error creating Sources table!!!");
+	die("phpmyfamily: Error creating Sources table!!!".$e);
 }
 
 $tconfig = "CREATE TABLE `".$tblprefix."source_event` (
@@ -32,7 +32,7 @@ try {
   $pdo->exec($tconfig);
 	echo "Sources Event table created<br/>\n";
 } catch (PDOException $e) { 
-	die("phpmyfamily: Error creating Sources Event table!!!");
+	die("phpmyfamily: Error creating Sources Event table!!!".$e);
 }
 
 $tconfig = "ALTER TABLE `".$tblprefix."source_event`
@@ -43,7 +43,7 @@ try {
   $pdo->exec($tconfig);
 	echo "sources event table foreign key<br>\n";
 } catch (PDOException $e) { 
-	die("phpmyfamily: Error creating sources event table foreign key!!!");
+	die("phpmyfamily: Error creating sources event table foreign key!!!".$e);
 }
 
 ?>

@@ -129,7 +129,8 @@ class SourceDAO extends MyFamilyDAO {
 	function saveSource(&$source) {
 		global $tblprefix;
 
-		$rowsChanged = 0;
+        $rowsChanged = 0;
+        $ref_date = db_date_value($source->ref_date);
 	  			
 		if (isset($source->source_id) && $source->source_id > 0) {
 			$query = sprintf("UPDATE ".$tblprefix."source" .
@@ -137,7 +138,7 @@ class SourceDAO extends MyFamilyDAO {
 			quote_smart($source->title),
 			quote_smart($source->reference),
 			quote_smart($source->url),
-			quote_smart($source->ref_date),
+			$ref_date,
 			quote_smart($source->notes),
 			$source->certainty);
 			$update_result = $this->runQuery($query, "");
@@ -149,7 +150,7 @@ class SourceDAO extends MyFamilyDAO {
 			quote_smart($source->title),
 			quote_smart($source->reference),
 			quote_smart($source->url),
-			quote_smart($source->ref_date),
+			$ref_date,
 			quote_smart($source->notes),
 			$source->certainty);
 			$update_result = $this->runQuery($query, "");

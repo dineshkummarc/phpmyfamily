@@ -92,4 +92,15 @@ function quote_smart($value) {
 
 }	// end of quote_smart
 
+function db_date_value($date) {
+    $ret_date = '';
+    if ($date == '0000-00-00' || $date == '') {
+        $ret_date = 'NULL';
+    } else {
+        $ret_date = quote_smart($date);
+    }
+
+    return ($ret_date);
+}
+
 ?>

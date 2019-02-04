@@ -72,6 +72,7 @@ class Event extends Base {
 		$this->location->setFromPost($prefix);
 		$this->date1 = DateUtil::resolveDate($this->date1);
 		$this->date2 = DateUtil::resolveDate($this->date2);
+		$this->person->setFromPost();
 		
 	}
 	function loadFields($row, $prefix) {

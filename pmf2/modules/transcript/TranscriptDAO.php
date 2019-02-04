@@ -69,7 +69,7 @@ class TranscriptDAO extends MyFamilyDAO {
 			}
 			$squery .= $this->addPersonRestriction($bool).
 			" ORDER BY b.date1";
-		}
+        }
 	
 		$result = $this->runQuery($squery, $err_trans);
 		$trans->numResults = 0;

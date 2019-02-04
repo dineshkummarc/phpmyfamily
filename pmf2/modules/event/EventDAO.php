@@ -114,22 +114,25 @@ class EventDAO extends MyFamilyDAO {
 		$insert = false;
 		
 		$dao = getLocationDAO();
-		$dao->resolveLocation($event->location);
+        $dao->resolveLocation($event->location);
+
+        $date1 = db_date_value($event->date1);
+        $date2 = db_date_value($event->date2);
 		
 		if (isset($event->event_id) && $event->event_id > 0) {
 			$query = "UPDATE ".$tblprefix."event SET etype = ".$event->type.", descrip = ".quote_smart($event->descrip).", person_id = ".$event->person->person_id.
-			", location_id = ".$event->location->location_id.", d1type = ".$event->date1_modifier.", date1 = ".quote_smart($event->date1).", d2type = ".$event->date2_modifier.", date2 = ".quote_smart($event->date2).
+			", location_id = ".$event->location->location_id.", d1type = ".$event->date1_modifier.", date1 = ".$date1.", d2type = ".$event->date2_modifier.", date2 = ".$date2.
 			", notes = ".quote_smart($event->notes).
 			" WHERE event_id = ".quote_smart($event->event_id);
 			$msg = $err_person_update;
 		} else {
 			$this->lockTable($tblprefix."event");
 			$query = "INSERT INTO ".$tblprefix."event (etype, descrip, person_id, location_id, d1type, date1, d2type, date2, notes) VALUES (".
-			$event->type.", ".quote_smart($event->descrip).", ".$event->person->person_id.", ".$event->location->location_id.", ".$event->date1_modifier.", ".quote_smart($event->date1).
-			", ".$event->date2_modifier.", ".quote_smart($event->date2).", ".
+			$event->type.", ".quote_smart($event->descrip).", ".$event->person->person_id.", ".$event->location->location_id.", ".$event->date1_modifier.", ".$date1.
+			", ".$event->date2_modifier.", ".$date2.", ".
 			quote_smart($event->notes).")";
 			$msg = $err_detail;
-			$insert = true;
+            $insert = true;
 		}
 
 		$ret = $this->runQuery($query, $msg);
@@ -148,7 +151,7 @@ class EventDAO extends MyFamilyDAO {
 			}
 		}
 
-		if(count($event->sources) > 0) {
+		if($event->sources && count($event->sources) > 0) {
 			$sdao = getSourceDAO();
 			$sdao->deleteSourceEvent(null, $event);
 			foreach ($event->sources AS $s) {

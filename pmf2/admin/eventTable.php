@@ -6,7 +6,7 @@ $tconfig = "CREATE TABLE `".$tblprefix."event` (
   `etype` SMALLINT UNSIGNED NOT NULL,
   `descrip` VARCHAR(45) NULL,
   `person_id` SMALLINT(5) UNSIGNED NULL DEFAULT NULL,
-  `date1` DATE NOT NULL,
+  `date1` DATE NULL,
   `d1type` SMALLINT UNSIGNED NOT NULL,
   `date2` DATE DEFAULT NULL,
   `d2type` SMALLINT UNSIGNED NULL DEFAULT NULL,

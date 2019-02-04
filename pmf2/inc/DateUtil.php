@@ -143,7 +143,8 @@ class DateUtil {
 	
 	//Try and work out which date format is used and convert accordingly
 	static function resolveDate($date) {
-		global $currentRequest;
+        global $currentRequest;
+        global $pdo;
 		
 		$retval = "0000-00-00";
 		if (preg_match("#([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})#", $date)) {
@@ -153,15 +154,16 @@ class DateUtil {
 			$upper = strtoupper($date);
 			$retval = DateUtil::make_date($upper, $event);
 		} else {
-			$query = 'SELECT STR_TO_DATE('.quote_smart($date).','.$currentRequest->datefmt.');';
-			if (!($result = mysql_query($query))) {
-				error_log($query);
-				error_log(mysql_error());
-			} else {
-				$row = mysql_fetch_row($result);
-				$retval = $row[0];
-				mysql_free_result($result);
-			}
+            $query = 'SELECT STR_TO_DATE('.quote_smart($date).','.$currentRequest->datefmt.') AS resolveDate;';
+            try {
+                if ($result = $pdo->query($query)) {
+                    $row = $result->fetch(PDO::FETCH_ASSOC);
+                    $retval = $row["resolveDate"];
+                }
+            } catch (PDOException $excp) {
+                error_log($query);
+                error_log($excp->getMessage());
+            }
 		}
 		return $retval;
 			

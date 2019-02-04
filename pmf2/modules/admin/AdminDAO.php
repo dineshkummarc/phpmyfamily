@@ -10,9 +10,20 @@ class AdminDAO extends MyFamilyDAO {
 			$pdo->exec("ALTER TABLE `".$tblprefix."config` ADD COLUMN `version` VARCHAR(15), ADD COLUMN `analytics_key` VARCHAR(45) NULL;");
 			$pdo->exec("UPDATE `".$tblprefix."config` SET version='$version'");
 		} else {
-			$row = $result->fetch();
-			if ($row["version"] != $version) {
-			$pdo->exec("UPDATE `".$tblprefix."config` SET version='$version'");
+            $row = $result->fetch();
+            $version_parts = explode('.',$row["version"]);
+            if ($row["version"] != $version) {
+                if ($version_parts[0] == "2" &&
+                    $versions_parts[1] < 2)
+                {
+                    $pdo->exec("UPDATE `".$tblprefix."users` SET `restrictdate` = NULL WHERE `restrictdate` = '0000-00-00';");
+                    $pdo->exec("ALTER TABLE `".$tblprefix."users` MODIFY `restrictdate` DATE NULL;");
+                    $pdo->exec("ALTER TABLE `".$tblprefix."spouses` MODIFY `dissolve_date` DATE NULL;");
+                    $pdo->exec("ALTER TABLE `".$tblprefix."source` MODIFY `ref_date` DATE NULL;");
+                    $pdo->exec("UPDATE `".$tblprefix."event` SET `date1` = NULL WHERE `date1` = '0000-00-00';");
+                    $pdo->exec("ALTER TABLE `".$tblprefix."event` MODIFY `date1` DATE NULL`;");
+                }
+                $pdo->exec("UPDATE `".$tblprefix."config` SET version='$version'");
 			}
 		}
 		$query = "SELECT ";

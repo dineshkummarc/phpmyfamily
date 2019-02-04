@@ -184,7 +184,7 @@ class PeopleDAO extends MyFamilyDAO {
 		$nquery = "SELECT p.person_id, n.surname, count(p.person_id) as number FROM ".$tblprefix."people p ";
 		$nquery .= PersonDetail::getJoins();
 		$nquery .= $this->addPersonRestriction(" WHERE ");
-		$nquery .= " GROUP BY n.surname";
+		$nquery .= " GROUP BY n.surname, p.person_id";
 		if ($order == 1) {
 			$nquery .= " ORDER BY number DESC";
 			$search = new Base();

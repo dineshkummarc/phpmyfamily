@@ -1,4 +1,5 @@
 <?php
+include_once '../inc/version.php';
 
 $tconfig = "CREATE TABLE `".$tblprefix."config` (
 	`email` varchar(128) NOT NULL default '',
@@ -24,20 +25,20 @@ $tconfig = "CREATE TABLE `".$tblprefix."config` (
 	`gmapshost` varchar(20) NOT NULL default 'maps.google.com',
 	`img_max` int(8) NOT NULL default '700',
 	`img_min` int(8) NOT NULL default '300',
-	`smtp_host` VARCHAR( 32 ) NOT NULL ,
- 	`smtp_user` VARCHAR( 32 ) NOT NULL ,
-	`smtp_password` VARCHAR( 32 ) NOT NULL ,
-	`recaptcha_public` VARCHAR( 50 ) NOT NULL ,
-	`recaptcha_private` VARCHAR( 50 ) NOT NULL ,
+	`smtp_host` VARCHAR( 32 ) NULL ,
+ 	`smtp_user` VARCHAR( 32 ) NULL ,
+	`smtp_password` VARCHAR( 32 ) NULL ,
+	`recaptcha_public` VARCHAR( 50 ) NULL ,
+	`recaptcha_private` VARCHAR( 50 ) NULL ,
  	`version` VARCHAR( 15 ) NOT NULL ,
- 	`analytics_key` VARCHAR( 45 ) NOT NULL
+ 	`analytics_key` VARCHAR( 45 ) NULL
 	) ENGINE = InnoDB";
 	
 	try {
 		$pdo->exec($tconfig);
 		echo "User config created<br>\n";
 
-		$fconfig = "INSERT INTO ".$tblprefix."config (mailto) VALUES (1)";
+		$fconfig = "INSERT INTO ".$tblprefix."config (version) VALUES ('".$version."')";
 		$pdo->exec($fconfig);
 		echo "Default config created<br>\n";
 	} catch (PDOException $e) { 

@@ -44,8 +44,7 @@ if (isset($_REQUEST["func"]) && $_REQUEST["func"] == "delete") {
 		$edao = getEventDAO();
 		$edao->getEvents($e, Q_ALL);
 		$trans->event = $e->results[0];
-	}
-	$e->person->person_id = $trans->person->person_id;
+    }
 	$s = new Source();
 	$s->setFromPost();
 	$sdao = getSourceDAO();
@@ -53,7 +52,6 @@ if (isset($_REQUEST["func"]) && $_REQUEST["func"] == "delete") {
 	$sdao->resolveSource($s);
 
 	if ($s->source_id > 0) {
-		$e->person->person_id = 'null';
 		if (!$s->isEditable()) {
 			die(include "inc/forbidden.inc.php");
 		}	
@@ -62,9 +60,6 @@ if (isset($_REQUEST["func"]) && $_REQUEST["func"] == "delete") {
 	}
 	$trans->source = $s;
 	
-	if ($e->person->person_id <= 0) {
-		$e->person->person_id = 'null';
-	}	
 	if(isset($trans->transcript_id)) {
 		$dao->updateTranscript($trans);
 	} else {

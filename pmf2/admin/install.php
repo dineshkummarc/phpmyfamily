@@ -68,7 +68,7 @@
   `email` varchar(128) NOT NULL default '',
   `admin` enum('Y','N') NOT NULL default 'N',
   `edit` enum('Y','N') NOT NULL default 'N',
-  `restrictdate` date NOT NULL default '0000-00-00',
+  `restrictdate` DATE NULL,
   `style` varchar(40) NOT NULL default '',
   PRIMARY KEY  (`id`)
 ) Engine = InnoDB";
@@ -77,7 +77,7 @@
 		$pdo->exec($fusers);
 		echo "User table created<br>\n";
 	} catch (PDOException $e) {
-		die("phpmyfamily: Error creating user table!!!");
+		die("phpmyfamily: Error creating user table!!!".$e);
 	}
 
 	try {
@@ -136,7 +136,7 @@
 	$fspouses = "CREATE TABLE `".$tblprefix."spouses` (
   `groom_id` smallint(5) unsigned zerofill NOT NULL default '00000',
   `bride_id` smallint(5) unsigned zerofill NOT NULL default '00000',
-  `dissolve_date` date NOT NULL default '0000-00-00',
+  `dissolve_date` date NULL,
   `dissolve_reason` char(1) NOT NULL default '',
   `event_id` int(10) unsigned default NULL,
   `marriage_id` int(10) unsigned NOT NULL auto_increment,
@@ -147,7 +147,7 @@
 		$pdo->exec($fspouses);
 		echo "Spouses table created<br>\n";
 	} catch (PDOException $e) {
-		die("phpmyfamily: Error creating spouses table!!!");
+		die("phpmyfamily: Error creating spouses table!!!".$e);
 	}
 
 	// install ".$tblprefix."census
