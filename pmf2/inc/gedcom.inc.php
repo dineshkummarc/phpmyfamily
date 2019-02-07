@@ -38,9 +38,13 @@ error_reporting(E_ALL ^ E_NOTICE);
 
 	// pick up the next auto value from table
 	$query = "SHOW TABLE STATUS LIKE '".$tblprefix."people'";
-	$result = mysql_query($query);
-	while ($row = mysql_fetch_array($result))
-		$autoval = $row["Auto_increment"];
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(1, $_SESSION["id"], PDO::PARAM_STR);
+    $stmt->execute();
+    $i = 0;
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $autoval = $row["Auto_increment"];
+    }
 	//This is used as a guess but the actual insert id is picked up into the idmap array
 	
 	ini_set("auto_detect_line_endings", TRUE);
@@ -406,7 +410,7 @@ while ($indis > 0) {
 			$per->person_id = $idmap[$person["ged_person_ref"]];
 			$resave = true;
 		}
-//		print_r($per);
+		print_r($per);
 		if ($dao->savePersonDetails($per)) {
 			$idmap[$person["ged_person_ref"]] = $per->person_id;
 			@$uid[$person["ged_person_ref"]] = $indi[$i]["uid"];

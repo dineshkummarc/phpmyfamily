@@ -93,7 +93,9 @@ class PersonDetail extends Base {
 	
 	
 	function loadFields($edrow, $type, $prefix = '') {
-		$this->person_id = $edrow[$prefix."person_id"];
+		if(array_key_exists($prefix."person_id", $edrow)) {
+            $this->person_id = $edrow[$prefix."person_id"];
+        }
 		if(array_key_exists($prefix."gender", $edrow)) {
 			$this->gender = $edrow[$prefix."gender"];
 		}

@@ -33,11 +33,11 @@
 		if ($restricted)
 			echo $restrictmsg."\n";
 		else {
-			$cquery = "SELECT * FROM ".$tblprefix."census, ".$tblprefix."census_years WHERE person_id = ".quote_smart($_REQUEST["person"])." AND census = census_id ORDER BY year";
-			$cresult = mysql_query($cquery) or die($err_census_ret);
-			if (mysql_num_rows($cresult) == 0)
-				echo $strNoInfo."\n";
-			else {
+			$cquery = "SELECT census_id, year, country, census, schdule, address, condition, age, profession, where_born, other_details FROM ".$tblprefix."census, ".$tblprefix."census_years WHERE person_id = ".quote_smart($_REQUEST["person"])." AND census = census_id ORDER BY year";
+            $stmt = $pdo->prepare($cquery);
+            $stmt->bindParam(1, $_REQUEST["person"], PDO::PARAM_STR);
+            $stmt->execute();
+            $i = 0;
 ?>
 	<table width="100%">
 		<tr>
@@ -53,7 +53,7 @@
 		</tr>
 <?php
 		$i = 0;
-		while ($crow = mysql_fetch_array($cresult)) {
+        while ($crow = $stmt->fetch(PDO::FETCH_ASSOC)) {
 			if ($i == 0 || fmod($i, 2) == 0)
 				$class = "tbl_odd";
 			else
@@ -75,8 +75,6 @@
 		</tr>
 <?php
 			$i++;
-		}
-		mysql_free_result($cresult);
 ?>
 	</table>
 <?php

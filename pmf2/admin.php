@@ -57,9 +57,11 @@
 			}
 			break;
 		// delete an existing user
-		case "delete":
-			$query = "DELETE FROM ".$tblprefix."users WHERE id = '".$_REQUEST["id"]."'";
-			$result = mysql_query($query) or die($err_delete_user);
+        case "delete":
+            $query = "DELETE FROM ".$tblprefix."users WHERE id = ?";
+            $stmt = $pdo->prepare($query);
+            $stmt->execute([$_REQUEST['id']]) or die($err_delete_user);
+            $stmt = null;
 			break;
 		// bail out if we don't know what else to do
 		default:
@@ -116,10 +118,11 @@
 				<th><?php echo $strStyle; ?></th>
 			</tr>
 <?php
-		$query = "SELECT * FROM ".$tblprefix."users WHERE id <> '".$_SESSION["id"]."' ORDER BY username";
-		$result = mysql_query($query) or die($err_users);
+        $stmt = $pdo->prepare("SELECT username, email, admin, edit, restrictdate, style FROM ".$tblprefix."users WHERE id <> ? ORDER BY username");
+        $stmt->bindParam(1, $_SESSION["id"], PDO::PARAM_STR);
+        $stmt->execute();
 		$i = 0;
-		while ($row = mysql_fetch_array($result)) {
+		while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 			if ($i == 0 || fmod($i, 2) == 0)
 				$class = "tbl_odd";
 			else

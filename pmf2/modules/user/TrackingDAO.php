@@ -59,16 +59,16 @@ class TrackingDAO extends MyFamilyDAO {
 	function trackByUnregistered($person, $name, $newkey, $email) {
 		global $tblprefix, $pdo, $eSubBody, $eSubSubject;
 	                       // insert into database
-        	$iquery = "INSERT INTO ".$tblprefix."tracking (person_id, email, `key`, `action`, expires) VALUES ('".$person."', '".$email."', '".$newkey."', 'sub', DATE_ADD(NOW(), INTERVAL 24 HOUR))";
-                $iresult = mysql_query($iquery);
+        $iquery = "INSERT INTO ".$tblprefix."tracking (person_id, email, `key`, `action`, expires) VALUES (?, ?, ?, 'sub', DATE_ADD(NOW(), INTERVAL 24 HOUR))";
+        $stmt = $pdo->prepare($iquery);
+        $stmt->bindParam(1, $person, PDO::PARAM_STR);
+        $stmt->bindParam(2, $email, PDO::PARAM_STR);
+        $stmt->bindParam(3, $newkey, PDO::PARAM_STR);
+        $stmt->execute();
 
-                // if we get this error then already tracking
-                if (mysql_errno() == 1062) {
-                    $ret = 1; 
-                } else {
-			$this->mailSubscriber($eSubBody, $name, $newkey, $eSubSubject, $email);
-                    $ret = 0; 
-		}
+        $this->mailSubscriber($eSubBody, $name, $newkey, $eSubSubject, $email);
+        $ret = 0;
+
 		return ($ret);
 	}
 	function untrackByUnregistered($person, $name, $newkey, $email) {

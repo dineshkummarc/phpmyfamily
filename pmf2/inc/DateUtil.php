@@ -22,7 +22,7 @@ class DateUtil {
 
 		// if the first part is not numeric, then we don't really know what to do!...
 		if ($work && count($work) > 0 && !is_numeric($work[0])) {
-			$retval = "0000-00-00";
+			$retval = "NULL";
 			// ...if it isn't, check it's not a month
 			if (in_array($work[0], $months)) {
 				$retval = $work[1]."-".str_pad(array_search(strtoupper($work[0]), $months), 2, "0", STR_PAD_LEFT)."-00";
@@ -97,7 +97,7 @@ class DateUtil {
 			}
 		} else {
 			if (count($work) === 1) {
-				$retval = $work[0]."-00-00";
+				$retval = $work[0]."-01-01";
 			} else {
 				$done = 0;
 				if (in_array($work[1], $months)) {
@@ -106,7 +106,7 @@ class DateUtil {
 						$done = 2;
 					}
 				} else {
-					$retval = $work[0]."-00-00";
+					$retval = $work[0]."-01-01";
 					$done = 1;
 				}
 				if (count($work) > 3) {
@@ -125,7 +125,7 @@ class DateUtil {
 		// check that the returning string isn't going to break the database
 		// must be 0000-00-00
 		if (!preg_match("#([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})#", $retval))
-			$retval = "0000-00-00";
+			$retval = "NULL";
 
 		if (($event->date1_modifier == 0) and ($event->date1 != "0000-00-00")) {
 			$event->date1_modifier = 8 ;	// on
@@ -146,7 +146,7 @@ class DateUtil {
         global $currentRequest;
         global $pdo;
 		
-		$retval = "0000-00-00";
+		$retval = "NULL";
 		if (preg_match("#([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})#", $date)) {
 			$retval = $date;
 		} else if (preg_match("#([0-9]{1,2}) ([a-zA-Z]{3}) ([0-9]{4})#", $date)) {
@@ -171,7 +171,7 @@ class DateUtil {
 	
 	static function full_ged_date1($event) {
 		$date = "";
-		if ($event->date1 <> "0000-00-00") {
+		if ($event->date1 <> "NULL") {
 			$date = "2 DATE ";
 			$mod = "";
 			switch($event->date1_modifier) {

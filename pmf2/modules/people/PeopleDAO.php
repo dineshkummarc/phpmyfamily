@@ -181,10 +181,10 @@ class PeopleDAO extends MyFamilyDAO {
 	function getSurnames($order = 0) {
 		global $tblprefix, $err_person;
 		// provide a list of surnames
-		$nquery = "SELECT p.person_id, n.surname, count(p.person_id) as number FROM ".$tblprefix."people p ";
+		$nquery = "SELECT n.surname, count(n.surname) as number FROM ".$tblprefix."people p ";
 		$nquery .= PersonDetail::getJoins();
 		$nquery .= $this->addPersonRestriction(" WHERE ");
-		$nquery .= " GROUP BY n.surname, p.person_id";
+		$nquery .= " GROUP BY n.surname";
 		if ($order == 1) {
 			$nquery .= " ORDER BY number DESC";
 			$search = new Base();
