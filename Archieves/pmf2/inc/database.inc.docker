@@ -1,0 +1,11 @@
+<?php
+//Move this file to database.inc.php
+// Database Connection details
+	$dbhost 	= "mysql"; 	// host the database is running on
+	$dbname 	= "pmf2";		// Database name
+	$dbuser 	= "pmf_user";		// Database user name
+	$dbpwd  	= "password";		// Database password
+	
+	$tblprefix 	= "family_";
+	$usepconnect	= false;
+?>
